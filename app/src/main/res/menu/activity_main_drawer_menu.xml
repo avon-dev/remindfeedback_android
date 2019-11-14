@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    <item android:title="Feedback">
+        <menu>
+        <item
+                android:id="@+id/request_Feedback"
+                android:icon="@drawable/ic_non_check"
+                android:title="요청한 피드백"/>
+        <item
+                android:id="@+id/receive_Feedback"
+                android:icon="@drawable/ic_checked"
+                android:title="요청 받은 피드백"/>
+        <item
+                android:id="@+id/category_Setting"
+                android:icon="@drawable/ic_list_black"
+                android:title="주제설정"/>
+        </menu>
+
+    </item>
+
+    <item android:title="Alert">
+        <menu>
+            <item
+                    android:id="@+id/feedback_Request_Alarm"
+                    android:title="피드백 요청 알림"
+                    android:icon="@drawable/ic_alarm_black"
+            />
+
+        </menu>
+    </item>
+
+    <item android:title="General">
+        <menu>
+            <item
+                    android:id="@+id/friends_List"
+                    android:title="친구목록"
+                    android:icon="@drawable/ic_people_black"
+            />
+            <item
+                    android:id="@+id/mypage"
+                    android:title="마이페이지"
+                    android:icon="@drawable/ic_account_black"
+            />
+            <item
+                    android:id="@+id/setting"
+                    android:title="환경설정"
+                    android:icon="@drawable/ic_settings_black"
+            />
+            <item
+                    android:id="@+id/logout"
+                    android:title="로그아웃"
+                    android:icon="@drawable/ic_logout_black"
+            />
+        </menu>
+    </item>
+
+
+
+</menu>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".Setting.SettingActivity">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="알림"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line_gray"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="시스템설정"
+                    android:textColor="#585858"
+                    android:textSize="20sp" />
+
+            <Switch
+                    android:id="@+id/switch1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line_gray"
+                    android:padding="16dp"
+                    android:text="피드백 알림 끄기"
+                    android:textColor="#585858"
+                    android:textSize="20sp" />
+
+            <Switch
+                    android:id="@+id/switch2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line_gray"
+                    android:padding="16dp"
+                    android:text="피드백 조언자 등록 거부"
+                    android:textColor="#585858"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="피드백"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textSize="20sp" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line_gray"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="피드백 공개 여부"
+                        android:textColor="#585858"
+                        android:textSize="20sp" />
+
+                <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="전체 공개"
+                        android:textColor="#585858"
+                        android:textSize="18sp" />
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line"
+                    android:padding="16dp"
+                    android:text="일반"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/textView20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line_gray"
+                    android:padding="16dp"
+                    android:text="공식 홈페이지"
+                    android:textColor="#585858"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line_gray"
+                    android:padding="16dp"
+                    android:text="문의하기"
+                    android:textColor="#585858"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line_gray"
+                    android:padding="16dp"
+                    android:text="도움말"
+                    android:textColor="#585858"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line_gray"
+                    android:padding="16dp"
+                    android:text="버그 제보"
+                    android:textColor="#585858"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="확장"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textSize="20sp" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line_gray"
+                    android:orientation="horizontal"
+                    android:padding="16sp">
+
+                <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="피드백 공개 여부"
+                        android:textColor="#585858"
+                        android:textSize="20sp" />
+
+                <TextView
+                        android:id="@+id/textView23"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                <ImageView
+                        android:id="@+id/imageButton3"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_lock_black" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line_gray"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                <TextView
+                        android:id="@+id/textView22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="피드백 공개 여부"
+                        android:textColor="#585858"
+                        android:textSize="20sp" />
+
+                <TextView
+                        android:id="@+id/textView24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                <ImageView
+                        android:id="@+id/imageButton4"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_lock_black" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

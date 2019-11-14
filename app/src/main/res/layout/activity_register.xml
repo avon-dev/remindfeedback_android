@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f6f6f6"
+        android:orientation="vertical"
+        tools:context=".Register.RegisterActivity">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Remind Feedback에 오신 것을 환영합니다.\n회원가입을 통해 서비스를 이용 하실 수 있습니다." />
+
+        <EditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/round_border_edittext"
+                android:ems="10"
+                android:hint="이메일"
+                android:inputType="textPersonName"
+                android:padding="8dp"
+                android:textSize="16sp" />
+
+        <EditText
+                android:id="@+id/editText2"
+                style="@style/big_input"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/round_border_edittext"
+                android:ems="10"
+                android:hint="닉네임"
+                android:inputType="textPersonName"
+                android:padding="8dp"
+                android:textSize="16sp" />
+
+        <EditText
+                android:id="@+id/editText3"
+                style="@style/big_input"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/round_border_edittext"
+                android:ems="10"
+                android:hint="비밀번호"
+                android:inputType="textPersonName"
+                android:textSize="16sp" />
+
+        <EditText
+                android:id="@+id/editText4"
+                style="@style/big_input"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/round_border_edittext"
+                android:ems="10"
+                android:hint="비밀번호 확인"
+                android:inputType="textPersonName"
+                android:textSize="16sp" />
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/round_border_edittext"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+            <CheckBox
+                    android:id="@+id/checkBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="모든 이용약관은 확인했고, 이에 동의합니다"
+                    android:textSize="14sp" />
+
+            <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="서비스 이용약관 동의 (필수)"
+                    android:textSize="12sp" />
+
+            <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="개인정보 수집 및 이용 동의 (필수)"
+                    android:textSize="12sp" />
+
+            <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="중요한 정보 수집 이용 동의 (필수)"
+                    android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+        <Button
+                android:id="@+id/button"
+                style="@style/big_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:text="회원가입"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+    </LinearLayout>
+</LinearLayout>

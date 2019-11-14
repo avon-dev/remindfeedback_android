@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/under_line"
+        android:padding="8dp">
+
+    <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/alarm_Profile_Image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="5dp"
+                android:src="@mipmap/ic_launcher" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/alarm_Alarm"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/red"
+                android:textSize="20dp" />
+    </FrameLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/alarm_Script"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="TextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="15dp" />
+
+        <TextView
+                android:id="@+id/alarm_Date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="TextView" />
+    </LinearLayout>
+</LinearLayout>
