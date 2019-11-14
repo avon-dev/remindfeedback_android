@@ -18,7 +18,7 @@
                 android:id="@+id/feedback_Detail_Image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                app:srcCompat="@drawable/ic_image_black" />
+                app:srcCompat="@drawable/ic_photo_black" />
 
         <TextView
                 android:id="@+id/feedback_Detail_Contents"

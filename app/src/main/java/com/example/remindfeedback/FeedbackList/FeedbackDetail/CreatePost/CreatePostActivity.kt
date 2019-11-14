@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.remindfeedback.R
 
-class CreatePostActivity : AppCompatActivity() {
+class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
