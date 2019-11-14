@@ -23,7 +23,7 @@ import com.example.remindfeedback.CategorySetting.CategorySettingActivity
 import com.example.remindfeedback.CreateFeedback.CreateFeedbackActivity
 import com.example.remindfeedback.FriendsList.FriendsListActivity
 import com.example.remindfeedback.MyPage.MyPageActivity
-import com.example.remindfeedback.NewCategory.NewCategoryActivity
+import com.example.remindfeedback.CreateCategory.CreateCategoryActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
 import com.example.remindfeedback.Setting.SettingActivity

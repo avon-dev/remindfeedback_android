@@ -50,18 +50,27 @@
                     android:gravity="right"
                     android:padding="10dp">
 
-                <TextView
-                        android:gravity="center_horizontal|center_vertical"
-                        android:layout_gravity="left"
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/all_line"
-                        android:layout_width="60dp"
-                        android:layout_height="30dp" android:id="@+id/ing_Btn" android:text="진행중"/>
-                <TextView
-                        android:gravity="center_horizontal|center_vertical"
-                        android:layout_gravity="left"
-                        android:background="@drawable/all_line"
-                        android:layout_width="60dp"
-                        android:layout_height="30dp" android:id="@+id/ed_Btn" android:text="진행완료"/>
+                        android:padding="5dp"
+                        android:orientation="horizontal"
+                        android:gravity="right">
+                    <TextView
+                            android:gravity="center_horizontal|center_vertical"
+                            android:layout_gravity="left"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp" android:id="@+id/ing_Btn" android:text="진행중"/>
+                    <TextView
+                            android:gravity="center_horizontal|center_vertical"
+                            android:layout_gravity="left"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp" android:id="@+id/ed_Btn" android:text="진행완료"/>
+                </LinearLayout>
+
+
                 <TextView
                         android:gravity="center_horizontal|center_vertical"
                         android:layout_gravity="left"
@@ -71,7 +80,7 @@
                         android:id="@+id/recent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:layout_gravity="center_vertical|center_horizontal"
                         android:gravity="center_horizontal|center_vertical"
                         android:text="최신순 |"
                         android:textSize="15dp" />
@@ -81,6 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal|center_vertical"
+                        android:layout_gravity="center_vertical|center_horizontal"
                         android:text="  오래된 순 |"
                         android:textSize="15dp" />
 
@@ -88,6 +98,7 @@
                         android:id="@+id/title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|center_horizontal"
                         android:gravity="center_horizontal|center_vertical"
                         android:text="  제목 순 |"
                         android:textSize="15dp" />
@@ -96,6 +107,7 @@
                         android:id="@+id/alarm"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|center_horizontal"
                         android:gravity="center_horizontal|center_vertical"
                         android:text="  알림 순"
                         android:textSize="15dp" />

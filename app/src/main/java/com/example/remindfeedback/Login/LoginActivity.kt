@@ -38,7 +38,7 @@ class LoginActivity  : AppCompatActivity(), ContractLogin.View{
         }
 
         //회원가입 버튼
-        register_Button.setOnClickListener {
+        register_Tv.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
             //finish()

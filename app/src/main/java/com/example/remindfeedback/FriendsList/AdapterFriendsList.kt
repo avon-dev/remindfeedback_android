@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.AdapterMainFeedback
 import com.example.remindfeedback.FeedbackList.ModelFeedback
 import com.example.remindfeedback.FriendsList.FriendsPage.FriendsPageActivity
-import com.example.remindfeedback.NewCategory.NewCategoryActivity
 import com.example.remindfeedback.R
 import java.util.ArrayList
 

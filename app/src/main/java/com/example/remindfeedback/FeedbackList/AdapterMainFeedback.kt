@@ -13,7 +13,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.FeedbackDetailActivity
-import com.example.remindfeedback.NewCategory.NewCategoryActivity
 import com.example.remindfeedback.R
 import java.net.URL
 import java.util.ArrayList

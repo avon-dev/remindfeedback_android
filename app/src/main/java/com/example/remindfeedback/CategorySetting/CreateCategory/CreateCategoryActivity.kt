@@ -1,21 +1,25 @@
-package com.example.remindfeedback.NewCategory
+package com.example.remindfeedback.CreateCategory
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import com.example.remindfeedback.FriendsList.FindFriends.FindFriendsActivity
 import com.example.remindfeedback.R
-import kotlinx.android.synthetic.main.activity_new_category.*
+import kotlinx.android.synthetic.main.activity_create_category.*
 import petrov.kristiyan.colorpicker.ColorPicker
 import java.util.ArrayList
 
-class NewCategoryActivity : AppCompatActivity() {
+class CreateCategoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_category)
+        setContentView(R.layout.activity_create_category)
 
         //액션바 설정
         var ab: ActionBar = this!!.supportActionBar!!
@@ -25,7 +29,7 @@ class NewCategoryActivity : AppCompatActivity() {
 
         //색상 리스트
         another_Color_Select.setOnClickListener {
-            val colorPicker = ColorPicker(this@NewCategoryActivity)
+            val colorPicker = ColorPicker(this@CreateCategoryActivity)
             val colors = ArrayList<String>()
             colors.add("#82B926")
             colors.add("#a276eb")
@@ -43,7 +47,7 @@ class NewCategoryActivity : AppCompatActivity() {
                 .setRoundColorButton(true)
                 .setOnChooseColorListener(object : ColorPicker.OnChooseColorListener {
                     override fun onChooseColor(position: Int, color: Int) {
-                        Toast.makeText(this@NewCategoryActivity, "position : "+position, Toast.LENGTH_SHORT).show()                    }
+                        Toast.makeText(this@CreateCategoryActivity, "position : "+position, Toast.LENGTH_SHORT).show()                    }
 
                     override fun onCancel() {
 
@@ -56,4 +60,7 @@ class NewCategoryActivity : AppCompatActivity() {
 
 
     }
+
+
+
 }

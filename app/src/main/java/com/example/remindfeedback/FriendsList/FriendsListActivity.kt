@@ -3,6 +3,9 @@ package com.example.remindfeedback.FriendsList
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.remindfeedback.FeedbackList.AdapterMainFeedback
@@ -70,16 +73,31 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
         }
         presenterFriendsList.loadItems(arrayList)
 
-        //친구추가 버튼 눌렀을때
-        add_Friends_Button.setOnClickListener {
-            val intent = Intent(this, FindFriendsActivity::class.java)
-            startActivity(intent)
-            //finish()
 
-        }
 
     }
 
+
+    //타이틀바에 어떤 menu를 적용할지 정하는부분
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.friends_list_menu, menu)
+        return true
+    }
+
+    //타이틀바 메뉴를 클릭했을시
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle presses on the action bar items
+        when(item.itemId){
+            R.id.add_Friends_Button -> { return add_Friends_Button() }
+            else -> {return super.onOptionsItemSelected(item)}
+        }
+    }
+    //찾기버튼 눌렀을때
+    fun add_Friends_Button(): Boolean {
+        val intent = Intent(this, FindFriendsActivity::class.java)
+        startActivity(intent)
+        return true
+    }
 
     override fun refresh() {
         mAdapter.notifyDataSetChanged()

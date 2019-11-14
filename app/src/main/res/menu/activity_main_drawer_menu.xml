@@ -7,11 +7,11 @@
         <menu>
         <item
                 android:id="@+id/request_Feedback"
-                android:icon="@drawable/ic_non_check"
+                android:icon="@drawable/ic_right_black"
                 android:title="요청한 피드백"/>
         <item
                 android:id="@+id/receive_Feedback"
-                android:icon="@drawable/ic_checked"
+                android:icon="@drawable/ic_left_black"
                 android:title="요청 받은 피드백"/>
         <item
                 android:id="@+id/category_Setting"

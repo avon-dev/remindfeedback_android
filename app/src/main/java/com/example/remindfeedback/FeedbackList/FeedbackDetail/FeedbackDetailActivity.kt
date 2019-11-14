@@ -1,12 +1,17 @@
 package com.example.remindfeedback.FeedbackList.FeedbackDetail
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.remindfeedback.Alarm.AdapterAlarm
 import com.example.remindfeedback.Alarm.ModelAlarm
 import com.example.remindfeedback.Alarm.PresenterAlarm
+import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity
+import com.example.remindfeedback.FriendsList.FindFriends.FindFriendsActivity
 import com.example.remindfeedback.R
 import kotlinx.android.synthetic.main.activity_alarm.*
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
@@ -47,6 +52,25 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
         //presenterFeedbackDetail.loadItems(arrayList)
     }
 
+    //타이틀바에 어떤 menu를 적용할지 정하는부분
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.feedback_detail_menu, menu)
+        return true
+    }
+
+    //타이틀바 메뉴를 클릭했을시
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle presses on the action bar items
+        when(item.itemId){
+            R.id.create_Post_Button -> { return create_Post_Button() }
+            else -> {return super.onOptionsItemSelected(item)}
+        }
+    }
+    fun create_Post_Button(): Boolean {
+        val intent = Intent(this, CreatePostActivity::class.java)
+        startActivity(intent)
+        return true
+    }
 
     override fun refresh() {
 

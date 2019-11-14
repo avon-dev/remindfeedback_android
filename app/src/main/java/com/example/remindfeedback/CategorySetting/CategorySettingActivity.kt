@@ -3,12 +3,14 @@ package com.example.remindfeedback.CategorySetting
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.remindfeedback.CreateCategory.CreateCategoryActivity
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.AdapterFeedbackDetail
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.ModelFeedbackDetail
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.PresenterFeedbackDetail
-import com.example.remindfeedback.NewCategory.NewCategoryActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_category_setting.*
@@ -22,9 +24,6 @@ class CategorySettingActivity : AppCompatActivity() , ContextCategorySetting.Vie
         ModelCategorySetting("red", "첫번째 주제"),
         ModelCategorySetting("blue", "첫번째 주제"),
         ModelCategorySetting("black", "첫번째 주제")
-
-
-
 
 
     )
@@ -51,17 +50,33 @@ class CategorySettingActivity : AppCompatActivity() , ContextCategorySetting.Vie
         }
         //presenterFeedbackDetail.loadItems(arrayList)
 
-        //회원가입 버튼
-        add_Category_Button.setOnClickListener {
-            val intent = Intent(this, NewCategoryActivity::class.java)
-            startActivity(intent)
-            //finish()
 
-        }
 
 
     }
 
+
+
+    //타이틀바에 어떤 menu를 적용할지 정하는부분
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.create_category_menu, menu)
+        return true
+    }
+
+    //타이틀바 메뉴를 클릭했을시
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle presses on the action bar items
+        when(item.itemId){
+            R.id.create_category_Button -> { return create_category_Button() }
+            else -> {return super.onOptionsItemSelected(item)}
+        }
+    }
+    //찾기버튼 눌렀을때
+    fun create_category_Button(): Boolean {
+        val intent = Intent(this, CreateCategoryActivity::class.java)
+        startActivity(intent)
+        return true
+    }
 
     override fun refresh() {
 

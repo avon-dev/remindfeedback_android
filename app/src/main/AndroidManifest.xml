@@ -11,6 +11,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity">
+        </activity>
         <activity android:name=".CategorySetting.CategorySettingActivity">
         </activity>
         <activity
@@ -35,7 +37,7 @@
                 android:name=".FriendsList.FindFriends.FindFriendsActivity"
                 android:parentActivityName=".FriendsList.FriendsListActivity"/>
         <activity
-                android:name=".NewCategory.NewCategoryActivity"
+                android:name=".CreateCategory.CreateCategoryActivity"
                 android:parentActivityName=".FeedbackList.MainActivity"/>
         <activity
                 android:name=".CreateFeedback.CreateFeedbackActivity"
