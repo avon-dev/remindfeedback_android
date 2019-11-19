@@ -7,11 +7,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.remindfeedback.FeedbackList.MainActivity
 import com.example.remindfeedback.R
+import com.example.remindfeedback.Register.PresenterRegister
 import com.example.remindfeedback.Register.RegisterActivity
 import com.jkyeo.splashview.SplashView
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity  : AppCompatActivity(), ContractLogin.View{
+
+    private val TAG = "LoginActivity"
+    internal lateinit var presenterLogin: PresenterLogin
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -29,10 +34,17 @@ class LoginActivity  : AppCompatActivity(), ContractLogin.View{
             }
         })
 
+        presenterLogin = PresenterLogin().apply {
+            view = this@LoginActivity
+        }
+
         //로그인버튼
         login_Button.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+
+            presenterLogin.LogIn(email_Edittext.text.toString(), password_Edittext.text.toString())
+
+            //val intent = Intent(this, MainActivity::class.java)
+           // startActivity(intent)
             //finish()
 
         }

@@ -1,5 +1,7 @@
 package com.example.remindfeedback.Network
 
+import com.example.remindfeedback.ServerModel.LogIn
+import com.example.remindfeedback.ServerModel.SignUp
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -34,5 +36,8 @@ interface ServiceAPI {
 
     @POST("auth/signup")
     fun SignUp(@Body json_account: SignUp): Call<SignUp>
+
+    @POST("auth/login")
+    fun LogIn(@Body json_account: LogIn): Call<LogIn>
 
 }

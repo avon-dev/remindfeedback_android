@@ -36,7 +36,6 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
         //회원가입버튼을 눌러서 presenter의 회원가입 기능을 실행시킴
         register_Button.setOnClickListener {
             presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString())
-            Log.e(TAG, "일단 들어옴")
             finish()
         }
 

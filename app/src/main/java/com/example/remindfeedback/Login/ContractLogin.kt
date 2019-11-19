@@ -9,6 +9,6 @@ interface ContractLogin {
 
         var view: View
 
-
+        fun LogIn(email:String, password:String)
     }
 }
