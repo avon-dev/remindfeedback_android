@@ -1,14 +1,12 @@
 package com.example.remindfeedback.Network
 
-import kotlinx.coroutines.Deferred
-import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.*
 
 interface ServiceAPI {
 
 /*
+    이안에 내용은 신경 안써도 ㅇㅋ
     @GET("url/")
     fun getPosts() : Deferred<Response<List<Json_Account_Load>>>
 
@@ -23,4 +21,18 @@ interface ServiceAPI {
      fun delete_Data(@Path("path") rest: String, @Path("pk") pk: Int, @Query("format") json: String): Call<ResponseBody>
 
    */
+/*
+    @Multipart
+    @POST("auth/signup")
+    fun SignUp(
+        @Part("email") name:RequestBody,
+        @Part("nickname") email:RequestBody,
+        @Part("password") country:RequestBody
+    ): Call<RequestBody>
+*/
+
+
+    @POST("auth/signup")
+    fun SignUp(@Body json_account: SignUp): Call<SignUp>
+
 }

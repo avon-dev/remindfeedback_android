@@ -9,6 +9,7 @@ interface ContractRegister {
 
         var view: View
 
+        fun signup(email:String, nickname:String, password:String)
 
     }
 }
