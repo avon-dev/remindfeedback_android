@@ -3,7 +3,7 @@
 
     <item
             android:id="@+id/create_Post_Button"
-            android:icon="@drawable/ic_add_black"
+            android:icon="@drawable/ic_add_white"
             android:title="Search"
             app:showAsAction="ifRoom"/>
 

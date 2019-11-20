@@ -2,6 +2,9 @@ package com.example.remindfeedback.FeedbackList.FeedbackDetail.Post
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.remindfeedback.Alarm.AdapterAlarm
@@ -56,4 +59,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View {
     override fun refresh() {
 
     }
+
+
+
 }

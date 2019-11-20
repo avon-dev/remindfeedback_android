@@ -80,7 +80,7 @@
                 android:textSize="18sp" />
 
         <TextView
-                android:id="@+id/textView31"
+                android:id="@+id/type_Change_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />

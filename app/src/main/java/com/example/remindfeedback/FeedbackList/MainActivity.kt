@@ -265,10 +265,20 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
     fun request_Feedback(){
         Toast.makeText(this@MainActivity, "request_Feedback.", Toast.LENGTH_SHORT).show()
+        ing_Case.visibility = View.VISIBLE
+        fab_main.visibility = View.VISIBLE
+
 
     }
     fun receive_Feedback(){
         Toast.makeText(this@MainActivity, "receive_Feedback.", Toast.LENGTH_SHORT).show()
+        ing_Case.visibility = View.INVISIBLE
+        fab_main.visibility = View.INVISIBLE
+        fab_sub1.startAnimation(fab_close)
+        fab_sub2.startAnimation(fab_close)
+        fab_sub1.setClickable(false)
+        fab_sub2.setClickable(false)
+        isFabOpen = false
     }
 
     fun friends_List(){
