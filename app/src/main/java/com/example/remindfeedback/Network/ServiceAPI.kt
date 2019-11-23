@@ -1,5 +1,6 @@
 package com.example.remindfeedback.Network
 
+import com.example.remindfeedback.ServerModel.GetToken
 import com.example.remindfeedback.ServerModel.LogIn
 import com.example.remindfeedback.ServerModel.SignUp
 import retrofit2.Call
@@ -41,7 +42,9 @@ interface ServiceAPI {
 
     //로그인
     @POST("auth/login")
-    fun LogIn( @Body login: LogIn): Call<LogIn>
+    fun LogIn( @Body login: LogIn): Call<GetToken>
+
+
 /*
     //로그인
     @POST("auth/login")

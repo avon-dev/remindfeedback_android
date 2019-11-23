@@ -33,7 +33,6 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             val contents_Video = dialogView.findViewById<TextView>(R.id.contents_Video)
 
             contents_Photo.setOnClickListener {
-               Log.e("tag", "눌림")
                 contents_Photo.setBackgroundResource(R.drawable.under_line_gray)
                 contents_Voice.setBackgroundResource(R.drawable.all_line)
                 contents_Text.setBackgroundResource(R.drawable.all_line)
@@ -42,7 +41,6 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 //finish()
             }
             contents_Voice.setOnClickListener {
-                Log.e("tag", "눌림")
                 contents_Photo.setBackgroundResource(R.drawable.all_line)
                 contents_Voice.setBackgroundResource(R.drawable.under_line_gray)
                 contents_Text.setBackgroundResource(R.drawable.all_line)
@@ -51,7 +49,6 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 //finish()
             }
             contents_Text.setOnClickListener {
-                Log.e("tag", "눌림")
                 contents_Photo.setBackgroundResource(R.drawable.all_line)
                 contents_Voice.setBackgroundResource(R.drawable.all_line)
                 contents_Text.setBackgroundResource(R.drawable.under_line_gray)
@@ -60,7 +57,6 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 //finish()
             }
             contents_Video.setOnClickListener {
-                Log.e("tag", "눌림")
                 contents_Photo.setBackgroundResource(R.drawable.all_line)
                 contents_Voice.setBackgroundResource(R.drawable.all_line)
                 contents_Text.setBackgroundResource(R.drawable.all_line)

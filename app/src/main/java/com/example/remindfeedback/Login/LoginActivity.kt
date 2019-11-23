@@ -22,14 +22,13 @@ class LoginActivity  : AppCompatActivity(), ContractLogin.View{
         setContentView(R.layout.activity_login)
         presenterLogin = PresenterLogin().apply {
             view = this@LoginActivity
+            mContext = this@LoginActivity
         }
         // 스플레시 띄우는 부분
         presenterLogin.showSplash(this, this)
         //로그인버튼
         login_Button.setOnClickListener {
             presenterLogin.LogIn(email_Edittext.text.toString(), password_Edittext.text.toString())
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
             //finish()
         }
         //회원가입 버튼
