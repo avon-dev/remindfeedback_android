@@ -41,7 +41,7 @@ public class ColorViewAdapter extends RecyclerView.Adapter<ColorViewAdapter.View
         public ViewHolder(View v) {
             super(v);
             //buttons settings
-            colorItem = v.findViewById(R.id.color);
+            colorItem = v.findViewById(R.id.category_Color);
             colorItem.setTextColor(tickColor);
             colorItem.setBackgroundResource(buttonDrawable);
             colorItem.setOnClickListener(this);

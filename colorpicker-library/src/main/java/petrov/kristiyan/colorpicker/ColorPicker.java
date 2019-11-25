@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -238,6 +239,7 @@ public class ColorPicker {
                         onFastChooseColorListener.onCancel();
                     }
                 }
+                Log.e("asd", "포지티브");
             }
         });
 
@@ -248,6 +250,9 @@ public class ColorPicker {
                     dismissDialog();
                 if (onChooseColorListener != null)
                     onChooseColorListener.onCancel();
+
+                Log.e("asd", "네거티브");
+
             }
         });
 

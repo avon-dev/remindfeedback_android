@@ -1,5 +1,7 @@
 package com.example.remindfeedback.ServerModel
 /*
+* user모델 옮겨놓은것, 리퀘스트나 리스폰스에 사용되어서 만들어놓은건 아님
+*
 * id=[number] auto-increment, null[x]
 user_uid=[string] 회원정보 기반으로 생성된 고유 식별자, null[x]
 email=[string] 회원 이메일. 로그인 할 때 사용됨, null[x]

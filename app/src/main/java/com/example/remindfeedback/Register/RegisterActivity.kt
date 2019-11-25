@@ -21,8 +21,6 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-
-
         //액션바 설정
         var ab: ActionBar = this!!.supportActionBar!!
         ab.setTitle("회원가입")
