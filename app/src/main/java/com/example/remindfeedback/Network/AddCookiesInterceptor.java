@@ -21,20 +21,12 @@ public class AddCookiesInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        Log.e("test","여기 들어옴" );
         preferences = context.getSharedPreferences("USERSIGN", 0);
-
         Request.Builder builder = chain.request().newBuilder();
-
         // Preference에서 cookies를 가져오는 작업을 수행
-
-
         builder.addHeader("Cookie", "connect.sid="+preferences.getString("Cookie",""));
-
-
         // Web,Android,iOS 구분을 위해 User-Agent세팅
         builder.removeHeader("User-Agent").addHeader("User-Agent", "Android");
-
         Log.e("test",builder.build().toString() );
         return chain.proceed(builder.build());
     }

@@ -24,8 +24,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import nurisezgin.com.android.okhttpcookies.CookieInterceptorBuilder
-import nurisezgin.com.android.okhttpcookies.CookieInterceptor
 
 
 

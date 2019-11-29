@@ -21,26 +21,15 @@ public class ReceivedCookiesInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Response originalResponse = chain.proceed(chain.request());
-        Log.e("cookieInterceptor","들어옴");
-
         if (!originalResponse.headers("Set-Cookie").isEmpty()) {
             HashSet<String> cookies = new HashSet<>();
-
             for (String header : originalResponse.headers("Set-Cookie")) {
                 cookies.add(header);
-                Log.e("cookieInterceptor","들어옴2");
-
             }
-
             // Preference에 cookies를 넣어주는 작업을 수행
-
-            Log.e("cookieInterceptor", cookies.toString());
-
             String[] arr = cookies.toString().split(";");
-            Log.e("cookieInterceptor", arr[0]);
             String[] arr2 = arr[0].split("=");
             Log.e("cookieInterceptor", arr2[1]);
-
             preferences = context.getSharedPreferences("USERSIGN", 0);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("Cookie", arr2[1]);
