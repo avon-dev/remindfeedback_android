@@ -73,10 +73,13 @@ class AlarmActivity : AppCompatActivity(), ContractAlarm.View {
 
                 if (position == 0) {
                     Toast.makeText(this@AlarmActivity, "전체.", Toast.LENGTH_SHORT).show()
+                    presenterAlarm.loadItems(arrayList)
                 } else if (position == 1) {
                     Toast.makeText(this@AlarmActivity, "공지.", Toast.LENGTH_SHORT).show()
+                    presenterAlarm.loadAlarm(arrayList)
                 } else if (position == 2) {
                     Toast.makeText(this@AlarmActivity, "피드백.", Toast.LENGTH_SHORT).show()
+                    presenterAlarm.loadFeedback(arrayList)
                 }
             }
             override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -85,12 +88,6 @@ class AlarmActivity : AppCompatActivity(), ContractAlarm.View {
             }
         })
         //여기까지 탭바 코드
-
-
-
-
-
-
     }
 
 

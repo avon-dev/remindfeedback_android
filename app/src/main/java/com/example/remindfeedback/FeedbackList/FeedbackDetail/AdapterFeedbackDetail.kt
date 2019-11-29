@@ -66,6 +66,8 @@ class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<Model
                 feedback_Detail_Image.setImageResource(R.drawable.ic_text)
             }else if(feedback_detail_list.contents.equals("녹음")){
                 feedback_Detail_Image.setImageResource(R.drawable.ic_voice_black)
+            }else if(feedback_detail_list.contents.equals("사진")){
+                feedback_Detail_Image.setImageResource(R.drawable.ic_photo_black)
             }
             itemView.setOnClickListener {
                 val intent = Intent(context, PostActivity::class.java)

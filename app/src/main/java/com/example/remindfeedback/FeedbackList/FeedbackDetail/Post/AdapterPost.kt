@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.VideoView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.R
 import java.util.ArrayList
@@ -21,15 +22,27 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelPost>) :  
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View
-        //getItemViewType 에서 뷰타입 1을 리턴받았다면 내채팅레이아웃을 받은 Holder를 리턴
+        //뷰타입 구분함
         if(viewType == 1){
             view = LayoutInflater.from(context).inflate(R.layout.item_post_comment, parent, false)
             return Holder(view)
         }
-        //getItemViewType 에서 뷰타입 2을 리턴받았다면 상대채팅레이아웃을 받은 Holder2를 리턴
-        else{
+        else if(viewType == 2) {
             view = LayoutInflater.from(context).inflate(R.layout.item_post_video, parent, false)
             return Holder2(view)
+        }else if(viewType == 3) {
+            view = LayoutInflater.from(context).inflate(R.layout.item_post_voice, parent, false)
+            return Holder3(view)
+        }else if(viewType == 4) {
+            view = LayoutInflater.from(context).inflate(R.layout.item_post_text, parent, false)
+            return Holder4(view)
+        }else if(viewType == 5) {
+            view = LayoutInflater.from(context).inflate(R.layout.item_post_photo, parent, false)
+            return Holder5(view)
+        }else {
+            //일단 뷰타입이 1-5 중에 없을때 5번째 뷰홀더 리턴하도록함
+            view = LayoutInflater.from(context).inflate(R.layout.item_post_photo, parent, false)
+            return Holder5(view)
         }
     }
 
@@ -39,7 +52,6 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelPost>) :  
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, i: Int) {
-        //onCreateViewHolder에서 리턴받은 뷰홀더가 Holder라면 내채팅, item_my_chat의 뷰들을 초기화 해줌
         if (viewHolder is Holder) {
             (viewHolder as Holder).post_Comment_Name.setText(arrayList.get(i).name)
             (viewHolder as Holder).post_Comment_Script.setText(arrayList.get(i).script)
@@ -49,37 +61,58 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelPost>) :  
             //(viewHolder as Holder).post_Comment_Profile_Image.setImage(arrayList.get(i).profileImage)
 
         }
-        //onCreateViewHolder에서 리턴받은 뷰홀더가 Holder2라면 상대의 채팅, item_your_chat의 뷰들을 초기화 해줌
         else if(viewHolder is Holder2) {
-
-            //(viewHolder as Holder2).post_Video_Tv.setText(arrayList.get(i).AAAAAAAAAAAAAAA)
+        }
+        else if(viewHolder is Holder3) {
+        }
+        else if(viewHolder is Holder4) {
+        }
+        else if(viewHolder is Holder5) {
         }
 
     }
-
+    //댓글
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val post_Comment_Name :TextView= itemView.findViewById(R.id.post_Comment_Name)
         val post_Comment_Script :TextView= itemView.findViewById(R.id.post_Comment_Script)
         val post_Comment_Date :TextView= itemView.findViewById(R.id.post_Comment_Date)
         val post_Comment_Profile_Image:ImageView = itemView.findViewById(R.id.post_Comment_Profile_Image)
     }
-
+    //비디오 포스트
     inner class Holder2(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        val post_Video_Tv:TextView = itemView.findViewById(R.id.post_Video_Tv)
-
-
+        val post_Tv:TextView = itemView.findViewById(R.id.post_Tv)
+        val post_Video:VideoView = itemView.findViewById(R.id.post_Video)
+    }
+    //녹음 포스트
+    inner class Holder3(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val post_Tv:TextView = itemView.findViewById(R.id.post_Tv)
+        val post_Voice:VideoView = itemView.findViewById(R.id.post_Voice)
+    }
+    //텍스트 포스트
+    inner class Holder4(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val post_Tv:TextView = itemView.findViewById(R.id.post_Tv)
+    }
+    //이미지 포스트
+    inner class Holder5(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val post_Tv:TextView = itemView.findViewById(R.id.post_Tv)
+        val post_Photo:VideoView = itemView.findViewById(R.id.post_Photo)
     }
 
-    override fun getItemViewType(position: Int): Int {//여기서 뷰타입을 1, 2로 바꿔서 지정해줘야 내채팅 너채팅을 바꾸면서 쌓을 수 있음
+    override fun getItemViewType(position: Int): Int {
 
-        //내 아이디와 arraylist의 name이 같다면 내꺼 아니면 상대꺼
         return if (arrayList.get(position).type == 1) {
             1
         } else if (arrayList.get(position).type == 2) {
             2
-        } else {
+        } else if(arrayList.get(position).type == 3){
             3
+        }else if(arrayList.get(position).type == 4){
+            4
+        }else if(arrayList.get(position).type == 5){
+            5
+        }
+        else {
+            6
         }
     }
 }

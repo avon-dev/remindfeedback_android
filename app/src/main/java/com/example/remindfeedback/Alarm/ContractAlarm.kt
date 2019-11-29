@@ -16,6 +16,10 @@ interface ContractAlarm {
 
         fun loadItems(list: ArrayList<ModelAlarm>)
 
+        fun loadAlarm(list: ArrayList<ModelAlarm>)
+
+        fun loadFeedback(list: ArrayList<ModelAlarm>)
+
         fun addItems(position:Int)
 
         fun removeItems(position:Int, id:Int, context: Context)

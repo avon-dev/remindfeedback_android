@@ -18,6 +18,7 @@ import retrofit2.Response
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.jkyeo.splashview.SplashView
+import okhttp3.internal.http2.Header
 import org.json.JSONObject
 
 
@@ -38,12 +39,15 @@ class PresenterLogin() : ContractLogin.Presenter {
             override fun onResponse(call: Call<GetToken>, response: Response<GetToken>) {
                 if (response.isSuccessful) {
                     //서버로부터 넘어온 데이터에서 accessToken과 refreshToken을 추출함
-                    val getToken:GetToken = response.body()!!
-                    val myAaccessToken:accessToken = getToken.accessToken
-                    val myRefreshToken:refreshToken = getToken.refreshToken
-                    Log.e("accessToken", "Code : ${myAaccessToken.data}")
-                    Log.e("refreshToken", "Code : ${myRefreshToken.data}")
-                    saveData(myAaccessToken.data!!, myRefreshToken.data!!)
+//                    val getToken:GetToken = response.body()!!
+//                    val myAaccessToken:accessToken = getToken.accessToken
+//                    val myRefreshToken:refreshToken = getToken.refreshToken
+//                    Log.e("accessToken", "Code : ${myAaccessToken.data}")
+//                    Log.e("refreshToken", "Code : ${myRefreshToken.data}")
+                    saveData()
+                    Log.e("response", " ${response.headers().get("Set-Cookie")}")
+                    var arr = response.headers().get("Set-Cookie")!!.split(";")
+                    Log.e("response", " ${arr[0].toString()}")
 
                 } else {
                     val StatusCode = response.code()
@@ -56,13 +60,13 @@ class PresenterLogin() : ContractLogin.Presenter {
         })
     }
 
-    fun saveData(accessToken: String, refreshToken: String){
-        preferences = mContext.getSharedPreferences("USERSIGN", 0)
-        val editor = preferences!!.edit()
-        editor.putString("aToken", accessToken)
-        editor.putString("rToken", refreshToken)
-        editor.apply()
-        //데이터를 저장했으니 메인화면으로 이동
+    fun saveData(){
+//        preferences = mContext.getSharedPreferences("USERSIGN", 0)
+//        val editor = preferences!!.edit()
+//        editor.putString("aToken", accessToken)
+//        editor.putString("rToken", refreshToken)
+//        editor.apply()
+//        //데이터를 저장했으니 메인화면으로 이동
         val intent = Intent(mContext, MainActivity::class.java)
         mContext.startActivity(intent)
     }
