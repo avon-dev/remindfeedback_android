@@ -1,5 +1,6 @@
 package com.example.remindfeedback.FriendsList
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -26,25 +27,6 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
 
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
     var arrayList = arrayListOf<ModelFriendsList>(
-
-        ModelFriendsList("김가희", "친구의 상메내용 1", "dummy"),
-        ModelFriendsList("김나희", "친구의 상메내용 2", "dummy"),
-        ModelFriendsList("김다희", "친구의 상메내용 3", "dummy"),
-        ModelFriendsList("김라희", "친구의 상메내용 4", "dummy"),
-        ModelFriendsList("김마희", "친구의 상메내용 5", "dummy"),
-        ModelFriendsList("김바희", "친구의 상메내용 6", "dummy"),
-        ModelFriendsList("김사희", "친구의 상메내용 7", "dummy"),
-        ModelFriendsList("김아희", "친구의 상메내용 8", "dummy"),
-        ModelFriendsList("김자희", "친구의 상메내용 9", "dummy"),
-        ModelFriendsList("김차희", "친구의 상메내용 10", "dummy"),
-        ModelFriendsList("김카희", "친구의 상메내용 11", "dummy"),
-        ModelFriendsList("김타희", "친구의 상메내용 12", "dummy"),
-        ModelFriendsList("김파희", "친구의 상메내용 13", "dummy"),
-        ModelFriendsList("김하희", "친구의 상메내용 14", "dummy")
-
-
-
-
     )
     val mAdapter = AdapterFriendsList(this, arrayList)
 
@@ -70,10 +52,30 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
         //presenter 정의하고 아이템을 불러옴
         presenterFriendsList = PresenterFriendsList().apply {
             view = this@FriendsListActivity
+            context = this@FriendsListActivity
         }
         presenterFriendsList.loadItems(arrayList)
 
 
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when(requestCode) {
+            100 -> {
+                when(resultCode) {
+                    Activity.RESULT_OK -> if (data != null) {
+                        presenterFriendsList.addItems(data.getStringExtra("email"),mAdapter)
+                    }
+                    Activity.RESULT_CANCELED -> Toast.makeText(this@FriendsListActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+
+                    Activity.RESULT_FIRST_USER -> Toast.makeText(this@FriendsListActivity, "퍼스트 유저? 이건뭐임.", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        }
 
     }
 
@@ -95,7 +97,7 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
     //찾기버튼 눌렀을때
     fun add_Friends_Button(): Boolean {
         val intent = Intent(this, FindFriendsActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, 100)
         return true
     }
 

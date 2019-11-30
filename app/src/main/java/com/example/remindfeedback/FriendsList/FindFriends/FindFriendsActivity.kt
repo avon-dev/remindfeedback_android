@@ -1,5 +1,7 @@
 package com.example.remindfeedback.FriendsList.FindFriends
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -7,6 +9,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import com.example.remindfeedback.R
+import kotlinx.android.synthetic.main.activity_find_friends.*
 
 class FindFriendsActivity : AppCompatActivity(),ContractFindFriends.View {
 
@@ -38,7 +41,10 @@ class FindFriendsActivity : AppCompatActivity(),ContractFindFriends.View {
     //찾기버튼 눌렀을때
     fun friends_Find_Button(): Boolean {
         Toast.makeText(this@FindFriendsActivity, "찾기 누름.", Toast.LENGTH_SHORT).show()
-
+        val intent = Intent()
+        intent.putExtra("email", find_Friends_Email.text.toString())
+        setResult(Activity.RESULT_OK, intent)
+        finish()
         return true
     }
 

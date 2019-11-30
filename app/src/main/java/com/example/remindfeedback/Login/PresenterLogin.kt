@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.example.remindfeedback.FeedbackList.MainActivity
 import com.example.remindfeedback.Network.*
 import com.example.remindfeedback.R
+import com.example.remindfeedback.Register.RegisterActivity
 import com.example.remindfeedback.ServerModel.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -172,6 +173,10 @@ class PresenterLogin() : ContractLogin.Presenter {
             }
         })
 */
+
+
+        val intent = Intent(mContext, MainActivity::class.java)
+        mContext.startActivity(intent)
     }
 
     override fun showSplash(context: Context, activity: LoginActivity) {

@@ -1,7 +1,6 @@
 package com.example.remindfeedback.Network
 
 import com.example.remindfeedback.ServerModel.GetToken
-import com.example.remindfeedback.ServerModel.GetUser
 import com.example.remindfeedback.ServerModel.LogIn
 import com.example.remindfeedback.ServerModel.SignUp
 import okhttp3.Cookie

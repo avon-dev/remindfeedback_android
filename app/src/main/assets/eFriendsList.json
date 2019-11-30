@@ -1,0 +1,27 @@
+{ "friends" : [
+  {
+    "friendsName" : "김영희",
+    "friendsScript" : "김영희의 상태 메세지",
+    "friendsProfileImage" : "dummy",
+    "friendsEmail": "yh@naver.com"
+  },
+  {
+    "friendsName" : "최철수",
+    "friendsScript" : "최철수의 상태 메세지",
+    "friendsProfileImage" : "dummy",
+    "friendsEmail": "cs@naver.com"
+  },
+  {
+    "friendsName" : "김토르",
+    "friendsScript" : "김토르의 상태 메세지",
+    "friendsProfileImage" : "dummy",
+    "friendsEmail": "tr@naver.com"
+  },
+  {
+    "friendsName" : "강호동",
+    "friendsScript" : "강호동의 상태 메세지",
+    "friendsProfileImage" : "dummy",
+    "friendsEmail": "hd@naver.com"
+  }
+]
+}
