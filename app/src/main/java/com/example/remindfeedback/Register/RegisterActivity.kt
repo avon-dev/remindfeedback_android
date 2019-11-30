@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import com.example.remindfeedback.FeedbackList.MainActivity
 import com.example.remindfeedback.FriendsList.PresenterFriendsList
@@ -33,8 +34,18 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
 
         //회원가입버튼을 눌러서 presenter의 회원가입 기능을 실행시킴
         register_Button.setOnClickListener {
-            presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString())
-            finish()
+
+            if(!password_Input.text.toString().equals(re_Password_Input.text.toString())){
+                Toast.makeText(this@RegisterActivity, "비밀번호와 비밀번호 확인이 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+            }else{
+                if(email_Input.text.toString().equals("") || nickname_Input.text.toString().equals("")  || password_Input.text.toString().equals("")  || re_Password_Input.text.toString().equals("") ){
+                    Toast.makeText(this@RegisterActivity, "빈칸을 채워주세요.", Toast.LENGTH_SHORT).show()
+                }else{
+                    presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString())
+                    finish()
+                }
+            }
+
         }
 
     }
