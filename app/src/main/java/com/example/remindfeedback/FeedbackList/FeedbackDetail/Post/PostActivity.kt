@@ -15,26 +15,14 @@ import com.example.remindfeedback.FeedbackList.FeedbackDetail.PresenterFeedbackD
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_post.*
 
 class PostActivity : AppCompatActivity(), ContractPost.View {
     private val TAG = "PostActivity"
     internal lateinit var presenterPost: PresenterPost
     var arrayList = arrayListOf<ModelPost>(
-        ModelPost("a","a","a","a",2),
-        ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1),
-        ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1),
-
-        ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1),
-
-        ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1),
-
-        ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1),
-
-        ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1),
-
-        ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1)
-
+        //ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1)
         )
     val mAdapter = AdapterPost(this, arrayList)
 
@@ -58,12 +46,19 @@ class PostActivity : AppCompatActivity(), ContractPost.View {
             view = this@PostActivity
         }
 
+        //
+        comment_Commit_Button.setOnClickListener {
+            if(!comment_EditText.text.toString().equals("")){
+                presenterPost.addItems(mAdapter, comment_EditText.text.toString())
+                comment_EditText.setText("")
+            }
 
+        }
 
     }
 
     override fun refresh() {
-
+        mAdapter.notifyDataSetChanged()
     }
 
 

@@ -16,7 +16,7 @@ interface ContractPost {
 
         fun loadItems(list: ArrayList<ModelPost>)
 
-        fun addItems(adapterPost: AdapterPost)
+        fun addItems(adapterPost: AdapterPost, comment:String)
 
         fun removeItems(position: Int, id: Int, context: Context)
 
