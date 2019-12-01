@@ -1,12 +1,11 @@
 package com.example.remindfeedback.FeedbackList.FeedbackDetail.Post
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.VideoView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.R
 import java.util.ArrayList
@@ -44,6 +43,7 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelPost>) :  
             view = LayoutInflater.from(context).inflate(R.layout.item_post_photo, parent, false)
             return Holder5(view)
         }
+
     }
 
     override fun getItemCount(): Int {
@@ -56,10 +56,8 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelPost>) :  
             (viewHolder as Holder).post_Comment_Name.setText(arrayList.get(i).name)
             (viewHolder as Holder).post_Comment_Script.setText(arrayList.get(i).script)
             (viewHolder as Holder).post_Comment_Date.setText(arrayList.get(i).date)
-
             //이미지는 보류
             //(viewHolder as Holder).post_Comment_Profile_Image.setImage(arrayList.get(i).profileImage)
-
         }
         else if(viewHolder is Holder2) {
         }
@@ -77,25 +75,36 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelPost>) :  
         val post_Comment_Script :TextView= itemView.findViewById(R.id.post_Comment_Script)
         val post_Comment_Date :TextView= itemView.findViewById(R.id.post_Comment_Date)
         val post_Comment_Profile_Image:ImageView = itemView.findViewById(R.id.post_Comment_Profile_Image)
+
+
     }
     //비디오 포스트
     inner class Holder2(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val post_Tv:TextView = itemView.findViewById(R.id.post_Tv)
         val post_Video:VideoView = itemView.findViewById(R.id.post_Video)
+        val comment_Commit_Button:Button = itemView.findViewById(R.id.comment_Commit_Button)
+        val comment_EditText:EditText = itemView.findViewById(R.id.comment_EditText)
+
     }
     //녹음 포스트
     inner class Holder3(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val post_Tv:TextView = itemView.findViewById(R.id.post_Tv)
         val post_Voice:VideoView = itemView.findViewById(R.id.post_Voice)
+        val comment_Commit_Button:Button = itemView.findViewById(R.id.comment_Commit_Button)
+        val comment_EditText:EditText = itemView.findViewById(R.id.comment_EditText)
     }
     //텍스트 포스트
     inner class Holder4(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val post_Tv:TextView = itemView.findViewById(R.id.post_Tv)
+        val comment_Commit_Button:Button = itemView.findViewById(R.id.comment_Commit_Button)
+        val comment_EditText:EditText = itemView.findViewById(R.id.comment_EditText)
     }
     //이미지 포스트
     inner class Holder5(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val post_Tv:TextView = itemView.findViewById(R.id.post_Tv)
         val post_Photo:VideoView = itemView.findViewById(R.id.post_Photo)
+        val comment_Commit_Button:Button = itemView.findViewById(R.id.comment_Commit_Button)
+        val comment_EditText:EditText = itemView.findViewById(R.id.comment_EditText)
     }
 
     override fun getItemViewType(position: Int): Int {
