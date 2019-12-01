@@ -10,7 +10,6 @@ import com.example.remindfeedback.Register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_create_post.*
 import kotlinx.android.synthetic.main.activity_login.*
 import com.example.remindfeedback.FeedbackList.MainActivity
-import petrov.kristiyan.colorpicker.CustomDialog
 import android.R.attr.button
 import android.util.Log
 import android.view.View

@@ -21,7 +21,6 @@ import com.example.remindfeedback.FriendsList.FindFriends.FindFriendsActivity
 import com.example.remindfeedback.R
 import kotlinx.android.synthetic.main.activity_create_category.*
 import kotlinx.android.synthetic.main.activity_create_post.*
-import petrov.kristiyan.colorpicker.ColorPicker
 import java.util.ArrayList
 
 class CreateCategoryActivity : AppCompatActivity() {

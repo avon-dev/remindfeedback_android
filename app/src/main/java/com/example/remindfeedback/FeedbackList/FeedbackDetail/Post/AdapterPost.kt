@@ -1,12 +1,11 @@
 package com.example.remindfeedback.FeedbackList.FeedbackDetail.Post
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.VideoView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.R
 import java.util.ArrayList
@@ -23,27 +22,22 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelPost>) :  
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View
         //뷰타입 구분함
+
         if(viewType == 1){
-            view = LayoutInflater.from(context).inflate(R.layout.item_post_comment, parent, false)
-            return Holder(view)
         }
         else if(viewType == 2) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_post_video, parent, false)
-            return Holder2(view)
+
         }else if(viewType == 3) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_post_voice, parent, false)
-            return Holder3(view)
+
         }else if(viewType == 4) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_post_text, parent, false)
-            return Holder4(view)
+
         }else if(viewType == 5) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_post_photo, parent, false)
-            return Holder5(view)
+
         }else {
-            //일단 뷰타입이 1-5 중에 없을때 5번째 뷰홀더 리턴하도록함
-            view = LayoutInflater.from(context).inflate(R.layout.item_post_photo, parent, false)
-            return Holder5(view)
+
         }
+        view = LayoutInflater.from(context).inflate(R.layout.item_post_comment, parent, false)
+        return Holder(view)
     }
 
     override fun getItemCount(): Int {
@@ -56,10 +50,8 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelPost>) :  
             (viewHolder as Holder).post_Comment_Name.setText(arrayList.get(i).name)
             (viewHolder as Holder).post_Comment_Script.setText(arrayList.get(i).script)
             (viewHolder as Holder).post_Comment_Date.setText(arrayList.get(i).date)
-
             //이미지는 보류
             //(viewHolder as Holder).post_Comment_Profile_Image.setImage(arrayList.get(i).profileImage)
-
         }
         else if(viewHolder is Holder2) {
         }
@@ -86,7 +78,7 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelPost>) :  
     //녹음 포스트
     inner class Holder3(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val post_Tv:TextView = itemView.findViewById(R.id.post_Tv)
-        val post_Voice:VideoView = itemView.findViewById(R.id.post_Voice)
+        //val post_Voice:VideoView = itemView.findViewById(R.id.post_Voice)
     }
     //텍스트 포스트
     inner class Holder4(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -95,7 +87,7 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelPost>) :  
     //이미지 포스트
     inner class Holder5(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val post_Tv:TextView = itemView.findViewById(R.id.post_Tv)
-        val post_Photo:VideoView = itemView.findViewById(R.id.post_Photo)
+        //val post_Photo:VideoView = itemView.findViewById(R.id.post_Photo)
     }
 
     override fun getItemViewType(position: Int): Int {

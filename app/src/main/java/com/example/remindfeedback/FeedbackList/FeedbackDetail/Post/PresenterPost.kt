@@ -10,7 +10,7 @@ class PresenterPost:ContractPost.Presenter {
     override fun loadItems(list: ArrayList<ModelPost>) {
     }
 
-    override fun addItems(position: Int) {
+    override fun addItems(adapterPost: AdapterPost) {
     }
 
     override fun removeItems(position: Int, id: Int, context: Context) {

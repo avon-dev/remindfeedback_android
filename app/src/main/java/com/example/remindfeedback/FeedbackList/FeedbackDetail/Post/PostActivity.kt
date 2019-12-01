@@ -1,5 +1,6 @@
 package com.example.remindfeedback.FeedbackList.FeedbackDetail.Post
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -12,6 +13,7 @@ import com.example.remindfeedback.Alarm.ModelAlarm
 import com.example.remindfeedback.Alarm.PresenterAlarm
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.PresenterFeedbackDetail
 import com.example.remindfeedback.R
+import com.example.remindfeedback.Register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
 import kotlinx.android.synthetic.main.activity_post.*
 
@@ -21,17 +23,19 @@ class PostActivity : AppCompatActivity(), ContractPost.View {
     var arrayList = arrayListOf<ModelPost>(
         ModelPost("a","a","a","a",2),
         ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1),
-        ModelPost("dummy", "3월김수미", "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산 대한사람", "2019년 10월 30일 오전 7시 41분", 1),
-        ModelPost("dummy", "3월김수미", "으베으ㅔ에에ㅔㅔ베에ㅔ에ㅔ에ㅔㅔ에으으에ㅔ베ㅔ에ㅔ에ㅔ에ㅔ", "2019년 10월 30일 오전 7시 41분", 1),
         ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1),
+
         ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1),
+
         ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1),
+
         ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1),
+
         ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1),
-        ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1),
+
         ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1)
 
-    )
+        )
     val mAdapter = AdapterPost(this, arrayList)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +57,8 @@ class PostActivity : AppCompatActivity(), ContractPost.View {
         presenterPost = PresenterPost().apply {
             view = this@PostActivity
         }
+
+
 
     }
 

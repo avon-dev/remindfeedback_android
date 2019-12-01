@@ -13,10 +13,10 @@ interface ContractFriendsList {
     interface Presenter {
 
         var view: View
-
+        var context:Context
         fun loadItems(list: ArrayList<ModelFriendsList>)
 
-        fun addItems(position:Int)
+        fun addItems(email:String, adapterFriendsList: AdapterFriendsList)
 
         fun removeItems(position:Int, id:Int, context: Context)
 
