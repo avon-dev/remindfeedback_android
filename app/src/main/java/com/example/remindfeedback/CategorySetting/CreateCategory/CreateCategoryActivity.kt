@@ -1,27 +1,20 @@
 package com.example.remindfeedback.CreateCategory
 
-import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatButton
-import androidx.fragment.app.FragmentManager
-import com.example.remindfeedback.FriendsList.FindFriends.FindFriendsActivity
+import com.example.remindfeedback.CategorySetting.AdapterCategorySetting
+import com.example.remindfeedback.CategorySetting.CategorySettingActivity
+import com.example.remindfeedback.CategorySetting.ModelCategorySetting
 import com.example.remindfeedback.R
 import kotlinx.android.synthetic.main.activity_create_category.*
-import kotlinx.android.synthetic.main.activity_create_post.*
-import java.util.ArrayList
 
 class CreateCategoryActivity : AppCompatActivity() {
 
@@ -52,36 +45,75 @@ class CreateCategoryActivity : AppCompatActivity() {
             initView()
             category_Color1.setOnClickListener {
                 setCheck(1)
+                check(true)
             }
             category_Color2.setOnClickListener {
                 setCheck(2)
+                check(true)
             }
             category_Color3.setOnClickListener {
                 setCheck(3)
+                check(true)
             }
             category_Color4.setOnClickListener {
                 setCheck(4)
+                check(true)
             }
             category_Color5.setOnClickListener {
                 setCheck(5)
+                check(true)
             }
             category_Color6.setOnClickListener {
                 setCheck(6)
+                check(true)
             }
             category_Color7.setOnClickListener {
                 setCheck(7)
+                check(true)
             }
             category_Color8.setOnClickListener {
                 setCheck(8)
+                check(true)
             }
             builder.setView(dialogView)
                 .setPositiveButton("확인") { dialogInterface, i ->
+
+                    // 선택한 색상
+//                    Toast.makeText(this,"",Toast.LENGTH_SHORT).show()
+
                 }
                 .setNegativeButton("취소") { dialogInterface, i ->
                 }
                 .show()
         }
     }
+
+    //타이틀바에 어떤 menu를 적용할지 정하는부분
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.add_category_menu, menu)
+        return true
+    }
+
+    // 타이틀바 메뉴를 클릭했을시
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle presses on the action bar items
+        when(item.itemId){
+            R.id.add_Category_Button -> { return add_Category_Button() }
+            else -> {return super.onOptionsItemSelected(item)}
+        }
+    }
+
+    // 주제 추가 완료 버튼 눌렀을 때
+    fun add_Category_Button(): Boolean {
+        Toast.makeText(this@CreateCategoryActivity, "완료 누름.", Toast.LENGTH_SHORT).show()
+
+        CategorySettingActivity.arrayList_category.add(ModelCategorySetting("",create_Feedback_Title.text.toString()))
+
+        finish()
+        return true
+    }
+
+
 
     fun initView(){
         category_Color1 = dialogView.findViewById<Button>(R.id.category_Color1)

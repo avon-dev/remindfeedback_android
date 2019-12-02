@@ -2,7 +2,6 @@ package com.example.remindfeedback.FeedbackList
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,14 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.FeedbackDetailActivity
 import com.example.remindfeedback.R
-import java.net.URL
-import java.util.ArrayList
+import java.util.*
+import kotlin.collections.ArrayList
 
-class AdapterMainFeedback(val context: Context, val arrayList: ArrayList<ModelFeedback>) :   RecyclerView.Adapter<AdapterMainFeedback.Holder>() {
+class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelFeedback>) :   RecyclerView.Adapter<AdapterMainFeedback.Holder>() {
 
 
     fun addItem(item: ModelFeedback) {//아이템 추가

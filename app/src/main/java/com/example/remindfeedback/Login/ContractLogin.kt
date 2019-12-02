@@ -1,7 +1,6 @@
 package com.example.remindfeedback.Login
 
 import android.content.Context
-import com.example.remindfeedback.Network.AddCookieAPI
 
 interface ContractLogin {
     interface View{

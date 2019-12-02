@@ -1,33 +1,28 @@
 package com.example.remindfeedback.CategorySetting
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.remindfeedback.CreateCategory.CreateCategoryActivity
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.AdapterFeedbackDetail
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.ModelFeedbackDetail
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.PresenterFeedbackDetail
 import com.example.remindfeedback.R
-import com.example.remindfeedback.Register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_category_setting.*
-import kotlinx.android.synthetic.main.activity_feedback_detail.*
-import kotlinx.android.synthetic.main.activity_login.*
 
-class CategorySettingActivity : AppCompatActivity() , ContextCategorySetting.View{
+class CategorySettingActivity : AppCompatActivity(), ContextCategorySetting.View {
     private val TAG = "PresenterCategorySetting"
     internal lateinit var presenterCategorySetting: PresenterCategorySetting
-    var arrayList = arrayListOf<ModelCategorySetting>(
-        ModelCategorySetting("red", "첫번째 주제"),
-        ModelCategorySetting("blue", "첫번째 주제"),
-        ModelCategorySetting("black", "첫번째 주제")
 
+    companion object {  // kotlin에는 static 없다
+        var arrayList_category = arrayListOf<ModelCategorySetting>(
+            //ModelCategorySetting("red", "첫번째 주제")
+        )
+    }
 
-    )
-    val mAdapter = AdapterCategorySetting(this, arrayList)
+    val mAdapter = AdapterCategorySetting(this, arrayList_category)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,27 +46,29 @@ class CategorySettingActivity : AppCompatActivity() , ContextCategorySetting.Vie
         //presenterFeedbackDetail.loadItems(arrayList)
 
 
-
-
     }
 
 
-
-    //타이틀바에 어떤 menu를 적용할지 정하는부분
+    // 타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.create_category_menu, menu)
         return true
     }
 
-    //타이틀바 메뉴를 클릭했을시
+    // 타이틀바 메뉴를 클릭했을시
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle presses on the action bar items
-        when(item.itemId){
-            R.id.create_category_Button -> { return create_category_Button() }
-            else -> {return super.onOptionsItemSelected(item)}
+        when (item.itemId) {
+            R.id.create_category_Button -> {
+                return create_category_Button()
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
         }
     }
-    //찾기버튼 눌렀을때
+
+    // 추가버튼 눌렀을때
     fun create_category_Button(): Boolean {
         val intent = Intent(this, CreateCategoryActivity::class.java)
         startActivity(intent)
