@@ -45,35 +45,35 @@ class CreateCategoryActivity : AppCompatActivity() {
             initView()
             category_Color1.setOnClickListener {
                 setCheck(1)
-                check(true)
+
             }
             category_Color2.setOnClickListener {
                 setCheck(2)
-                check(true)
+
             }
             category_Color3.setOnClickListener {
                 setCheck(3)
-                check(true)
+
             }
             category_Color4.setOnClickListener {
                 setCheck(4)
-                check(true)
+
             }
             category_Color5.setOnClickListener {
                 setCheck(5)
-                check(true)
+
             }
             category_Color6.setOnClickListener {
                 setCheck(6)
-                check(true)
+
             }
             category_Color7.setOnClickListener {
                 setCheck(7)
-                check(true)
+
             }
             category_Color8.setOnClickListener {
                 setCheck(8)
-                check(true)
+
             }
             builder.setView(dialogView)
                 .setPositiveButton("확인") { dialogInterface, i ->
