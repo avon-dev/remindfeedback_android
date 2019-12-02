@@ -16,7 +16,6 @@ class LoginActivity  : AppCompatActivity(), ContractLogin.View{
 
     private val TAG = "LoginActivity"
     internal lateinit var presenterLogin: PresenterLogin
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -24,6 +23,8 @@ class LoginActivity  : AppCompatActivity(), ContractLogin.View{
             view = this@LoginActivity
             mContext = this@LoginActivity
         }
+
+
         // 스플레시 띄우는 부분
         presenterLogin.showSplash(this, this)
         //로그인버튼
@@ -40,4 +41,7 @@ class LoginActivity  : AppCompatActivity(), ContractLogin.View{
 
 
     }
+
+
+
 }

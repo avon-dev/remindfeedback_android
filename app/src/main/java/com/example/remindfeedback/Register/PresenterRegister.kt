@@ -1,7 +1,7 @@
 package com.example.remindfeedback.Register
 
 import android.util.Log
-import com.example.remindfeedback.Network.ApiFactory
+import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.SignUp
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,7 +13,7 @@ class PresenterRegister: ContractRegister.Presenter {
 
     //회원가입 코드
     override fun signup(email: String, nickname: String, password: String) {
-        val apiService = ApiFactory.serviceAPI
+        val apiService = RetrofitFactory.serviceAPI
         val signupclass: SignUp =
             SignUp(email, nickname, password)
         val register_request : Call<SignUp> = apiService.SignUp(signupclass)

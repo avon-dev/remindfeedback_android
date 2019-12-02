@@ -105,14 +105,10 @@ class PresenterLogin() : ContractLogin.Presenter {
 
     fun getMe(mcookie:String){
 
-
         //로그찍는 부분
          val loggingInterceptor =  HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-        val clientBuilder = OkHttpClient.Builder().addInterceptor(loggingInterceptor)
-
-
         val addCookiesInterceptor = AddCookiesInterceptor(mContext)
         val client = OkHttpClient.Builder()
             .addInterceptor(addCookiesInterceptor)

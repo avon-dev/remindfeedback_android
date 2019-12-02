@@ -15,6 +15,7 @@ class PresenterPost:ContractPost.Presenter {
     override fun loadItems(list: ArrayList<ModelPost>) {
     }
 
+
     override fun addItems(adapterPost: AdapterPost,comment:String) {
         val tz = TimeZone.getTimeZone("Asia/Seoul")
         val gc = GregorianCalendar(tz)
