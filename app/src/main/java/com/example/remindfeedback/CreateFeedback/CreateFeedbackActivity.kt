@@ -1,5 +1,6 @@
 package com.example.remindfeedback.CreateFeedback
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.remindfeedback.FeedbackList.MainActivity
 import com.example.remindfeedback.FeedbackList.ModelFeedback
 import com.example.remindfeedback.R
+import kotlinx.android.synthetic.main.activity_create_category.*
 import kotlinx.android.synthetic.main.activity_create_feedback.*
 
 class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View {
@@ -46,9 +48,9 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
     fun create_Feedback_Button(): Boolean {
         Toast.makeText(this@CreateFeedbackActivity, "작성 누름.", Toast.LENGTH_SHORT).show()
 
-        MainActivity.arrayList.add(ModelFeedback("박혜련","black",create_Feedback_Title.text.toString(),"dummy","2019.12.01 일",true))
-
-
+        val intent = Intent()
+        intent.putExtra("title", create_Feedback_Title.text.toString())
+        setResult(Activity.RESULT_OK, intent)
         finish()
 
         return true

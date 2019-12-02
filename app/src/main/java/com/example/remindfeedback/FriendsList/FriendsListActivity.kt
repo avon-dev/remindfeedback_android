@@ -70,8 +70,6 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
                         presenterFriendsList.addItems(data.getStringExtra("email"),mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@FriendsListActivity, "취소됨.", Toast.LENGTH_SHORT).show()
-
-                    Activity.RESULT_FIRST_USER -> Toast.makeText(this@FriendsListActivity, "퍼스트 유저? 이건뭐임.", Toast.LENGTH_SHORT).show()
                 }
 
             }

@@ -1,6 +1,7 @@
 package com.example.remindfeedback.FeedbackList
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -43,12 +44,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
-    companion object {  // kotlin에는 static없음
-        var arrayList = arrayListOf<ModelFeedback>(
-            //ModelFeedback("김철수", "blue", "첫번째 피드백 제목", "dummy", "2019.10.28 월", false)
-        )
-    }
-
+    var arrayList = arrayListOf<ModelFeedback>(
+        //ModelFeedback("김철수", "blue", "첫번째 피드백 제목", "dummy", "2019.10.28 월", false)
+    )
     val mAdapter = AdapterMainFeedback(this, arrayList)
 
 
@@ -149,6 +147,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode) {
+            100 -> {
+                when(resultCode) {
+                    Activity.RESULT_OK -> if (data != null) {
+                        presenterMain.addItems(data.getStringExtra("title"),mAdapter)
+                    }
+                    Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
 
     override fun onStart() {
         super.onStart()
@@ -167,7 +179,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 toggleFab()
                 Toast.makeText(this, "1번!!", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, CreateFeedbackActivity::class.java)
-                startActivity(intent)
+                startActivityForResult(intent, 100)
             }
             R.id.fab_sub2 -> {
                 toggleFab()

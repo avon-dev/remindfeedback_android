@@ -1,5 +1,6 @@
 package com.example.remindfeedback.CreateCategory
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +16,7 @@ import com.example.remindfeedback.CategorySetting.CategorySettingActivity
 import com.example.remindfeedback.CategorySetting.ModelCategorySetting
 import com.example.remindfeedback.R
 import kotlinx.android.synthetic.main.activity_create_category.*
+import kotlinx.android.synthetic.main.activity_find_friends.*
 
 class CreateCategoryActivity : AppCompatActivity() {
 
@@ -106,9 +108,9 @@ class CreateCategoryActivity : AppCompatActivity() {
     // 주제 추가 완료 버튼 눌렀을 때
     fun add_Category_Button(): Boolean {
         Toast.makeText(this@CreateCategoryActivity, "완료 누름.", Toast.LENGTH_SHORT).show()
-
-        CategorySettingActivity.arrayList_category.add(ModelCategorySetting("",create_Feedback_Title.text.toString()))
-
+        val intent = Intent()
+        intent.putExtra("title", create_Category_Title.text.toString())
+        setResult(Activity.RESULT_OK, intent)
         finish()
         return true
     }

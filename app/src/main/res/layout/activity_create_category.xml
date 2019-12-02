@@ -19,7 +19,7 @@
             android:textSize="20sp" />
 
     <EditText
-            android:id="@+id/create_Feedback_Title"
+            android:id="@+id/create_Category_Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/under_line_gray"

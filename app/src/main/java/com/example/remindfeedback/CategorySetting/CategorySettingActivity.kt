@@ -1,9 +1,11 @@
 package com.example.remindfeedback.CategorySetting
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,13 +17,11 @@ class CategorySettingActivity : AppCompatActivity(), ContextCategorySetting.View
     private val TAG = "PresenterCategorySetting"
     internal lateinit var presenterCategorySetting: PresenterCategorySetting
 
-    companion object {  // kotlin에는 static 없다
-        var arrayList_category = arrayListOf<ModelCategorySetting>(
-            //ModelCategorySetting("red", "첫번째 주제")
-        )
-    }
+    var arrayList = arrayListOf<ModelCategorySetting>(
+        //ModelCategorySetting("red", "첫번째 주제")
+    )
 
-    val mAdapter = AdapterCategorySetting(this, arrayList_category)
+    val mAdapter = AdapterCategorySetting(this, arrayList)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +48,22 @@ class CategorySettingActivity : AppCompatActivity(), ContextCategorySetting.View
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when(requestCode) {
+            100 -> {
+                when(resultCode) {
+                    Activity.RESULT_OK -> if (data != null) {
+                        presenterCategorySetting.addItems(data.getStringExtra("title"),mAdapter)
+                    }
+                    Activity.RESULT_CANCELED -> Toast.makeText(this@CategorySettingActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        }
+
+    }
 
     // 타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -71,11 +87,11 @@ class CategorySettingActivity : AppCompatActivity(), ContextCategorySetting.View
     // 추가버튼 눌렀을때
     fun create_category_Button(): Boolean {
         val intent = Intent(this, CreateCategoryActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent,100)
         return true
     }
 
     override fun refresh() {
-
+        mAdapter.notifyDataSetChanged()
     }
 }

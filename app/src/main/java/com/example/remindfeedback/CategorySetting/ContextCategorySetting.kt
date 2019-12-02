@@ -15,7 +15,7 @@ interface ContextCategorySetting {
 
         fun loadItems(list: ArrayList<ModelCategorySetting>)
 
-        fun addItems(position: Int)
+        fun addItems(title:String, mAdapter:AdapterCategorySetting)
 
         fun removeItems(position: Int, id: Int, context: Context)
 
