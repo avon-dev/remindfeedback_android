@@ -33,9 +33,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_login.*
 
 
-class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelectedListener, ContractMain.View,
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    ContractMain.View,
     View.OnClickListener {
-
 
 
     private val TAG = "MainActivity"
@@ -43,26 +43,18 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
 
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
-    var arrayList = arrayListOf<ModelFeedback>(
+    companion object {  // kotlin에는 static없음
+        var arrayList = arrayListOf<ModelFeedback>(
+            //ModelFeedback("김철수", "blue", "첫번째 피드백 제목", "dummy", "2019.10.28 월", false)
+        )
+    }
 
-        ModelFeedback("김철수", "blue", "첫번째 피드백 제목", "dummy", "2019.10.28 월",false),
-        ModelFeedback("곤이", "red", "두번째 피드백 제목", "dummy", "2019.10.28 월",true),
-        ModelFeedback("정마담", "blue", "세번째 피드백 제목", "dummy", "2019.10.28 월",false),
-        ModelFeedback("아귀", "blue", "네번째 피드백 제목", "dummy", "2019.10.28 월",true),
-        ModelFeedback("짝귀", "red", "다섯번째 피드백 제목", "dummy", "2019.10.28 월",false),
-        ModelFeedback("권기현", "blue", "여섯번째 피드백 제목", "dummy", "2019.10.28 월",true),
-        ModelFeedback("브라이언", "red", "일곱번째 피드백 제목", "dummy", "2019.10.28 월",false),
-        ModelFeedback("스칼렛", "blue", "여덟번째 피드백 제목", "dummy", "2019.10.28 월",false),
-        ModelFeedback("찰스", "blue", "아홉번째 피드백 제목", "dummy", "2019.10.28 월",true),
-        ModelFeedback("밥", "red", "열번째 피드백 제목", "dummy", "2019.10.28 월",false)
-
-    )
     val mAdapter = AdapterMainFeedback(this, arrayList)
 
 
     //스피너에 사용할 배열
     var spinnerArray = arrayListOf<String>(
-        "<주제> 전체보기","외국어","생활습관","과제","업무","시험","자기계발"
+        "<주제> 전체보기", "외국어", "생활습관", "과제", "업무", "시험", "자기계발"
     )
     private val mContext: Context = this
 
@@ -96,12 +88,11 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         ing_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
 
 
-
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
         Main_Recyclerview.adapter = mAdapter
         val lm = LinearLayoutManager(this)
         Main_Recyclerview.layoutManager = lm
-        Main_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
+//        Main_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
 
 
         //presenter 정의하고 아이템을 불러옴
@@ -156,6 +147,14 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         }
 
 
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        mAdapter.notifyDataSetChanged()
+
+        Log.e("onStart", mAdapter.arrayList.size.toString())
 
     }
 
@@ -176,6 +175,7 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
             }
         }
     }
+
     //fab정의
     private fun toggleFab() {
         if (isFabOpen) {
@@ -201,25 +201,6 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //여기 아래로 네비게이션 옵션
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -233,6 +214,7 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         menuInflater.inflate(R.menu.options_menu, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.alarm_Alarm -> true
@@ -244,7 +226,7 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     //네비게이션바에서 아이템 클릭시
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         Log.e(TAG, "onNavigationItemSelected")
-        when(item.itemId){
+        when (item.itemId) {
             R.id.request_Feedback -> request_Feedback()
             R.id.receive_Feedback -> receive_Feedback()
             R.id.friends_List -> friends_List()
@@ -263,14 +245,15 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     }
 
 
-    fun request_Feedback(){
+    fun request_Feedback() {
         Toast.makeText(this@MainActivity, "request_Feedback.", Toast.LENGTH_SHORT).show()
         ing_Case.visibility = View.VISIBLE
         fab_main.visibility = View.VISIBLE
 
 
     }
-    fun receive_Feedback(){
+
+    fun receive_Feedback() {
         Toast.makeText(this@MainActivity, "receive_Feedback.", Toast.LENGTH_SHORT).show()
         ing_Case.visibility = View.INVISIBLE
         fab_main.visibility = View.INVISIBLE
@@ -281,24 +264,28 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         isFabOpen = false
     }
 
-    fun friends_List(){
+    fun friends_List() {
 
         val intent = Intent(this, FriendsListActivity::class.java)
         startActivity(intent)
     }
-    fun category_Setting(){
+
+    fun category_Setting() {
         val intent = Intent(this, CategorySettingActivity::class.java)
         startActivity(intent)
     }
-    fun mypage(){
+
+    fun mypage() {
         val intent = Intent(this, MyPageActivity::class.java)
         startActivity(intent)
     }
-    fun setting(){
+
+    fun setting() {
         val intent = Intent(this, SettingActivity::class.java)
         startActivity(intent)
     }
-    fun feedback_Request_Alarm(){
+
+    fun feedback_Request_Alarm() {
         val intent = Intent(this, AlarmActivity::class.java)
         startActivity(intent)
     }

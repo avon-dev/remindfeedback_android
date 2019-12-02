@@ -20,10 +20,14 @@ object RetrofitFactory{
 
     //retrofit 선언
     fun retrofit(baseUrl : String) : Retrofit = Retrofit.Builder()
-            .client(clientBuilder.build())
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .build()
+        .client(clientBuilder.build())
+        .baseUrl(baseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .build()
+
+    val serviceAPI : ServiceAPI = retrofit("http://54.180.118.35/")
+        .create(ServiceAPI::class.java)
+
 
 }

@@ -4,7 +4,6 @@ import android.content.Context
 
 interface ContractLogin {
     interface View{
-
     }
 
     interface Presenter {

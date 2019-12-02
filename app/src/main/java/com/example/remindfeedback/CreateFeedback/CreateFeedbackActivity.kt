@@ -1,15 +1,17 @@
 package com.example.remindfeedback.CreateFeedback
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import com.example.remindfeedback.FeedbackList.MainActivity
+import com.example.remindfeedback.FeedbackList.ModelFeedback
 import com.example.remindfeedback.R
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_create_feedback.*
 
 class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View {
 
@@ -18,14 +20,11 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         setContentView(R.layout.activity_create_feedback)
 
 
-
         //액션바 설정
         var ab: ActionBar = this!!.supportActionBar!!
         ab.setTitle("새로운 피드백")
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
-
-
 
 
     }
@@ -46,6 +45,11 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
     //버튼 눌렀을때
     fun create_Feedback_Button(): Boolean {
         Toast.makeText(this@CreateFeedbackActivity, "작성 누름.", Toast.LENGTH_SHORT).show()
+
+        MainActivity.arrayList.add(ModelFeedback("박혜련","black",create_Feedback_Title.text.toString(),"dummy","2019.12.01 일",true))
+
+
+        finish()
 
         return true
     }

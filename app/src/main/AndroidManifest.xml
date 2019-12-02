@@ -38,7 +38,7 @@
                 android:parentActivityName=".FriendsList.FriendsListActivity"/>
         <activity
                 android:name=".CreateCategory.CreateCategoryActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".CategorySetting.CategorySettingActivity"/>
         <activity
                 android:name=".CreateFeedback.CreateFeedbackActivity"
                 android:parentActivityName=".FeedbackList.MainActivity"/>
