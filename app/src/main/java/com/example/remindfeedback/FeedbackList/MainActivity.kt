@@ -96,9 +96,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //presenter 정의하고 아이템을 불러옴
         presenterMain = PresenterMain().apply {
             view = this@MainActivity
+            context = this@MainActivity
         }
         presenterMain.loadItems(arrayList)
-
 
         //여기서부터는 스피너 관련코드
         var arrayAdapter = ArrayAdapter(
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             spinnerArray
         )
 
-        category_Spinner
+
 
         category_Spinner.setAdapter(arrayAdapter)
         category_Spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {

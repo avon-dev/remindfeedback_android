@@ -12,6 +12,7 @@ interface ContractMain {
     interface Presenter {
 
         var view: View
+        var context:Context
 
         fun loadItems(list: ArrayList<ModelFeedback>)
 

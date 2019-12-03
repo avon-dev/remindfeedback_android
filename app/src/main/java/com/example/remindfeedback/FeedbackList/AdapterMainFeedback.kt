@@ -60,7 +60,7 @@ class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelF
         fun bind (feedback_list: ModelFeedback, context: Context) {
 
             //상대이름, 피드백제목, 피드백 작성일 등 정의해줌
-            main_Feedback_Name.text = feedback_list.feederName
+            main_Feedback_Name.text = feedback_list.adviser
             main_Feedback_Script.text = feedback_list.script
             main_Feedback_Date.text = feedback_list.date
 
