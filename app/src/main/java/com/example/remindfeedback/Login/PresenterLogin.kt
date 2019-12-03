@@ -33,13 +33,10 @@ class PresenterLogin() : ContractLogin.Presenter {
 
     internal var preferences: SharedPreferences? = null
 
-
     lateinit override var view: ContractLogin.View
     lateinit override var mContext: Context
 
     override fun LogIn(email: String, password: String) {
-        Log.e("asd2", "asdasdas")
-
         val aaaa = ReceivedCookiesInterceptor(mContext)
         val client = OkHttpClient.Builder()
             .addInterceptor(aaaa)

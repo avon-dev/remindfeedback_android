@@ -30,7 +30,6 @@ class LoginActivity  : AppCompatActivity(), ContractLogin.View{
         //로그인버튼
         login_Button.setOnClickListener {
             presenterLogin.LogIn(email_Edittext.text.toString(), password_Edittext.text.toString())
-            Log.e("asd", "asdasdas")
             //finish()
         }
         //회원가입 버튼

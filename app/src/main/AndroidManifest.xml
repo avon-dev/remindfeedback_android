@@ -1,65 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.remindfeedback">
+        package="com.example.remindfeedback">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
+            android:networkSecurityConfig="@xml/network_security_config"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:networkSecurityConfig="@xml/network_security_config"
             android:theme="@style/AppTheme">
-        <activity android:name=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity">
-        </activity>
-        <activity android:name=".CategorySetting.CategorySettingActivity">
-        </activity>
+        <activity android:name=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity" />
+        <activity
+                android:name=".CategorySetting.CategorySettingActivity"
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".FeedbackList.FeedbackDetail.Post.PostActivity"
-                android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"/>
+                android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity" />
         <activity
                 android:name=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".FriendsList.FriendsPage.FriendsPageActivity"
-                android:parentActivityName=".FriendsList.FriendsListActivity"/>
+                android:parentActivityName=".FriendsList.FriendsListActivity" />
         <activity
                 android:name=".Alarm.AlarmActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".Setting.SettingActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".MyPage.MyPageActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".FriendsList.FindFriends.FindFriendsActivity"
-                android:parentActivityName=".FriendsList.FriendsListActivity"/>
+                android:parentActivityName=".FriendsList.FriendsListActivity" />
         <activity
                 android:name=".CreateCategory.CreateCategoryActivity"
-                android:parentActivityName=".CategorySetting.CategorySettingActivity"/>
+                android:parentActivityName=".CategorySetting.CategorySettingActivity" />
         <activity
                 android:name=".CreateFeedback.CreateFeedbackActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".FriendsList.FriendsListActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".Register.RegisterActivity"
-                android:parentActivityName=".Login.LoginActivity"/>
+                android:parentActivityName=".Login.LoginActivity" />
         <activity
                 android:name=".FeedbackList.MainActivity"
-                android:theme="@style/AppTheme.NoActionBar"/>
+                android:theme="@style/AppTheme.NoActionBar" />
         <activity
                 android:name=".Login.LoginActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
