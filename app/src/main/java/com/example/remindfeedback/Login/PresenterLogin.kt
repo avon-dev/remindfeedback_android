@@ -38,6 +38,7 @@ class PresenterLogin() : ContractLogin.Presenter {
     lateinit override var mContext: Context
 
     override fun LogIn(email: String, password: String) {
+        Log.e("asd2", "asdasdas")
 
         val aaaa = ReceivedCookiesInterceptor(mContext)
         val client = OkHttpClient.Builder()

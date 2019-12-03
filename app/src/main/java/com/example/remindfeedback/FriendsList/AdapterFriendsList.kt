@@ -23,7 +23,6 @@ class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFri
     fun addItem(item: ModelFriendsList) {//아이템 추가
         if (arrayList != null) {//널체크 해줘야함
             arrayList.add(item)
-
         }
     }
 
