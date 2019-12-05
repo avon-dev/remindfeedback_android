@@ -17,8 +17,10 @@ object RetrofitFactory {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    fun getClient(context: Context, type: String): OkHttpClient {
 
+    //retrofit에 담을 client 종류 세가지중 하나를 얻어오는 코드
+    fun getClient(context: Context, type: String): OkHttpClient {
+        //쿠키를 추가할때 쓰는 타입
         if (type.equals("addCookie")) {
             val addCookiesInterceptor = AddCookiesInterceptor(context)
             val client = OkHttpClient.Builder()
@@ -26,14 +28,18 @@ object RetrofitFactory {
                 .addInterceptor(loggingInterceptor)
                 .build()
             return client
-        } else if (type.equals("receiveCookie")) {
+        }
+        //쿠키를 받아서 저장할때 쓰는타입
+        else if (type.equals("receiveCookie")) {
             val receivedCookiesInterceptor = ReceivedCookiesInterceptor(context)
             val client = OkHttpClient.Builder()
                 .addInterceptor(receivedCookiesInterceptor)
                 .addInterceptor(loggingInterceptor)
                 .build()
             return client
-        } else {
+        }
+        //기타 쿠키없을때 쓰는타입 ex)회원가입
+        else {
             val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
                 .build()
