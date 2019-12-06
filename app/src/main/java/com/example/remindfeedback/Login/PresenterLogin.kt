@@ -39,7 +39,7 @@ class PresenterLogin() : ContractLogin.Presenter {
 
     override fun LogIn(email: String, password: String) {
 
-        val client:OkHttpClient = RetrofitFactory.getClient(mContext,"addCookie")
+        val client:OkHttpClient = RetrofitFactory.getClient(mContext,"receiveCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val login:LogIn = com.example.remindfeedback.ServerModel.LogIn(email, password)
         val register_request : Call<GetToken> = apiService.LogIn(login)
@@ -59,6 +59,7 @@ class PresenterLogin() : ContractLogin.Presenter {
                 Log.e("tag", "response=" + response.raw())
             }
             override fun onFailure(call: Call<GetToken>, t: Throwable) {
+                Log.e("getme", "실패")
             }
         })
 

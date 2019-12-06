@@ -29,5 +29,5 @@ interface ServiceAPI {
 
     //내 피드백정보 가져오기
     @GET("feedback/all/")
-    fun GetFeedback(): Call<String>
+    fun GetFeedback(): Call<TestItem>
 }

@@ -3,11 +3,14 @@ package com.example.remindfeedback.FeedbackList
 import android.content.Context
 import android.util.Log
 import com.example.remindfeedback.CategorySetting.ModelCategorySetting
+import com.example.remindfeedback.FriendsList.ModelFriendsList
 import com.example.remindfeedback.Network.AddCookiesInterceptor
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.Network.ServiceAPI
 import com.example.remindfeedback.ServerModel.CreateFeedback
 import com.example.remindfeedback.ServerModel.GetFeedback
+import com.example.remindfeedback.ServerModel.TestItem
+import com.example.remindfeedback.ServerModel.myFeedback_List
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -27,23 +30,34 @@ class PresenterMain : ContractMain.Presenter {
 
     lateinit override var view: ContractMain.View
     lateinit override var context: Context
-    override fun loadItems(list: ArrayList<ModelFeedback>) {
+
+    
+    override fun loadItems(list: ArrayList<ModelFeedback>, adapterMainFeedback: AdapterMainFeedback) {
         val client: OkHttpClient = RetrofitFactory.getClient(context,"addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request : Call<String> = apiService.GetFeedback()
-        register_request.enqueue(object : Callback<String> {
+        val register_request : Call<TestItem> = apiService.GetFeedback()
+        register_request.enqueue(object : Callback<TestItem> {
 
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+            override fun onResponse(call: Call<TestItem>, response: Response<TestItem>) {
                 if (response.isSuccessful) {
-                    Log.e("asd",response.body()!!.toString())
+                    val testItem : TestItem = response.body()!!
+                    val aaaa = testItem.mDatalist
+                    if (aaaa != null) {
+                        for (i in 0 until aaaa.size) {
+                            var mfl : myFeedback_List = myFeedback_List()
+                            mfl = aaaa[i]
+                            var addData : ModelFeedback = ModelFeedback(mfl.adviser_uid, mfl.category, mfl.title, "dummy", mfl.createdAt, false)
+                            adapterMainFeedback.addItem(addData)
+                            view.refresh()
+                        }
+                    }else{
+                    }
+
                 } else {
-                    val StatusCode = response.code()
-                    Log.e("post", "Status Code : $StatusCode")
                 }
                 Log.e("tag", "response=" + response.raw())
             }
-            override fun onFailure(call: Call<String>, t: Throwable) {
-
+            override fun onFailure(call: Call<TestItem>, t: Throwable) {
             }
         })
 
