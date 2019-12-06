@@ -9,7 +9,6 @@ interface ContractCreateFeedback {
 
         var view: View
 
-
     }
 
 }

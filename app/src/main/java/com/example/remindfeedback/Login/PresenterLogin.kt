@@ -33,14 +33,13 @@ class PresenterLogin() : ContractLogin.Presenter {
 
     internal var preferences: SharedPreferences? = null
 
-
     lateinit override var view: ContractLogin.View
     lateinit override var mContext: Context
 
     override fun LogIn(email: String, password: String) {
-
         val client:OkHttpClient = RetrofitFactory.getClient(mContext,"receiveCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
+
         val login:LogIn = com.example.remindfeedback.ServerModel.LogIn(email, password)
         val register_request : Call<GetToken> = apiService.LogIn(login)
         register_request.enqueue(object : Callback<GetToken> {

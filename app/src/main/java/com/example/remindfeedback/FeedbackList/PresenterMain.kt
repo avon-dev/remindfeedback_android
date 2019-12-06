@@ -31,6 +31,7 @@ class PresenterMain : ContractMain.Presenter {
     lateinit override var view: ContractMain.View
     lateinit override var context: Context
 
+
     
     override fun loadItems(list: ArrayList<ModelFeedback>, adapterMainFeedback: AdapterMainFeedback) {
         val client: OkHttpClient = RetrofitFactory.getClient(context,"addCookie")
@@ -95,5 +96,5 @@ class PresenterMain : ContractMain.Presenter {
     override fun updateItems(position: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-    
+
 }
