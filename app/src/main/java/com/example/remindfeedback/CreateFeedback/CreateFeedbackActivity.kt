@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.remindfeedback.R
+import kotlinx.android.synthetic.main.activity_create_category.*
 import kotlinx.android.synthetic.main.activity_create_feedback.*
 
 class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View {
@@ -48,10 +49,9 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
     //버튼 눌렀을때
     fun create_Feedback_Button(): Boolean {
         Toast.makeText(this@CreateFeedbackActivity, "작성 누름.", Toast.LENGTH_SHORT).show()
-
-        val intent_create_feedback = Intent()
-        intent_create_feedback.putExtra("title",create_Feedback_Title.text.toString())
-        setResult(Activity.RESULT_OK, intent_create_feedback)
+        val intent = Intent()
+        intent.putExtra("title", create_Feedback_Title.text.toString())
+        setResult(Activity.RESULT_OK, intent)
 
         finish()
         return true

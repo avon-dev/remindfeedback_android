@@ -90,9 +90,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //presenter 정의하고 아이템을 불러옴
         presenterMain = PresenterMain().apply {
             view = this@MainActivity
+            context = this@MainActivity
         }
-        presenterMain.loadItems(arrayList)
-
+        presenterMain.loadItems(arrayList, mAdapter)
 
         //여기서부터는 스피너 관련코드
         var arrayAdapter = ArrayAdapter(
@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             spinnerArray
         )
 
-        category_Spinner
+
 
         category_Spinner.setAdapter(arrayAdapter)
         category_Spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
@@ -141,26 +141,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
+        when(requestCode) {
             111 -> {
-                when (resultCode) {
+                when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        presenterMain.addItems(data.getStringExtra("title"), mAdapter)
+                        presenterMain.addItems(data.getStringExtra("title"),mAdapter)
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(
-                        this@MainActivity, "취소됨.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    Activity.RESULT_FIRST_USER -> Toast.makeText(
-                        this@MainActivity,
-                        "퍼스트 유저? 이건뭐임.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        mAdapter.notifyDataSetChanged()
+
+        Log.e("onStart", mAdapter.arrayList.size.toString())
+
+
     }
 
     //fab을 위해서 onclick 상속받음
@@ -173,6 +173,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, "1번!!", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, CreateFeedbackActivity::class.java)
                 startActivityForResult(intent, 111)
+
             }
             R.id.fab_sub2 -> {
                 toggleFab()

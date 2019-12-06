@@ -12,10 +12,12 @@ interface ContractMain {
     interface Presenter {
 
         var view: View
+        var context:Context
 
-        fun loadItems(list: ArrayList<ModelFeedback>)
+        fun loadItems(list: ArrayList<ModelFeedback>, adapterMainFeedback: AdapterMainFeedback)
 
-        fun addItems(title: String, adapterMainFeedback: AdapterMainFeedback)
+        fun addItems(title:String, adapterMainFeedback: AdapterMainFeedback)
+
 
         fun removeItems(position:Int, id:Int, context: Context)
 
