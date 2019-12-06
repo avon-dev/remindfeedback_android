@@ -39,20 +39,8 @@ class PresenterLogin() : ContractLogin.Presenter {
 
     override fun LogIn(email: String, password: String) {
 
-        val aaaa = ReceivedCookiesInterceptor(mContext)
-        val client = OkHttpClient.Builder()
-            .addInterceptor(aaaa)
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .client(client)
-            .baseUrl("http://54.180.118.35/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .build()
-
-
-        val apiService = retrofit.create(ServiceAPI::class.java!!)
+        val client:OkHttpClient = RetrofitFactory.getClient(mContext,"receiveCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
         val login:LogIn = com.example.remindfeedback.ServerModel.LogIn(email, password)
         val register_request : Call<GetToken> = apiService.LogIn(login)
         register_request.enqueue(object : Callback<GetToken> {
@@ -71,62 +59,18 @@ class PresenterLogin() : ContractLogin.Presenter {
                 Log.e("tag", "response=" + response.raw())
             }
             override fun onFailure(call: Call<GetToken>, t: Throwable) {
+                Log.e("getme", "실패")
             }
         })
 
-        /*
-        val apiService = ApiFactory.serviceAPI
-        val login:LogIn = com.example.remindfeedback.ServerModel.LogIn(email, password)
-        val register_request : Call<GetToken> = apiService.LogIn(login)
-        register_request.enqueue(object : Callback<GetToken> {
-
-            override fun onResponse(call: Call<GetToken>, response: Response<GetToken>) {
-                if (response.isSuccessful) {
-                    Log.e("response", " ${response.headers().get("Set-Cookie")}")
-                    var arr = response.headers().get("Set-Cookie")!!.split(";")
-                    Log.e("response", " ${arr[0].toString()}")
-                    var arr2 = arr[0].toString().split("=")
-                    Log.e("response", " ${arr2[1].toString()}")
-                    saveData(arr2[1].toString())
-
-                } else {
-                    val StatusCode = response.code()
-                    Log.e("post", "Status Code : $StatusCode")
-                }
-                Log.e("tag", "response=" + response.raw())
-            }
-            override fun onFailure(call: Call<GetToken>, t: Throwable) {
-            }
-        })
-       */
     }
 
 
 
     fun getMe(mcookie:String){
 
-        //로그찍는 부분
-         val loggingInterceptor =  HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
-        val addCookiesInterceptor = AddCookiesInterceptor(mContext)
-        val client = OkHttpClient.Builder()
-            .addInterceptor(addCookiesInterceptor)
-            .addInterceptor(loggingInterceptor)
-            .build()
-
-
-        val retrofit = Retrofit.Builder()
-            .client(client)
-
-            .baseUrl("http://54.180.118.35/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .build()
-
-
-        val apiService = retrofit.create(ServiceAPI::class.java!!)
-
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext,"addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
         val register_request : Call<ResponseBody> = apiService.GET_User()
         register_request.enqueue(object : Callback<ResponseBody> {
 
@@ -144,32 +88,6 @@ class PresenterLogin() : ContractLogin.Presenter {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
             }
         })
-
-/*
-
-        val apiService = ApiFactory.serviceAPI
-        //val getUser:GetUser = GetUser(mcookie)
-        val cookie:Cookie
-
-        val register_request : Call<ResponseBody> = apiService.GET_User(mcookie)
-        register_request.enqueue(object : Callback<ResponseBody> {
-
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    Log.e("getuser", "여기 겟유저")
-                    Log.e("response", " ${response.headers()}")
-
-                } else {
-                    val StatusCode = response.code()
-                    Log.e("post", "Status Code : $StatusCode")
-                }
-                Log.e("tag", "response=" + response.raw())
-            }
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-            }
-        })
-*/
-
 
         val intent = Intent(mContext, MainActivity::class.java)
         mContext.startActivity(intent)

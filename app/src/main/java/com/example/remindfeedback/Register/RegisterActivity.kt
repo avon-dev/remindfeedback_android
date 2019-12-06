@@ -30,6 +30,7 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
 
         presenterRegister = PresenterRegister().apply {
             view = this@RegisterActivity
+            mContext = this@RegisterActivity
         }
 
         //회원가입버튼을 눌러서 presenter의 회원가입 기능을 실행시킴

@@ -14,7 +14,7 @@ interface ContractMain {
         var view: View
         var context:Context
 
-        fun loadItems(list: ArrayList<ModelFeedback>)
+        fun loadItems(list: ArrayList<ModelFeedback>, adapterMainFeedback: AdapterMainFeedback)
 
         fun addItems(title:String, adapterMainFeedback: AdapterMainFeedback)
 

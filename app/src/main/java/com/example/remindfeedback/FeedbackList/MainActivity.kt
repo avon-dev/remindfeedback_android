@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             view = this@MainActivity
             context = this@MainActivity
         }
-        presenterMain.loadItems(arrayList)
+        presenterMain.loadItems(arrayList, mAdapter)
 
         //여기서부터는 스피너 관련코드
         var arrayAdapter = ArrayAdapter(
