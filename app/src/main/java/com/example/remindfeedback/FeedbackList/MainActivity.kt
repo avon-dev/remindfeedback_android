@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -17,6 +16,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.remindfeedback.Alarm.AlarmActivity
@@ -26,15 +26,12 @@ import com.example.remindfeedback.FriendsList.FriendsListActivity
 import com.example.remindfeedback.MyPage.MyPageActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Setting.SettingActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    ContractMain.View,
-    View.OnClickListener {
-
+    ContractMain.View, View.OnClickListener {
 
     private val TAG = "MainActivity"
     internal lateinit var presenterMain: PresenterMain
@@ -42,7 +39,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
     var arrayList = arrayListOf<ModelFeedback>(
-        //ModelFeedback("김철수", "blue", "첫번째 피드백 제목", "dummy", "2019.10.28 월", false)
     )
 
 
@@ -90,7 +86,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Main_Recyclerview.adapter = mAdapter
         val lm = LinearLayoutManager(this)
         Main_Recyclerview.layoutManager = lm
-//        Main_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
+        Main_Recyclerview.setHasFixedSize(true) //아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
 
 
         //presenter 정의하고 아이템을 불러옴
@@ -140,14 +136,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ing_Btn.setBackgroundColor(Color.rgb(255, 255, 255))
             ed_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
         }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when(requestCode) {
-            100 -> {
+            111 -> {
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         //id 9999는 임의로 집어넣은값
@@ -166,6 +160,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         Log.e("onStart", mAdapter.arrayList.size.toString())
 
+
     }
 
     //fab을 위해서 onclick 상속받음
@@ -177,7 +172,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 toggleFab()
                 Toast.makeText(this, "1번!!", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, CreateFeedbackActivity::class.java)
-                startActivityForResult(intent, 100)
+                startActivityForResult(intent, 111)
+
             }
             R.id.fab_sub2 -> {
                 toggleFab()

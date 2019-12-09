@@ -2,35 +2,25 @@ package com.example.remindfeedback.FriendsList
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.remindfeedback.FeedbackList.AdapterMainFeedback
-import com.example.remindfeedback.FeedbackList.MainActivity
-import com.example.remindfeedback.FeedbackList.ModelFeedback
-import com.example.remindfeedback.FeedbackList.PresenterMain
 import com.example.remindfeedback.FriendsList.FindFriends.FindFriendsActivity
 import com.example.remindfeedback.R
 import kotlinx.android.synthetic.main.activity_friends_list.*
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
 
     private val TAG = "FriendsListActivity"
     internal lateinit var presenterFriendsList: PresenterFriendsList
 
-
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
-    var arrayList = arrayListOf<ModelFriendsList>(
-    )
+    var arrayList = arrayListOf<ModelFriendsList>()
     val mAdapter = AdapterFriendsList(this, arrayList)
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +36,7 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
         freinds_List_Recyclerview.adapter = mAdapter
         val lm = LinearLayoutManager(this)
         freinds_List_Recyclerview.layoutManager = lm
-        freinds_List_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
+        freinds_List_Recyclerview.setHasFixedSize(true) //아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
 
 
         //presenter 정의하고 아이템을 불러옴
@@ -57,19 +47,19 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
         presenterFriendsList.loadItems(arrayList)
 
 
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        when(requestCode) {
+        when (requestCode) {
             100 -> {
-                when(resultCode) {
+                when (resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        presenterFriendsList.addItems(data.getStringExtra("email"),mAdapter)
+                        presenterFriendsList.addItems(data.getStringExtra("email"), mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@FriendsListActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+
                 }
 
             }
@@ -87,11 +77,16 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
     //타이틀바 메뉴를 클릭했을시
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle presses on the action bar items
-        when(item.itemId){
-            R.id.add_Friends_Button -> { return add_Friends_Button() }
-            else -> {return super.onOptionsItemSelected(item)}
+        when (item.itemId) {
+            R.id.add_Friends_Button -> {
+                return add_Friends_Button()
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
         }
     }
+
     //찾기버튼 눌렀을때
     fun add_Friends_Button(): Boolean {
         val intent = Intent(this, FindFriendsActivity::class.java)

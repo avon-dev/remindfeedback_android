@@ -11,7 +11,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
-import com.example.remindfeedback.CategorySetting.AdapterCategorySetting
+import androidx.appcompat.app.AppCompatActivity
 import com.example.remindfeedback.CategorySetting.CategorySettingActivity
 import com.example.remindfeedback.CategorySetting.ModelCategorySetting
 import com.example.remindfeedback.R
@@ -47,42 +47,30 @@ class CreateCategoryActivity : AppCompatActivity() {
             initView()
             category_Color1.setOnClickListener {
                 setCheck(1)
-
             }
             category_Color2.setOnClickListener {
                 setCheck(2)
-
             }
             category_Color3.setOnClickListener {
                 setCheck(3)
-
             }
             category_Color4.setOnClickListener {
                 setCheck(4)
-
             }
             category_Color5.setOnClickListener {
                 setCheck(5)
-
             }
             category_Color6.setOnClickListener {
                 setCheck(6)
-
             }
             category_Color7.setOnClickListener {
                 setCheck(7)
-
             }
             category_Color8.setOnClickListener {
                 setCheck(8)
-
             }
             builder.setView(dialogView)
                 .setPositiveButton("확인") { dialogInterface, i ->
-
-                    // 선택한 색상
-//                    Toast.makeText(this,"",Toast.LENGTH_SHORT).show()
-
                 }
                 .setNegativeButton("취소") { dialogInterface, i ->
                 }
