@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.CreateFeedback
-import com.example.remindfeedback.ServerModel.TestItem
+import com.example.remindfeedback.ServerModel.GetFeedback
 import com.example.remindfeedback.ServerModel.myFeedback_List
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -22,19 +22,20 @@ class PresenterMain : ContractMain.Presenter {
     override fun loadItems(list: ArrayList<ModelFeedback>, adapterMainFeedback: AdapterMainFeedback) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<TestItem> = apiService.GetFeedback(0)
-        register_request.enqueue(object : Callback<TestItem> {
+        val register_request: Call<GetFeedback> = apiService.GetFeedback(0)
+        register_request.enqueue(object : Callback<GetFeedback> {
 
-            override fun onResponse(call: Call<TestItem>, response: Response<TestItem>) {
+            override fun onResponse(call: Call<GetFeedback>, response: Response<GetFeedback>) {
                 if (response.isSuccessful) {
-                    val testItem: TestItem = response.body()!!
-                    val aaaa = testItem.mDatalist
+                    val testItem: GetFeedback = response.body()!!
+                    val aaaa = testItem.data
+                    Log.e("testitem", aaaa.toString())
                     if (aaaa != null) {
                         for (i in 0 until aaaa.size) {
                             var mfl: myFeedback_List = myFeedback_List()
                             mfl = aaaa[i]
                             var addData: ModelFeedback =
-                                ModelFeedback(mfl.id, "조언자", mfl.category, mfl.title, "dummy", mfl.createdAt, false)
+                                ModelFeedback(mfl.id, "조언자", mfl.category, mfl.title, "dummy", mfl.write_date, false)
                             adapterMainFeedback.addItem(addData)
                             view.refresh()
                         }
@@ -45,7 +46,7 @@ class PresenterMain : ContractMain.Presenter {
                 Log.e("tag", "response=" + response.raw())
             }
 
-            override fun onFailure(call: Call<TestItem>, t: Throwable) {
+            override fun onFailure(call: Call<GetFeedback>, t: Throwable) {
             }
         })
 

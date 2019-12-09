@@ -31,7 +31,7 @@ class PresenterCategorySetting: ContextCategorySetting.Presenter {
                 if (response.isSuccessful) {
                     val category: Category = response.body()!!
                     val aaaa = category.data
-                    Log.e("asd", aaaa)
+                    Log.e("asdㅁㄴㅇㅁㄴㅇ", aaaa)
                     /*
                     if (aaaa != null) {
                         for (i in 0 until aaaa.size) {
@@ -47,6 +47,7 @@ class PresenterCategorySetting: ContextCategorySetting.Presenter {
 
                     */
                 } else {
+                    Log.e("asdasdasd", "뭔가 실패함")
                 }
                 Log.e("tag", "response=" + response.raw())
             }

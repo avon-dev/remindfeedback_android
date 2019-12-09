@@ -28,8 +28,8 @@ interface ServiceAPI {
     fun GET_User(): Call<ResponseBody>
 
     //내 피드백정보 가져오기
-    @GET("feedback/all/{start}")
-    fun GetFeedback(@Path("start")start:Int): Call<TestItem>
+    @GET("feedback/my/{start}")
+    fun GetFeedback(@Path("start")start:Int): Call<GetFeedback>
 
     //피드백 삭제
     @DELETE("feedback/{feedback_id}")
