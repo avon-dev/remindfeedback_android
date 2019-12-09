@@ -16,11 +16,11 @@ interface ContractMain {
 
         fun loadItems(list: ArrayList<ModelFeedback>, adapterMainFeedback: AdapterMainFeedback)
 
-        fun addItems(title:String, adapterMainFeedback: AdapterMainFeedback)
+        fun addItems(id:Int,title:String, adapterMainFeedback: AdapterMainFeedback)
 
-        fun removeItems(position:Int, id:Int, context: Context)
+        fun removeItems(id:Int, context: Context)
 
-        fun updateItems(position:Int)
+        fun updateItems(id:Int)
     }
 
 }

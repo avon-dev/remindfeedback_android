@@ -1,7 +1,6 @@
 package com.example.remindfeedback.Alarm
 
 import android.content.Context
-import com.example.remindfeedback.FeedbackList.ModelFeedback
 import java.util.ArrayList
 
 interface ContractAlarm {

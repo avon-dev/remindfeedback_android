@@ -28,6 +28,20 @@ interface ServiceAPI {
     fun GET_User(): Call<ResponseBody>
 
     //내 피드백정보 가져오기
-    @GET("feedback/all/")
-    fun GetFeedback(): Call<TestItem>
+    @GET("feedback/all/{start}")
+    fun GetFeedback(@Path("start")start:Int): Call<TestItem>
+
+    //피드백 삭제
+    @DELETE("feedback/{feedback_id}")
+    fun DeleteFeedback(@Path("feedback_id")feedback_id:Int):Call<ResponseBody>
+
+    //주제 생성
+    @POST("category/insert")
+    fun CreateCategory( @Body createCategory: CreateCategory): Call<Category>
+
+    //내 주제 정보 가져오기
+    @GET("category/selectall")
+    fun GetCategory(): Call<Category>
+
+
 }

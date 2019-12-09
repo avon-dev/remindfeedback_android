@@ -12,8 +12,9 @@ interface ContextCategorySetting {
     interface Presenter {
 
         var view: View
+        var context: Context
 
-        fun loadItems(list: ArrayList<ModelCategorySetting>)
+        fun loadItems(adapterCategorySetting: AdapterCategorySetting, list: ArrayList<ModelCategorySetting>)
 
         fun addItems(title:String, mAdapter:AdapterCategorySetting)
 

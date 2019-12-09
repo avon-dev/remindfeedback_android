@@ -42,8 +42,9 @@ class CategorySettingActivity : AppCompatActivity(), ContextCategorySetting.View
 
         presenterCategorySetting = PresenterCategorySetting().apply {
             view = this@CategorySettingActivity
+            context = this@CategorySettingActivity
         }
-        //presenterFeedbackDetail.loadItems(arrayList)
+        presenterCategorySetting.loadItems(mAdapter,arrayList)
 
 
     }

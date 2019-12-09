@@ -19,7 +19,7 @@ class myFeedback_List {
     @SerializedName("adviser_uid")
      val adviser_uid = ""
     @SerializedName("category")
-     val category = ""
+     val category = 1
     @SerializedName("title")
      val title = ""
     @SerializedName("write_date")
