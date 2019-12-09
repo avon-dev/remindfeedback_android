@@ -1,9 +1,7 @@
 package com.example.remindfeedback.Network
 
 import com.example.remindfeedback.ServerModel.*
-import okhttp3.Cookie
 import okhttp3.ResponseBody
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.*
 import retrofit2.http.POST
@@ -37,11 +35,11 @@ interface ServiceAPI {
 
     //주제 생성
     @POST("category/insert")
-    fun CreateCategory( @Body createCategory: CreateCategory): Call<Category>
+    fun CreateCategory( @Body createCategory: CreateCategory): Call<GetCategory>
 
     //내 주제 정보 가져오기
     @GET("category/selectall")
-    fun GetCategory(): Call<Category>
+    fun GetCategory(): Call<GetCategory>
 
 
 }
