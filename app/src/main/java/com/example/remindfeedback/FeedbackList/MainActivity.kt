@@ -21,7 +21,7 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.remindfeedback.Alarm.AlarmActivity
 import com.example.remindfeedback.CategorySetting.CategorySettingActivity
-import com.example.remindfeedback.CreateFeedback.CreateFeedbackActivity
+import com.example.remindfeedback.FeedbackList.CreateFeedback.CreateFeedbackActivity
 import com.example.remindfeedback.FriendsList.FriendsListActivity
 import com.example.remindfeedback.MyPage.MyPageActivity
 import com.example.remindfeedback.R
@@ -30,18 +30,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
-
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     ContractMain.View, View.OnClickListener {
 
     private val TAG = "MainActivity"
     internal lateinit var presenterMain: PresenterMain
-
+    lateinit var mAdapter: AdapterMainFeedback
 
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
     var arrayList = arrayListOf<ModelFeedback>(
     )
-    val mAdapter = AdapterMainFeedback(this, arrayList)
 
 
     //스피너에 사용할 배열
@@ -78,7 +76,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navView.setNavigationItemSelectedListener(this)
 
         ing_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
-
+        presenterMain = PresenterMain().apply {
+            view = this@MainActivity
+            context = this@MainActivity
+        }
+        mAdapter = AdapterMainFeedback(this, arrayList,presenterMain)
 
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
         Main_Recyclerview.adapter = mAdapter
@@ -88,10 +90,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         //presenter 정의하고 아이템을 불러옴
-        presenterMain = PresenterMain().apply {
-            view = this@MainActivity
-            context = this@MainActivity
-        }
+
         presenterMain.loadItems(arrayList, mAdapter)
 
         //여기서부터는 스피너 관련코드
@@ -145,6 +144,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             111 -> {
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
+                        //id 9999는 임의로 집어넣은값
                         presenterMain.addItems(data.getStringExtra("title"),mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()

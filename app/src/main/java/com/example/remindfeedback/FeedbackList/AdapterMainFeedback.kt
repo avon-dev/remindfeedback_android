@@ -1,24 +1,24 @@
 package com.example.remindfeedback.FeedbackList
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.FeedbackDetailActivity
 import com.example.remindfeedback.R
 
-class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelFeedback>) :   RecyclerView.Adapter<AdapterMainFeedback.Holder>() {
-
-
+class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelFeedback>, var presenterMain: PresenterMain) :   RecyclerView.Adapter<AdapterMainFeedback.Holder>() {
     fun addItem(item: ModelFeedback) {//아이템 추가
         if (arrayList != null) {//널체크 해줘야함
             arrayList.add(item)
-
         }
     }
 
@@ -63,7 +63,7 @@ class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelF
 
             //태그의 색을 정의해주는부분
             //만약 tagColor의 값이 blue라면 배경 색깔을 blue로 표시해줌
-            if(feedback_list.tagColor.equals("blue")){
+            if(feedback_list.category == 1){
                 main_Feedback_Tag_Color.setBackgroundColor(Color.BLUE)
             }else{
                 //색깔마다 조건문을 만들어줘야하지만 아직 정해지지않은 임시이기 때문에 나머지는 red로 표기할것
@@ -80,10 +80,39 @@ class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelF
                 main_Feedback_Alarm.visibility = View.INVISIBLE
             }
 
+            //그냥 클릭했을때
             itemView.setOnClickListener {
                 val intent = Intent(context, FeedbackDetailActivity::class.java)
                 context.startActivity(intent)
             }
+
+            //꾹 눌렀을때
+            itemView.setOnLongClickListener{
+                var dialogInterface: DialogInterface? = null
+                val dialog = AlertDialog.Builder(context)
+                val edialog : LayoutInflater = LayoutInflater.from(context)
+                val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
+
+                val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
+                val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
+
+                update_Tv.setOnClickListener{
+                    Log.e("asda", "수정"+adapterPosition)
+                    dialogInterface!!.dismiss()
+                }
+                delete_Tv.setOnClickListener{
+                    removeAt(adapterPosition)
+                    presenterMain.removeItems(feedback_list.id, context)
+                    dialogInterface!!.dismiss()
+                }
+                dialog.setView(mView)
+                dialog.create()
+                dialogInterface = dialog.show()
+
+
+                return@setOnLongClickListener true
+            }
+
 
         }
     }

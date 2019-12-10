@@ -41,10 +41,10 @@ class PresenterLogin() : ContractLogin.Presenter {
         val apiService = RetrofitFactory.serviceAPI(client)
 
         val login:LogIn = com.example.remindfeedback.ServerModel.LogIn(email, password)
-        val register_request : Call<GetToken> = apiService.LogIn(login)
-        register_request.enqueue(object : Callback<GetToken> {
+        val register_request : Call<ResponseBody> = apiService.LogIn(login)
+        register_request.enqueue(object : Callback<ResponseBody> {
 
-            override fun onResponse(call: Call<GetToken>, response: Response<GetToken>) {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     var arr = response.headers().get("Set-Cookie")!!.split(";")
                     var arr2 = arr[0].toString().split("=")
@@ -57,7 +57,7 @@ class PresenterLogin() : ContractLogin.Presenter {
                 }
                 Log.e("tag", "response=" + response.raw())
             }
-            override fun onFailure(call: Call<GetToken>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("getme", "실패")
             }
         })

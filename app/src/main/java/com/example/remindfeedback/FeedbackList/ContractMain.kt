@@ -18,10 +18,9 @@ interface ContractMain {
 
         fun addItems(title:String, adapterMainFeedback: AdapterMainFeedback)
 
+        fun removeItems(id:Int, context: Context)
 
-        fun removeItems(position:Int, id:Int, context: Context)
-
-        fun updateItems(position:Int)
+        fun updateItems(id:Int)
     }
 
 }
