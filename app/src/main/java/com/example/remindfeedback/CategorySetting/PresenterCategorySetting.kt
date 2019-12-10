@@ -1,21 +1,18 @@
 package com.example.remindfeedback.CategorySetting
 
 import android.content.Context
-import android.content.res.AssetManager
 import android.util.Log
-import com.example.remindfeedback.FeedbackList.ModelFeedback
-import com.example.remindfeedback.FriendsList.ModelFriendsList
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
 import okhttp3.OkHttpClient
-import org.json.JSONObject
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
 
-class PresenterCategorySetting: ContextCategorySetting.Presenter {
-    override lateinit var view: ContextCategorySetting.View
+class PresenterCategorySetting: ContractCategorySetting.Presenter {
+    override lateinit var view: ContractCategorySetting.View
     override lateinit var context: Context
 
     override fun loadItems(adapterCategorySetting: AdapterCategorySetting, list: ArrayList<ModelCategorySetting>) {
@@ -34,7 +31,7 @@ class PresenterCategorySetting: ContextCategorySetting.Presenter {
                             var myList: myCategory_List = myCategory_List()
                             myList = aaaa[i]
                             var addData: ModelCategorySetting =
-                                ModelCategorySetting(myList.category_color, myList.category_title)
+                                ModelCategorySetting(myList.category_id,myList.category_color, myList.category_title)
                             Log.e("category_title", myList.category_title )
                             adapterCategorySetting.addItem(addData)
                             view.refresh()
@@ -61,7 +58,7 @@ class PresenterCategorySetting: ContextCategorySetting.Presenter {
 
             override fun onResponse(call: Call<GetCategory>, response: Response<GetCategory>) {
                 if (response.isSuccessful) {
-                    var modelCategorySetting:ModelCategorySetting = ModelCategorySetting("#000000",title )
+                    var modelCategorySetting:ModelCategorySetting = ModelCategorySetting(-1, "#000000",title )
                     mAdapter.addItem(modelCategorySetting)
                     view.refresh()
                 } else {
@@ -75,11 +72,27 @@ class PresenterCategorySetting: ContextCategorySetting.Presenter {
 
     }
 
-    override fun removeItems(position: Int, id: Int, context: Context) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun removeItems(id: Int, context: Context) {
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<ResponseBody> = apiService.DeleteCategory(id)
+        register_request.enqueue(object : Callback<ResponseBody> {
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.e("성공!", "딜리트 성공")
+                    view.refresh()
+                } else {
+                    val StatusCode = response.code()
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("실패", t.message)
+
+            }
+        })
     }
 
     override fun updateItems(position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

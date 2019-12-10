@@ -1,4 +1,4 @@
-package com.example.remindfeedback.CreateFeedback
+package com.example.remindfeedback.FeedbackList.CreateFeedback
 
 import android.app.Activity
 import android.content.Intent
@@ -8,8 +8,8 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import com.example.remindfeedback.CreateFeedback.ContractCreateFeedback
 import com.example.remindfeedback.R
-import kotlinx.android.synthetic.main.activity_create_category.*
 import kotlinx.android.synthetic.main.activity_create_feedback.*
 
 class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View {

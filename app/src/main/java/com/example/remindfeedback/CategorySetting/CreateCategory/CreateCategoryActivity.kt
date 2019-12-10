@@ -12,12 +12,14 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import com.example.remindfeedback.CategorySetting.CategorySettingActivity
+import com.example.remindfeedback.CategorySetting.ContractCategorySetting
+import com.example.remindfeedback.CategorySetting.CreateCategory.ContractCreateCategory
 import com.example.remindfeedback.CategorySetting.ModelCategorySetting
 import com.example.remindfeedback.R
 import kotlinx.android.synthetic.main.activity_create_category.*
 import kotlinx.android.synthetic.main.activity_find_friends.*
 
-class CreateCategoryActivity : AppCompatActivity() {
+class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View {
 
     lateinit var category_Color1:Button
     lateinit var category_Color2:Button

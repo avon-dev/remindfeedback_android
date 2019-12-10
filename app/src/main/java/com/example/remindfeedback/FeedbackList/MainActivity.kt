@@ -21,7 +21,7 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.remindfeedback.Alarm.AlarmActivity
 import com.example.remindfeedback.CategorySetting.CategorySettingActivity
-import com.example.remindfeedback.CreateFeedback.CreateFeedbackActivity
+import com.example.remindfeedback.FeedbackList.CreateFeedback.CreateFeedbackActivity
 import com.example.remindfeedback.FriendsList.FriendsListActivity
 import com.example.remindfeedback.MyPage.MyPageActivity
 import com.example.remindfeedback.R
@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         //id 9999는 임의로 집어넣은값
-                        presenterMain.addItems(9999,data.getStringExtra("title"),mAdapter)
+                        presenterMain.addItems(data.getStringExtra("title"),mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }

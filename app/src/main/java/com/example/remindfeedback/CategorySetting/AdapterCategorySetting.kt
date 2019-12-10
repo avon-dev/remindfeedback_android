@@ -1,6 +1,7 @@
 package com.example.remindfeedback.CategorySetting
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.AdapterFeedbackDetail
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.ModelFeedbackDetail
@@ -16,7 +18,7 @@ import com.example.remindfeedback.FeedbackList.FeedbackDetail.Post.PostActivity
 import com.example.remindfeedback.R
 import java.util.ArrayList
 
-class AdapterCategorySetting(val context: Context, val arrayList: ArrayList<ModelCategorySetting>) :   RecyclerView.Adapter<AdapterCategorySetting.Holder>()  {
+class AdapterCategorySetting(val context: Context, val arrayList: ArrayList<ModelCategorySetting>, var presenterCategorySetting: PresenterCategorySetting) :   RecyclerView.Adapter<AdapterCategorySetting.Holder>()  {
 
 
     fun addItem(item: ModelCategorySetting) {//아이템 추가
@@ -57,8 +59,29 @@ class AdapterCategorySetting(val context: Context, val arrayList: ArrayList<Mode
             category_Color.setBackgroundColor(Color.parseColor(categorySetting.color))
             Log.e("category_Color", categorySetting.color)
             category_Title.text = categorySetting.title
-            category_More.setOnClickListener {
 
+
+            category_More.setOnClickListener {
+                var dialogInterface: DialogInterface? = null
+                val dialog = AlertDialog.Builder(context)
+                val edialog : LayoutInflater = LayoutInflater.from(context)
+                val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
+
+                val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
+                val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
+
+                update_Tv.setOnClickListener{
+                    Log.e("asda", "수정"+adapterPosition)
+                    dialogInterface!!.dismiss()
+                }
+                delete_Tv.setOnClickListener{
+                    removeAt(adapterPosition)
+                    presenterCategorySetting.removeItems(categorySetting.id, context)
+                    dialogInterface!!.dismiss()
+                }
+                dialog.setView(mView)
+                dialog.create()
+                dialogInterface = dialog.show()
             }
 
         }

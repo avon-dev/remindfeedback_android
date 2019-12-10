@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.Post.ModelPost
 import java.util.ArrayList
 
-interface ContextCategorySetting {
+interface ContractCategorySetting {
     interface View{
         fun refresh()
     }
@@ -18,7 +18,7 @@ interface ContextCategorySetting {
 
         fun addItems(title:String, mAdapter:AdapterCategorySetting)
 
-        fun removeItems(position: Int, id: Int, context: Context)
+        fun removeItems( id: Int, context: Context)
 
         fun updateItems(position: Int)
     }

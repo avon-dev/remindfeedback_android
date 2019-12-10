@@ -1,6 +1,7 @@
 package com.example.remindfeedback.FeedbackList
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.util.Log
@@ -87,24 +88,27 @@ class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelF
 
             //꾹 눌렀을때
             itemView.setOnLongClickListener{
-                val eMailDialog = AlertDialog.Builder(context)
+                var dialogInterface: DialogInterface? = null
+                val dialog = AlertDialog.Builder(context)
                 val edialog : LayoutInflater = LayoutInflater.from(context)
                 val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
-
 
                 val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
                 val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
 
                 update_Tv.setOnClickListener{
                     Log.e("asda", "수정"+adapterPosition)
+                    dialogInterface!!.dismiss()
                 }
                 delete_Tv.setOnClickListener{
                     removeAt(adapterPosition)
                     presenterMain.removeItems(feedback_list.id, context)
+                    dialogInterface!!.dismiss()
                 }
-                eMailDialog.setView(mView)
-                eMailDialog.create()
-                eMailDialog.show()
+                dialog.setView(mView)
+                dialog.create()
+                dialogInterface = dialog.show()
+
 
                 return@setOnLongClickListener true
             }

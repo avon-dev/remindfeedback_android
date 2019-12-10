@@ -52,7 +52,7 @@ class PresenterMain : ContractMain.Presenter {
 
     }
 
-    override fun addItems(id: Int, title: String, adapterMainFeedback: AdapterMainFeedback) {
+    override fun addItems(title: String, adapterMainFeedback: AdapterMainFeedback) {
 
         // 현재시간을 msec 으로 구한다.
         val now = System.currentTimeMillis()
@@ -67,7 +67,7 @@ class PresenterMain : ContractMain.Presenter {
             override fun onResponse(call: Call<CreateFeedback>, response: Response<CreateFeedback>) {
                 if (response.isSuccessful) {
                     var addData: ModelFeedback =
-                        ModelFeedback(id, "조언자", 1, title, "dummy", date.toString(), false)
+                        ModelFeedback(-1, "조언자", 1, title, "dummy", date.toString(), false)
                     adapterMainFeedback.addItem(addData)
                     view.refresh()
                 } else {
