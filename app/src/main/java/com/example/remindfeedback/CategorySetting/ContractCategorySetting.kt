@@ -16,7 +16,7 @@ interface ContractCategorySetting {
 
         fun loadItems(adapterCategorySetting: AdapterCategorySetting, list: ArrayList<ModelCategorySetting>)
 
-        fun addItems(title:String, mAdapter:AdapterCategorySetting)
+        fun addItems(color:String, title:String, mAdapter:AdapterCategorySetting)
 
         fun removeItems( id: Int, context: Context)
 

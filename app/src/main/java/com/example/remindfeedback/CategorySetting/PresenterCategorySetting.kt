@@ -48,17 +48,17 @@ class PresenterCategorySetting: ContractCategorySetting.Presenter {
         })
     }
 
-    override fun addItems(title:String, mAdapter:AdapterCategorySetting) {
+    override fun addItems(color:String, title:String, mAdapter:AdapterCategorySetting) {
 
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        var createCategory:CreateCategory = CreateCategory(title, "#000000")
+        var createCategory:CreateCategory = CreateCategory(title, color)
         val register_request: Call<GetCategory> = apiService.CreateCategory(createCategory)
         register_request.enqueue(object : Callback<GetCategory> {
 
             override fun onResponse(call: Call<GetCategory>, response: Response<GetCategory>) {
                 if (response.isSuccessful) {
-                    var modelCategorySetting:ModelCategorySetting = ModelCategorySetting(-1, "#000000",title )
+                    var modelCategorySetting:ModelCategorySetting = ModelCategorySetting(-1, color,title )
                     mAdapter.addItem(modelCategorySetting)
                     view.refresh()
                 } else {
@@ -83,12 +83,10 @@ class PresenterCategorySetting: ContractCategorySetting.Presenter {
                     Log.e("성공!", "딜리트 성공")
                     view.refresh()
                 } else {
-                    val StatusCode = response.code()
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("실패", t.message)
-
             }
         })
     }

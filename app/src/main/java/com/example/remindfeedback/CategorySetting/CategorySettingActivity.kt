@@ -58,7 +58,7 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
             100 -> {
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        presenterCategorySetting.addItems(data.getStringExtra("title"),mAdapter)
+                        presenterCategorySetting.addItems(data.getStringExtra("color"),data.getStringExtra("title"),mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@CategorySettingActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
