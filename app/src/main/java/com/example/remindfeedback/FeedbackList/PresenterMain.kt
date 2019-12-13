@@ -29,7 +29,6 @@ class PresenterMain : ContractMain.Presenter {
                 if (response.isSuccessful) {
                     val testItem: GetFeedback = response.body()!!
                     val aaaa = testItem.data
-                    Log.e("testitem", aaaa.toString())
                     if (aaaa != null) {
                         for (i in 0 until aaaa.size) {
                             var mfl: myFeedback_List = myFeedback_List()

@@ -45,9 +45,13 @@ interface ServiceAPI {
     @GET("category/selectall")
     fun GetCategory(): Call<GetCategory>
 
-
-    //내 주제 정보 가져오기
+    //내 정보 가져오기
     @GET("mypage")
     fun GetMyPage(): Call<GetMyPage>
+
+    //내 닉네임 수정하기
+    @FormUrlEncoded
+    @PATCH("mypage/update/nickname")
+    fun PatchNickname(@Field("nickname")nickname:String): Call<GetMyPage>
 
 }
