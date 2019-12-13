@@ -31,18 +31,25 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
 
+
         presenterMyPage = PresenterMyPage().apply {
             view = this@MyPageActivity
             mContext = this@MyPageActivity
         }
         presenterMyPage.getInfo()
+
+        //다이알로그에 사용할 params
+        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        params.leftMargin = resources.getDimensionPixelSize(R.dimen.dialog_margin)
+        params.rightMargin = resources.getDimensionPixelSize(R.dimen.dialog_margin)
+
         //수정 버튼 눌렀을때
         patch_My_Nickname_Button.setOnClickListener {
-            val params =
-                FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            params.leftMargin = resources.getDimensionPixelSize(R.dimen.dialog_margin)
-            params.rightMargin = resources.getDimensionPixelSize(R.dimen.dialog_margin)
             presenterMyPage.showDialog("닉네임",this, params)
+
+        }
+        patch_My_Introduction_Button.setOnClickListener {
+            presenterMyPage.showDialog("상태메세지",this, params)
 
         }
     }
@@ -52,6 +59,7 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
         mypage_Nickname_Tv.text = nickname
         mypage_Email_Tv.text = email
         mypage_Email_Tv_2.text = email
+        mypage_Introduction_Tv.text = introduction
     }
 
 }

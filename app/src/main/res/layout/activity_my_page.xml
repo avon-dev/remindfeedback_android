@@ -55,6 +55,13 @@
                             android:layout_gravity="center_horizontal|center_vertical"
                             android:gravity="center_horizontal|center_vertical"
                             android:text="rrxxxxx@naver.com" />
+                    <TextView
+                            android:id="@+id/mypage_Introduction_Tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_weight="1" android:gravity="center_horizontal|center_vertical"
+                            android:text="상태메시지"/>
 
                 </LinearLayout>
             </FrameLayout>
@@ -167,6 +174,31 @@
                         android:layout_height="30dp"
                         app:srcCompat="@drawable/ic_right_black"/>
             </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/patch_My_Introduction_Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/under_line_gray"
+                    android:gravity="center"
+                    android:orientation="horizontal" android:padding="16dp">
+
+                <TextView
+                        android:id="@+id/textView110"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="상태 메세지 변경"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textSize="18sp"/>
+
+                <ImageView
+                        android:id="@+id/imageView90"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        app:srcCompat="@drawable/ic_right_black"/>
+            </LinearLayout>
+
 
             <TextView
                     android:id="@+id/textView13"

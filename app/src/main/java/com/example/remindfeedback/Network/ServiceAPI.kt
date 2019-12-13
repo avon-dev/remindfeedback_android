@@ -54,4 +54,8 @@ interface ServiceAPI {
     @PATCH("mypage/update/nickname")
     fun PatchNickname(@Field("nickname")nickname:String): Call<GetMyPage>
 
+    //내 상태메세지 수정하기
+    @FormUrlEncoded
+    @PATCH("mypage/update/introduction")
+    fun PatchIntoduction(@Field("introduction")introduction:String): Call<GetMyPage>
 }

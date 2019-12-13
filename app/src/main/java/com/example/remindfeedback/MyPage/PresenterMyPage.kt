@@ -60,6 +60,8 @@ class PresenterMyPage : ContractMyPage.Presenter{
                 if(!value.equals("")){
                     if(showText.equals("닉네임")){
                         patchNickname(value)
+                    }else if(showText.equals("상태메세지")){
+                        patchIntroduction(value)
                     }
                 }else{
                     Toast.makeText(context, showText+"을 입력해주세요", Toast.LENGTH_SHORT).show()
@@ -70,10 +72,29 @@ class PresenterMyPage : ContractMyPage.Presenter{
     }
 
 
-    override fun patchNickname(nickname: String) {
+    fun patchNickname(nickname: String) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext,"addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val request : Call<GetMyPage> = apiService.PatchNickname(nickname)
+        request.enqueue(object : Callback<GetMyPage> {
+            override fun onResponse(call: Call<GetMyPage>, response: Response<GetMyPage>) {
+                if (response.isSuccessful) {
+                    //데이터 얻어서 activity로 보내줌
+                    val getMyPage:GetMyPage = response.body()!!
+                    val info  = getMyPage.data
+                    view.setInfo(info!!.email!!,info.nickname, info.portrait!!, info.introduction!! )
+                } else {
+                }
+            }
+            override fun onFailure(call: Call<GetMyPage>, t: Throwable) {
+            }
+        })
+    }
+
+    fun patchIntroduction(introduction: String) {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext,"addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val request : Call<GetMyPage> = apiService.PatchIntoduction(introduction)
         request.enqueue(object : Callback<GetMyPage> {
             override fun onResponse(call: Call<GetMyPage>, response: Response<GetMyPage>) {
                 if (response.isSuccessful) {
