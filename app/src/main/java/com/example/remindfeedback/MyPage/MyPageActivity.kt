@@ -43,11 +43,12 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
         params.leftMargin = resources.getDimensionPixelSize(R.dimen.dialog_margin)
         params.rightMargin = resources.getDimensionPixelSize(R.dimen.dialog_margin)
 
-        //수정 버튼 눌렀을때
+        //닉네임 수정 버튼 눌렀을때
         patch_My_Nickname_Button.setOnClickListener {
             presenterMyPage.showDialog("닉네임",this, params)
 
         }
+        //상태메세지 수정 버튼 눌렀을때
         patch_My_Introduction_Button.setOnClickListener {
             presenterMyPage.showDialog("상태메세지",this, params)
 

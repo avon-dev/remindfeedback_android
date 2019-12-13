@@ -16,7 +16,6 @@ interface ContractMyPage {
         var view: View
         var mContext:Context
         fun getInfo()
-        //fun patchNickname(nickname: String)
         fun showDialog(showText:String, context: Context, params: FrameLayout.LayoutParams)
     }
 

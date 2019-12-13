@@ -48,6 +48,7 @@ class PresenterMyPage : ContractMyPage.Presenter{
         val container = FrameLayout(context)
         val et = EditText(context)
         et.setLayoutParams(params)
+
         container.addView(et)
         val alt_bld = AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
         alt_bld.setTitle(showText+" 변경")
