@@ -2,14 +2,21 @@ package com.example.remindfeedback.FeedbackList.CreateFeedback
 
 import android.app.Activity
 import android.content.Intent
+import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.remindfeedback.CreateFeedback.ContractCreateFeedback
 import com.example.remindfeedback.R
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.CalendarMode
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import kotlinx.android.synthetic.main.activity_create_feedback.*
 
 class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View {
@@ -29,6 +36,24 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         presenterCreateFeedback = PresenterCreateFeedback().apply {
             view = this@CreateFeedbackActivity
         }
+
+        //달력 관련 코드
+        calendarView.state().edit()
+            .setFirstDayOfWeek(Calendar.SUNDAY)
+            .setMinimumDate(CalendarDay.from(2017, 0, 1))
+            .setMaximumDate(CalendarDay.from(2030, 11, 31))
+            .setCalendarDisplayMode(CalendarMode.MONTHS)
+            .commit();this;
+
+        calendarView.setOnDateChangedListener(OnDateSelectedListener { widget, date, selected ->
+            val Year = date.year
+            val Month = date.month + 1
+            val Day = date.day
+            val shot_Day = "$Year,$Month,$Day"
+            choose_Category_Tv.text = ""+Year+"년 "+Month+"월 "+Day+"일"
+        })
+        //여기까지 달력코드
+
 
     }
     //타이틀바에 어떤 menu를 적용할지 정하는부분
