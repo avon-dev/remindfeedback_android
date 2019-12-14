@@ -62,12 +62,12 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/main_Feedback_Alarm"
-                        android:layout_width="72dp"
+                        android:layout_width="10dp"
                         android:layout_height="10dp"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="40dp"
                         android:layout_marginTop="10dp"
                         android:src="@drawable/red"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"/>
             </FrameLayout>
 
             <TextView

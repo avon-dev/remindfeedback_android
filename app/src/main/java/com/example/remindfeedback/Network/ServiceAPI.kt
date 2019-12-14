@@ -25,7 +25,7 @@ interface ServiceAPI {
     @GET("auth/me/")
     fun GET_User(): Call<ResponseBody>
 
-    //내 피드백정보 가져오기
+    //내가 요청한 피드백정보 가져오기
     @GET("feedback/my/{start}")
     fun GetFeedback(@Path("start")start:Int): Call<GetFeedback>
 
@@ -45,5 +45,17 @@ interface ServiceAPI {
     @GET("category/selectall")
     fun GetCategory(): Call<GetCategory>
 
+    //내 정보 가져오기
+    @GET("mypage")
+    fun GetMyPage(): Call<GetMyPage>
 
+    //내 닉네임 수정하기
+    @FormUrlEncoded
+    @PATCH("mypage/update/nickname")
+    fun PatchNickname(@Field("nickname")nickname:String): Call<GetMyPage>
+
+    //내 상태메세지 수정하기
+    @FormUrlEncoded
+    @PATCH("mypage/update/introduction")
+    fun PatchIntoduction(@Field("introduction")introduction:String): Call<GetMyPage>
 }

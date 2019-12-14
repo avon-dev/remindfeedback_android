@@ -59,7 +59,7 @@
 
 
                   <TextView
-                          android:id="@+id/textView40"
+                          android:id="@+id/mypage_Email_Tv"
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
                           android:background="@drawable/under_line"

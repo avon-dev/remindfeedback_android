@@ -105,10 +105,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         category_Spinner.setAdapter(arrayAdapter)
         category_Spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                Toast.makeText(
-                    applicationContext, spinnerArray[i].toString() + "가 선택되었습니다.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(applicationContext, spinnerArray[i].toString() + "가 선택되었습니다.", Toast.LENGTH_SHORT).show()
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
