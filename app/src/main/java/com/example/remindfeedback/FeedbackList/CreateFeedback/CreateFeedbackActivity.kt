@@ -18,9 +18,13 @@ import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import kotlinx.android.synthetic.main.activity_create_feedback.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View {
     private lateinit var presenterCreateFeedback: PresenterCreateFeedback
+    var choosedData: Date? = null
+    var stringDate:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +67,8 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
             val Day = date.day
             val shot_Day = "$Year,$Month,$Day"
             choose_Category_Tv.text = ""+Year+"년 "+Month+"월 "+Day+"일"
+            choosedData = date.date
+            stringDate = SimpleDateFormat("yyyy-MM-dd").format(choosedData)
         })
         //여기까지 달력코드
 
@@ -85,12 +91,17 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
 
     //버튼 눌렀을때
     fun create_Feedback_Button(): Boolean {
-        Toast.makeText(this@CreateFeedbackActivity, "작성 누름.", Toast.LENGTH_SHORT).show()
-        val intent = Intent()
-        intent.putExtra("title", create_Feedback_Title.text.toString())
-        setResult(Activity.RESULT_OK, intent)
 
-        finish()
+        if(choosedData == null){
+            Toast.makeText(this@CreateFeedbackActivity, "날짜를 선택해주세요.", Toast.LENGTH_SHORT).show()
+        }else{
+            val intent = Intent()
+            intent.putExtra("title", create_Feedback_Title.text.toString())
+            intent.putExtra("date", stringDate)
+
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
         return true
     }
 

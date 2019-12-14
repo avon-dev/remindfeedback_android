@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         //id 9999는 임의로 집어넣은값
-                        presenterMain.addItems(data.getStringExtra("title"),mAdapter)
+                        presenterMain.addItems(data.getStringExtra("date"),data.getStringExtra("title"),mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
