@@ -11,6 +11,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.util.*
 
 class PresenterMain : ContractMain.Presenter {
@@ -33,8 +34,11 @@ class PresenterMain : ContractMain.Presenter {
                         for (i in 0 until aaaa.size) {
                             var mfl: myFeedback_List = myFeedback_List()
                             mfl = aaaa[i]
+                            val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(mfl.write_date)
+                            val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
+                            val dateNewFormat = sdf.format(date)
                             var addData: ModelFeedback =
-                                ModelFeedback(mfl.id, "조언자", mfl.category, mfl.title, "dummy", mfl.write_date, false)
+                                ModelFeedback(mfl.id, "조언자", mfl.category, mfl.title, "dummy", dateNewFormat, false)
                             adapterMainFeedback.addItem(addData)
                             view.refresh()
                         }
@@ -51,22 +55,21 @@ class PresenterMain : ContractMain.Presenter {
 
     }
 
-    override fun addItems(title: String, adapterMainFeedback: AdapterMainFeedback) {
-
-        // 현재시간을 msec 으로 구한다.
-        val now = System.currentTimeMillis()
-        // 현재시간을 date 변수에 저장한다.
-        val date = Date(now)
+    override fun addItems(date: String?, title: String, adapterMainFeedback: AdapterMainFeedback) {
+        val date2 = SimpleDateFormat("yyyy-MM-dd").parse(date)
+        val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
+        val dateNewFormat = sdf.format(date2)
+        val ndate:Date = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        var createFeedback: CreateFeedback = CreateFeedback("aaaa", 1, title, date)
+        val createFeedback: CreateFeedback = CreateFeedback("aaaa", 1, title, ndate)
         val register_request: Call<CreateFeedback> = apiService.CreateFeedback(createFeedback)
         register_request.enqueue(object : Callback<CreateFeedback> {
 
             override fun onResponse(call: Call<CreateFeedback>, response: Response<CreateFeedback>) {
                 if (response.isSuccessful) {
-                    var addData: ModelFeedback =
-                        ModelFeedback(-1, "조언자", 1, title, "dummy", date.toString(), false)
+                    val addData: ModelFeedback =
+                        ModelFeedback(-1, "조언자", 1, title, "dummy", dateNewFormat, false)
                     adapterMainFeedback.addItem(addData)
                     view.refresh()
                 } else {
