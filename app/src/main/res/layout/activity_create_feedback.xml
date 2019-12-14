@@ -80,7 +80,7 @@
                         android:layout_marginLeft="6dp"
                         android:gravity="center_vertical"
                         android:padding="16dp"
-                        android:text="2019년 10월 28일"
+                        android:text="날짜 선택"
                         android:textSize="18sp"/>
 
                 <TextView
@@ -90,11 +90,11 @@
                         android:layout_weight="1" />
 
                 <ImageView
-                        android:id="@+id/choose_Category_Button"
+                        android:id="@+id/drop_Calendar_Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+                        android:src="@drawable/ic_down_black" />
             </LinearLayout>
             <com.prolificinteractive.materialcalendarview.MaterialCalendarView
                     xmlns:app="http://schemas.android.com/apk/res-auto"

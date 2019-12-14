@@ -36,7 +36,18 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         presenterCreateFeedback = PresenterCreateFeedback().apply {
             view = this@CreateFeedbackActivity
         }
+        drop_Calendar_Button.setOnClickListener(){
+            if(calendarView.visibility == View.VISIBLE){
+                calendarView.visibility = View.GONE
+                drop_Calendar_Button.setImageResource(R.drawable.ic_down_black)
 
+            }else{
+                drop_Calendar_Button.setImageResource(R.drawable.ic_up_black)
+                calendarView.visibility = View.VISIBLE
+            }
+        }
+
+        calendarView.visibility = View.GONE
         //달력 관련 코드
         calendarView.state().edit()
             .setFirstDayOfWeek(Calendar.SUNDAY)
@@ -45,6 +56,7 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
             .setCalendarDisplayMode(CalendarMode.MONTHS)
             .commit();this;
 
+        //달력에서 날짜를 선택했을때
         calendarView.setOnDateChangedListener(OnDateSelectedListener { widget, date, selected ->
             val Year = date.year
             val Month = date.month + 1
