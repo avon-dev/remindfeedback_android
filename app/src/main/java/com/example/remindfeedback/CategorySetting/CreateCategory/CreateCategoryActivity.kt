@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -27,19 +28,22 @@ import kotlinx.android.synthetic.main.activity_find_friends.*
 
 class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View {
 
+
     internal lateinit var presenterCreateCategory: PresenterCreateCategory
     var chooseColor :String? = ""
-
+    var modifyID = -1
+    lateinit var ab: ActionBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_category)
 
         //액션바 설정
-        var ab: ActionBar = this!!.supportActionBar!!
+        ab = this!!.supportActionBar!!
         ab.setTitle("새로운 주제")
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
 
+        setData()
 
         presenterCreateCategory = PresenterCreateCategory().apply {
             view = this@CreateCategoryActivity
@@ -63,14 +67,23 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
                         chooseColor = data.getStringExtra("color")
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@CreateCategoryActivity, "취소됨.", Toast.LENGTH_SHORT).show()
-
                 }
-
             }
         }
 
     }
 
+    override fun setData() {
+        if(intent.hasExtra("title")){
+            ab.setTitle("주제 수정")
+            val title = intent.getStringExtra("title")
+            val color = intent.getStringExtra("color")
+            modifyID = intent.getIntExtra("id", -1)
+            create_Category_Title.setText(title)
+            selected_Color.setBackgroundColor(Color.parseColor(color))
+        }else{
+        }
+    }
 
     //타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -89,16 +102,15 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
 
     // 주제 추가 완료 버튼 눌렀을 때
     fun add_Category_Button(): Boolean {
-        Toast.makeText(this@CreateCategoryActivity, "완료 누름.", Toast.LENGTH_SHORT).show()
-        val intent = Intent()
 
+        val intent = Intent()
         if(chooseColor.equals("")){
             setResult(Activity.RESULT_CANCELED, intent)
             finish()
         }else{
+            intent.putExtra("id", modifyID)
             intent.putExtra("title", create_Category_Title.text.toString())
             intent.putExtra("color", chooseColor)
-
             setResult(Activity.RESULT_OK, intent)
             finish()
         }

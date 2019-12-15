@@ -12,6 +12,8 @@ import retrofit2.Response
 import java.util.ArrayList
 
 class PresenterCategorySetting: ContractCategorySetting.Presenter {
+
+
     override lateinit var view: ContractCategorySetting.View
     override lateinit var context: Context
 
@@ -91,26 +93,32 @@ class PresenterCategorySetting: ContractCategorySetting.Presenter {
         })
     }
 
-//    override fun updateItems(id: Int, color: String, title: String) {
-//        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
-//        val apiService = RetrofitFactory.serviceAPI(client)
-//        var modifyCategory: CreateCategory = CreateCategory(title, color)
-//        val register_request: Call<GetCategory> = apiService.ModifyCategory(id, modifyCategory)
-//        register_request.enqueue(object : Callback<GetCategory>{
-//
-//            override fun onResponse(call: Call<GetCategory>, response: Response<GetCategory>) {
-//                if (response.isSuccessful){
-//                    Log.e("성공","수정 성공")
-//                    view.refresh()
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<GetCategory>, t: Throwable) {
-//                Log.e("실패", t.message)
-//            }
-//
-//        })
-//    }
+    override fun updateItems(id: Int, color: String, title: String) {
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        var modifyCategory: CreateCategory = CreateCategory(title, color)
+        val request: Call<GetCategory> = apiService.ModifyCategory(id, modifyCategory)
+        request.enqueue(object : Callback<GetCategory>{
+
+            override fun onResponse(call: Call<GetCategory>, response: Response<GetCategory>) {
+                if (response.isSuccessful){
+                    Log.e("성공","수정 성공")
+                    view.refresh()
+                }
+            }
+
+            override fun onFailure(call: Call<GetCategory>, t: Throwable) {
+                Log.e("실패", t.message)
+            }
+
+        })
+    }
+
+    //업데이트 화면을 띄움
+    override fun showModifyActivity(id: Int, color: String, title: String) {
+        view.showModifyActivity(id, color, title)
+        Log.e("Presenter", id.toString())
+    }
 
 
 }

@@ -4,6 +4,7 @@ import android.content.Context
 
 interface ContractCreateCategory {
     interface View {
+        fun setData()
     }
 
     interface Presenter {

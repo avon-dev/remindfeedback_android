@@ -3,6 +3,7 @@ package com.example.remindfeedback.CategorySetting
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -14,6 +15,7 @@ import com.example.remindfeedback.R
 import kotlinx.android.synthetic.main.activity_category_setting.*
 
 class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.View {
+
 
     private val TAG = "PresenterCategorySetting"
     internal lateinit var presenterCategorySetting: PresenterCategorySetting
@@ -56,7 +58,7 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
         super.onActivityResult(requestCode, resultCode, data)
 
         when(requestCode) {
-            100 -> {
+            100 -> {//크리에이트 화면에서 돌아왔을때
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         presenterCategorySetting.addItems(data.getStringExtra("color"),data.getStringExtra("title"),mAdapter)
@@ -64,7 +66,25 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
                     Activity.RESULT_CANCELED -> Toast.makeText(this@CategorySettingActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
             }
+            101 -> {//업데이트화면에서 돌아왔을때
+                when(resultCode) {
+                    Activity.RESULT_OK -> if (data != null) {
+                        Log.e("return", data.getIntExtra("id", -1).toString())
+                        presenterCategorySetting.updateItems(data.getIntExtra("id", -1),data.getStringExtra("color"),data.getStringExtra("title"))
+                    }
+                    Activity.RESULT_CANCELED -> Toast.makeText(this@CategorySettingActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
+    }
+
+    override fun showModifyActivity(id: Int, color: String, title: String) {
+        val intent = Intent(this, CreateCategoryActivity::class.java)
+        Log.e("activity", id.toString())
+        intent.putExtra("id", id)
+        intent.putExtra("color", color)
+        intent.putExtra("title", title)
+        startActivityForResult(intent,101)
     }
 
     // 타이틀바에 어떤 menu를 적용할지 정하는부분
