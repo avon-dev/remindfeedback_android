@@ -10,13 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.AdapterFeedbackDetail
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.ModelFeedbackDetail
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.Post.PostActivity
+import com.example.remindfeedback.CategorySetting.ModifyCategory.ModifyCategoryActivity
 import com.example.remindfeedback.R
-import java.util.ArrayList
+import java.util.*
+
 
 class AdapterCategorySetting(val context: Context, val arrayList: ArrayList<ModelCategorySetting>, var presenterCategorySetting: PresenterCategorySetting) :   RecyclerView.Adapter<AdapterCategorySetting.Holder>()  {
 
@@ -46,6 +46,11 @@ class AdapterCategorySetting(val context: Context, val arrayList: ArrayList<Mode
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(arrayList[position], context)
 
+        // 아이템 클릭 (추후 삭제)
+        holder.itemView.setOnClickListener {
+            Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -71,7 +76,16 @@ class AdapterCategorySetting(val context: Context, val arrayList: ArrayList<Mode
                 val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
 
                 update_Tv.setOnClickListener{
-                    Log.e("asda", "수정"+adapterPosition)
+                    Log.e("주제 수정", "수정누름" + adapterPosition)
+
+                    val intent = Intent(context, ModifyCategoryActivity::class.java)
+                    intent.putExtra("id", categorySetting.id)
+                    intent.putExtra("title", categorySetting.title)
+                    intent.putExtra("color", categorySetting.color)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+
+//                    presenterCategorySetting.updateItems(categorySetting.id, categorySetting.color, categorySetting.title)
                     dialogInterface!!.dismiss()
                 }
                 delete_Tv.setOnClickListener{
