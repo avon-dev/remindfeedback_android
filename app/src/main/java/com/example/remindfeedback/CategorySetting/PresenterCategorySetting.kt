@@ -91,6 +91,26 @@ class PresenterCategorySetting: ContractCategorySetting.Presenter {
         })
     }
 
-    override fun updateItems(position: Int) {
-    }
+//    override fun updateItems(id: Int, color: String, title: String) {
+//        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+//        val apiService = RetrofitFactory.serviceAPI(client)
+//        var modifyCategory: CreateCategory = CreateCategory(title, color)
+//        val register_request: Call<GetCategory> = apiService.ModifyCategory(id, modifyCategory)
+//        register_request.enqueue(object : Callback<GetCategory>{
+//
+//            override fun onResponse(call: Call<GetCategory>, response: Response<GetCategory>) {
+//                if (response.isSuccessful){
+//                    Log.e("성공","수정 성공")
+//                    view.refresh()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<GetCategory>, t: Throwable) {
+//                Log.e("실패", t.message)
+//            }
+//
+//        })
+//    }
+
+
 }

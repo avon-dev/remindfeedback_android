@@ -14,6 +14,7 @@ import com.example.remindfeedback.R
 import kotlinx.android.synthetic.main.activity_category_setting.*
 
 class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.View {
+
     private val TAG = "PresenterCategorySetting"
     internal lateinit var presenterCategorySetting: PresenterCategorySetting
 
@@ -95,4 +96,6 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
     override fun refresh() {
         mAdapter.notifyDataSetChanged()
     }
+
+
 }

@@ -150,16 +150,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-
-    override fun onStart() {
-        super.onStart()
-        mAdapter.notifyDataSetChanged()
-
-        Log.e("onStart", mAdapter.arrayList.size.toString())
-
-
-    }
-
     //fab을 위해서 onclick 상속받음
     override fun onClick(v: View?) {
         when (v!!.getId()) {

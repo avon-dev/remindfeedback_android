@@ -1,8 +1,7 @@
 package com.example.remindfeedback.CategorySetting
 
 import android.content.Context
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.Post.ModelPost
-import java.util.ArrayList
+import java.util.*
 
 interface ContractCategorySetting {
     interface View{
@@ -18,8 +17,8 @@ interface ContractCategorySetting {
 
         fun addItems(color:String, title:String, mAdapter:AdapterCategorySetting)
 
-        fun removeItems( id: Int, context: Context)
+        fun removeItems(id: Int, context: Context)
 
-        fun updateItems(position: Int)
+//        fun updateItems(id: Int, color: String, title: String)
     }
 }
