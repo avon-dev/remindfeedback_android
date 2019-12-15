@@ -6,6 +6,7 @@ import java.util.*
 interface ContractCategorySetting {
     interface View{
         fun refresh()
+        fun showModifyActivity(id: Int, color: String, title: String)
     }
 
     interface Presenter {
@@ -19,6 +20,8 @@ interface ContractCategorySetting {
 
         fun removeItems(id: Int, context: Context)
 
-//        fun updateItems(id: Int, color: String, title: String)
+        fun updateItems(id: Int, color: String, title: String)
+
+        fun showModifyActivity(id: Int, color: String, title: String)
     }
 }
