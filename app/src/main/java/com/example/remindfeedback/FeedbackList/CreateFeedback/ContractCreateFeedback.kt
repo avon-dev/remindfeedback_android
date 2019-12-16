@@ -2,6 +2,7 @@ package com.example.remindfeedback.CreateFeedback
 
 interface ContractCreateFeedback {
     interface View{
+        fun setData()
 
     }
 

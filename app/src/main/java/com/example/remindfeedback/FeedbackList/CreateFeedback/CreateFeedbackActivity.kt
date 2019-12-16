@@ -22,20 +22,23 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View {
+
     private lateinit var presenterCreateFeedback: PresenterCreateFeedback
     var choosedData: Date? = null
     var stringDate:String? = null
+    lateinit var ab: ActionBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_feedback)
 
         //액션바 설정
-        var ab: ActionBar = this!!.supportActionBar!!
+        ab = this!!.supportActionBar!!
         ab.setTitle("새로운 피드백")
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
 
+        setData()
 
         presenterCreateFeedback = PresenterCreateFeedback().apply {
             view = this@CreateFeedbackActivity
@@ -74,6 +77,21 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
 
 
     }
+
+    // 피드백 수정시 화면에 기존 데이터 보여주기
+    override fun setData() {
+        if (intent.hasExtra("title")){
+            ab.setTitle("피드백 수정")
+            val id = intent.getIntExtra("id", -1)
+            val title = intent.getStringExtra("title")
+            val date = intent.getStringExtra("date")
+            create_Feedback_Title.setText(title)
+            choose_Category_Tv.setText(date)
+        }else{
+
+        }
+    }
+
     //타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.create_feedback_menu, menu)

@@ -29,9 +29,9 @@ interface ServiceAPI {
     @GET("feedback/my/{start}")
     fun GetFeedback(@Path("start") start: Int): Call<GetFeedback>
 
-    // 피드백 수정!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // 피드백 수정
     @PUT("feedback/update/{feedback_id}")
-    fun ModifyFeedback(@Body createFeedback: CreateFeedback): Call<CreateFeedback>
+    fun ModifyFeedback(@Path("feedback_id") feedback_id: Int, @Body createFeedback: CreateFeedback): Call<CreateFeedback>
 
     //피드백 삭제
     @DELETE("feedback/{feedback_id}")
@@ -45,7 +45,7 @@ interface ServiceAPI {
     @POST("category/insert")
     fun CreateCategory(@Body createCategory: CreateCategory): Call<GetCategory>
 
-    // 주제 수정!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // 주제 수정
     @POST("category/update/{category_id}")
     fun ModifyCategory(@Path("category_id") category_id: Int, @Body createCategory: CreateCategory): Call<GetCategory>
 

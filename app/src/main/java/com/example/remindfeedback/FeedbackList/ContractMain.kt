@@ -4,13 +4,12 @@ import android.content.Context
 import java.util.*
 
 interface ContractMain {
-
     interface View{
         fun refresh()
+        fun modifyFeedbackActivity(id:Int, date: String?, title: String)
     }
 
     interface Presenter {
-
         var view: View
         var context:Context
 
@@ -20,7 +19,9 @@ interface ContractMain {
 
         fun removeItems(id:Int, context: Context)
 
-        fun updateItems(id:Int)
+        fun updateItems(id:Int, date: String?, title: String)
+
+        fun modifyFeedbackActivity(id:Int, date: String?, title: String)
     }
 
 }
