@@ -121,14 +121,11 @@ class PresenterMain : ContractMain.Presenter {
 
     // 피드백 수정
     override fun updateItems(id: Int, date: String?, title: String) {
-        val date2 = SimpleDateFormat("yyyy-MM-dd").parse(date)
-        val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
-        val dateNewFormat = sdf.format(date2)
         val ndate: Date = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val modifyFeedback: CreateFeedback = CreateFeedback("얍", 1, title, ndate)
-        val register_request: Call<CreateFeedback> = apiService.ModifyFeedback(id, modifyFeedback)
+        val register_request: Call<CreateFeedback> = apiService.ModifyFeedback(id + 2, modifyFeedback)
         register_request.enqueue(object : Callback<CreateFeedback> {
 
             override fun onResponse(call: Call<CreateFeedback>, response: Response<CreateFeedback>) {
