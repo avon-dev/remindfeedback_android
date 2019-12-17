@@ -6,6 +6,7 @@ import android.content.ContentUris
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
@@ -22,9 +23,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.example.remindfeedback.R
+import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import kotlinx.android.synthetic.main.activity_image_pick.*
+import kotlinx.android.synthetic.main.activity_my_page.*
 import java.io.File
 import java.net.URI
+import java.net.URL
 
 class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
 
@@ -42,7 +46,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
         ab.setTitle("프로필 사진 수정")
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
-
+        setData()
 
         //카메라 눌렀을때
         Imagepick_Camera_Button.setOnClickListener(){
@@ -73,6 +77,17 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
             }
         }
 
+    }
+
+    fun setData(){
+        var test_task: URLtoBitmapTask = URLtoBitmapTask()
+        test_task = URLtoBitmapTask().apply {
+            var intent:Intent = getIntent()
+            var imageData:String = intent.getStringExtra("imageData")
+            url = URL(imageData)
+        }
+        var bitmap: Bitmap = test_task.execute().get()
+        modify_Profile_ImageView.setImageBitmap(bitmap)
     }
 
     private fun openAlbum(){

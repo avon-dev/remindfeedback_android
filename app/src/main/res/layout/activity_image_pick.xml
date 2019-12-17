@@ -30,30 +30,6 @@
                     android:layout_gravity="center_vertical|center_horizontal"
                     android:src="@drawable/ic_default_profile" />
 
-            <TextView
-                    android:id="@+id/Imagepick_Nickname_Tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:text="3월 김철수" />
-
-            <TextView
-                    android:id="@+id/Imagepick_Email_Tv"
-                    android:layout_width="match_parent"
-
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:text="rrxxxxx@naver.com" />
-            <TextView
-                    android:id="@+id/Imagepick_Introduction_Tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:layout_weight="1" android:gravity="center_horizontal|center_vertical"
-                    android:text="상태메시지"/>
-
         </LinearLayout>
     </FrameLayout>
     <Button
