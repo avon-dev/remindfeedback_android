@@ -17,7 +17,7 @@ interface ContractMyPage {
         var mContext:Context
         fun getInfo()
         fun showDialog(showText:String, context: Context, params: FrameLayout.LayoutParams)
-        fun modifyImage()
+        fun modifyImage(fileName:String?)
     }
 
 }

@@ -112,8 +112,23 @@ class PresenterMyPage : ContractMyPage.Presenter{
         })
     }
 
-    override fun modifyImage() {
-
+    override fun modifyImage(fileName:String?) {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext,"addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val request : Call<GetMyPage> = apiService.PatchPortrait(fileName)
+        request.enqueue(object : Callback<GetMyPage> {
+            override fun onResponse(call: Call<GetMyPage>, response: Response<GetMyPage>) {
+                if (response.isSuccessful) {
+                    //데이터 얻어서 activity로 보내줌
+                    val getMyPage:GetMyPage = response.body()!!
+                    val info  = getMyPage.data
+                    view.setInfo(info!!.email!!,info.nickname, info.portrait!!, info.introduction!! )
+                } else {
+                }
+            }
+            override fun onFailure(call: Call<GetMyPage>, t: Throwable) {
+            }
+        })
     }
 
 

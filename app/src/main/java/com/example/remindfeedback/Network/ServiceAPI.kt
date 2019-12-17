@@ -67,4 +67,9 @@ interface ServiceAPI {
     @FormUrlEncoded
     @PATCH("mypage/update/introduction")
     fun PatchIntoduction(@Field("introduction") introduction: String): Call<GetMyPage>
+
+    //내 상태메세지 수정하기
+    @FormUrlEncoded
+    @PATCH("mypage/update/portrait")
+    fun PatchPortrait(@Field("introduction") portrait: String?): Call<GetMyPage>
 }

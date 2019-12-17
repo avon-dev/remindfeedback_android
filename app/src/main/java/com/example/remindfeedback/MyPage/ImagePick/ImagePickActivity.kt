@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ContentUris
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
@@ -12,26 +13,25 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.example.remindfeedback.R
-import kotlinx.android.synthetic.main.activity_create_category.*
 import kotlinx.android.synthetic.main.activity_image_pick.*
 import java.io.File
-import java.nio.file.Files.find
+import java.net.URI
 
 class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
 
     private val FINAL_TAKE_PHOTO = 1
     private val FINAL_CHOOSE_PHOTO = 2
     private var imageUri: Uri? = null
-
+    var fileName:String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,7 +103,12 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
             FINAL_TAKE_PHOTO ->
                 if (resultCode == Activity.RESULT_OK) {
                     val bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri))
+                    Log.e("imagepick", imageUri.toString())
+                    val image_File = File(imageUri.toString())
+                    Log.e("imagepick",image_File.name)
+                    fileName = image_File.name
                     modify_Profile_ImageView!!.setImageBitmap(bitmap)
+
                 }
             //앨범에서 가져올경우
             FINAL_CHOOSE_PHOTO ->
@@ -119,6 +124,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     }
 
 
+
     @TargetApi(19)
     private fun handleImageOnKitkat(data: Intent?) {
         var imagePath: String? = null
@@ -129,6 +135,8 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
                 val id = docId.split(":")[1]
                 val selsetion = MediaStore.Images.Media._ID + "=" + id
                 imagePath = imagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selsetion)
+
+
             }
             else if ("com.android.providers.downloads.documents" == uri.authority){
                 val contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(docId))
@@ -141,6 +149,10 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
         else if ("file".equals(uri.scheme, ignoreCase = true)){
             imagePath = uri.path
         }
+        Log.e("imagepick2",imagePath)
+        val image_File = File(imagePath.toString())
+        Log.e("imagepick2",image_File.name)
+        fileName = image_File.name
         displayImage(imagePath)
     }
 
@@ -188,9 +200,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     fun modify_Profile_Image_Button(): Boolean {
 
         val intent = Intent()
-//            intent.putExtra("id", modifyID)
-//            intent.putExtra("title", create_Category_Title.text.toString())
-//            intent.putExtra("color", chooseColor)
+            intent.putExtra("fileName", fileName)
             setResult(Activity.RESULT_OK, intent)
             finish()
 
