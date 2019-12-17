@@ -27,7 +27,7 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
     var choosedData: Date? = null
     var stringDate:String? = null
     lateinit var ab: ActionBar
-
+    var modifyID:Int = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_feedback)
@@ -82,7 +82,7 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
     override fun setData() {
         if (intent.hasExtra("title")){
             ab.setTitle("피드백 수정")
-            val id = intent.getIntExtra("id", -1)
+            modifyID = intent.getIntExtra("id", -1)
             val title = intent.getStringExtra("title")
             val date = intent.getStringExtra("date")
             create_Feedback_Title.setText(title)
@@ -114,6 +114,10 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
             Toast.makeText(this@CreateFeedbackActivity, "날짜를 선택해주세요.", Toast.LENGTH_SHORT).show()
         }else{
             val intent = Intent()
+            if(modifyID != -1){
+                intent.putExtra("id", modifyID)
+                Log.e("aaaaaa", modifyID.toString())
+            }
             intent.putExtra("title", create_Feedback_Title.text.toString())
             intent.putExtra("date", stringDate)
 
