@@ -20,7 +20,10 @@ class PresenterMain : ContractMain.Presenter {
     lateinit override var context: Context
 
 
-    override fun loadItems(list: ArrayList<ModelFeedback>, adapterMainFeedback: AdapterMainFeedback) {
+    override fun loadItems(
+        list: ArrayList<ModelFeedback>,
+        adapterMainFeedback: AdapterMainFeedback
+    ) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val register_request: Call<GetFeedback> = apiService.GetFeedback(0)
@@ -34,11 +37,20 @@ class PresenterMain : ContractMain.Presenter {
                         for (i in 0 until aaaa.size) {
                             var mfl: myFeedback_List = myFeedback_List()
                             mfl = aaaa[i]
-                            val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(mfl.write_date)
+                            val date =
+                                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(mfl.write_date)
                             val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
                             val dateNewFormat = sdf.format(date)
                             var addData: ModelFeedback =
-                                ModelFeedback(mfl.id, "조언자", mfl.category, mfl.title, "dummy", dateNewFormat, false)
+                                ModelFeedback(
+                                    mfl.id,
+                                    "조언자",
+                                    mfl.category,
+                                    mfl.title,
+                                    "dummy",
+                                    dateNewFormat,
+                                    false
+                                )
                             adapterMainFeedback.addItem(addData)
                             view.refresh()
                         }
@@ -59,7 +71,7 @@ class PresenterMain : ContractMain.Presenter {
         val date2 = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
         val dateNewFormat = sdf.format(date2)
-        val ndate:Date = SimpleDateFormat("yyyy-MM-dd").parse(date)
+        val ndate: Date = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val createFeedback: CreateFeedback = CreateFeedback("aaaa", 1, title, ndate)
@@ -99,6 +111,7 @@ class PresenterMain : ContractMain.Presenter {
                     val StatusCode = response.code()
                 }
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("실패", t.message)
 
@@ -106,7 +119,34 @@ class PresenterMain : ContractMain.Presenter {
         })
     }
 
-    override fun updateItems(id: Int) {
+    // 피드백 수정
+    override fun updateItems(id: Int, date: String?, title: String) {
+        val ndate: Date = SimpleDateFormat("yyyy-MM-dd").parse(date)
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val modifyFeedback: CreateFeedback = CreateFeedback("얍", 1, title, ndate)
+        val register_request: Call<CreateFeedback> = apiService.ModifyFeedback(id + 2, modifyFeedback)
+        register_request.enqueue(object : Callback<CreateFeedback> {
+
+            override fun onResponse(call: Call<CreateFeedback>, response: Response<CreateFeedback>) {
+                if (response.isSuccessful) {
+                    Log.e("피드백 수정 성공", "응")
+                    view.refresh()
+                } else {
+                }
+            }
+            override fun onFailure(call: Call<CreateFeedback>, t: Throwable) {
+                Log.e("피드백 수정 실패", t.message)
+            }
+
+        })
     }
+
+    // 피드백 수정화면 띄우기
+    override fun modifyFeedbackActivity(id: Int, date: String?, title: String) {
+        view.modifyFeedbackActivity(id, date, title)
+        Log.e("Presenter", id.toString())
+    }
+
 
 }

@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when(requestCode) {
-            111 -> {
+            111 -> {    // 피드백 추가 후 돌아왔을 때
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         //id 9999는 임의로 집어넣은값
@@ -147,8 +147,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
             }
+            112 -> {    // 피드백 수정 후 돌아왔을 때
+                when(resultCode) {
+                    Activity.RESULT_OK -> if (data != null) {
+                        Log.e("return", data.getIntExtra("id", -1).toString())
+                        presenterMain.updateItems(data.getIntExtra("id",-1), data.getStringExtra("date"), data.getStringExtra("title"))
+                    }
+                    Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
+
+    // 피드백 수정화면
+    override fun modifyFeedbackActivity(id: Int, date: String?, title: String) {
+        val intent = Intent(this, CreateFeedbackActivity::class.java)
+        Log.e("activity", id.toString())
+        intent.putExtra("id", id)
+        intent.putExtra("title", title)
+        intent.putExtra("date", date)
+        startActivityForResult(intent,112)
+    }
+
 
     //fab을 위해서 onclick 상속받음
     override fun onClick(v: View?) {
