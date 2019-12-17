@@ -1,9 +1,11 @@
 package com.example.remindfeedback.MyPage
 
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -11,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import com.example.remindfeedback.Login.PresenterLogin
+import com.example.remindfeedback.MyPage.ImagePick.ImagePickActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
@@ -54,9 +57,9 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
 
         }
         //프로필 이미지 수정 버튼 눌렀을때
-        patch_My_Introduction_Button.setOnClickListener {
-            presenterMyPage.modifyImage()
-
+        patch_My_Portrait_Button.setOnClickListener {
+            val intent = Intent(this, ImagePickActivity::class.java)
+            startActivityForResult(intent, 100)
         }
     }
 
@@ -66,6 +69,21 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
         mypage_Email_Tv.text = email
         mypage_Email_Tv_2.text = email
         mypage_Introduction_Tv.text = introduction
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode) {
+            100 -> {
+                when(resultCode) {
+                    Activity.RESULT_OK -> if (data != null) {
+                        //presenterMain.addItems(data.getStringExtra("date"),data.getStringExtra("title"),mAdapter)
+                    }
+                    Activity.RESULT_CANCELED -> Toast.makeText(this@MyPageActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
     }
 
 }
