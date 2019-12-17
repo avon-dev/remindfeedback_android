@@ -53,6 +53,11 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
             presenterMyPage.showDialog("상태메세지",this, params)
 
         }
+        //프로필 이미지 수정 버튼 눌렀을때
+        patch_My_Introduction_Button.setOnClickListener {
+            presenterMyPage.modifyImage()
+
+        }
     }
 
     //presenter에서 얻어온 데이터로 화면에 데이터 반영

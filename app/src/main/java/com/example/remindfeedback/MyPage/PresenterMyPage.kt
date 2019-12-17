@@ -22,6 +22,7 @@ import retrofit2.Response
 
 class PresenterMyPage : ContractMyPage.Presenter{
 
+
     lateinit override var view: ContractMyPage.View
     lateinit override var mContext: Context
     override fun getInfo() {
@@ -110,4 +111,10 @@ class PresenterMyPage : ContractMyPage.Presenter{
             }
         })
     }
+
+    override fun modifyImage() {
+
+    }
+
+
 }
