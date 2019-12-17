@@ -1,6 +1,7 @@
 package com.example.remindfeedback.Network
 
 import com.example.remindfeedback.ServerModel.*
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -66,10 +67,16 @@ interface ServiceAPI {
     //내 상태메세지 수정하기
     @FormUrlEncoded
     @PATCH("mypage/update/introduction")
-    fun PatchIntoduction(@Field("introduction") introduction: String): Call<GetMyPage>
-
-    //내 상태메세지 수정하기
+    fun PatchIntoduction(@Field("introduction") introduction: String?): Call<GetMyPage>
+/*
+    //내 프로필 이미지 수정하기
     @FormUrlEncoded
     @PATCH("mypage/update/portrait")
-    fun PatchPortrait(@Field("introduction") portrait: String?): Call<GetMyPage>
+    fun PatchPortrait(@Field("portrait") portrait: String?): Call<GetMyPage>
+    */
+
+    @Multipart
+    @PATCH("mypage/update/portrait")
+    fun PatchPortrait(@Part portrait: MultipartBody.Part?): Call<GetMyPage>
+
 }

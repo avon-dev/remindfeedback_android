@@ -31,8 +31,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     private val FINAL_TAKE_PHOTO = 1
     private val FINAL_CHOOSE_PHOTO = 2
     private var imageUri: Uri? = null
-    var fileName:String? = null
-
+    var fileUri:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,9 +103,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
                 if (resultCode == Activity.RESULT_OK) {
                     val bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri))
                     Log.e("imagepick", imageUri.toString())
-                    val image_File = File(imageUri.toString())
-                    Log.e("imagepick",image_File.name)
-                    fileName = image_File.name
+                    fileUri = imageUri.toString()
                     modify_Profile_ImageView!!.setImageBitmap(bitmap)
 
                 }
@@ -150,9 +147,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
             imagePath = uri.path
         }
         Log.e("imagepick2",imagePath)
-        val image_File = File(imagePath.toString())
-        Log.e("imagepick2",image_File.name)
-        fileName = image_File.name
+        fileUri = imagePath
         displayImage(imagePath)
     }
 
@@ -200,7 +195,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     fun modify_Profile_Image_Button(): Boolean {
 
         val intent = Intent()
-            intent.putExtra("fileName", fileName)
+            intent.putExtra("fileUri", fileUri)
             setResult(Activity.RESULT_OK, intent)
             finish()
 

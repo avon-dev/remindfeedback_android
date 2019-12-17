@@ -78,7 +78,7 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         //presenterMain.addItems(data.getStringExtra("date"),data.getStringExtra("title"),mAdapter)
-                        presenterMyPage.modifyImage(data.getStringExtra("fileName"))
+                        presenterMyPage.patchPortrait(data.getStringExtra("fileUri"))
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MyPageActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
