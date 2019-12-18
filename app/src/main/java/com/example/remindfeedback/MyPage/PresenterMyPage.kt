@@ -14,13 +14,14 @@ import com.example.remindfeedback.R
 import com.example.remindfeedback.ServerModel.GetMyPage
 import com.example.remindfeedback.ServerModel.LogIn
 import com.example.remindfeedback.ServerModel.myPage_Data
-import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
+import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class PresenterMyPage : ContractMyPage.Presenter{
+
 
     lateinit override var view: ContractMyPage.View
     lateinit override var mContext: Context
@@ -110,4 +111,32 @@ class PresenterMyPage : ContractMyPage.Presenter{
             }
         })
     }
+
+    override fun patchPortrait(fileUri:String?) {
+        Log.e("p_mypage", fileUri)
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext,"addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+
+        val image_File = File(fileUri)
+        val requestBody = RequestBody.create(MediaType.parse("multipart/data"), image_File)
+        val multiPartBody = MultipartBody.Part
+            .createFormData("portrait", image_File.name, requestBody)
+
+        val request : Call<GetMyPage> = apiService.PatchPortrait(multiPartBody)
+        request.enqueue(object : Callback<GetMyPage> {
+            override fun onResponse(call: Call<GetMyPage>, response: Response<GetMyPage>) {
+                if (response.isSuccessful) {
+                    //데이터 얻어서 activity로 보내줌
+                    val getMyPage:GetMyPage = response.body()!!
+                    val info  = getMyPage.data
+                    view.setInfo(info!!.email!!,info.nickname, info.portrait!!, info.introduction!! )
+                } else {
+                }
+            }
+            override fun onFailure(call: Call<GetMyPage>, t: Throwable) {
+            }
+        })
+    }
+
+
 }
