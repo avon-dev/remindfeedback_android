@@ -66,4 +66,10 @@ dependencies {
     //캘린더
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'
 
+
+    //크롭
+    implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
+
+    //카메라 퍼미션
+    implementation 'gun0912.ted:tedpermission:2.1.0'
 }

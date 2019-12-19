@@ -1,8 +1,10 @@
 package com.example.remindfeedback.MyPage.ImagePick
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.ContentUris
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -24,18 +26,25 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.example.remindfeedback.R
 import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import com.soundcloud.android.crop.Crop
 import kotlinx.android.synthetic.main.activity_image_pick.*
 import kotlinx.android.synthetic.main.activity_my_page.*
 import java.io.File
+import java.io.IOException
 import java.net.URI
 import java.net.URL
 
 class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
 
-    private val FINAL_TAKE_PHOTO = 1
-    private val FINAL_CHOOSE_PHOTO = 2
-    private var imageUri: Uri? = null
-    var fileUri:String? = null
+
+    internal val PICK_IMAGE_REQUEST = 1
+    internal var filePath: String? = null
+    lateinit var tempFile:File //찍은 사진 넣는부분
+    private val PICK_FROM_ALBUM = 1
+    private val PICK_FROM_CAMERA = 2
+    var lastUri: String? = ""
+
+    lateinit var presenterImagePick: PresenterImagePick
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,33 +57,18 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
         ab.setDisplayHomeAsUpEnabled(true)
         setData()
 
+        presenterImagePick = PresenterImagePick().apply {
+            view = this@ImagePickActivity
+            mContext = this@ImagePickActivity
+        }
+
         //카메라 눌렀을때
         Imagepick_Camera_Button.setOnClickListener(){
-            val outputImage = File(externalCacheDir, "output_image.jpg")
-            if(outputImage.exists()) {
-                outputImage.delete()
-            }
-            outputImage.createNewFile()
-            imageUri = if(Build.VERSION.SDK_INT >= 24){
-                FileProvider.getUriForFile(this, "com.example.remindfeedback.fileprovider", outputImage)
-            } else {
-                Uri.fromFile(outputImage)
-            }
-
-            val intent = Intent("android.media.action.IMAGE_CAPTURE")
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-            startActivityForResult(intent, FINAL_TAKE_PHOTO)
-
+            cameraBrowse()
         }
         //앨범 눌렀을때
         Imagepick_Album_Button.setOnClickListener(){
-            val checkSelfPermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            if (checkSelfPermission != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-            }
-            else{
-                openAlbum()
-            }
+            imageBrowse()
         }
 
     }
@@ -90,106 +84,95 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
         modify_Profile_ImageView.setImageBitmap(bitmap)
     }
 
-    private fun openAlbum(){
-        val intent = Intent("android.intent.action.GET_CONTENT")
-        intent.type = "image/*"
-        startActivityForResult(intent, FINAL_CHOOSE_PHOTO)
+    //앨범 꺼내는부분
+    override fun imageBrowse() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = MediaStore.Images.Media.CONTENT_TYPE
+        startActivityForResult(intent, PICK_FROM_ALBUM)
     }
 
-    //권한 관련
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode){
-            1 ->
-                if (grantResults.isNotEmpty() && grantResults.get(0) ==PackageManager.PERMISSION_GRANTED){
-                    openAlbum()
-                }
-                else {
-                    Toast.makeText(this, "You deied the permission", Toast.LENGTH_SHORT).show()
-                }
+    //카메라 꺼내는 부분
+    override fun cameraBrowse() {
+        val cameraintent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            tempFile = presenterImagePick.createImageFile()
+        } catch (e: IOException) {
+            Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+            finish()
+            e.printStackTrace()
+        }
+        if (tempFile != null) {
+            //val photoUri = Uri.fromFile(tempFile)
+            val photoUri = FileProvider.getUriForFile(this, "com.example.remindfeedback.fileprovider", tempFile)
+
+            Log.e("asd", tempFile.toString())
+            Log.e("asd", photoUri.toString())
+
+            cameraintent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            startActivityForResult(cameraintent, PICK_FROM_CAMERA)
+            Log.e("asd", "일단 카메라 인텐트는 넘어감")
         }
     }
+    private fun cropImage(photoUri: Uri) {//카메라 갤러리에서 가져온 사진을 크롭화면으로 보냄
+        //갤러리에서 선택한 경우에는 tempFile 이 없으므로 새로 생성해줍니다.
+        tempFile = presenterImagePick.createImageFile()
+        //크롭 후 저장할 Uri
+        val savingUri = Uri.fromFile(tempFile)//사진촬여은 tempFile이 만들어져있어 넣어서 저장하면됨
+        //하지만 갤러리는 크롭후에 이미지를 저장할 파일이 없기에 위 코드를넣어서 추가로 작성해줘야함
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when(requestCode){
-            //카메라로 찍을경우 이미지 uri를 비트맵에 담아서 셋 함
-            FINAL_TAKE_PHOTO ->
-                if (resultCode == Activity.RESULT_OK) {
-                    val bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri))
-                    Log.e("imagepick", imageUri.toString())
-                    fileUri = imageUri.toString()
-                    modify_Profile_ImageView!!.setImageBitmap(bitmap)
+        lastUri = tempFile.getAbsolutePath()
+        //이 유알아이가 최종적으로 내 프로필이 되는것임
+        Log.e("saving",lastUri)
+        Crop.of(photoUri, savingUri).asSquare().start(this)
+    }
+    //권한 요청
+    override fun tedPermission() {
+        presenterImagePick.tedPermission(this)
+    }
 
-                }
-            //앨범에서 가져올경우
-            FINAL_CHOOSE_PHOTO ->
-                if (resultCode == Activity.RESULT_OK) {
-                    if (Build.VERSION.SDK_INT >= 19) {
-                        handleImageOnKitkat(data)
+    @SuppressLint("MissingSuperCall")
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode != Activity.RESULT_OK) {
+            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show()
+            if (tempFile != null) {
+                if (tempFile!!.exists()) {
+                    if (tempFile!!.delete()) {
+                        Log.e("Tag", tempFile!!.absolutePath + " 삭제 성공")
                     }
-                    else{
-                        handleImageBeforeKitkat(data)
-                    }
                 }
-        }
-    }
-
-
-
-    @TargetApi(19)
-    private fun handleImageOnKitkat(data: Intent?) {
-        var imagePath: String? = null
-        val uri = data!!.data
-        if (DocumentsContract.isDocumentUri(this, uri)){
-            val docId = DocumentsContract.getDocumentId(uri)
-            if ("com.android.providers.media.documents" == uri.authority){
-                val id = docId.split(":")[1]
-                val selsetion = MediaStore.Images.Media._ID + "=" + id
-                imagePath = imagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selsetion)
-
-
             }
-            else if ("com.android.providers.downloads.documents" == uri.authority){
-                val contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(docId))
-                imagePath = imagePath(contentUri, null)
+            return
+        }
+        when (requestCode) {
+            PICK_FROM_ALBUM -> {
+
+                val photoUri = data!!.data
+                Log.e("픽프롬 앨범", photoUri!!.toString())
+                cropImage(photoUri)
+            }
+            PICK_FROM_CAMERA -> {
+                Log.e("asd", "1")
+                val photoUri = Uri.fromFile(tempFile)
+                Log.e("asd", "2")
+                Log.e("픽프롬 카메라", photoUri.toString())
+
+                cropImage(photoUri)
+            }
+            Crop.REQUEST_CROP -> {
+                setImage()
             }
         }
-        else if ("content".equals(uri.scheme, ignoreCase = true)){
-            imagePath = imagePath(uri, null)
-        }
-        else if ("file".equals(uri.scheme, ignoreCase = true)){
-            imagePath = uri.path
-        }
-        Log.e("imagepick2",imagePath)
-        fileUri = imagePath
-        displayImage(imagePath)
+
     }
 
-    private fun handleImageBeforeKitkat(data: Intent?) {}
 
-    private fun imagePath(uri: Uri?, selection: String?): String {
-        var path: String? = null
-        val cursor = contentResolver.query(uri, null, selection, null, null )
-        if (cursor != null){
-            if (cursor.moveToFirst()) {
-                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
-            }
-            cursor.close()
-        }
-        return path!!
-    }
-
-    //이미지 받아서 보여주는 부분
-    private fun displayImage(imagePath: String?){
-        if (imagePath != null) {
-            val bitmap = BitmapFactory.decodeFile(imagePath)
-            modify_Profile_ImageView?.setImageBitmap(bitmap)
-        }
-        else {
-            Toast.makeText(this, "Failed to get image", Toast.LENGTH_SHORT).show()
-        }
-    }
+    fun setImage(){
+        val options = BitmapFactory.Options()
+        val originalBm = BitmapFactory.decodeFile(tempFile!!.getAbsolutePath(), options)
+        Log.d("Tag", "setImage : " + tempFile!!.getAbsolutePath())
+        val resizedbitmap = Bitmap.createScaledBitmap(originalBm, 650, 650, true) // 이미지 사이즈 조정
+        modify_Profile_ImageView.setImageBitmap(resizedbitmap) // 이미지뷰에 조정한 이미지 넣기
+ }
 
     //타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -210,7 +193,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     fun modify_Profile_Image_Button(): Boolean {
 
         val intent = Intent()
-            intent.putExtra("fileUri", fileUri)
+            intent.putExtra("fileUri", lastUri)
             setResult(Activity.RESULT_OK, intent)
             finish()
 
