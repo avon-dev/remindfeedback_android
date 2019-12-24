@@ -1,48 +1,42 @@
 package com.example.remindfeedback.MyPage.ImagePick
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.app.Activity
-import android.content.ContentUris
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.example.remindfeedback.R
 import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import com.soundcloud.android.crop.Crop
 import kotlinx.android.synthetic.main.activity_image_pick.*
-import kotlinx.android.synthetic.main.activity_my_page.*
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
-import java.net.URI
+import java.io.OutputStream
 import java.net.URL
 
 class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
 
 
-    internal val PICK_IMAGE_REQUEST = 1
-    internal var filePath: String? = null
     lateinit var tempFile:File //찍은 사진 넣는부분
     private val PICK_FROM_ALBUM = 1
     private val PICK_FROM_CAMERA = 2
     var lastUri: String? = ""
+    var isCamera:Boolean = false
 
     lateinit var presenterImagePick: PresenterImagePick
 
@@ -64,10 +58,12 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
 
         //카메라 눌렀을때
         Imagepick_Camera_Button.setOnClickListener(){
+            isCamera = true
             cameraBrowse()
         }
         //앨범 눌렀을때
         Imagepick_Album_Button.setOnClickListener(){
+            isCamera = false
             imageBrowse()
         }
 
@@ -104,13 +100,8 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
         if (tempFile != null) {
             //val photoUri = Uri.fromFile(tempFile)
             val photoUri = FileProvider.getUriForFile(this, "com.example.remindfeedback.fileprovider", tempFile)
-
-            Log.e("asd", tempFile.toString())
-            Log.e("asd", photoUri.toString())
-
             cameraintent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
             startActivityForResult(cameraintent, PICK_FROM_CAMERA)
-            Log.e("asd", "일단 카메라 인텐트는 넘어감")
         }
     }
     private fun cropImage(photoUri: Uri) {//카메라 갤러리에서 가져온 사진을 크롭화면으로 보냄
@@ -130,6 +121,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
         presenterImagePick.tedPermission(this)
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("MissingSuperCall")
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode != Activity.RESULT_OK) {
@@ -137,7 +129,6 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
             if (tempFile != null) {
                 if (tempFile!!.exists()) {
                     if (tempFile!!.delete()) {
-                        Log.e("Tag", tempFile!!.absolutePath + " 삭제 성공")
                     }
                 }
             }
@@ -147,15 +138,42 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
             PICK_FROM_ALBUM -> {
 
                 val photoUri = data!!.data
-                Log.e("픽프롬 앨범", photoUri!!.toString())
                 cropImage(photoUri)
             }
             PICK_FROM_CAMERA -> {
-                Log.e("asd", "1")
+                val bitmap = MediaStore.Images.Media
+                    .getBitmap(contentResolver, Uri.fromFile(tempFile))
+                val ei = ExifInterface(tempFile.absolutePath)
+                val orientation = ei.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_UNDEFINED
+                )
+                var rotatedBitmap: Bitmap? = presenterImagePick.rotateImage(bitmap, 90.toFloat());
+                /*
+                if(orientation == ExifInterface.ORIENTATION_ROTATE_90){
+                    rotatedBitmap = rotateImage(bitmap, 90.toFloat());
+                }else if(orientation ==ExifInterface.ORIENTATION_ROTATE_180 ){
+                    rotatedBitmap = rotateImage(bitmap, 180.toFloat());
+                }else if(orientation == ExifInterface.ORIENTATION_ROTATE_270){
+                    rotatedBitmap = rotateImage(bitmap, 270.toFloat());
+                }else if(orientation == ExifInterface.ORIENTATION_NORMAL){
+                    rotatedBitmap = bitmap;
+                }else{
+                    rotatedBitmap = rotateImage(bitmap, 90.toFloat());
+                }
+                */
+                modify_Profile_ImageView.setImageBitmap(rotatedBitmap)
+                var newfile:File = File(tempFile.absolutePath)
+                newfile.createNewFile()
+                var out:OutputStream? = null
+                out = FileOutputStream(newfile)
+                if (rotatedBitmap != null) {
+                    rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+                }else{
+                    Toast.makeText(this, "이미지 처리 오류!", Toast.LENGTH_SHORT).show()
+                }
+                Log.e("isCamera", isCamera.toString())
                 val photoUri = Uri.fromFile(tempFile)
-                Log.e("asd", "2")
-                Log.e("픽프롬 카메라", photoUri.toString())
-
                 cropImage(photoUri)
             }
             Crop.REQUEST_CROP -> {
@@ -165,13 +183,12 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
 
     }
 
+     fun setImage(){
 
-    fun setImage(){
         val options = BitmapFactory.Options()
         val originalBm = BitmapFactory.decodeFile(tempFile!!.getAbsolutePath(), options)
-        Log.d("Tag", "setImage : " + tempFile!!.getAbsolutePath())
         val resizedbitmap = Bitmap.createScaledBitmap(originalBm, 650, 650, true) // 이미지 사이즈 조정
-        modify_Profile_ImageView.setImageBitmap(resizedbitmap) // 이미지뷰에 조정한 이미지 넣기
+       // modify_Profile_ImageView.setImageBitmap(resizedbitmap) // 이미지뷰에 조정한 이미지 넣기
  }
 
     //타이틀바에 어떤 menu를 적용할지 정하는부분

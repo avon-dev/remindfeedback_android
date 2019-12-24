@@ -2,6 +2,8 @@ package com.example.remindfeedback.MyPage.ImagePick
 
 import android.Manifest
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.os.Environment
 import android.util.Log
 import com.example.remindfeedback.MyPage.ContractMyPage
@@ -12,6 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PresenterImagePick:ContractImagePick.Presenter {
+
 
 
     lateinit override var view: ContractImagePick.View
@@ -50,5 +53,15 @@ class PresenterImagePick:ContractImagePick.Presenter {
             .setDeniedMessage("[설정] > [권한] 에서 권한을 허용할 수 있습니다.")
             .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
             .check()
+    }
+
+    //이미지 회전하는 부분
+    override fun rotateImage(source: Bitmap, angle: Float): Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(90F)
+        return Bitmap.createBitmap(
+            source, 0, 0, source.width, source.height,
+            matrix, true
+        )
     }
 }
