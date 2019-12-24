@@ -49,10 +49,13 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
             if(calendarView.visibility == View.VISIBLE){
                 calendarView.visibility = View.GONE
                 drop_Calendar_Button.setImageResource(R.drawable.ic_down_black)
-
+                calendarView.setFocusableInTouchMode(false)
             }else{
                 drop_Calendar_Button.setImageResource(R.drawable.ic_up_black)
                 calendarView.visibility = View.VISIBLE
+                //포커스 맞춰주는 부분
+                calendarView.setFocusableInTouchMode(true)
+                calendarView.requestFocus()
             }
         }
         //날짜 구하는 코드
