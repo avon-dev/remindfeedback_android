@@ -19,6 +19,8 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import kotlinx.android.synthetic.main.activity_create_feedback.*
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View {
@@ -53,12 +55,14 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
                 calendarView.visibility = View.VISIBLE
             }
         }
-
+        //날짜 구하는 코드
+        val tz = TimeZone.getTimeZone("Asia/Seoul")
+        val gc = GregorianCalendar(tz)
         calendarView.visibility = View.GONE
         //달력 관련 코드
         calendarView.state().edit()
             .setFirstDayOfWeek(Calendar.SUNDAY)
-            .setMinimumDate(CalendarDay.from(2017, 0, 1))
+            .setMinimumDate(CalendarDay.from(gc.get(GregorianCalendar.YEAR), gc.get(GregorianCalendar.MONTH), gc.get(GregorianCalendar.DATE)))
             .setMaximumDate(CalendarDay.from(2030, 11, 31))
             .setCalendarDisplayMode(CalendarMode.MONTHS)
             .commit();this;
