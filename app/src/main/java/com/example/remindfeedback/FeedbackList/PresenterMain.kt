@@ -33,28 +33,30 @@ class PresenterMain : ContractMain.Presenter {
             override fun onResponse(call: Call<GetAllFeedback>, response: Response<GetAllFeedback>) {
                 if (response.isSuccessful) {
                     val testItem: GetAllFeedback = response.body()!!
-                    val aaaa:getAllData? = testItem.data
-                    val bbbb= aaaa!!.myFeedback
-                    val cccc= aaaa!!.category
+                    val allData:getAllData? = testItem.data
+                    val mFeedback= allData!!.myFeedback
+                    val mCategory= allData!!.category
                     var tag_Color:String? = null
-                    if (aaaa != null) {
-                        if (bbbb != null) {
-                            for (i in 0 until bbbb.size) {
+                    if (allData != null) {
+                        if (mFeedback != null) {
+                            for (i in 0 until mFeedback.size) {
                                 var mfl: myFeedback = myFeedback()
-                                mfl = bbbb[i]
+                                mfl = mFeedback[i]
                                 val date =
                                     SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(mfl.write_date)
                                 val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
                                 val dateNewFormat = sdf.format(date)
-                                if (cccc != null) {
-                                    for(j in 0 until cccc.size){
+                                if (mCategory != null) {
+                                    for(j in 0 until mCategory.size){
                                         var category_list : category = category()
-                                        category_list = cccc[j]
+                                        category_list = mCategory[j]
                                         if(category_list.category_id == mfl.category){
+                                            //카테고리가 내 카테고리 목록에 존재하면 그걸로 표시하고 포문 끝냄
                                             tag_Color = category_list.category_color
                                             break
                                         }
                                         else{
+                                            //카테고리 목록에 없을시 검정색으로 표시
                                             tag_Color = "#000000"
                                         }
                                     }
@@ -78,50 +80,6 @@ class PresenterMain : ContractMain.Presenter {
             override fun onFailure(call: Call<GetAllFeedback>, t: Throwable) {
             }
         })
-
-
-        /*
-        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
-        val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<GetFeedback> = apiService.GetFeedback(0)
-        register_request.enqueue(object : Callback<GetFeedback> {
-
-            override fun onResponse(call: Call<GetFeedback>, response: Response<GetFeedback>) {
-                if (response.isSuccessful) {
-                    val testItem: GetFeedback = response.body()!!
-                    val aaaa = testItem.data
-                    if (aaaa != null) {
-                        for (i in 0 until aaaa.size) {
-                            var mfl: myFeedback_List = myFeedback_List()
-                            mfl = aaaa[i]
-                            val date =
-                                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(mfl.write_date)
-                            val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
-                            val dateNewFormat = sdf.format(date)
-                            var addData: ModelFeedback =
-                                ModelFeedback(
-                                    mfl.id,
-                                    "조언자",
-                                    mfl.category,
-                                    mfl.title,
-                                    "dummy",
-                                    dateNewFormat,
-                                    false
-                                )
-                            adapterMainFeedback.addItem(addData)
-                            view.refresh()
-                        }
-                    } else {
-                    }
-                } else {
-                }
-                Log.e("tag", "response=" + response.raw())
-            }
-
-            override fun onFailure(call: Call<GetFeedback>, t: Throwable) {
-            }
-        })
-*/
     }
 
     override fun addItems(date: String?, title: String, adapterMainFeedback: AdapterMainFeedback) {

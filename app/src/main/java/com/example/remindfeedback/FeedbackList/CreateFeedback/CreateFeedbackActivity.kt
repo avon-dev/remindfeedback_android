@@ -8,6 +8,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -15,13 +17,13 @@ import com.example.remindfeedback.CreateFeedback.ContractCreateFeedback
 import com.example.remindfeedback.R
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import kotlinx.android.synthetic.main.activity_create_feedback.*
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
+import com.example.remindfeedback.etcProcess.AdapterSpinner
+import kotlinx.android.synthetic.main.activity_main.*
+
 
 class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View {
 
@@ -30,6 +32,11 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
     var stringDate:String? = null
     lateinit var ab: ActionBar
     var modifyID:Int = -1
+
+
+    //Adapter
+    var adapterSpinner: AdapterSpinner? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_feedback)
@@ -41,10 +48,22 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         ab.setDisplayHomeAsUpEnabled(true)
 
         setData()
-
         presenterCreateFeedback = PresenterCreateFeedback().apply {
             view = this@CreateFeedbackActivity
+            mContext = this@CreateFeedbackActivity
         }
+
+
+        //스피너코드
+        var spinnerArray = arrayListOf<String>()
+        var colorArray = arrayListOf<String>()
+        var idArray = arrayListOf<Int>()
+        presenterCreateFeedback.getCategoryData(colorArray, spinnerArray, idArray)
+        adapterSpinner = AdapterSpinner(this, spinnerArray, colorArray, idArray)
+        create_Feedback_Category_Spinner.adapter = adapterSpinner
+        //여기까지 스피너 코드
+
+
         drop_Calendar_Button.setOnClickListener(){
             if(calendarView.visibility == View.VISIBLE){
                 calendarView.visibility = View.GONE

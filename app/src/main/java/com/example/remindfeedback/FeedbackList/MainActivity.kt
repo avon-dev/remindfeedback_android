@@ -99,9 +99,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             android.R.layout.simple_spinner_dropdown_item,
             spinnerArray
         )
-
-
-
         category_Spinner.setAdapter(arrayAdapter)
         category_Spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {

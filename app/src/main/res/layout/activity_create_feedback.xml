@@ -23,16 +23,13 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     android:textSize="20sp" />
 
-            <EditText
-                    android:id="@+id/create_Feedback_Category"
+            <Spinner
+                    android:id="@+id/create_Feedback_Category_Spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/under_line_gray"
-                    android:ems="10"
-                    android:hint="피드백 주제를 입력하거나 찾아주세요"
-                    android:inputType="textPersonName"
-                    android:padding="16dp"
-                    android:textSize="18sp" />
+                    android:spinnerMode="dialog"
+                    android:theme="@style/SpinnerTheme"
+                    android:layout_height="45dp"
+                    android:background="@drawable/spinner_type2" />
 
             <TextView
                     android:id="@+id/textView4"

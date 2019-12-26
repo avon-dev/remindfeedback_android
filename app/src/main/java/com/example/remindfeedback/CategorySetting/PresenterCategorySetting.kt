@@ -25,13 +25,13 @@ class PresenterCategorySetting: ContractCategorySetting.Presenter {
             override fun onResponse(call: Call<GetCategory>, response: Response<GetCategory>) {
                 if (response.isSuccessful) {
                     val category: GetCategory = response.body()!!
-                    val aaaa = category.data
-                    Log.e("asdㅁㄴㅇㅁㄴㅇ", aaaa.toString())
-                    if (aaaa != null) {
-                        for (i in 0 until aaaa.size) {
+                    val mCategory = category.data
+                    Log.e("asdㅁㄴㅇㅁㄴㅇ", mCategory.toString())
+                    if (mCategory != null) {
+                        for (i in 0 until mCategory.size) {
 
                             var myList: myCategory_List = myCategory_List()
-                            myList = aaaa[i]
+                            myList = mCategory[i]
                             var addData: ModelCategorySetting =
                                 ModelCategorySetting(myList.category_id,myList.category_color, myList.category_title)
                             Log.e("category_title", myList.category_title )
