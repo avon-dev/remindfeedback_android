@@ -5,26 +5,15 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AlertDialog
-import com.example.remindfeedback.CategorySetting.CategorySettingActivity
-import com.example.remindfeedback.CategorySetting.ContractCategorySetting
-import com.example.remindfeedback.CategorySetting.CreateCategory.ColorList.ColorListActivity
+import com.example.remindfeedback.CategorySetting.CreateCategory.ColorList.PickCategoryActivity
 import com.example.remindfeedback.CategorySetting.CreateCategory.ContractCreateCategory
 import com.example.remindfeedback.CategorySetting.CreateCategory.PresenterCreateCategory
-import com.example.remindfeedback.CategorySetting.ModelCategorySetting
-import com.example.remindfeedback.CategorySetting.PresenterCategorySetting
-import com.example.remindfeedback.FriendsList.PresenterFriendsList
 import com.example.remindfeedback.R
-import com.example.remindfeedback.Register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_create_category.*
-import kotlinx.android.synthetic.main.activity_find_friends.*
 
 class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View {
 
@@ -51,7 +40,7 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
         }
         //색상 리스트
         another_Color_Select.setOnClickListener {
-            val intent = Intent(this, ColorListActivity::class.java)
+            val intent = Intent(this, PickCategoryActivity::class.java)
             startActivityForResult(intent, 100)
         }
     }

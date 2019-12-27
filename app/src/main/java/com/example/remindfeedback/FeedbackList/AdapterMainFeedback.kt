@@ -60,15 +60,8 @@ class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelF
             main_Feedback_Name.text = feedback_list.adviser
             main_Feedback_Script.text = feedback_list.script
             main_Feedback_Date.text = feedback_list.date
+            main_Feedback_Tag_Color.setBackgroundColor(Color.parseColor(feedback_list.tagColor))
 
-            //태그의 색을 정의해주는부분
-            //만약 tagColor의 값이 blue라면 배경 색깔을 blue로 표시해줌
-            if(feedback_list.category == 1){
-                main_Feedback_Tag_Color.setBackgroundColor(Color.BLUE)
-            }else{
-                //색깔마다 조건문을 만들어줘야하지만 아직 정해지지않은 임시이기 때문에 나머지는 red로 표기할것
-                main_Feedback_Tag_Color.setBackgroundColor(Color.RED)
-            }
 
             //피더의 프로필 이미지 정의해주는부분, 원래 각자의 프로필 이미지를 받아와야하지만 일단 기본이미지로 설정함
             main_Feedback_Profile_Image.setImageResource(R.drawable.ic_default_profile)

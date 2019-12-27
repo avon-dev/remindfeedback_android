@@ -5,12 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.remindfeedback.CategorySetting.AdapterCategorySetting
-import com.example.remindfeedback.CategorySetting.CreateCategory.PresenterCreateCategory
-import com.example.remindfeedback.CategorySetting.ModelCategorySetting
 import com.example.remindfeedback.R
-import kotlinx.android.synthetic.main.activity_category_setting.*
 import kotlinx.android.synthetic.main.activity_color_list.*
 
 class ColorListActivity : AppCompatActivity(), ContractColorList.View{

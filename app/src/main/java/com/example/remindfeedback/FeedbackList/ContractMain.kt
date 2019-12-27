@@ -1,6 +1,8 @@
 package com.example.remindfeedback.FeedbackList
 
 import android.content.Context
+import android.widget.ImageView
+import android.widget.TextView
 import java.util.*
 
 interface ContractMain {
@@ -15,7 +17,7 @@ interface ContractMain {
 
         fun loadItems(list: ArrayList<ModelFeedback>, adapterMainFeedback: AdapterMainFeedback)
 
-        fun addItems(date: String?, title:String, adapterMainFeedback: AdapterMainFeedback)
+        fun addItems(category_id: Int, date: String?, title:String,color:String, adapterMainFeedback: AdapterMainFeedback)
 
         fun removeItems(id:Int, context: Context)
 

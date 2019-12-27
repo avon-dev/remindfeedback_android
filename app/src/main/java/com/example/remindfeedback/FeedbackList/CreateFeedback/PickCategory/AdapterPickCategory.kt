@@ -16,9 +16,9 @@ import java.util.ArrayList
 
 
 
-class AdapterColorList(val context: Context, val arrayList: ArrayList<ModelColorList>, var presenterColorList: PresenterColorList) :   RecyclerView.Adapter<AdapterColorList.Holder>() {
+class AdapterPickCategory(val context: Context, val arrayList: ArrayList<ModelPickCategory>, var presenterPickCategory: PresenterPickCategory) :   RecyclerView.Adapter<AdapterPickCategory.Holder>() {
 
-    fun addItem(item: ModelColorList) {//아이템 추가
+    fun addItem(item: ModelPickCategory) {//아이템 추가
         if (arrayList != null) {//널체크 해줘야함
             arrayList.add(item)
         }
@@ -30,7 +30,7 @@ class AdapterColorList(val context: Context, val arrayList: ArrayList<ModelColor
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_color_list, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_pick_category, parent, false)
         return Holder(view)
     }
 
@@ -43,21 +43,18 @@ class AdapterColorList(val context: Context, val arrayList: ArrayList<ModelColor
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val color_Base_Tv = itemView.findViewById<TextView>(R.id.color_Base_Tv)
-        val color_Holder = itemView.findViewById<TextView>(R.id.color_Holder)
+        val pick_Category_Color_Tv = itemView.findViewById<TextView>(R.id.pick_Category_Color_Tv)
+        val pick_Category_Title_Tv = itemView.findViewById<TextView>(R.id.pick_Category_Title_Tv)
+        val pick_Category_Id_Tv = itemView.findViewById<TextView>(R.id.pick_Category_Id_Tv)
 
 
-        fun bind (colorList: ModelColorList, context: Context) {
+        fun bind (colorList: ModelPickCategory, context: Context) {
             //헥사코드인식해서 배경으로 만듦
-            color_Base_Tv.setBackgroundColor(Color.parseColor(colorList.color))
-            color_Holder.text = colorList.color
-            Log.e("tag",colorList.color)
-            color_Base_Tv.setOnClickListener(){
-                color_Base_Tv.text = "✔"
-                val intent = Intent()
-                presenterColorList.returnColor(color_Holder.text.toString())
-
-
+            pick_Category_Color_Tv.setBackgroundColor(Color.parseColor(colorList.color))
+            pick_Category_Title_Tv.text = colorList.title
+            pick_Category_Id_Tv.text = colorList.id.toString()
+            itemView.setOnClickListener(){
+                presenterPickCategory.returnData(ModelPickCategory(colorList.id, colorList.color, colorList.title))
             }
         }
     }

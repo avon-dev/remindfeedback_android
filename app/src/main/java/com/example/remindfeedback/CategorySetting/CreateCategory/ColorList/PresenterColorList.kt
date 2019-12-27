@@ -1,7 +1,6 @@
 package com.example.remindfeedback.CategorySetting.CreateCategory.ColorList
 
 import android.content.Context
-import com.example.remindfeedback.CategorySetting.CreateCategory.ContractCreateCategory
 
 class PresenterColorList:ContractColorList.Presenter {
 
