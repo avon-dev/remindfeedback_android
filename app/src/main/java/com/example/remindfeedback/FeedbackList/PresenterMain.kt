@@ -82,22 +82,23 @@ class PresenterMain : ContractMain.Presenter {
         })
     }
 
-    override fun addItems(date: String?, title: String, adapterMainFeedback: AdapterMainFeedback) {
+    override fun addItems(category_id:Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback) {
         val date2 = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
         val dateNewFormat = sdf.format(date2)
         val ndate: Date = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val createFeedback: CreateFeedback = CreateFeedback("aaaa", 3, title, ndate)
+        val createFeedback: CreateFeedback = CreateFeedback("aaaa", category_id, title, ndate)
         val register_request: Call<CreateFeedback> = apiService.CreateFeedback(createFeedback)
         register_request.enqueue(object : Callback<CreateFeedback> {
 
             override fun onResponse(call: Call<CreateFeedback>, response: Response<CreateFeedback>) {
                 if (response.isSuccessful) {
                     val addData: ModelFeedback =
-                        ModelFeedback(-1, "조언자", 1,"#000000", title, "dummy", dateNewFormat, false)
+                        ModelFeedback(-1, "조언자", category_id,color, title, "dummy", dateNewFormat, false)
                     adapterMainFeedback.addItem(addData)
+
                     view.refresh()
                 } else {
                     val StatusCode = response.code()
@@ -111,37 +112,6 @@ class PresenterMain : ContractMain.Presenter {
 
     }
 
-    override fun setTagColor(category_id: Int, tagColor: TextView) {
-
-        /*
-        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
-        val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<GetCategory> = apiService.GetCategory()
-        register_request.enqueue(object : Callback<GetCategory> {
-            override fun onResponse(call: Call<GetCategory>, response: Response<GetCategory>) {
-                if (response.isSuccessful) {
-                    val category: GetCategory = response.body()!!
-                    val aaaa = category.data
-                    if (aaaa != null) {
-                        for (i in 0 until aaaa.size) {
-                            var myList: myCategory_List = myCategory_List()
-                            myList = aaaa[i]
-                           if(myList.category_id == category_id){
-                               tagColor.setBackgroundColor(Color.parseColor((myList.category_color)))
-                           }
-                            view.refresh()
-                        }
-                    } else {
-                    }
-                } else {
-                }
-            }
-
-            override fun onFailure(call: Call<GetCategory>, t: Throwable) {
-            }
-        })
-        */
-    }
 
     override fun removeItems(id: Int, context: Context) {
         Log.e("리무브 테스트", "$id")

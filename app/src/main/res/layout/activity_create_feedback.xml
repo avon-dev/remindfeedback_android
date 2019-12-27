@@ -23,13 +23,41 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     android:textSize="20sp" />
 
-            <Spinner
-                    android:id="@+id/create_Feedback_Category_Spinner"
+            <LinearLayout
                     android:layout_width="match_parent"
-                    android:spinnerMode="dialog"
-                    android:theme="@style/SpinnerTheme"
-                    android:layout_height="45dp"
-                    android:background="@drawable/spinner_type2" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/under_line"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                <TextView
+                        android:id="@+id/create_Feedback_Color_Tv"
+                        android:background="@color/black"
+                        android:layout_width="40dp"
+                        android:layout_margin="10dp"
+                        android:layout_height="40dp"/>
+                <TextView
+                        android:id="@+id/create_Feedback_Title_Tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:alpha="0.87"
+                        android:gravity="center"
+                        android:paddingLeft="13dp"
+                        android:text="Default"
+                        android:textColor="#000"
+                        android:textColorHint="#1f000000" android:textSize="19dp"/>
+                <TextView
+                        android:id="@+id/create_Feedback_Id_Tv"
+                        android:layout_width="1dp"
+                        android:layout_height="1dp"/>
+            </LinearLayout>
+            <Button
+                    android:id="@+id/pick_Category_Button"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/big_input_bg"
+                    android:layout_height="wrap_content" android:text="주제 변경"/>
 
             <TextView
                     android:id="@+id/textView4"

@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         //id 9999는 임의로 집어넣은값
-                        presenterMain.addItems(data.getStringExtra("date"),data.getStringExtra("title"),mAdapter)
+                        presenterMain.addItems(data.getStringExtra("category_id").toInt(),data.getStringExtra("date"),data.getStringExtra("title"),data.getStringExtra("color"),mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
@@ -147,8 +147,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             112 -> {    // 피드백 수정 후 돌아왔을 때
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        Log.e("return", data.getIntExtra("id", -1).toString())
-                        presenterMain.updateItems(data.getIntExtra("id",-1), data.getStringExtra("date"), data.getStringExtra("title"))
+                        Log.e("return", data.getIntExtra("modify_id", -1).toString())
+                        presenterMain.updateItems(data.getIntExtra("modify_id",-1), data.getStringExtra("date"), data.getStringExtra("title"))
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }

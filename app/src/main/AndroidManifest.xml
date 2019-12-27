@@ -23,7 +23,7 @@
                 android:screenOrientation="portrait"
                 android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-                android:name=".CategorySetting.CreateCategory.ColorList.ColorListActivity"
+                android:name=".CategorySetting.CreateCategory.ColorList.PickCategoryActivity"
                 android:theme="@style/Theme.MyDialog"/>
         <activity android:name=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity"/>
         <activity
@@ -61,6 +61,10 @@
                 android:parentActivityName=".FeedbackList.MainActivity"/>
         <activity
                 android:name=".Register.RegisterActivity"
+                android:parentActivityName=".Login.LoginActivity"/>
+        <activity
+                android:name=".FeedbackList.CreateFeedback.PickCategory.PickCategoryActivity"
+                android:theme="@style/Theme.MyDialog"
                 android:parentActivityName=".Login.LoginActivity"/>
         <activity
                 android:name=".FeedbackList.MainActivity"

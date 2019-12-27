@@ -2,27 +2,26 @@ package com.example.remindfeedback.FeedbackList.CreateFeedback
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import com.example.remindfeedback.CategorySetting.CreateCategory.ColorList.PickCategoryActivity
 import com.example.remindfeedback.CreateFeedback.ContractCreateFeedback
 import com.example.remindfeedback.R
+import com.example.remindfeedback.Register.RegisterActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import kotlinx.android.synthetic.main.activity_create_feedback.*
 import java.text.SimpleDateFormat
 import java.util.*
-import com.example.remindfeedback.etcProcess.AdapterSpinner
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View {
@@ -32,10 +31,8 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
     var stringDate:String? = null
     lateinit var ab: ActionBar
     var modifyID:Int = -1
+    var intentColor:String = "#000000"
 
-
-    //Adapter
-    var adapterSpinner: AdapterSpinner? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,15 +51,10 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         }
 
 
-        //스피너코드
-        var spinnerArray = arrayListOf<String>()
-        var colorArray = arrayListOf<String>()
-        var idArray = arrayListOf<Int>()
-        presenterCreateFeedback.getCategoryData(colorArray, spinnerArray, idArray)
-        adapterSpinner = AdapterSpinner(this, spinnerArray, colorArray, idArray)
-        create_Feedback_Category_Spinner.adapter = adapterSpinner
-        //여기까지 스피너 코드
-
+        pick_Category_Button.setOnClickListener(){
+            val intent = Intent(this, PickCategoryActivity::class.java)
+            startActivityForResult(intent, 100)
+        }
 
         drop_Calendar_Button.setOnClickListener(){
             if(calendarView.visibility == View.VISIBLE){
@@ -104,6 +96,29 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
 
     }
 
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when(requestCode) {
+            100 -> {//크리에이트 화면에서 돌아왔을때
+                when(resultCode) {
+                    Activity.RESULT_OK -> if (data != null) {
+                        Log.e("asadasda", "리턴")
+                       // presenterCategorySetting.addItems(data.getStringExtra("color"),data.getStringExtra("title"),mAdapter)
+                        create_Feedback_Title_Tv.text = data.getStringExtra("title")
+                        create_Feedback_Color_Tv.setBackgroundColor(Color.parseColor(data.getStringExtra("color")))
+                        create_Feedback_Id_Tv.text = data.getIntExtra("id", -1).toString()
+                        intentColor = data.getStringExtra("color")
+                    }
+                    Activity.RESULT_CANCELED -> Toast.makeText(this@CreateFeedbackActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+    }
+
+
     // 피드백 수정시 화면에 기존 데이터 보여주기
     override fun setData() {
         if (intent.hasExtra("title")){
@@ -141,12 +156,13 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         }else{
             val intent = Intent()
             if(modifyID != -1){
-                intent.putExtra("id", modifyID)
+                intent.putExtra("modify_id", modifyID)
                 Log.e("aaaaaa", modifyID.toString())
             }
             intent.putExtra("title", create_Feedback_Title.text.toString())
             intent.putExtra("date", stringDate)
-
+            intent.putExtra("color", intentColor)
+            intent.putExtra("category_id", create_Feedback_Id_Tv.text.toString())
             setResult(Activity.RESULT_OK, intent)
             finish()
         }

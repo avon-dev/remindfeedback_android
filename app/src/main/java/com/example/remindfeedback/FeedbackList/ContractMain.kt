@@ -15,11 +15,9 @@ interface ContractMain {
         var view: View
         var context:Context
 
-        fun setTagColor(category_id:Int, tagColor:TextView)
-
         fun loadItems(list: ArrayList<ModelFeedback>, adapterMainFeedback: AdapterMainFeedback)
 
-        fun addItems(date: String?, title:String, adapterMainFeedback: AdapterMainFeedback)
+        fun addItems(category_id: Int, date: String?, title:String,color:String, adapterMainFeedback: AdapterMainFeedback)
 
         fun removeItems(id:Int, context: Context)
 

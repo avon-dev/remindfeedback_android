@@ -14,7 +14,6 @@ interface ContractCreateFeedback {
         var view: View
         var mContext:Context
 
-        fun getCategoryData(colorArray:ArrayList<String>, titleArray:ArrayList<String>, idArray:ArrayList<Int>)
     }
 
 }
