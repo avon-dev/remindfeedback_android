@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         //id 9999는 임의로 집어넣은값
-                        presenterMain.addItems(data.getStringExtra("category_id").toInt(),data.getStringExtra("date"),data.getStringExtra("title"),data.getStringExtra("color"),mAdapter)
+                        presenterMain.addItems(arrayList,data.getStringExtra("category_id").toInt(),data.getStringExtra("date"),data.getStringExtra("title"),data.getStringExtra("color"),mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
@@ -165,7 +165,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         intent.putExtra("date", date)
         startActivityForResult(intent,112)
     }
-
 
     //fab을 위해서 onclick 상속받음
     override fun onClick(v: View?) {

@@ -82,7 +82,7 @@ class PresenterMain : ContractMain.Presenter {
         })
     }
 
-    override fun addItems(category_id:Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback) {
+    override fun addItems(list: ArrayList<ModelFeedback>,category_id:Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback) {
         val date2 = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
         val dateNewFormat = sdf.format(date2)
@@ -98,7 +98,8 @@ class PresenterMain : ContractMain.Presenter {
                     val addData: ModelFeedback =
                         ModelFeedback(-1, "조언자", category_id,color, title, "dummy", dateNewFormat, false)
                     adapterMainFeedback.addItem(addData)
-
+                    list.clear()
+                    loadItems(list, adapterMainFeedback)
                     view.refresh()
                 } else {
                     val StatusCode = response.code()
