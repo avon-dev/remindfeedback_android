@@ -8,7 +8,7 @@ import java.util.*
 interface ContractMain {
     interface View{
         fun refresh()
-        fun modifyFeedbackActivity(id:Int, date: String?, title: String)
+        fun modifyFeedbackActivity(id:Int,category_id: Int, date: String?, title: String)
     }
 
     interface Presenter {
@@ -21,9 +21,9 @@ interface ContractMain {
 
         fun removeItems(id:Int, context: Context)
 
-        fun updateItems(id:Int, date: String?, title: String)
+        fun updateItems(list: ArrayList<ModelFeedback>,item_id:Int,category_id: Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback)
 
-        fun modifyFeedbackActivity(id:Int, date: String?, title: String)
+        fun modifyFeedbackActivity(id:Int, category_id: Int, date: String?, title: String)
     }
 
 }
