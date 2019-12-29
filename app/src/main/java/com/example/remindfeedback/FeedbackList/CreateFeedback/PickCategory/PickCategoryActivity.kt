@@ -1,4 +1,4 @@
-package com.example.remindfeedback.CategorySetting.CreateCategory.ColorList
+package com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory
 
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity

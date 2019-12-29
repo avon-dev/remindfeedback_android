@@ -9,7 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
-import com.example.remindfeedback.CategorySetting.CreateCategory.ColorList.PickCategoryActivity
+import com.example.remindfeedback.CategorySetting.CreateCategory.ColorList.ColorListActivity
 import com.example.remindfeedback.CategorySetting.CreateCategory.ContractCreateCategory
 import com.example.remindfeedback.CategorySetting.CreateCategory.PresenterCreateCategory
 import com.example.remindfeedback.R
@@ -40,7 +40,7 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
         }
         //색상 리스트
         another_Color_Select.setOnClickListener {
-            val intent = Intent(this, PickCategoryActivity::class.java)
+            val intent = Intent(this, ColorListActivity::class.java)
             startActivityForResult(intent, 100)
         }
     }
@@ -59,7 +59,6 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
                 }
             }
         }
-
     }
 
     override fun setData() {

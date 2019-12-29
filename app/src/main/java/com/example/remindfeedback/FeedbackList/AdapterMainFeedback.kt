@@ -76,6 +76,7 @@ class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelF
             //그냥 클릭했을때
             itemView.setOnClickListener {
                 val intent = Intent(context, FeedbackDetailActivity::class.java)
+                intent.putExtra("feedback_id", feedback_list.feedback_Id)
                 context.startActivity(intent)
             }
 
@@ -91,12 +92,12 @@ class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelF
 
                 update_Tv.setOnClickListener{
                     Log.e("asda", "수정"+adapterPosition)
-                    presenterMain.modifyFeedbackActivity(feedback_list.id,feedback_list.category, feedback_list.date, feedback_list.script)
+                    presenterMain.modifyFeedbackActivity(feedback_list.feedback_Id,feedback_list.category, feedback_list.date, feedback_list.script)
                     dialogInterface!!.dismiss()
                 }
                 delete_Tv.setOnClickListener{
                     removeAt(adapterPosition)
-                    presenterMain.removeItems(feedback_list.id, context)
+                    presenterMain.removeItems(feedback_list.feedback_Id, context)
                     dialogInterface!!.dismiss()
                 }
                 dialog.setView(mView)

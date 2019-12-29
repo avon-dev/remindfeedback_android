@@ -82,7 +82,7 @@
                                 android:layout_height="50dp" app:srcCompat="@drawable/ic_photo_black"
                                 android:id="@+id/contents_Image"/>
                         <TextView
-                                android:id="@+id/type_Change_Button"
+                                android:id="@+id/contents_Type_Change_Button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="20dp"
