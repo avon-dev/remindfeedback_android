@@ -82,7 +82,7 @@ class PresenterMain : ContractMain.Presenter {
         })
     }
 
-    override fun addItems(category_id:Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback) {
+    override fun addItems(list: ArrayList<ModelFeedback>,category_id:Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback) {
         val date2 = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
         val dateNewFormat = sdf.format(date2)
@@ -98,7 +98,8 @@ class PresenterMain : ContractMain.Presenter {
                     val addData: ModelFeedback =
                         ModelFeedback(-1, "조언자", category_id,color, title, "dummy", dateNewFormat, false)
                     adapterMainFeedback.addItem(addData)
-
+                    list.clear()
+                    loadItems(list, adapterMainFeedback)
                     view.refresh()
                 } else {
                     val StatusCode = response.code()
@@ -137,17 +138,18 @@ class PresenterMain : ContractMain.Presenter {
     }
 
     // 피드백 수정
-    override fun updateItems(id: Int, date: String?, title: String) {
+    override fun updateItems(list: ArrayList<ModelFeedback>,item_id:Int,category_id: Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback) {
         val ndate: Date = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val modifyFeedback: CreateFeedback = CreateFeedback("얍", 1, title, ndate)
-        val register_request: Call<CreateFeedback> = apiService.ModifyFeedback(id, modifyFeedback)
+        val modifyFeedback: CreateFeedback = CreateFeedback("얍", category_id, title, ndate)
+        val register_request: Call<CreateFeedback> = apiService.ModifyFeedback(item_id, modifyFeedback)
         register_request.enqueue(object : Callback<CreateFeedback> {
 
             override fun onResponse(call: Call<CreateFeedback>, response: Response<CreateFeedback>) {
                 if (response.isSuccessful) {
-                    Log.e("피드백 수정 성공", "응")
+                    list.clear()
+                    loadItems(list, adapterMainFeedback)
                     view.refresh()
                 } else {
                 }
@@ -160,9 +162,8 @@ class PresenterMain : ContractMain.Presenter {
     }
 
     // 피드백 수정화면 띄우기
-    override fun modifyFeedbackActivity(id: Int, date: String?, title: String) {
-        view.modifyFeedbackActivity(id, date, title)
-        Log.e("Presenter", id.toString())
+    override fun modifyFeedbackActivity(id: Int,category_id: Int, date: String?, title: String) {
+        view.modifyFeedbackActivity(id, category_id,date, title)
     }
 
 

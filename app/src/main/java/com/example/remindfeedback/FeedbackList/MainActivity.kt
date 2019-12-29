@@ -138,8 +138,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             111 -> {    // 피드백 추가 후 돌아왔을 때
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        //id 9999는 임의로 집어넣은값
-                        presenterMain.addItems(data.getStringExtra("category_id").toInt(),data.getStringExtra("date"),data.getStringExtra("title"),data.getStringExtra("color"),mAdapter)
+                        presenterMain.addItems(arrayList,data.getStringExtra("category_id").toInt(),data.getStringExtra("date"),data.getStringExtra("title"),data.getStringExtra("color"),mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
@@ -148,7 +147,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         Log.e("return", data.getIntExtra("modify_id", -1).toString())
-                        presenterMain.updateItems(data.getIntExtra("modify_id",-1), data.getStringExtra("date"), data.getStringExtra("title"))
+                        presenterMain.updateItems(arrayList,data.getIntExtra("modify_id",-1),data.getIntExtra("category_id",-1),data.getStringExtra("date"), data.getStringExtra("title"),data.getStringExtra("color"),mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
@@ -157,15 +156,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     // 피드백 수정화면
-    override fun modifyFeedbackActivity(id: Int, date: String?, title: String) {
+    override fun modifyFeedbackActivity(id: Int, category_id: Int,date: String?, title: String) {
         val intent = Intent(this, CreateFeedbackActivity::class.java)
         Log.e("activity", id.toString())
         intent.putExtra("id", id)
+        intent.putExtra("category_id", category_id)
+        Log.e("modifyFeedbackActivity", category_id.toString())
         intent.putExtra("title", title)
         intent.putExtra("date", date)
         startActivityForResult(intent,112)
     }
-
 
     //fab을 위해서 onclick 상속받음
     override fun onClick(v: View?) {
@@ -246,10 +246,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.feedback_Request_Alarm -> feedback_Request_Alarm()
 
         }
-
-        //여기 선택된거 색 바꿔주는 부분임 일단 주석처리
-        //item.isChecked = true
-        //item.title
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }

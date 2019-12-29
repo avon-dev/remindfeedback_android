@@ -91,7 +91,7 @@ class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelF
 
                 update_Tv.setOnClickListener{
                     Log.e("asda", "수정"+adapterPosition)
-                    presenterMain.modifyFeedbackActivity(feedback_list.id, feedback_list.date, feedback_list.script)
+                    presenterMain.modifyFeedbackActivity(feedback_list.id,feedback_list.category, feedback_list.date, feedback_list.script)
                     dialogInterface!!.dismiss()
                 }
                 delete_Tv.setOnClickListener{

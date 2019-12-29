@@ -31,6 +31,7 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
     var stringDate:String? = null
     lateinit var ab: ActionBar
     var modifyID:Int = -1
+    var modify_Category_ID:Int = -1
     var intentColor:String = "#000000"
 
 
@@ -101,15 +102,14 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         super.onActivityResult(requestCode, resultCode, data)
 
         when(requestCode) {
-            100 -> {//크리에이트 화면에서 돌아왔을때
+            100 -> {
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        Log.e("asadasda", "리턴")
-                       // presenterCategorySetting.addItems(data.getStringExtra("color"),data.getStringExtra("title"),mAdapter)
                         create_Feedback_Title_Tv.text = data.getStringExtra("title")
                         create_Feedback_Color_Tv.setBackgroundColor(Color.parseColor(data.getStringExtra("color")))
                         create_Feedback_Id_Tv.text = data.getIntExtra("id", -1).toString()
                         intentColor = data.getStringExtra("color")
+                        modify_Category_ID = data.getIntExtra("id", -1)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@CreateFeedbackActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
@@ -124,6 +124,8 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         if (intent.hasExtra("title")){
             ab.setTitle("피드백 수정")
             modifyID = intent.getIntExtra("id", -1)
+            modify_Category_ID = intent.getIntExtra("category_id", -1)
+            Log.e("setData", modify_Category_ID.toString())
             val title = intent.getStringExtra("title")
             val date = intent.getStringExtra("date")
             create_Feedback_Title.setText(title)
@@ -157,12 +159,13 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
             val intent = Intent()
             if(modifyID != -1){
                 intent.putExtra("modify_id", modifyID)
-                Log.e("aaaaaa", modifyID.toString())
+                intent.putExtra("category_id", modify_Category_ID)
+            }else{
+                intent.putExtra("category_id", create_Feedback_Id_Tv.text.toString())
             }
             intent.putExtra("title", create_Feedback_Title.text.toString())
             intent.putExtra("date", stringDate)
             intent.putExtra("color", intentColor)
-            intent.putExtra("category_id", create_Feedback_Id_Tv.text.toString())
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
