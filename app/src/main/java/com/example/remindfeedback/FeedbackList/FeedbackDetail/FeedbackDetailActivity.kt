@@ -54,14 +54,14 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
         feedback_Detail_Recyclerview.layoutManager = lm
         feedback_Detail_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
 
-
-
         val intent = intent
         feedback_id= intent.getIntExtra("feedback_id", -1)
+        feedback_Detail_Title_Tv.text = "["+intent.getStringExtra("title")+"]에 대한 피드백"
+        feedback_Detail_Date_Tv.text = "목표일 : "+intent.getStringExtra("date")
+
         presenterFeedbackDetail.loadItems(arrayList, mAdapter,feedback_id)
 
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when(requestCode) {
@@ -76,7 +76,6 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
             }
         }
     }
-
     //타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.feedback_detail_menu, menu)

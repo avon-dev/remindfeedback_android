@@ -44,6 +44,8 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_pick)
 
+        tedPermission()
+
         //액션바 설정
         var ab: ActionBar = this!!.supportActionBar!!
         ab.setTitle("프로필 사진 수정")
@@ -90,8 +92,9 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     //카메라 꺼내는 부분
     override fun cameraBrowse() {
         val cameraintent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        tempFile = presenterImagePick.createImageFile()
         try {
-            tempFile = presenterImagePick.createImageFile()
+
         } catch (e: IOException) {
             Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
             finish()
@@ -118,6 +121,10 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     }
     //권한 요청
     override fun tedPermission() {
+        presenterImagePick = PresenterImagePick().apply {
+            view = this@ImagePickActivity
+            mContext = this@ImagePickActivity
+        }
         presenterImagePick.tedPermission(this)
     }
 

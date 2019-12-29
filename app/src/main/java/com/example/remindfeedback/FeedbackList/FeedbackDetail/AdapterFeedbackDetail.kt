@@ -7,10 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.remindfeedback.Alarm.AdapterAlarm
-import com.example.remindfeedback.Alarm.ModelAlarm
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.Post.PostActivity
 import com.example.remindfeedback.R
 import java.util.ArrayList
@@ -48,8 +45,8 @@ class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<Model
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
-        val feedback_Detail_Title = itemView.findViewById<TextView>(R.id.feedback_Detail_Title)
-        val feedback_Detail_Date = itemView.findViewById<TextView>(R.id.feedback_Detail_Date)
+        val feedback_Detail_Title = itemView.findViewById<TextView>(R.id.feedback_Detail_Title_Tv)
+        val feedback_Detail_Date = itemView.findViewById<TextView>(R.id.feedback_Detail_Date_Tv)
         val feedback_Detail_Contents = itemView.findViewById<TextView>(R.id.feedback_Detail_Contents)
         val feedback_Detail_Image = itemView.findViewById<ImageView>(R.id.feedback_Detail_Image)
 

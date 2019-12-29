@@ -26,13 +26,31 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
-            <TextView
-                    android:id="@+id/main_Feedback_Script"
+            <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text="명품 교육을 지향하는 학원의 가치를 알고 찾아와주신 여러분께 진심으로 감사..."
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                    android:orientation="horizontal">
+                <TextView
+                        android:id="@+id/main_Feedback_Script"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="명품 교육을 지향하는 학원의 가치를 알고 찾아와주신 여러분께 진심으로 감사..."
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1" android:textSize="16sp"/>
+                <TextView
+                        android:id="@+id/textView28"
+                        android:layout_width="15dp"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/main_Feedback_Dday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/grey"
+                        android:padding="3dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:background="@drawable/bg_radius"
+                        android:text="D-7" android:textSize="19dp"/>
+            </LinearLayout>
 
             <TextView
                     android:id="@+id/main_Feedback_Date"

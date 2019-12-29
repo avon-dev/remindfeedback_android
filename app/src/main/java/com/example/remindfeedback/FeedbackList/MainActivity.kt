@@ -271,7 +271,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun friends_List() {
-
         val intent = Intent(this, FriendsListActivity::class.java)
         startActivity(intent)
     }
