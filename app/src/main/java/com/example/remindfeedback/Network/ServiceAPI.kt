@@ -78,4 +78,7 @@ interface ServiceAPI {
     @PATCH("mypage/update/portrait")
     fun PatchPortrait(@Part portrait: MultipartBody.Part?): Call<GetMyPage>
 
+
+
+
 }
