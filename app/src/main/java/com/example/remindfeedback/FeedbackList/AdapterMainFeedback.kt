@@ -14,6 +14,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.FeedbackDetailActivity
 import com.example.remindfeedback.R
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelFeedback>, var presenterMain: PresenterMain) :   RecyclerView.Adapter<AdapterMainFeedback.Holder>() {
     fun addItem(item: ModelFeedback) {//아이템 추가
@@ -51,6 +56,7 @@ class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelF
         val main_Feedback_Profile_Image = itemView.findViewById<ImageView>(R.id.main_Feedback_Profile_Image)
         val main_Feedback_Alarm = itemView.findViewById<ImageView>(R.id.main_Feedback_Alarm)
         val main_Feedback_Name = itemView.findViewById<TextView>(R.id.main_Feedback_Name)
+        val main_Feedback_Dday = itemView.findViewById<TextView>(R.id.main_Feedback_Dday)
 
 
 
@@ -109,6 +115,37 @@ class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelF
 
                 return@setOnLongClickListener true
             }
+
+            // 디데이
+            var nowDate = LocalDate.now()
+            var strNow = nowDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+            // 피드백 날짜 - 형식으로 바꾸기
+            var fbSplit = feedback_list.date!!.split("년 ", "월 ", "일")
+            Log.e("디데이", fbSplit.toString())
+            var fbDate: String
+            for (i in 0..2 step 1) {
+                fbDate = fbSplit[0] + "-" + fbSplit[1] + "-" + fbSplit[2]
+                Log.e("디데이", fbDate)
+                // 데이트포맷
+                var sdf = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+                // 오늘 타임스탬프
+                var todayTimestamp = sdf.parse(strNow).time
+                // 비교할 타임스탬프
+                var feedbackTimestamp = sdf.parse(fbDate).time
+
+                var differ = (feedbackTimestamp - todayTimestamp) / (24 * 60 * 60 * 1000)
+                var differInt = differ.toInt()
+
+                if (differInt == 0) {
+                    main_Feedback_Dday.setText("D - Day")
+                } else if (differInt < 0){
+                    main_Feedback_Dday.setText("D + " + Math.abs(differInt))
+                } else if (differInt > 0){
+                    main_Feedback_Dday.setText("D - " + differInt)
+                }
+            }
+
 
 
         }
