@@ -37,6 +37,15 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             mContext = this@CreatePostActivity
         }
 
+        //초기 뷰셋팅
+        add_File_View.visibility = View.GONE
+        contents_Image.setImageResource(R.drawable.ic_text)
+
+        add_File_View.setOnClickListener(){
+
+        }
+
+
         contents_Type_Change_Button.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             val dialogView = layoutInflater.inflate(R.layout.dialog_contents_type, null)
@@ -52,6 +61,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 contents_Video.setBackgroundResource(R.drawable.all_line)
                 contents_Image.setImageResource(R.drawable.ic_photo_black)
                 return_type = 1
+                add_File_View.visibility = View.VISIBLE
             }
             contents_Voice.setOnClickListener {
                 contents_Photo.setBackgroundResource(R.drawable.all_line)
@@ -60,6 +70,8 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 contents_Video.setBackgroundResource(R.drawable.all_line)
                 contents_Image.setImageResource(R.drawable.ic_voice_black)
                 return_type = 3
+                add_File_View.visibility = View.VISIBLE
+
             }
             contents_Text.setOnClickListener {
                 contents_Photo.setBackgroundResource(R.drawable.all_line)
@@ -68,6 +80,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 contents_Video.setBackgroundResource(R.drawable.all_line)
                 contents_Image.setImageResource(R.drawable.ic_text)
                 return_type = 0
+                add_File_View.visibility = View.GONE
             }
             contents_Video.setOnClickListener {
                 contents_Photo.setBackgroundResource(R.drawable.all_line)
@@ -76,6 +89,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 contents_Video.setBackgroundResource(R.drawable.under_line_gray)
                 contents_Image.setImageResource(R.drawable.ic_video_black)
                 return_type = 2
+                add_File_View.visibility = View.VISIBLE
             }
             builder.setView(dialogView)
                 .setPositiveButton("확인") { dialogInterface, i ->
