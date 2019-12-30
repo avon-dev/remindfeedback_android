@@ -12,8 +12,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import com.example.remindfeedback.CategorySetting.CreateCategory.ColorList.PickCategoryActivity
 import com.example.remindfeedback.CreateFeedback.ContractCreateFeedback
+import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.PickCategoryActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay

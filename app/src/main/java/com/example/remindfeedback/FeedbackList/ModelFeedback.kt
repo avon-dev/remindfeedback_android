@@ -8,4 +8,4 @@ package com.example.remindfeedback.FeedbackList
 * date - 피드백 작성 날짜?
 * alarm - 새로운 알람이 있는지 없는지 Boolean값으로 받아서 표시해줌
 * */
-class ModelFeedback (var id: Int, var adviser:String, var category:Int,var tagColor:String, var script:String, var feederProfileImage:String, var date:String?, var alarm:Boolean)
+class ModelFeedback (var feedback_Id: Int, var adviser:String, var category:Int,var tagColor:String, var title:String, var feederProfileImage:String, var date:String?, var alarm:Boolean)

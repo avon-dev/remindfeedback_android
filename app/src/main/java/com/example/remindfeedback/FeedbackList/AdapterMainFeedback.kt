@@ -58,7 +58,7 @@ class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelF
 
             //상대이름, 피드백제목, 피드백 작성일 등 정의해줌
             main_Feedback_Name.text = feedback_list.adviser
-            main_Feedback_Script.text = feedback_list.script
+            main_Feedback_Script.text = feedback_list.title
             main_Feedback_Date.text = feedback_list.date
             main_Feedback_Tag_Color.setBackgroundColor(Color.parseColor(feedback_list.tagColor))
 
@@ -76,6 +76,9 @@ class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelF
             //그냥 클릭했을때
             itemView.setOnClickListener {
                 val intent = Intent(context, FeedbackDetailActivity::class.java)
+                intent.putExtra("feedback_id", feedback_list.feedback_Id)
+                intent.putExtra("title", feedback_list.title)
+                intent.putExtra("date", feedback_list.date)
                 context.startActivity(intent)
             }
 
@@ -91,12 +94,12 @@ class AdapterMainFeedback(val context: Context, val arrayList : ArrayList<ModelF
 
                 update_Tv.setOnClickListener{
                     Log.e("asda", "수정"+adapterPosition)
-                    presenterMain.modifyFeedbackActivity(feedback_list.id,feedback_list.category, feedback_list.date, feedback_list.script)
+                    presenterMain.modifyFeedbackActivity(feedback_list.feedback_Id,feedback_list.category, feedback_list.date, feedback_list.title)
                     dialogInterface!!.dismiss()
                 }
                 delete_Tv.setOnClickListener{
                     removeAt(adapterPosition)
-                    presenterMain.removeItems(feedback_list.id, context)
+                    presenterMain.removeItems(feedback_list.feedback_Id, context)
                     dialogInterface!!.dismiss()
                 }
                 dialog.setView(mView)

@@ -23,7 +23,7 @@
                     android:padding="16dp">
 
                 <TextView
-                        android:id="@+id/textView32"
+                        android:id="@+id/feedback_Detail_Title_Tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="[영상] 목요일 수업 발표 연습"

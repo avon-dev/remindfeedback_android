@@ -38,7 +38,7 @@
             android:orientation="vertical">
 
         <TextView
-                android:id="@+id/feedback_Detail_Title"
+                android:id="@+id/feedback_Detail_Title_Tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="목요일 반 수업 발표 연습 [1]"
@@ -47,7 +47,7 @@
                 android:textSize="18sp" />
 
         <TextView
-                android:id="@+id/feedback_Detail_Date"
+                android:id="@+id/feedback_Detail_Date_Tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="2019년 9월 31일 오후 3시 30분" />

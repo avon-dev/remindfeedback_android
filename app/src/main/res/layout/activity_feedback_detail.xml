@@ -8,7 +8,7 @@
         tools:context=".FeedbackList.FeedbackDetail.FeedbackDetailActivity">
 
     <TextView
-            android:id="@+id/textView32"
+            android:id="@+id/feedback_Detail_Title_Tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/whiteblue"
@@ -23,7 +23,7 @@
             android:padding="10dp">
 
         <TextView
-                android:id="@+id/textView33"
+                android:id="@+id/feedback_Detail_Date_Tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp"

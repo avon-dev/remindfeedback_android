@@ -11,19 +11,42 @@ import kotlinx.android.synthetic.main.activity_create_post.*
 import kotlinx.android.synthetic.main.activity_login.*
 import com.example.remindfeedback.FeedbackList.MainActivity
 import android.R.attr.button
+import android.app.Activity
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import com.example.remindfeedback.FeedbackList.FeedbackDetail.PresenterFeedbackDetail
+import kotlinx.android.synthetic.main.activity_create_feedback.*
 
 
 class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
+    var return_type:Int = 0
+    internal lateinit var presenterCreatePost: PresenterCreatePost
+    var feedback_id:Int = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
 
-        type_Change_Button.setOnClickListener {
+        var intent:Intent = intent
+        feedback_id = intent.getIntExtra("feedback_id",-1)
+
+        presenterCreatePost = PresenterCreatePost().apply {
+            view = this@CreatePostActivity
+            mContext = this@CreatePostActivity
+        }
+
+        //초기 뷰셋팅
+        add_File_View.visibility = View.GONE
+        contents_Image.setImageResource(R.drawable.ic_text)
+
+        add_File_View.setOnClickListener(){
+
+        }
+
+
+        contents_Type_Change_Button.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             val dialogView = layoutInflater.inflate(R.layout.dialog_contents_type, null)
             val contents_Photo = dialogView.findViewById<TextView>(R.id.contents_Photo)
@@ -37,7 +60,8 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 contents_Text.setBackgroundResource(R.drawable.all_line)
                 contents_Video.setBackgroundResource(R.drawable.all_line)
                 contents_Image.setImageResource(R.drawable.ic_photo_black)
-                //finish()
+                return_type = 1
+                add_File_View.visibility = View.VISIBLE
             }
             contents_Voice.setOnClickListener {
                 contents_Photo.setBackgroundResource(R.drawable.all_line)
@@ -45,7 +69,9 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 contents_Text.setBackgroundResource(R.drawable.all_line)
                 contents_Video.setBackgroundResource(R.drawable.all_line)
                 contents_Image.setImageResource(R.drawable.ic_voice_black)
-                //finish()
+                return_type = 3
+                add_File_View.visibility = View.VISIBLE
+
             }
             contents_Text.setOnClickListener {
                 contents_Photo.setBackgroundResource(R.drawable.all_line)
@@ -53,7 +79,8 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 contents_Text.setBackgroundResource(R.drawable.under_line_gray)
                 contents_Video.setBackgroundResource(R.drawable.all_line)
                 contents_Image.setImageResource(R.drawable.ic_text)
-                //finish()
+                return_type = 0
+                add_File_View.visibility = View.GONE
             }
             contents_Video.setOnClickListener {
                 contents_Photo.setBackgroundResource(R.drawable.all_line)
@@ -61,10 +88,9 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 contents_Text.setBackgroundResource(R.drawable.all_line)
                 contents_Video.setBackgroundResource(R.drawable.under_line_gray)
                 contents_Image.setImageResource(R.drawable.ic_video_black)
-                //finish()
+                return_type = 2
+                add_File_View.visibility = View.VISIBLE
             }
-
-
             builder.setView(dialogView)
                 .setPositiveButton("확인") { dialogInterface, i ->
                     //mainTv.text = dialogText.text.toString()
@@ -77,7 +103,6 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 }
                 .show()
         }
-
     }
 
     //타이틀바에 어떤 menu를 적용할지 정하는부분
@@ -96,7 +121,16 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     }
     //버튼 눌렀을때
     fun create_Post_Button(): Boolean {
-        Toast.makeText(this@CreatePostActivity, "완료누름 누름.", Toast.LENGTH_SHORT).show()
+        Log.e("return_type", return_type.toString())
+        Log.e("create_Post_Title_Tv", create_Post_Title_Tv.text.toString())
+        Log.e("create_Post_Script_Tv", create_Post_Script_Tv.text.toString())
+        val intent = Intent()
+        intent.putExtra("return_type", return_type)
+        intent.putExtra("board_title",  create_Post_Title_Tv.text.toString())
+        intent.putExtra("board_content", create_Post_Script_Tv.text.toString())
+        intent.putExtra("feedback_id", feedback_id)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
 
         return true
     }

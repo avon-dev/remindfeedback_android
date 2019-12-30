@@ -78,4 +78,13 @@ interface ServiceAPI {
     @PATCH("mypage/update/portrait")
     fun PatchPortrait(@Part portrait: MultipartBody.Part?): Call<GetMyPage>
 
+    //하나의 피드백 내부 포스트들 가져오기
+    @GET("board/{feedbackid}/0")
+    fun GetAllBoard(@Path("feedbackid") feedback_id: Int): Call<GetAllBoard>
+
+    //글타입의 보드 생성
+    @POST("board/text/create")
+    fun CreateBoardText(@Body createCategory: CreateBoardText): Call<GetAllBoard>
+
+
 }

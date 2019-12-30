@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.os.Environment
 import android.util.Log
+import android.widget.Toast
 import com.example.remindfeedback.MyPage.ContractMyPage
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
@@ -26,10 +27,14 @@ class PresenterImagePick:ContractImagePick.Presenter {
         val timeStamp = SimpleDateFormat("HHmmss").format(Date())
         val imageFileName = "RemindFeedback_" + timeStamp + "_"
 
-        // 이미지가 저장될 폴더 이름 ( RAZA )
+        // 이미지가 저장될 폴더 이름 ( RemindFeedback )
         val storageDir = File(Environment.getExternalStorageDirectory().toString() + "/RemindFeedback/")
-        if (!storageDir.exists()) storageDir.mkdirs()
+        Log.e("성공요", storageDir.toString())
 
+        //폴더 없으면 만들어줌
+        if (!storageDir.exists()){
+            storageDir.mkdirs()
+        }
         // 파일 생성
         val image = File.createTempFile(imageFileName, ".jpg", storageDir)
         Log.e("Tag", "createImageFile : " + image.absolutePath)
@@ -51,7 +56,7 @@ class PresenterImagePick:ContractImagePick.Presenter {
             .setPermissionListener(permissionListener)
             .setRationaleMessage("사진 및 파일을 저장하기 위하여 접근 권한이 필요합니다.")
             .setDeniedMessage("[설정] > [권한] 에서 권한을 허용할 수 있습니다.")
-            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
             .check()
     }
 
