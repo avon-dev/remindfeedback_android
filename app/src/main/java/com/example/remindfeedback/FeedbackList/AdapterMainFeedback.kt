@@ -140,11 +140,14 @@ class AdapterMainFeedback(
 
                 var differ = (feedbackTimestamp - todayTimestamp) / (24 * 60 * 60 * 1000)
                 Log.e("디데이 롱롱", differ.toString())
+                var differInt = differ.toInt()
 
-                if (differ.toString() == "0") {
+                if (differInt == 0) {
                     main_Feedback_Dday.setText("D - Day")
-                } else {
-                    main_Feedback_Dday.setText("D - " + differ.toString())
+                } else if (differInt < 0){
+                    main_Feedback_Dday.setText("D + " + Math.abs(differInt))
+                } else if (differInt > 0){
+                    main_Feedback_Dday.setText("D - " + differInt)
                 }
             }
 
