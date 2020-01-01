@@ -1,72 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".FeedbackList.FeedbackDetail.FeedbackDetailActivity">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".FeedbackList.FeedbackDetail.FeedbackDetailActivity">
+
+  <TextView
+          android:id="@+id/feedback_Detail_Title_Tv"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@color/whiteblue"
+          android:padding="16dp"
+          android:text="[발표를 할 때 목소리가 작고 자존감이 낮으며 착한 아이 증후군을 보이는 것]에 대한 피드백" />
+
+  <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@color/whitegrey"
+          android:orientation="horizontal"
+          android:padding="10dp">
 
     <TextView
-            android:id="@+id/feedback_Detail_Title_Tv"
-            android:layout_width="match_parent"
+            android:id="@+id/feedback_Detail_Date_Tv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/whiteblue"
-            android:padding="16dp"
-            android:text="[발표를 할 때 목소리가 작고 자존감이 낮으며 착한 아이 증후군을 보이는 것]에 대한 피드백" />
+            android:layout_marginLeft="6dp"
+            android:layout_gravity="center_vertical"
+            android:text="2019년 7월 26일 오후 5시 시작"
+            android:textSize="15dp" />
 
-    <LinearLayout
-            android:layout_width="match_parent"
+    <TextView
+            android:id="@+id/textView34"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/whitegrey"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:layout_weight="1" />
 
-        <TextView
-                android:id="@+id/feedback_Detail_Date_Tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:layout_gravity="center_vertical"
-                android:text="2019년 7월 26일 오후 5시 시작"
-                android:textSize="15dp" />
+    <ImageView
+            android:id="@+id/photo_Iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_photo_alpha" />
 
-        <TextView
-                android:id="@+id/textView34"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+    <ImageView
+            android:id="@+id/text_Iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_text_alpha" />
 
-        <ImageView
-                android:id="@+id/photo_Iv"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:srcCompat="@drawable/ic_photo_alpha" />
+    <ImageView
+            android:id="@+id/video_Iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_video_alpha"/>
 
-        <ImageView
-                android:id="@+id/text_Iv"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:srcCompat="@drawable/ic_text_alpha" />
+    <ImageView
+            android:id="@+id/voice_Iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_voice_alpha" />
+  </LinearLayout>
 
-        <ImageView
-                android:id="@+id/video_Iv"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:srcCompat="@drawable/ic_video_alpha"/>
-
-        <ImageView
-                android:id="@+id/voice_Iv"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:srcCompat="@drawable/ic_voice_alpha" />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/feedback_Detail_Recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:listitem="@layout/item_feedback_detail" />
+  <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/feedback_Detail_Recyclerview"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          tools:listitem="@layout/item_feedback_detail" />
 
 </LinearLayout>

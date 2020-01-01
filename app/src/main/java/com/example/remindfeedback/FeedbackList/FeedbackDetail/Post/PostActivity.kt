@@ -34,7 +34,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View {
         var ab: ActionBar = this!!.supportActionBar!!
         ab.setTitle("")
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
-        ab.setDisplayHomeAsUpEnabled(true)
+        //ab.setDisplayHomeAsUpEnabled(true)
 
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
         post_Comment_Recyclerview.adapter = mAdapter
