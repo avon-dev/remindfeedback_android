@@ -38,7 +38,7 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
                         for (i in 0 until mGetAllBoard.size) {
                             var myList: getAllBoardData = getAllBoardData()
                             myList = mGetAllBoard[i]
-                            var postData: ModelFeedbackDetail = ModelFeedbackDetail(myList.board_category, myList.board_title, myList.createdAt)
+                            var postData: ModelFeedbackDetail = ModelFeedbackDetail(feedback_Id, myList.id, myList.board_category, myList.board_title, myList.createdAt)
                             adapterFeedbackDetail.addItem(postData)
                             view.refresh()
                         }

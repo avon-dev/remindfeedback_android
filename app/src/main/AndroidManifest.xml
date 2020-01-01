@@ -30,8 +30,7 @@
                 android:name=".CategorySetting.CategorySettingActivity"
                 android:parentActivityName=".FeedbackList.MainActivity"/>
         <activity
-                android:name=".FeedbackList.FeedbackDetail.Post.PostActivity"
-                android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"/>
+                android:name=".FeedbackList.FeedbackDetail.Post.PostActivity"/>
         <activity
                 android:name=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"
                 android:parentActivityName=".FeedbackList.MainActivity"/>

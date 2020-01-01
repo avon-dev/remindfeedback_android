@@ -55,6 +55,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="200dp"/>
 
+                    <ImageView
+                            android:id="@+id/post_Picture"
+                            android:layout_width="match_parent" android:layout_height="200dp"
+                            tools:srcCompat="@tools:sample/avatars"/>
                     <TextView
                             android:id="@+id/post_Tv"
                             android:layout_width="match_parent"

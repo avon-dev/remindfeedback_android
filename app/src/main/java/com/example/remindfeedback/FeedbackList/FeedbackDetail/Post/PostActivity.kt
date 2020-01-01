@@ -1,10 +1,13 @@
 package com.example.remindfeedback.FeedbackList.FeedbackDetail.Post
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,13 +17,19 @@ import com.example.remindfeedback.Alarm.PresenterAlarm
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.PresenterFeedbackDetail
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
+import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_my_page.*
 import kotlinx.android.synthetic.main.activity_post.*
+import java.net.URL
 
 class PostActivity : AppCompatActivity(), ContractPost.View {
+
+
     private val TAG = "PostActivity"
     internal lateinit var presenterPost: PresenterPost
+    lateinit var imageData:String
     var arrayList = arrayListOf<ModelPost>(
         //ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1)
         )
@@ -44,9 +53,12 @@ class PostActivity : AppCompatActivity(), ContractPost.View {
 
         presenterPost = PresenterPost().apply {
             view = this@PostActivity
+            mContext = this@PostActivity
         }
 
-        //
+        var intent:Intent= intent
+        presenterPost.typeInit(intent.getIntExtra("feedback_id", -1), intent.getIntExtra("board_id", -1))
+            //댓글다는 부분
         comment_Commit_Button.setOnClickListener {
             if(!comment_EditText.text.toString().equals("")){
                 presenterPost.addItems(mAdapter, comment_EditText.text.toString())
@@ -60,7 +72,26 @@ class PostActivity : AppCompatActivity(), ContractPost.View {
     override fun refresh() {
         mAdapter.notifyDataSetChanged()
     }
+    override fun setView(contentsType: Int, fileUrl_1: String?, fileUrl_2: String?, fileUrl_3: String?) {
+        if(contentsType == 0){//타입이 글일때
+            post_Picture.visibility = View.GONE
+            post_Video.visibility = View.GONE
+        }else if(contentsType == 1){//타입이 사진일때
+            post_Video.visibility = View.GONE
+            //이미지 설정해주는 부분
+            var image_task: URLtoBitmapTask = URLtoBitmapTask()
+            image_task = URLtoBitmapTask().apply {
+                url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_1)
+                imageData = "https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_1
+            }
+            var bitmap: Bitmap = image_task.execute().get()
+            post_Picture.setImageBitmap(bitmap)
 
+        }else if(contentsType == 2){//타입이 비디오일때
+            post_Picture.visibility = View.GONE
+        }
+
+    }
 
 
 }

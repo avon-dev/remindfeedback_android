@@ -70,15 +70,11 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         if(data.getIntExtra("return_type", -1) == 0){
-                            Log.e("들어옴", "0")
                             val createBoardText = CreateBoardText(data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"))
                             presenterFeedbackDetail.addTextItems(arrayList,createBoardText, mAdapter)
                         }else if(data.getIntExtra("return_type", -1) == 1){
-                            Log.e("들어옴", "1")
                             val createBoardPicture = CreateBoardPicture(data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"), data.getStringExtra("file1_uri"), null, null )
                             presenterFeedbackDetail.addPictureItems(arrayList,createBoardPicture, mAdapter)
-                        }else{
-                            Log.e("안들어옴", "00")
                         }
 
                     }
