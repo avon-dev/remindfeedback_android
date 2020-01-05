@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -33,6 +34,7 @@ import java.net.URL
 
 class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener {
 
+
     private val TAG = "PostActivity"
     internal lateinit var presenterPost: PresenterPost
     lateinit var imageData:String
@@ -43,7 +45,8 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     private var mLinearLayout: LinearLayout? = null
     lateinit var indicators: Array<ImageView?>
     lateinit var mJSONArray: JSONArray
-
+    private var ALBUM_NUM = 0
+    private var ALBUM_RES = arrayListOf<String>()
 
 
     var arrayList = arrayListOf<ModelPost>(
@@ -58,9 +61,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         //액션바 설정
         var ab: ActionBar = this!!.supportActionBar!!
         ab.setTitle("")
-        //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
-        //ab.setDisplayHomeAsUpEnabled(true)
-
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
         post_Comment_Recyclerview.adapter = mAdapter
         val lm = LinearLayoutManager(this)
@@ -85,13 +85,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         }
 
 
-        setupDataSources()
-        mViewPager = findViewById(R.id.viewpager) as ViewPager
-        mViewPagerAdapter = ViewPagerAdapter(this, mJSONArray)
-        mLinearLayout = findViewById(R.id.viewGroup) as LinearLayout
-        initialSetImageIndicators()
-        mViewPager!!.adapter = mViewPagerAdapter
-        mViewPager!!.setOnPageChangeListener(this)
 
 
     }
@@ -99,12 +92,15 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     override fun refresh() {
         mAdapter.notifyDataSetChanged()
     }
+    //포스팅의 컨텐츠 타입과 파일들이 넘어옴
     override fun setView(contentsType: Int, fileUrl_1: String?, fileUrl_2: String?, fileUrl_3: String?) {
         if(contentsType == 0){//타입이 글일때
             post_Picture.visibility = View.GONE
             post_Video.visibility = View.GONE
         }else if(contentsType == 1){//타입이 사진일때
             post_Video.visibility = View.GONE
+
+            /*
             //이미지 설정해주는 부분
             var image_task: URLtoBitmapTask = URLtoBitmapTask()
             image_task = URLtoBitmapTask().apply {
@@ -113,6 +109,23 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             }
             var bitmap: Bitmap = image_task.execute().get()
             post_Picture.setImageBitmap(bitmap)
+*/
+
+
+            //파일이 있으면 넘버에 추가
+            if(fileUrl_1 != null){
+                ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_1)
+                ALBUM_NUM++
+            }else if(fileUrl_2 != null){
+                ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_2)
+                ALBUM_NUM++
+            }else if(fileUrl_3 != null){
+                ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_3)
+                ALBUM_NUM++
+            }
+            viewPagerSetting()
+
+
 
         }else if(contentsType == 2){//타입이 비디오일때
             post_Picture.visibility = View.GONE
@@ -120,6 +133,8 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
 
     }
 
+
+    //이 아래로 뷰페이저 관련 코드들
     private fun setupDataSources() {
         mJSONArray = JSONArray()
         for (i in 0 until ALBUM_NUM) {
@@ -127,7 +142,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             try {
                 `object`.put("id", ALBUM_RES[i % ALBUM_RES.size])
                 `object`.put("name", "Image dog$i")
-                mJSONArray!!.put(`object`)
+                mJSONArray.put(`object`)
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
@@ -135,7 +150,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         }
 
     }
-
     override fun onPageScrolled(i: Int, v: Float, i1: Int) {
 
     }
@@ -148,9 +162,21 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
 
     }
 
+    override fun viewPagerSetting() {
+        setupDataSources()
+        mViewPager = findViewById(R.id.viewpager) as ViewPager
+        mViewPagerAdapter = ViewPagerAdapter(this, mJSONArray)
+        mLinearLayout = findViewById(R.id.viewGroup) as LinearLayout
+        initialSetImageIndicators()
+        mViewPager!!.adapter = mViewPagerAdapter
+        mViewPager!!.setOnPageChangeListener(this)
+
+    }
+
     private fun initialSetImageIndicators() {
         indicators = arrayOfNulls(ALBUM_NUM)
         for (i in 0 until ALBUM_NUM) {
+
             val imageView = ImageView(this)
             if (i == 0) {
                 imageView.setImageResource(R.drawable.indicator_select)
@@ -168,20 +194,12 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     private fun setImageIndicators(pos: Int) {
         for (i in 0 until ALBUM_NUM) {
             if (i == pos) {
-                indicators!![i]!!.setImageResource(R.drawable.indicator_select)
+                indicators[i]!!.setImageResource(R.drawable.indicator_select)
             } else {
-                indicators!![i]!!.setImageResource(R.drawable.indicator_idle)
+                indicators[i]!!.setImageResource(R.drawable.indicator_idle)
             }
         }
     }
-
-    companion object {
-
-        private val ALBUM_NUM = 12
-
-        private val ALBUM_RES = intArrayOf(R.drawable.dog1, R.drawable.dog2, R.drawable.dog3, R.drawable.dog4, R.drawable.dog5, R.drawable.dog6, R.drawable.dog7, R.drawable.dog8, R.drawable.dog9, R.drawable.dog10, R.drawable.dog11, R.drawable.dog12)
-    }
-
 
 
 }

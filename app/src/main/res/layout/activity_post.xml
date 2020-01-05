@@ -69,7 +69,7 @@
                             android:textSize="16sp"/>
                     <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="200dp">
+                            android:layout_height="500dp">
 
                         <androidx.viewpager.widget.ViewPager
                                 android:id="@+id/viewpager"

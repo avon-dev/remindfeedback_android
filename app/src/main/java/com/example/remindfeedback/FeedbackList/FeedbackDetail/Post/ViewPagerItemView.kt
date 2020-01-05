@@ -9,9 +9,11 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.remindfeedback.R
+import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 
 import org.json.JSONException
 import org.json.JSONObject
+import java.net.URL
 
 /**
  * Created by wilson on 2015/9/6.
@@ -46,9 +48,16 @@ class ViewPagerItemView(context: Context) : FrameLayout(context) {
     fun setData(jsonObject: JSONObject) {
         mJSONObject = jsonObject
         try {
-            val resId = jsonObject.getInt("id")
+            //val resId = jsonObject.getInt("id")
+            val resId = jsonObject.getString("id")
             val name = jsonObject.getString("name")
-            mBitmap = BitmapFactory.decodeResource(resources, resId)
+
+            //이미지 설정해주는 부분
+            var image_task: URLtoBitmapTask = URLtoBitmapTask()
+            image_task = URLtoBitmapTask().apply {
+                url = URL(resId)
+            }
+            mBitmap = image_task.execute().get()
             mImageView.setImageBitmap(mBitmap)
             mNameTextView.text = name
         } catch (e: JSONException) {
