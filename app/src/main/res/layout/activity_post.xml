@@ -67,6 +67,31 @@
                             android:text="수업 발표 10분 전 들어가서 [인간이란 무엇인가?]에 대한 발표를 진행하였습니다."
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                             android:textSize="16sp"/>
+                    <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp">
+
+                        <androidx.viewpager.widget.ViewPager
+                                android:id="@+id/viewpager"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"/>
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                    android:id="@+id/viewGroup"
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginBottom="30dp"
+                                    android:gravity="center_horizontal">
+                            </LinearLayout>
+                        </RelativeLayout>
+
+                    </FrameLayout>
                 </LinearLayout>
 
                 <LinearLayout

@@ -8,9 +8,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
 import com.example.remindfeedback.Alarm.AdapterAlarm
 import com.example.remindfeedback.Alarm.ModelAlarm
 import com.example.remindfeedback.Alarm.PresenterAlarm
@@ -22,14 +26,26 @@ import kotlinx.android.synthetic.main.activity_feedback_detail.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_my_page.*
 import kotlinx.android.synthetic.main.activity_post.*
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 import java.net.URL
 
-class PostActivity : AppCompatActivity(), ContractPost.View {
-
+class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener {
 
     private val TAG = "PostActivity"
     internal lateinit var presenterPost: PresenterPost
     lateinit var imageData:String
+
+
+    private var mViewPager: ViewPager? = null
+    private var mViewPagerAdapter: ViewPagerAdapter? = null
+    private var mLinearLayout: LinearLayout? = null
+    lateinit var indicators: Array<ImageView?>
+    lateinit var mJSONArray: JSONArray
+
+
+
     var arrayList = arrayListOf<ModelPost>(
         //ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1)
         )
@@ -51,6 +67,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View {
         post_Comment_Recyclerview.layoutManager = lm
         post_Comment_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
 
+
         presenterPost = PresenterPost().apply {
             view = this@PostActivity
             mContext = this@PostActivity
@@ -66,6 +83,16 @@ class PostActivity : AppCompatActivity(), ContractPost.View {
             }
 
         }
+
+
+        setupDataSources()
+        mViewPager = findViewById(R.id.viewpager) as ViewPager
+        mViewPagerAdapter = ViewPagerAdapter(this, mJSONArray)
+        mLinearLayout = findViewById(R.id.viewGroup) as LinearLayout
+        initialSetImageIndicators()
+        mViewPager!!.adapter = mViewPagerAdapter
+        mViewPager!!.setOnPageChangeListener(this)
+
 
     }
 
@@ -92,6 +119,69 @@ class PostActivity : AppCompatActivity(), ContractPost.View {
         }
 
     }
+
+    private fun setupDataSources() {
+        mJSONArray = JSONArray()
+        for (i in 0 until ALBUM_NUM) {
+            val `object` = JSONObject()
+            try {
+                `object`.put("id", ALBUM_RES[i % ALBUM_RES.size])
+                `object`.put("name", "Image dog$i")
+                mJSONArray!!.put(`object`)
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+
+        }
+
+    }
+
+    override fun onPageScrolled(i: Int, v: Float, i1: Int) {
+
+    }
+
+    override fun onPageSelected(i: Int) {
+        setImageIndicators(i)
+    }
+
+    override fun onPageScrollStateChanged(i: Int) {
+
+    }
+
+    private fun initialSetImageIndicators() {
+        indicators = arrayOfNulls(ALBUM_NUM)
+        for (i in 0 until ALBUM_NUM) {
+            val imageView = ImageView(this)
+            if (i == 0) {
+                imageView.setImageResource(R.drawable.indicator_select)
+            } else {
+                imageView.setImageResource(R.drawable.indicator_idle)
+            }
+            val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            lp.leftMargin = 5
+            lp.rightMargin = 5
+            indicators[i] = imageView
+            mLinearLayout!!.addView(imageView, lp)
+        }
+    }
+
+    private fun setImageIndicators(pos: Int) {
+        for (i in 0 until ALBUM_NUM) {
+            if (i == pos) {
+                indicators!![i]!!.setImageResource(R.drawable.indicator_select)
+            } else {
+                indicators!![i]!!.setImageResource(R.drawable.indicator_idle)
+            }
+        }
+    }
+
+    companion object {
+
+        private val ALBUM_NUM = 12
+
+        private val ALBUM_RES = intArrayOf(R.drawable.dog1, R.drawable.dog2, R.drawable.dog3, R.drawable.dog4, R.drawable.dog5, R.drawable.dog6, R.drawable.dog7, R.drawable.dog8, R.drawable.dog9, R.drawable.dog10, R.drawable.dog11, R.drawable.dog12)
+    }
+
 
 
 }
