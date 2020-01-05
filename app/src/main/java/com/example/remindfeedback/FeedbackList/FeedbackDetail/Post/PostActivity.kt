@@ -59,7 +59,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         setContentView(R.layout.activity_post)
 
         //액션바 설정
-        var ab: ActionBar = this!!.supportActionBar!!
+        var ab: ActionBar = this.supportActionBar!!
         ab.setTitle("")
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
         post_Comment_Recyclerview.adapter = mAdapter
@@ -99,18 +99,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             post_Video.visibility = View.GONE
         }else if(contentsType == 1){//타입이 사진일때
             post_Video.visibility = View.GONE
-
-            /*
-            //이미지 설정해주는 부분
-            var image_task: URLtoBitmapTask = URLtoBitmapTask()
-            image_task = URLtoBitmapTask().apply {
-                url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_1)
-                imageData = "https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_1
-            }
-            var bitmap: Bitmap = image_task.execute().get()
-            post_Picture.setImageBitmap(bitmap)
-*/
-
 
             //파일이 있으면 넘버에 추가
             if(fileUrl_1 != null){

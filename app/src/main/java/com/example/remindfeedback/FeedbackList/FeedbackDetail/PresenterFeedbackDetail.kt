@@ -86,17 +86,33 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
 
-        val image_File = File(createBoardPicture.file1)
-        val requestBody = RequestBody.create(MediaType.parse("multipart/data"), image_File)
-        val multiPartBody = MultipartBody.Part
-            .createFormData("file1", image_File.name, requestBody)
+        var multiPartBody2: MultipartBody.Part? = null
+        var multiPartBody3: MultipartBody.Part? = null
+
+        val image_File1 = File(createBoardPicture.file1)
+        val requestBody1 = RequestBody.create(MediaType.parse("multipart/data"), image_File1)
+        val multiPartBody1 = MultipartBody.Part
+            .createFormData("file1", image_File1.name, requestBody1)
+
+        if(createBoardPicture.file2 !== null){
+            val image_File2 = File(createBoardPicture.file2)
+            val requestBody2 = RequestBody.create(MediaType.parse("multipart/data"), image_File2)
+            multiPartBody2 = MultipartBody.Part
+                .createFormData("file2", image_File2.name, requestBody2)
+        }
+        if(createBoardPicture.file3 !== null){
+            val image_File3 = File(createBoardPicture.file3)
+            val requestBody3 = RequestBody.create(MediaType.parse("multipart/data"), image_File3)
+            multiPartBody3 = MultipartBody.Part
+                .createFormData("file3", image_File3.name, requestBody3)
+        }
 
         val register_request: Call<GetAllBoard> = apiService
             .CreateBoardPictue(
                 RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.feedback_id.toString()),
                 RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_title),
                 RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_content),
-                multiPartBody, null, null)
+                multiPartBody1, multiPartBody2, multiPartBody3)
 
         register_request.enqueue(object : Callback<GetAllBoard> {
 
