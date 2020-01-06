@@ -73,7 +73,9 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
                             val createBoardText = CreateBoardText(data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"))
                             presenterFeedbackDetail.addTextItems(arrayList,createBoardText, mAdapter)
                         }else if(data.getIntExtra("return_type", -1) == 1){
-                            val createBoardPicture = CreateBoardPicture(data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"), data.getStringExtra("file1_uri"), null, null )
+                            val createBoardPicture = CreateBoardPicture(data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"), data.getStringExtra("file1_uri"), data.getStringExtra("file2_uri"), data.getStringExtra("file3_uri") )
+
+                            Log.e("createBoardPicture", createBoardPicture.board_content+createBoardPicture.board_title+createBoardPicture.feedback_id+createBoardPicture.file1+createBoardPicture.file2+createBoardPicture.file3)
                             presenterFeedbackDetail.addPictureItems(arrayList,createBoardPicture, mAdapter)
                         }
 

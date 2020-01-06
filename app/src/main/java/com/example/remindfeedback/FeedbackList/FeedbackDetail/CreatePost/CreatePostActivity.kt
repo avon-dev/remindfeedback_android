@@ -9,6 +9,7 @@ import com.example.remindfeedback.R
 import kotlinx.android.synthetic.main.activity_create_post.*
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ClipData
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.ExifInterface
@@ -21,6 +22,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
+import com.example.remindfeedback.FeedbackList.FeedbackDetail.Post.ModelPost
 import com.soundcloud.android.crop.Crop
 import kotlinx.android.synthetic.main.activity_image_pick.*
 import java.io.File
@@ -35,9 +37,15 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     internal lateinit var presenterCreatePost: PresenterCreatePost
     var feedback_id:Int = -1
     lateinit var tempFile: File //찍은 사진 넣는부분
+    lateinit var tempFile1: File //찍은 사진 넣는부분
+    lateinit var tempFile2: File //찍은 사진 넣는부분
+    lateinit var tempFile3: File //찍은 사진 넣는부분
     private val PICK_FROM_ALBUM = 1
     private val PICK_FROM_CAMERA = 2
-    var lastUri: String? = ""
+    var lastUri_1: String? = null
+    var lastUri_2: String? = null
+    var lastUri_3: String? = null
+    var arrayList = arrayListOf<Uri?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -145,7 +153,9 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         intent.putExtra("board_content", create_Post_Script_Tv.text.toString())
         intent.putExtra("feedback_id", feedback_id)
         if(return_type == 1){
-            intent.putExtra("file1_uri", lastUri.toString())
+            intent.putExtra("file1_uri", lastUri_1.toString())
+            intent.putExtra("file2_uri", lastUri_2.toString())
+            intent.putExtra("file3_uri", lastUri_3.toString())
         }
         setResult(Activity.RESULT_OK, intent)
         finish()
@@ -156,6 +166,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
     //카메라 꺼내는 부분
     override fun cameraBrowse() {
+        file_Uri_Holder.text = ""
         val cameraintent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         tempFile = presenterCreatePost.createImageFile()
         try {
@@ -175,23 +186,47 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
     //앨범 꺼내는부분
     override fun imageBrowse() {
+        file_Uri_Holder.text = ""
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = MediaStore.Images.Media.CONTENT_TYPE
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)//여러장 불러올수 있게하는부분
         startActivityForResult(intent, PICK_FROM_ALBUM)
     }
 
     private fun cropImage(photoUri: Uri) {//카메라 갤러리에서 가져온 사진을 크롭화면으로 보냄
-        //갤러리에서 선택한 경우에는 tempFile 이 없으므로 새로 생성해줍니다.
-        tempFile = presenterCreatePost.createImageFile()
         //크롭 후 저장할 Uri
+        tempFile = presenterCreatePost.createImageFile()
         val savingUri = Uri.fromFile(tempFile)//사진촬여은 tempFile이 만들어져있어 넣어서 저장하면됨
         //하지만 갤러리는 크롭후에 이미지를 저장할 파일이 없기에 위 코드를넣어서 추가로 작성해줘야함
-
-        lastUri = tempFile.getAbsolutePath()
+        Log.e("cropimage", tempFile.getAbsolutePath())
+        lastUri_1 = tempFile.getAbsolutePath()
         //이 유알아이가 최종적으로 내 프로필이 되는것임
-        Log.e("saving",lastUri)
+        Log.e("saving",lastUri_1)
         file_Uri_Holder.text = tempFile.name
         Crop.of(photoUri, savingUri).asSquare().start(this)
+    }
+
+    private  fun nonCropImage(arrayList: ArrayList<Uri?>){
+            if(lastUri_1 ==null){
+
+                tempFile1 = presenterCreatePost.createImageFile()
+                val savingUri = Uri.fromFile(tempFile1)
+                file_Uri_Holder.text = file_Uri_Holder.text.toString()+"    "+tempFile1.name
+                lastUri_1 = tempFile1.getAbsolutePath()
+                Crop.of(arrayList[0], savingUri).asSquare().start(this)
+            }else if(lastUri_1 !==null && lastUri_2 ==null){
+                tempFile2 = presenterCreatePost.createImageFile()
+                val savingUri = Uri.fromFile(tempFile2)
+                file_Uri_Holder.text = file_Uri_Holder.text.toString()+"    "+tempFile2.name
+                Crop.of(arrayList[1], savingUri).asSquare().start(this)
+                lastUri_2 = tempFile2.getAbsolutePath()
+            }else if(lastUri_1 !==null && lastUri_2 !==null && lastUri_3 == null){
+                tempFile3 = presenterCreatePost.createImageFile()
+                val savingUri = Uri.fromFile(tempFile3)
+                file_Uri_Holder.text = file_Uri_Holder.text.toString()+"    "+tempFile3.name
+                Crop.of(arrayList[2], savingUri).asSquare().start(this)
+                lastUri_3 = tempFile3.getAbsolutePath()
+            }
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -209,9 +244,30 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         }
         when (requestCode) {
             PICK_FROM_ALBUM -> {
-
-                val photoUri = data!!.data
-                cropImage(photoUri)
+                if(data == null){}//데이터가 널일때를 대비
+                else{
+                    if(data.clipData == null){
+                        Toast.makeText(this, "이미지를 다중선택 할 수 없는 기기입니다.", Toast.LENGTH_SHORT).show()
+                    }else{
+                        var clipData:ClipData = data.clipData
+                        Log.e("clipdata", data.clipData.itemCount.toString())
+                        if(clipData.itemCount > 3){
+                            Toast.makeText(this, "이미지는 3장까지 선택할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                        }else if(clipData.itemCount ==1){
+                            lastUri_1 = clipData.getItemAt(0).uri.toString()
+                            Log.e("lastUri_1", lastUri_1.toString())
+                            cropImage(clipData.getItemAt(0).uri)
+                        }else if(clipData.itemCount >1 && clipData.itemCount <=3){
+                            for(i in 0 until clipData.itemCount){
+                                Log.e("image uri", clipData.getItemAt(i).uri.toString())
+                                arrayList.add(clipData.getItemAt(i).uri)
+                                nonCropImage(arrayList)
+                            }
+                        }
+                    }
+                }
+                //val photoUri = data!!.data
+                //cropImage(photoUri)
             }
             PICK_FROM_CAMERA -> {
                 val bitmap = MediaStore.Images.Media
@@ -235,7 +291,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 cropImage(photoUri)
             }
             Crop.REQUEST_CROP -> {
-                setImage()
+                //setImage()
             }
         }
 
