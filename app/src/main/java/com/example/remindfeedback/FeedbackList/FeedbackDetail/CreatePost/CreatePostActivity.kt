@@ -37,6 +37,9 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     internal lateinit var presenterCreatePost: PresenterCreatePost
     var feedback_id:Int = -1
     lateinit var tempFile: File //찍은 사진 넣는부분
+    lateinit var tempFile1: File //찍은 사진 넣는부분
+    lateinit var tempFile2: File //찍은 사진 넣는부분
+    lateinit var tempFile3: File //찍은 사진 넣는부분
     private val PICK_FROM_ALBUM = 1
     private val PICK_FROM_CAMERA = 2
     var lastUri_1: String? = null
@@ -191,9 +194,8 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     }
 
     private fun cropImage(photoUri: Uri) {//카메라 갤러리에서 가져온 사진을 크롭화면으로 보냄
-        //갤러리에서 선택한 경우에는 tempFile 이 없으므로 새로 생성해줍니다.
-        tempFile = presenterCreatePost.createImageFile()
         //크롭 후 저장할 Uri
+        tempFile = presenterCreatePost.createImageFile()
         val savingUri = Uri.fromFile(tempFile)//사진촬여은 tempFile이 만들어져있어 넣어서 저장하면됨
         //하지만 갤러리는 크롭후에 이미지를 저장할 파일이 없기에 위 코드를넣어서 추가로 작성해줘야함
         Log.e("cropimage", tempFile.getAbsolutePath())
@@ -205,15 +207,25 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     }
 
     private  fun nonCropImage(arrayList: ArrayList<Uri?>){
-            tempFile = presenterCreatePost.createImageFile()
-            val savingUri = Uri.fromFile(tempFile)
-            file_Uri_Holder.text = file_Uri_Holder.text.toString()+"    "+tempFile.name
             if(lastUri_1 ==null){
-                lastUri_1 = tempFile.getAbsolutePath()
+
+                tempFile1 = presenterCreatePost.createImageFile()
+                val savingUri = Uri.fromFile(tempFile1)
+                file_Uri_Holder.text = file_Uri_Holder.text.toString()+"    "+tempFile1.name
+                lastUri_1 = tempFile1.getAbsolutePath()
+                Crop.of(arrayList[0], savingUri).asSquare().start(this)
             }else if(lastUri_1 !==null && lastUri_2 ==null){
-                lastUri_2 = tempFile.getAbsolutePath()
+                tempFile2 = presenterCreatePost.createImageFile()
+                val savingUri = Uri.fromFile(tempFile2)
+                file_Uri_Holder.text = file_Uri_Holder.text.toString()+"    "+tempFile2.name
+                Crop.of(arrayList[1], savingUri).asSquare().start(this)
+                lastUri_2 = tempFile2.getAbsolutePath()
             }else if(lastUri_1 !==null && lastUri_2 !==null && lastUri_3 == null){
-                lastUri_3 = tempFile.getAbsolutePath()
+                tempFile3 = presenterCreatePost.createImageFile()
+                val savingUri = Uri.fromFile(tempFile3)
+                file_Uri_Holder.text = file_Uri_Holder.text.toString()+"    "+tempFile3.name
+                Crop.of(arrayList[2], savingUri).asSquare().start(this)
+                lastUri_3 = tempFile3.getAbsolutePath()
             }
     }
 
@@ -279,7 +291,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 cropImage(photoUri)
             }
             Crop.REQUEST_CROP -> {
-                setImage()
+                //setImage()
             }
         }
 

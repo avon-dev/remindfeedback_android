@@ -86,6 +86,8 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
 
+        lateinit var register_request: Call<GetAllBoard>
+
         var multiPartBody2: MultipartBody.Part? = null
         var multiPartBody3: MultipartBody.Part? = null
 
@@ -93,26 +95,54 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
         val requestBody1 = RequestBody.create(MediaType.parse("multipart/data"), image_File1)
         val multiPartBody1 = MultipartBody.Part
             .createFormData("file1", image_File1.name, requestBody1)
-
-        if(createBoardPicture.file2 !== null){
+        if(!createBoardPicture.file2.equals("null") && createBoardPicture.file3.equals("null")){
             val image_File2 = File(createBoardPicture.file2)
             val requestBody2 = RequestBody.create(MediaType.parse("multipart/data"), image_File2)
             multiPartBody2 = MultipartBody.Part
                 .createFormData("file2", image_File2.name, requestBody2)
+
+            register_request= apiService
+                .CreateBoardPictue(
+                    RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.feedback_id.toString()),
+                    RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_title),
+                    RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_content),
+                    multiPartBody1, multiPartBody2, null)
+            Log.e("asdddddddd", "2")
+
         }
-        if(createBoardPicture.file3 !== null){
+        if(!createBoardPicture.file2.equals("null") && !createBoardPicture.file3.equals("null")){
+            val image_File2 = File(createBoardPicture.file2)
+            val requestBody2 = RequestBody.create(MediaType.parse("multipart/data"), image_File2)
+            multiPartBody2 = MultipartBody.Part
+                .createFormData("file2", image_File2.name, requestBody2)
+
+
             val image_File3 = File(createBoardPicture.file3)
             val requestBody3 = RequestBody.create(MediaType.parse("multipart/data"), image_File3)
             multiPartBody3 = MultipartBody.Part
                 .createFormData("file3", image_File3.name, requestBody3)
+
+            register_request= apiService
+                .CreateBoardPictue(
+                    RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.feedback_id.toString()),
+                    RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_title),
+                    RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_content),
+                    multiPartBody1, multiPartBody2, multiPartBody3)
+            Log.e("asdddddddd", "3")
+
+        }
+        if(createBoardPicture.file2.equals("null") && createBoardPicture.file3.equals("null")){
+            register_request= apiService
+                .CreateBoardPictue(
+                    RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.feedback_id.toString()),
+                    RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_title),
+                    RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_content),
+                    multiPartBody1, null, null)
+            Log.e("asdddddddd", "4")
+
         }
 
-        val register_request: Call<GetAllBoard> = apiService
-            .CreateBoardPictue(
-                RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.feedback_id.toString()),
-                RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_title),
-                RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_content),
-                multiPartBody1, multiPartBody2, multiPartBody3)
+
 
         register_request.enqueue(object : Callback<GetAllBoard> {
 
@@ -123,6 +153,10 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
                     view.refresh()
                 } else {
                 }
+                val StatusCode = response.code()
+                Log.e("post", "Status Code : $StatusCode")
+                Log.e("tag", "response=" + response.raw())
+
             }
 
             override fun onFailure(call: Call<GetAllBoard>, t: Throwable) {
@@ -130,6 +164,8 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
                 list.clear()
                 loadItems(list, adapterFeedbackDetail, createBoardPicture.feedback_id)
                 view.refresh()
+                Log.e("tag", "response=" + t.message+"   "+t.cause)
+
             }
         })
     }

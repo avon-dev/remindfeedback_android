@@ -68,8 +68,13 @@ class ViewPagerItemView(context: Context) : FrameLayout(context) {
 
     fun reload() { //bitmap maybe recycled
         try {
-            val resId = mJSONObject!!.getInt("id")
-            mBitmap = BitmapFactory.decodeResource(resources, resId)
+            val resId = mJSONObject!!.getString("id")
+            //이미지 설정해주는 부분
+            var image_task: URLtoBitmapTask = URLtoBitmapTask()
+            image_task = URLtoBitmapTask().apply {
+                url = URL(resId)
+            }
+            mBitmap = image_task.execute().get()
             mImageView.setImageBitmap(mBitmap)
         } catch (e: JSONException) {
             e.printStackTrace()

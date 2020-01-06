@@ -84,9 +84,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
 
         }
 
-
-
-
     }
 
     override fun refresh() {
@@ -104,16 +101,16 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             if(fileUrl_1 != null){
                 ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_1)
                 ALBUM_NUM++
-            }else if(fileUrl_2 != null){
+            }
+            if(fileUrl_2 != null){
                 ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_2)
                 ALBUM_NUM++
-            }else if(fileUrl_3 != null){
+            }
+            if(fileUrl_3 != null){
                 ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_3)
                 ALBUM_NUM++
             }
             viewPagerSetting()
-
-
 
         }else if(contentsType == 2){//타입이 비디오일때
             post_Picture.visibility = View.GONE
