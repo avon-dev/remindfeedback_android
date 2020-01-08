@@ -107,8 +107,6 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
                     RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_title),
                     RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_content),
                     multiPartBody1, multiPartBody2, null)
-            Log.e("asdddddddd", "2")
-
         }
         if(!createBoardPicture.file2.equals("null") && !createBoardPicture.file3.equals("null")){
             val image_File2 = File(createBoardPicture.file2)
@@ -128,8 +126,6 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
                     RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_title),
                     RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_content),
                     multiPartBody1, multiPartBody2, multiPartBody3)
-            Log.e("asdddddddd", "3")
-
         }
         if(createBoardPicture.file2.equals("null") && createBoardPicture.file3.equals("null")){
             register_request= apiService
@@ -138,8 +134,6 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
                     RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_title),
                     RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_content),
                     multiPartBody1, null, null)
-            Log.e("asdddddddd", "4")
-
         }
 
 

@@ -21,8 +21,6 @@ import java.net.URL
 class ViewPagerItemView(context: Context) : FrameLayout(context) {
 
     private val mImageView: ImageView
-    private val mNameTextView: TextView
-
     private var mBitmap: Bitmap? = null //bitmap of the image
     private var mJSONObject: JSONObject? = null
 
@@ -30,7 +28,6 @@ class ViewPagerItemView(context: Context) : FrameLayout(context) {
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.viewpager_itemview, null)
         mImageView = view.findViewById(R.id.imageView) as ImageView
-        mNameTextView = view.findViewById(R.id.textView_name) as TextView
         addView(view)
     }
 
@@ -59,7 +56,6 @@ class ViewPagerItemView(context: Context) : FrameLayout(context) {
             }
             mBitmap = image_task.execute().get()
             mImageView.setImageBitmap(mBitmap)
-            mNameTextView.text = name
         } catch (e: JSONException) {
             e.printStackTrace()
         }
