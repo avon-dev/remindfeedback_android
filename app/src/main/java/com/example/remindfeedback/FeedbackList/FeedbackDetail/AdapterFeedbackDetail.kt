@@ -71,6 +71,8 @@ class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<Model
             }
             itemView.setOnClickListener {
                 val intent = Intent(context, PostActivity::class.java)
+                intent.putExtra("feedback_id", feedback_detail_list.feedback_id)
+                intent.putExtra("board_id", feedback_detail_list.board_id)
                 context.startActivity(intent)
             }
 

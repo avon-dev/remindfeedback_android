@@ -2,6 +2,7 @@ package com.example.remindfeedback.Network
 
 import com.example.remindfeedback.ServerModel.*
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -86,5 +87,24 @@ interface ServiceAPI {
     @POST("board/text/create")
     fun CreateBoardText(@Body createCategory: CreateBoardText): Call<GetAllBoard>
 
+    //사진타입의 보드 생성
+    @Multipart
+    @POST("board/picture/create")
+    fun CreateBoardPictue(
+        @Part("feedback_id") feedback_id: RequestBody,
+        @Part("board_title") board_title: RequestBody,
+        @Part("board_content") board_content: RequestBody,
+        @Part file1: MultipartBody.Part?,
+        @Part file2: MultipartBody.Part?,
+        @Part file3: MultipartBody.Part?
+    ): Call<GetAllBoard>
+
+    //댓글 생성
+    @POST("comment/create")
+    fun CreateComment(@Body createComment: CreateComment): Call<CreateComment>
+
+    //각 게시글의 댓글 가져오기
+    @GET("comment/selectall/{board_id}")
+    fun GetAllComment(@Path("board_id") board_id: Int): Call<GetAllComments>
 
 }

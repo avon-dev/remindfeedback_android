@@ -72,4 +72,5 @@ dependencies {
 
     //카메라 퍼미션
     implementation 'gun0912.ted:tedpermission:2.1.0'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
 }

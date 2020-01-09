@@ -103,6 +103,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
         if (tempFile != null) {
             //val photoUri = Uri.fromFile(tempFile)
             val photoUri = FileProvider.getUriForFile(this, "com.example.remindfeedback.fileprovider", tempFile)
+            Log.e("photoUri", photoUri.toString())
             cameraintent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
             startActivityForResult(cameraintent, PICK_FROM_CAMERA)
         }

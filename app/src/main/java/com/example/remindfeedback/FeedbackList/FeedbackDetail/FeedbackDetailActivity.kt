@@ -17,6 +17,7 @@ import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.CreateP
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.Post.PostActivity
 import com.example.remindfeedback.FriendsList.FindFriends.FindFriendsActivity
 import com.example.remindfeedback.R
+import com.example.remindfeedback.ServerModel.CreateBoardPicture
 import com.example.remindfeedback.ServerModel.CreateBoardText
 import kotlinx.android.synthetic.main.activity_alarm.*
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
@@ -68,8 +69,16 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
             111 -> {    // 피드백 추가 후 돌아왔을 때
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        var createBoardText = CreateBoardText(data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"))
-                        presenterFeedbackDetail.addItems(arrayList,createBoardText, mAdapter)
+                        if(data.getIntExtra("return_type", -1) == 0){
+                            val createBoardText = CreateBoardText(data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"))
+                            presenterFeedbackDetail.addTextItems(arrayList,createBoardText, mAdapter)
+                        }else if(data.getIntExtra("return_type", -1) == 1){
+                            val createBoardPicture = CreateBoardPicture(data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"), data.getStringExtra("file1_uri"), data.getStringExtra("file2_uri"), data.getStringExtra("file3_uri") )
+
+                            Log.e("createBoardPicture", createBoardPicture.board_content+createBoardPicture.board_title+createBoardPicture.feedback_id+createBoardPicture.file1+createBoardPicture.file2+createBoardPicture.file3)
+                            presenterFeedbackDetail.addPictureItems(arrayList,createBoardPicture, mAdapter)
+                        }
+
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@FeedbackDetailActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }

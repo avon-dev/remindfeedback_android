@@ -2,6 +2,7 @@ package com.example.remindfeedback.FeedbackList.FeedbackDetail.Post
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +11,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.AdapterFeedbackDetail
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.ModelFeedbackDetail
 import com.example.remindfeedback.R
+import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import kotlinx.android.synthetic.main.activity_my_page.*
+import java.net.URL
 import java.util.ArrayList
 
-class AdapterPost(val context: Context, val arrayList: ArrayList<ModelPost>) :   RecyclerView.Adapter<AdapterPost.Holder>() {
+class AdapterPost(val context: Context, val arrayList: ArrayList<ModelComment>) :   RecyclerView.Adapter<AdapterPost.Holder>() {
 
-    fun addItem(item: ModelPost) {//아이템 추가
+    fun addItem(item: ModelComment) {//아이템 추가
         if (arrayList != null) {//널체크 해줘야함
-            arrayList.add(item)
+            arrayList.add(0,item)
 
         }
     }
@@ -51,11 +55,21 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelPost>) :  
         val post_Comment_More = itemView.findViewById<ImageView>(R.id.post_Comment_More)
 
 
-        fun bind (comment_list: ModelPost, context: Context) {
+        fun bind (comment_list: ModelComment, context: Context) {
 
             post_Comment_Name.text = comment_list.name
             post_Comment_Script.text = comment_list.script
             post_Comment_Date.text = comment_list.date
+
+            if(!comment_list.profileImage.equals("")){
+                //이미지 설정해주는 부분
+                var test_task: URLtoBitmapTask = URLtoBitmapTask()
+                test_task = URLtoBitmapTask().apply {
+                    url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+comment_list.profileImage)
+                }
+                var bitmap: Bitmap = test_task.execute().get()
+                post_Comment_Profile_Image.setImageBitmap(bitmap)
+            }
 
 
             itemView.setOnClickListener {
