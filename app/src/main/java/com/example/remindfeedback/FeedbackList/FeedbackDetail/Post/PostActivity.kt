@@ -8,10 +8,6 @@ import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
@@ -26,25 +22,28 @@ import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_my_page.*
-import kotlinx.android.synthetic.main.activity_post.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.net.URL
 import android.support.v4.media.session.MediaControllerCompat.setMediaController
+import android.view.*
 import android.widget.*
 import androidx.core.content.FileProvider
 import com.example.remindfeedback.FeedbackList.MainActivity
 import java.io.File
+import android.R.attr.start
+import kotlinx.android.synthetic.main.activity_post.*
 
 
-class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener {
+class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener{
+
 
 
     private val TAG = "PostActivity"
     internal lateinit var presenterPost: PresenterPost
     lateinit var imageData:String
-
+    var video_name:String? = ""
 
     private var mViewPager: ViewPager? = null
     private var mViewPagerAdapter: ViewPagerAdapter? = null
@@ -56,6 +55,12 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     //게시물 아이디
     var board_id :Int = -1
 
+/*
+    var video_SurfaceView:SurfaceView = findViewById(R.id.video_SurfaceView)
+    var surfaceHolder: SurfaceHolder = video_SurfaceView.holder
+    lateinit var mediaPlayer: MediaPlayer
+
+*/
     var arrayList = arrayListOf<ModelComment>(
         //ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1)
         )
@@ -73,6 +78,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         val lm = LinearLayoutManager(this)
         post_Comment_Recyclerview.layoutManager = lm
         post_Comment_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
+
 
         presenterPost = PresenterPost().apply {
             view = this@PostActivity
@@ -125,17 +131,15 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         }else if(contentsType == 2){//타입이 비디오일때
             post_Title_Tv.text = "[영상]"
             post_Picture.visibility = View.GONE
+            video_name = fileUrl_1
             val videoView = findViewById(R.id.post_Video) as VideoView
-            val controller = MediaController(this)
-            controller.setVisibility(View.GONE)
-            videoView.setMediaController(controller)
-            videoView.requestFocus()
-            val url = "content://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + fileUrl_1
-
-            //var videouri = FileProvider.getUriForFile(this, "com.example.remindfeedback.fileprovider", File(url))
-            //Log.e("videouri", videouri.toString())
-            videoView.setVideoURI(Uri.parse(url.toString()))
-           // videoView.setVideoPath(url)
+            var videoAdd =  "http://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + fileUrl_1
+            videoView.setVideoPath(videoAdd)
+            var  mediaController : MediaController = MediaController(this)
+            mediaController.setAnchorView(videoView)
+            mediaController.setPadding(0, 0, 0, 80)
+            videoView.setMediaController(mediaController)
+            videoView.start()
 
             videoView.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
                 override fun onPrepared(mp: MediaPlayer) {
@@ -156,9 +160,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
                     ).show()
                 }
             })
-
-
-
 
         }else if(contentsType == 3){//타입이 녹음일때
             post_Title_Tv.text = "[음성]"
@@ -240,5 +241,40 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         }
     }
 
+/*
+    //서페이스뷰 관련 코드들
+    //서페이스뷰 변화되었을때
+    override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
 
+    }
+    //서페이스뷰 종료되었을때
+    override fun surfaceDestroyed(holder: SurfaceHolder?) {
+    }
+    //서페이스뷰 생성되었을때
+    override fun surfaceCreated(holder: SurfaceHolder?) {
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer()
+        } else {
+            mediaPlayer.reset()
+        }
+
+        try {
+
+            val path = "http://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + video_name
+            mediaPlayer.setDataSource(path)
+
+            //mediaPlayer.setVolume(0, 0); //볼륨 제거
+            mediaPlayer.setDisplay(surfaceHolder) // 화면 호출
+            mediaPlayer.prepare() // 비디오 load 준비
+
+            //mediaPlayer.setOnCompletionListener(completionListener); // 비디오 재생 완료 리스너
+
+            mediaPlayer.start()
+
+        } catch (e: Exception) {
+            Log.e("MyTag", "surface view error : " + e.message)
+        }
+
+    }
+*/
 }
