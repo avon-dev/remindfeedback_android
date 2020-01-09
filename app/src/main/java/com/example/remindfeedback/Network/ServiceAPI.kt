@@ -99,4 +99,12 @@ interface ServiceAPI {
         @Part file3: MultipartBody.Part?
     ): Call<GetAllBoard>
 
+    //댓글 생성
+    @POST("comment/create")
+    fun CreateComment(@Body createComment: CreateComment): Call<CreateComment>
+
+    //각 게시글의 댓글 가져오기
+    @GET("comment/selectall/{board_id}")
+    fun GetAllComment(@Path("board_id") board_id: Int): Call<GetAllComments>
+
 }

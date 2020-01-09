@@ -22,6 +22,7 @@ import com.example.remindfeedback.Alarm.PresenterAlarm
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.PresenterFeedbackDetail
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
+import com.example.remindfeedback.ServerModel.CreateComment
 import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
 import kotlinx.android.synthetic.main.activity_login.*
@@ -47,9 +48,10 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     lateinit var mJSONArray: JSONArray
     private var ALBUM_NUM = 0
     private var ALBUM_RES = arrayListOf<String>()
+    //게시물 아이디
+    var board_id :Int = -1
 
-
-    var arrayList = arrayListOf<ModelPost>(
+    var arrayList = arrayListOf<ModelComment>(
         //ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1)
         )
     val mAdapter = AdapterPost(this, arrayList)
@@ -74,11 +76,15 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         }
 
         var intent:Intent= intent
+        board_id = intent.getIntExtra("board_id", -1)
         presenterPost.typeInit(intent.getIntExtra("feedback_id", -1), intent.getIntExtra("board_id", -1))
-            //댓글다는 부분
+        presenterPost.getComment(arrayList, mAdapter, board_id)
+
+
+        //댓글다는 부분
         comment_Commit_Button.setOnClickListener {
             if(!comment_EditText.text.toString().equals("")){
-                presenterPost.addItems(mAdapter, comment_EditText.text.toString())
+                presenterPost.addComment(mAdapter, CreateComment(board_id, comment_EditText.text.toString()), arrayList)
                 comment_EditText.setText("")
             }
 

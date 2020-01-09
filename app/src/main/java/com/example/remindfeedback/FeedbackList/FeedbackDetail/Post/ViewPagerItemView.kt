@@ -15,9 +15,6 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.net.URL
 
-/**
- * Created by wilson on 2015/9/6.
- */
 class ViewPagerItemView(context: Context) : FrameLayout(context) {
 
     private val mImageView: ImageView

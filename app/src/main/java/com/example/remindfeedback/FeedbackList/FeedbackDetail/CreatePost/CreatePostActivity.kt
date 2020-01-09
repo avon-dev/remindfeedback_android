@@ -22,7 +22,6 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.Post.ModelPost
 import com.soundcloud.android.crop.Crop
 import kotlinx.android.synthetic.main.activity_image_pick.*
 import java.io.File
