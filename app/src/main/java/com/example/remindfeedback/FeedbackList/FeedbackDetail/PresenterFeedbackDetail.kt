@@ -164,6 +164,46 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
         })
     }
 
+    override fun addVideoItems(list: ArrayList<ModelFeedbackDetail>,createboardVideo: CreateboardVideo, adapterFeedbackDetail: AdapterFeedbackDetail) {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+
+        lateinit var register_request: Call<GetAllBoard>
+
+        val video_File = File(createboardVideo.videofile)
+        val requestBody = RequestBody.create(MediaType.parse("multipart/data"), video_File)
+        val multiPartBody = MultipartBody.Part
+            .createFormData("videofile", video_File.name, requestBody)
+        register_request= apiService
+            .CreateBoardVideo(
+                RequestBody.create(MediaType.parse("multipart/data"), createboardVideo.feedback_id.toString()),
+                RequestBody.create(MediaType.parse("multipart/data"), createboardVideo.board_title),
+                RequestBody.create(MediaType.parse("multipart/data"), createboardVideo.board_content),
+                multiPartBody)
+        register_request.enqueue(object : Callback<GetAllBoard> {
+            override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
+                if (response.isSuccessful) {
+                    list.clear()
+                    loadItems(list, adapterFeedbackDetail, createboardVideo.feedback_id)
+                    view.refresh()
+                } else {
+                }
+                val StatusCode = response.code()
+                Log.e("post", "Status Code : $StatusCode")
+                Log.e("tag", "response=" + response.raw())
+
+            }
+            override fun onFailure(call: Call<GetAllBoard>, t: Throwable) {
+                //여기기서 실패가 뜨는데 이마 call모델이 달라서 그러는거같음, 근데 실패해도 별 상관없어서 새로고침 코드 여기에도 넣어둠
+                list.clear()
+                loadItems(list, adapterFeedbackDetail, createboardVideo.feedback_id)
+                view.refresh()
+                Log.e("tag", "response=" + t.message+"   "+t.cause)
+            }
+        })
+    }
+
+
     override fun removeItems(position: Int, id: Int, context: Context) {
     }
 

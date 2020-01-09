@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.net.Uri
 import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import com.example.remindfeedback.R
@@ -14,7 +16,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PresenterCreatePost:ContractCreatePost.Presenter {
-
 
 
     override lateinit var view: ContractCreatePost.View
@@ -73,4 +74,7 @@ class PresenterCreatePost:ContractCreatePost.Presenter {
             matrix, true
         )
     }
+
+
+
 }

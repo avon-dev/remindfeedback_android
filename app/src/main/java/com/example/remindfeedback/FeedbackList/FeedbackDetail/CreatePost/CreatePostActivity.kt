@@ -41,6 +41,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     lateinit var tempFile3: File //찍은 사진 넣는부분
     private val PICK_FROM_ALBUM = 1
     private val PICK_FROM_CAMERA = 2
+    private val PICK_FROM_CAMERA_VIDEO = 3
     var lastUri_1: String? = null
     var lastUri_2: String? = null
     var lastUri_3: String? = null
@@ -63,9 +64,11 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         contents_Image.setImageResource(R.drawable.ic_text)
 
         add_File_View.setOnClickListener(){
-            if(return_type == 1){
+            if(return_type == 1){//사진일경우
                 //사진이 선택되어있는경우 앨범인지 카메라인지 선택하는 뷰를 띄움
                 presenterCreatePost.picktureDialogViwe()
+            }else if(return_type == 2){//비디오일경우
+                imageBrowse()
             }
         }
 
@@ -155,6 +158,8 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             intent.putExtra("file1_uri", lastUri_1.toString())
             intent.putExtra("file2_uri", lastUri_2.toString())
             intent.putExtra("file3_uri", lastUri_3.toString())
+        }else if(return_type == 2){
+            intent.putExtra("file1_uri", lastUri_1.toString())
         }
         setResult(Activity.RESULT_OK, intent)
         finish()
@@ -187,9 +192,16 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     override fun imageBrowse() {
         file_Uri_Holder.text = ""
         val intent = Intent(Intent.ACTION_PICK)
-        intent.type = MediaStore.Images.Media.CONTENT_TYPE
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)//여러장 불러올수 있게하는부분
-        startActivityForResult(intent, PICK_FROM_ALBUM)
+
+        if(return_type == 1){//사진일경우 사진앨범을 불러옴
+            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)//여러장 불러올수 있게하는부분
+            startActivityForResult(intent, PICK_FROM_ALBUM)
+        }else if(return_type == 2){//동영상일경우 동영상앨범을 불러옴
+            intent.type = MediaStore.Video.Media.CONTENT_TYPE
+            startActivityForResult(intent, PICK_FROM_CAMERA_VIDEO)
+        }
+
     }
 
     private fun cropImage(photoUri: Uri) {//카메라 갤러리에서 가져온 사진을 크롭화면으로 보냄
@@ -289,6 +301,13 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 val photoUri = Uri.fromFile(tempFile)
                 cropImage(photoUri)
             }
+            PICK_FROM_CAMERA_VIDEO -> {
+                //var mVideo = MediaStore.Video.Media.get
+                var uri:Uri = data!!.data
+                var uri_path:String = getPath(uri)
+                lastUri_1 = uri_path
+
+            }
             Crop.REQUEST_CROP -> {
                 //setImage()
             }
@@ -296,12 +315,12 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
     }
 
-    fun setImage(){
-
-        val options = BitmapFactory.Options()
-        val originalBm = BitmapFactory.decodeFile(tempFile!!.getAbsolutePath(), options)
-        val resizedbitmap = Bitmap.createScaledBitmap(originalBm, 650, 650, true) // 이미지 사이즈 조정
-        // modify_Profile_ImageView.setImageBitmap(resizedbitmap) // 이미지뷰에 조정한 이미지 넣기
+    override fun getPath(uri: Uri): String {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = managedQuery(uri, projection, null, null, null)
+        val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        return cursor.getString(column_index)
     }
 
 

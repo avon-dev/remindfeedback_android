@@ -2,6 +2,8 @@ package com.example.remindfeedback.FeedbackList.FeedbackDetail.Post
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.media.MediaPlayer
+import android.net.Uri
 import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,9 +12,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
@@ -32,6 +31,12 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.net.URL
+import android.support.v4.media.session.MediaControllerCompat.setMediaController
+import android.widget.*
+import androidx.core.content.FileProvider
+import com.example.remindfeedback.FeedbackList.MainActivity
+import java.io.File
+
 
 class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener {
 
@@ -69,7 +74,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         post_Comment_Recyclerview.layoutManager = lm
         post_Comment_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
 
-
         presenterPost = PresenterPost().apply {
             view = this@PostActivity
             mContext = this@PostActivity
@@ -79,7 +83,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         board_id = intent.getIntExtra("board_id", -1)
         presenterPost.typeInit(intent.getIntExtra("feedback_id", -1), intent.getIntExtra("board_id", -1))
         presenterPost.getComment(arrayList, mAdapter, board_id)
-
 
         //댓글다는 부분
         comment_Commit_Button.setOnClickListener {
@@ -96,13 +99,14 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         mAdapter.notifyDataSetChanged()
     }
     //포스팅의 컨텐츠 타입과 파일들이 넘어옴
-    override fun setView(contentsType: Int, fileUrl_1: String?, fileUrl_2: String?, fileUrl_3: String?) {
+    override fun setView(contentsType: Int, fileUrl_1: String?, fileUrl_2: String?, fileUrl_3: String?, title:String, date:String, content:String) {
         if(contentsType == 0){//타입이 글일때
+            post_Title_Tv.text = "[글]"
             post_Picture.visibility = View.GONE
             post_Video.visibility = View.GONE
         }else if(contentsType == 1){//타입이 사진일때
             post_Video.visibility = View.GONE
-
+            post_Title_Tv.text = "[사진]"
             //파일이 있으면 넘버에 추가
             if(fileUrl_1 != null){
                 ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_1)
@@ -119,9 +123,53 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             viewPagerSetting()
 
         }else if(contentsType == 2){//타입이 비디오일때
+            post_Title_Tv.text = "[영상]"
             post_Picture.visibility = View.GONE
-        }
+            val videoView = findViewById(R.id.post_Video) as VideoView
+            val controller = MediaController(this)
+            controller.setVisibility(View.GONE)
+            videoView.setMediaController(controller)
+            videoView.requestFocus()
+            val url = "content://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + fileUrl_1
 
+            //var videouri = FileProvider.getUriForFile(this, "com.example.remindfeedback.fileprovider", File(url))
+            //Log.e("videouri", videouri.toString())
+            videoView.setVideoURI(Uri.parse(url.toString()))
+           // videoView.setVideoPath(url)
+
+            videoView.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
+                override fun onPrepared(mp: MediaPlayer) {
+                    Toast.makeText(
+                        this@PostActivity,
+                        "동영상이 준비되었습니다. \n'시작' 버튼을 누르세요", Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+
+            //동영상 재생이 완료된 걸 알 수 있는 리스너
+            videoView.setOnCompletionListener(object : MediaPlayer.OnCompletionListener {
+                override fun onCompletion(mp: MediaPlayer) {
+                    //동영상 재생이 완료된 후 호출되는 메소드
+                    Toast.makeText(
+                        this@PostActivity,
+                        "동영상 재생이 완료되었습니다.", Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+
+
+
+
+        }else if(contentsType == 3){//타입이 녹음일때
+            post_Title_Tv.text = "[음성]"
+
+        }else{
+            Toast.makeText(this@PostActivity, "글을 불러올수 없습니다. 관리자에게 문의하세요.", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+        post_Title_Tv.text = post_Title_Tv.text.toString() + title
+        post_Date_Tv.text = date
+        post_Tv.text = content
     }
 
 
