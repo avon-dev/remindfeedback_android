@@ -33,7 +33,16 @@ import androidx.core.content.FileProvider
 import com.example.remindfeedback.FeedbackList.MainActivity
 import java.io.File
 import android.R.attr.start
+import com.google.android.exoplayer2.ExoPlayerFactory
 import kotlinx.android.synthetic.main.activity_post.*
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.util.Util
 
 
 class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener{
@@ -55,12 +64,13 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     //게시물 아이디
     var board_id :Int = -1
 
-/*
-    var video_SurfaceView:SurfaceView = findViewById(R.id.video_SurfaceView)
-    var surfaceHolder: SurfaceHolder = video_SurfaceView.holder
-    lateinit var mediaPlayer: MediaPlayer
+    //exoplayer변수
+    private var player: SimpleExoPlayer? = null
+    private var playWhenReady = true
+    private var currentWindow = 0
+    private var playbackPosition = 0L
 
-*/
+
     var arrayList = arrayListOf<ModelComment>(
         //ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1)
         )
@@ -109,9 +119,9 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         if(contentsType == 0){//타입이 글일때
             post_Title_Tv.text = "[글]"
             post_Picture.visibility = View.GONE
-            post_Video.visibility = View.GONE
+            exoPlayerView.visibility = View.GONE
         }else if(contentsType == 1){//타입이 사진일때
-            post_Video.visibility = View.GONE
+            exoPlayerView.visibility = View.GONE
             post_Title_Tv.text = "[사진]"
             //파일이 있으면 넘버에 추가
             if(fileUrl_1 != null){
@@ -132,34 +142,10 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             post_Title_Tv.text = "[영상]"
             post_Picture.visibility = View.GONE
             video_name = fileUrl_1
-            val videoView = findViewById(R.id.post_Video) as VideoView
-            var videoAdd =  "http://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + fileUrl_1
-            videoView.setVideoPath(videoAdd)
-            var  mediaController : MediaController = MediaController(this)
-            mediaController.setAnchorView(videoView)
-            mediaController.setPadding(0, 0, 0, 80)
-            videoView.setMediaController(mediaController)
-            videoView.start()
+            initializePlayer(video_name)
 
-            videoView.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
-                override fun onPrepared(mp: MediaPlayer) {
-                    Toast.makeText(
-                        this@PostActivity,
-                        "동영상이 준비되었습니다. \n'시작' 버튼을 누르세요", Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
 
-            //동영상 재생이 완료된 걸 알 수 있는 리스너
-            videoView.setOnCompletionListener(object : MediaPlayer.OnCompletionListener {
-                override fun onCompletion(mp: MediaPlayer) {
-                    //동영상 재생이 완료된 후 호출되는 메소드
-                    Toast.makeText(
-                        this@PostActivity,
-                        "동영상 재생이 완료되었습니다.", Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+
 
         }else if(contentsType == 3){//타입이 녹음일때
             post_Title_Tv.text = "[음성]"
@@ -241,40 +227,44 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         }
     }
 
-/*
-    //서페이스뷰 관련 코드들
-    //서페이스뷰 변화되었을때
-    override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
-
-    }
-    //서페이스뷰 종료되었을때
-    override fun surfaceDestroyed(holder: SurfaceHolder?) {
-    }
-    //서페이스뷰 생성되었을때
-    override fun surfaceCreated(holder: SurfaceHolder?) {
-        if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer()
-        } else {
-            mediaPlayer.reset()
+    fun initializePlayer(filename:String?){
+        if(player == null){
+            player = ExoPlayerFactory.newSimpleInstance(this.getApplicationContext());
+            exoPlayerView!!
+                .setPlayer(player);
         }
+        var video_url:String = "http://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+filename
+        var mediaSource:MediaSource = buildMediaSource(Uri.parse(video_url))
+        //준비
+        player!!.prepare(mediaSource, true, false)
+        //스타트, 스탑
+        player!!.playWhenReady.and(playWhenReady)
 
-        try {
-
-            val path = "http://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + video_name
-            mediaPlayer.setDataSource(path)
-
-            //mediaPlayer.setVolume(0, 0); //볼륨 제거
-            mediaPlayer.setDisplay(surfaceHolder) // 화면 호출
-            mediaPlayer.prepare() // 비디오 load 준비
-
-            //mediaPlayer.setOnCompletionListener(completionListener); // 비디오 재생 완료 리스너
-
-            mediaPlayer.start()
-
-        } catch (e: Exception) {
-            Log.e("MyTag", "surface view error : " + e.message)
-        }
 
     }
-*/
+
+    fun buildMediaSource(uri: Uri) : MediaSource{
+        var userAgent:String = Util.getUserAgent(this, "remindfeedback")
+        if(uri.getLastPathSegment().contains("mp3") || uri.getLastPathSegment().contains("mp4")){
+            return ExtractorMediaSource.Factory(DefaultHttpDataSourceFactory(userAgent)).createMediaSource(uri)
+        }else if(uri.getLastPathSegment().contains("m3u8")){
+            return HlsMediaSource.Factory(DefaultHttpDataSourceFactory(userAgent)).createMediaSource(uri)
+        }else{
+            return ExtractorMediaSource.Factory(DefaultDataSourceFactory(this, userAgent)).createMediaSource(uri)
+        }
+    }
+    fun releasePlayer(){
+        if(player != null){
+            playbackPosition = player!!.currentPosition
+            currentWindow = player!!.currentWindowIndex
+            playWhenReady = player!!.playWhenReady
+            exoPlayerView!!.setPlayer(null)
+            player!!.release()
+            player = null
+        }
+    }
+    override fun onStop() {
+        super.onStop()
+        releasePlayer()
+    }
 }

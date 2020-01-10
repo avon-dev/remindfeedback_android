@@ -48,12 +48,6 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                    <VideoView
-                            android:id="@+id/post_Video"
-                            android:layout_width="match_parent"
-                            android:layout_height="240dp"/>
-
-
                     <FrameLayout
                             android:id="@+id/post_Picture"
                             android:layout_width="match_parent"
@@ -80,6 +74,13 @@
                         </RelativeLayout>
 
                     </FrameLayout>
+
+                    <com.google.android.exoplayer2.ui.PlayerView
+                            android:id="@+id/exoPlayerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                    />
                     <TextView
                             android:id="@+id/post_Tv"
                             android:layout_width="match_parent"
