@@ -2,17 +2,12 @@ package com.example.remindfeedback.FeedbackList.FeedbackDetail.Post
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.media.MediaPlayer
+import android.net.Uri
 import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
@@ -27,19 +22,37 @@ import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_my_page.*
-import kotlinx.android.synthetic.main.activity_post.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.net.URL
+import android.support.v4.media.session.MediaControllerCompat.setMediaController
+import android.view.*
+import android.widget.*
+import androidx.core.content.FileProvider
+import com.example.remindfeedback.FeedbackList.MainActivity
+import java.io.File
+import android.R.attr.start
+import com.google.android.exoplayer2.ExoPlayerFactory
+import kotlinx.android.synthetic.main.activity_post.*
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.util.Util
 
-class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener {
+
+class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener{
+
 
 
     private val TAG = "PostActivity"
     internal lateinit var presenterPost: PresenterPost
     lateinit var imageData:String
-
+    var video_name:String? = ""
 
     private var mViewPager: ViewPager? = null
     private var mViewPagerAdapter: ViewPagerAdapter? = null
@@ -50,6 +63,13 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     private var ALBUM_RES = arrayListOf<String>()
     //게시물 아이디
     var board_id :Int = -1
+
+    //exoplayer변수
+    private var player: SimpleExoPlayer? = null
+    private var playWhenReady = true
+    private var currentWindow = 0
+    private var playbackPosition = 0L
+
 
     var arrayList = arrayListOf<ModelComment>(
         //ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1)
@@ -80,7 +100,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         presenterPost.typeInit(intent.getIntExtra("feedback_id", -1), intent.getIntExtra("board_id", -1))
         presenterPost.getComment(arrayList, mAdapter, board_id)
 
-
         //댓글다는 부분
         comment_Commit_Button.setOnClickListener {
             if(!comment_EditText.text.toString().equals("")){
@@ -96,13 +115,14 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         mAdapter.notifyDataSetChanged()
     }
     //포스팅의 컨텐츠 타입과 파일들이 넘어옴
-    override fun setView(contentsType: Int, fileUrl_1: String?, fileUrl_2: String?, fileUrl_3: String?) {
+    override fun setView(contentsType: Int, fileUrl_1: String?, fileUrl_2: String?, fileUrl_3: String?, title:String, date:String, content:String) {
         if(contentsType == 0){//타입이 글일때
+            post_Title_Tv.text = "[글]"
             post_Picture.visibility = View.GONE
-            post_Video.visibility = View.GONE
+            exoPlayerView.visibility = View.GONE
         }else if(contentsType == 1){//타입이 사진일때
-            post_Video.visibility = View.GONE
-
+            exoPlayerView.visibility = View.GONE
+            post_Title_Tv.text = "[사진]"
             //파일이 있으면 넘버에 추가
             if(fileUrl_1 != null){
                 ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_1)
@@ -119,9 +139,24 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             viewPagerSetting()
 
         }else if(contentsType == 2){//타입이 비디오일때
+            post_Title_Tv.text = "[영상]"
             post_Picture.visibility = View.GONE
-        }
+            video_name = fileUrl_1
+            initializePlayer(video_name)
 
+
+
+
+        }else if(contentsType == 3){//타입이 녹음일때
+            post_Title_Tv.text = "[음성]"
+
+        }else{
+            Toast.makeText(this@PostActivity, "글을 불러올수 없습니다. 관리자에게 문의하세요.", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+        post_Title_Tv.text = post_Title_Tv.text.toString() + title
+        post_Date_Tv.text = date
+        post_Tv.text = content
     }
 
 
@@ -192,5 +227,44 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         }
     }
 
+    fun initializePlayer(filename:String?){
+        if(player == null){
+            player = ExoPlayerFactory.newSimpleInstance(this.getApplicationContext());
+            exoPlayerView!!
+                .setPlayer(player);
+        }
+        var video_url:String = "http://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+filename
+        var mediaSource:MediaSource = buildMediaSource(Uri.parse(video_url))
+        //준비
+        player!!.prepare(mediaSource, true, false)
+        //스타트, 스탑
+        player!!.playWhenReady.and(playWhenReady)
 
+
+    }
+
+    fun buildMediaSource(uri: Uri) : MediaSource{
+        var userAgent:String = Util.getUserAgent(this, "remindfeedback")
+        if(uri.getLastPathSegment().contains("mp3") || uri.getLastPathSegment().contains("mp4")){
+            return ExtractorMediaSource.Factory(DefaultHttpDataSourceFactory(userAgent)).createMediaSource(uri)
+        }else if(uri.getLastPathSegment().contains("m3u8")){
+            return HlsMediaSource.Factory(DefaultHttpDataSourceFactory(userAgent)).createMediaSource(uri)
+        }else{
+            return ExtractorMediaSource.Factory(DefaultDataSourceFactory(this, userAgent)).createMediaSource(uri)
+        }
+    }
+    fun releasePlayer(){
+        if(player != null){
+            playbackPosition = player!!.currentPosition
+            currentWindow = player!!.currentWindowIndex
+            playWhenReady = player!!.playWhenReady
+            exoPlayerView!!.setPlayer(null)
+            player!!.release()
+            player = null
+        }
+    }
+    override fun onStop() {
+        super.onStop()
+        releasePlayer()
+    }
 }

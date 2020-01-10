@@ -25,9 +25,7 @@ class PresenterPost:ContractPost.Presenter {
     override fun getComment(list: ArrayList<ModelComment>, adapterPost: AdapterPost, board_id: Int) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<GetAllComments>
-                = apiService
-            .GetAllComment(board_id)
+        val register_request: Call<GetAllComments> = apiService.GetAllComment(board_id)
         register_request.enqueue(object : Callback<GetAllComments> {
             override fun onResponse(call: Call<GetAllComments>, response: Response<GetAllComments>) {
                 if (response.isSuccessful) {
@@ -69,7 +67,7 @@ class PresenterPost:ContractPost.Presenter {
             override fun onResponse(call: Call<CreateComment>, response: Response<CreateComment>) {
                 if (response.isSuccessful) {
                     list.clear()
-                        //loadItems(list, adapterFeedbackDetail, createBoardText.feedback_id)
+                        getComment(list, adapterPost, createComment.board_id)
                     view.refresh()
                 } else {
                 }
@@ -78,27 +76,10 @@ class PresenterPost:ContractPost.Presenter {
             override fun onFailure(call: Call<CreateComment>, t: Throwable) {
                 //여기기서 실패가 뜨는데 이마 call모델이 달라서 그러는거같음, 근데 실패해도 별 상관없어서 새로고침 코드 여기에도 넣어둠
                 list.clear()
-                //loadItems(list, adapterFeedbackDetail, createBoardText.feedback_id)
+                getComment(list, adapterPost, createComment.board_id)
                 view.refresh()
             }
         })
-
-        /*
-        var tz = TimeZone.getTimeZone("Asia/Seoul")
-        var gc = GregorianCalendar(tz)
-        var year = gc.get(GregorianCalendar.YEAR).toString()
-        var month = gc.get(GregorianCalendar.MONTH).toString()
-        var day = gc.get(GregorianCalendar.DATE).toString()
-        var hour= gc.get(GregorianCalendar.HOUR).toString()
-        var min = gc.get(GregorianCalendar.MINUTE).toString()
-        //var sec = gc.get(GregorianCalendar.SECOND).toString()
-
-
-        var modelPost:ModelPost = ModelPost("dummy", "내이름", comment, "$year 년 $month 월 $day 일 $hour 시 $min 분",1)
-        adapterPost.addItem(modelPost)
-        */
-
-
         view.refresh()
     }
 
@@ -122,7 +103,7 @@ class PresenterPost:ContractPost.Presenter {
                             var myList: getAllBoardData = getAllBoardData()
                             myList = mGetAllBoard[i]
                             if(myList.id == board_id){//내가 선택한 포스팅일때
-                                view.setView(myList.board_category, myList.board_file1, myList.board_file2, myList.board_file3)
+                                view.setView(myList.board_category, myList.board_file1, myList.board_file2, myList.board_file3, myList.board_title, myList.createdAt, myList.board_content)
                             }
                             //var postData: ModelFeedbackDetail = ModelFeedbackDetail(myList.fk_feedbackId, myList.id, myList.board_category, myList.board_title, myList.createdAt)
                             view.refresh()

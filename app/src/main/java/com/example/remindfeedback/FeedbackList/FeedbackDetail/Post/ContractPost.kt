@@ -9,7 +9,7 @@ interface ContractPost {
 
     interface View{
         fun refresh()
-        fun setView(contentsType:Int,fileUrl_1:String?, fileUrl_2:String?, fileUrl_3:String?)
+        fun setView(contentsType:Int,fileUrl_1:String?, fileUrl_2:String?, fileUrl_3:String?, title:String, date:String, content:String)
         fun viewPagerSetting()
 
     }
