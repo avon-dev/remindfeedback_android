@@ -87,6 +87,12 @@ interface ServiceAPI {
     @POST("board/text/create")
     fun CreateBoardText(@Body createCategory: CreateBoardText): Call<GetAllBoard>
 
+    // 글 타입의 보드 수정
+    @PUT("board/text/update/{board_id}")
+    fun UpdateBoardText(@Path("board_id") board_id: Int, @Body createBoardText: CreateBoardText): Call<GetAllBoard>
+
+    // 글 타입의 보드 삭제
+
     //사진타입의 보드 생성
     @Multipart
     @POST("board/picture/create")

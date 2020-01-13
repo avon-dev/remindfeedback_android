@@ -12,6 +12,8 @@ interface ContractCreatePost {
         fun imageBrowse()
         fun getPath(uri: Uri): String
 
+        fun setData()
+
     }
 
     interface Presenter {

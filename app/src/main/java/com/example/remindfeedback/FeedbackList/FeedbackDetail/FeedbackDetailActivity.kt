@@ -28,11 +28,11 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
 
     private val TAG = "FeedbackDetailActivity"
     internal lateinit var presenterFeedbackDetail: PresenterFeedbackDetail
-    var arrayList = arrayListOf<ModelFeedbackDetail>(
-       // ModelFeedbackDetail("사진", "목요일반 수업 발표연습", "2019년 9월 31일 오후 3시 30분", 5)
-    )
     var feedback_id:Int = -1
     lateinit var mAdapter:AdapterFeedbackDetail
+
+    var arrayList = arrayListOf<ModelFeedbackDetail>(
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +67,7 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when(requestCode) {
-            111 -> {    // 피드백 추가 후 돌아왔을 때
+            111 -> {    // 보드 추가 후 돌아왔을 때
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         if(data.getIntExtra("return_type", -1) == 0){//글일때
@@ -85,8 +85,31 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
                     Activity.RESULT_CANCELED -> Toast.makeText(this@FeedbackDetailActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
             }
+            112 -> {    // 보드 수정 후 돌아왔을 때
+                when(resultCode){
+                    Activity.RESULT_OK -> if (data != null) {
+                        presenterFeedbackDetail.updateItems(arrayList, data.getIntExtra("feedback_id", -1), data.getIntExtra("board_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"), mAdapter)
+                    }
+                    Activity.RESULT_CANCELED -> Toast.makeText(this, "취소됨.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
+
+    // 수정화면
+    override fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_title: String, board_content: String) {
+        val intent = Intent(this, CreatePostActivity::class.java)
+        intent.putExtra("feedback_id", feedback_id)
+        intent.putExtra("board_id", board_id)
+        intent.putExtra("title", board_title)
+        intent.putExtra("content", board_content)
+        Log.e("보드 수정할 데이터1 (feedback_Id)", feedback_id.toString())
+        Log.e("보드 수정할 데이터2 (board_id)", board_id.toString())
+        Log.e("보드 수정할 데이터3", board_title)
+        Log.e("보드 수정할 데이터4", board_content)
+        startActivityForResult(intent, 112)
+    }
+
     //타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.feedback_detail_menu, menu)
