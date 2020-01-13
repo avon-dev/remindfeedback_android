@@ -22,6 +22,8 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
+import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.Recode.RecodeActivity
+import com.example.remindfeedback.Register.RegisterActivity
 import com.soundcloud.android.crop.Crop
 import kotlinx.android.synthetic.main.activity_image_pick.*
 import java.io.File
@@ -69,6 +71,9 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 presenterCreatePost.picktureDialogViwe()
             }else if(return_type == 2){//비디오일경우
                 imageBrowse()
+            }else if(return_type == 3){
+                val intent = Intent(this, RecodeActivity::class.java)
+                startActivity(intent)
             }
         }
 
