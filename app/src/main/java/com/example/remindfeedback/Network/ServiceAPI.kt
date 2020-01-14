@@ -109,6 +109,16 @@ interface ServiceAPI {
         @Part videofile: MultipartBody.Part?
     ): Call<GetAllBoard>
 
+    //녹음 타입의 보드 생성
+    @Multipart
+    @POST("board/record/create")
+    fun CreateBoardRecord(
+        @Part("feedback_id") feedback_id: RequestBody,
+        @Part("board_title") board_title: RequestBody,
+        @Part("board_content") board_content: RequestBody,
+        @Part recordfile: MultipartBody.Part?
+    ): Call<GetAllBoard>
+
     //댓글 생성
     @POST("comment/create")
     fun CreateComment(@Body createComment: CreateComment): Call<CreateComment>

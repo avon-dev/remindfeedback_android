@@ -1,6 +1,7 @@
-package com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.Recode
+package com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.Record
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
@@ -12,30 +13,40 @@ import android.os.Handler
 import android.os.SystemClock
 import android.transition.TransitionManager
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import com.example.remindfeedback.R
-import kotlinx.android.synthetic.main.activity_recode.*
+import kotlinx.android.synthetic.main.activity_record.*
 import java.io.File
 import java.io.IOException
 
 @RequiresApi(api = Build.VERSION_CODES.M)
-class RecodeActivity : AppCompatActivity() , View.OnClickListener{
+class RecordActivity : AppCompatActivity() , View.OnClickListener{
 
     private var mRecorder: MediaRecorder? = null
     private var mPlayer: MediaPlayer? = null
-    private var recodeName: String? = null
+    private var recordUri: String? = null
     private var lastProgress = 0
     private val mHandler = Handler()
     private val RECORD_AUDIO_REQUEST_CODE = 101
     private var isPlaying = false
+    private  var isComplete = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_recode)
+        setContentView(R.layout.activity_record)
+
+        //액션바 설정
+        var ab: ActionBar = this!!.supportActionBar!!
+        ab.setTitle("녹음")
+        //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
+        ab.setDisplayHomeAsUpEnabled(true)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getPermissionToRecordAudio()
@@ -46,6 +57,34 @@ class RecodeActivity : AppCompatActivity() , View.OnClickListener{
         imgViewPlay.setOnClickListener(this)
 
     }
+
+
+    //타이틀바에 어떤 menu를 적용할지 정하는부분
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.record_menu, menu)
+        return true
+    }
+
+    //타이틀바 메뉴를 클릭했을시
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle presses on the action bar items
+        when(item.itemId){
+            R.id.add_Record_Button -> { return add_Record_Button() }
+            else -> {return super.onOptionsItemSelected(item)}
+        }
+    }
+    fun add_Record_Button(): Boolean {
+        if(isComplete == true){
+            val intent = Intent()
+            intent.putExtra("recordUri", recordUri)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }else{
+            Toast.makeText(this, "녹음을 완료해주세요.", Toast.LENGTH_SHORT).show()
+        }
+        return true
+    }
+
 
     override fun onClick(view: View?) {
         when (view!!.id) {
@@ -60,7 +99,7 @@ class RecodeActivity : AppCompatActivity() , View.OnClickListener{
             }
 
             R.id.imgViewPlay -> {
-                if (!isPlaying && recodeName != null) {
+                if (!isPlaying && recordUri != null) {
                     isPlaying = true
                     startPlaying()
                 } else {
@@ -101,6 +140,7 @@ class RecodeActivity : AppCompatActivity() , View.OnClickListener{
     }
 
     private fun startRecording() {
+        isComplete = false
         mRecorder = MediaRecorder()
         mRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
         mRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
@@ -110,9 +150,9 @@ class RecodeActivity : AppCompatActivity() , View.OnClickListener{
             file.mkdirs()
         }
 
-        recodeName = root.absolutePath + "/RemindFeedback/Audios/" + (System.currentTimeMillis().toString() + ".mp3")
-        Log.d("recodeName", recodeName)
-        mRecorder!!.setOutputFile(recodeName)
+        recordUri = root.absolutePath + "/RemindFeedback/Audios/" + (System.currentTimeMillis().toString() + ".mp3")
+        Log.d("recordUri", recordUri)
+        mRecorder!!.setOutputFile(recordUri)
         mRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
 
         try {
@@ -143,14 +183,15 @@ class RecodeActivity : AppCompatActivity() , View.OnClickListener{
         chronometer.stop()
         chronometer.base = SystemClock.elapsedRealtime()
         //showing the play button
-        Toast.makeText(this, "Recording saved successfully.", Toast.LENGTH_SHORT).show()
+        isComplete = true
+        Toast.makeText(this, "성공적으로 저장되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
 
     private fun startPlaying() {
         mPlayer = MediaPlayer()
         try {
-            mPlayer!!.setDataSource(recodeName)
+            mPlayer!!.setDataSource(recordUri)
             mPlayer!!.prepare()
             mPlayer!!.start()
         } catch (e: IOException) {

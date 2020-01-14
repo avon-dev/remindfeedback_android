@@ -11,7 +11,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
@@ -22,10 +21,8 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.Recode.RecodeActivity
-import com.example.remindfeedback.Register.RegisterActivity
+import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.Record.RecordActivity
 import com.soundcloud.android.crop.Crop
-import kotlinx.android.synthetic.main.activity_image_pick.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -44,6 +41,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     private val PICK_FROM_ALBUM = 1
     private val PICK_FROM_CAMERA = 2
     private val PICK_FROM_CAMERA_VIDEO = 3
+    private val PICK_FROM_AUDIO = 4
     var lastUri_1: String? = null
     var lastUri_2: String? = null
     var lastUri_3: String? = null
@@ -72,8 +70,8 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             }else if(return_type == 2){//비디오일경우
                 imageBrowse()
             }else if(return_type == 3){
-                val intent = Intent(this, RecodeActivity::class.java)
-                startActivity(intent)
+                val intent = Intent(this, RecordActivity::class.java)
+                startActivityForResult(intent,PICK_FROM_AUDIO)
             }
         }
 
@@ -164,7 +162,9 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             intent.putExtra("file2_uri", lastUri_2.toString())
             intent.putExtra("file3_uri", lastUri_3.toString())
         }else if(return_type == 2){
-            intent.putExtra("file1_uri", lastUri_1.toString())
+            intent.putExtra("video_uri", lastUri_1.toString())
+        }else if(return_type == 3){
+            intent.putExtra("record_uri", lastUri_1.toString())
         }
         setResult(Activity.RESULT_OK, intent)
         finish()
@@ -311,6 +311,15 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 var uri:Uri = data!!.data
                 var uri_path:String = getPath(uri)
                 lastUri_1 = uri_path
+
+            }
+            PICK_FROM_AUDIO -> {
+                if (data != null) {
+                    Log.e("record_uri", data.getStringExtra("recordUri"))
+                    lastUri_1 = data.getStringExtra("recordUri")
+                }else{
+                    Toast.makeText(this, "음성파일 처리 에러", Toast.LENGTH_SHORT).show()
+                }
 
             }
             Crop.REQUEST_CROP -> {
