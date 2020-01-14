@@ -10,11 +10,10 @@ import java.util.ArrayList
 interface ContractFeedbackDetail {
     interface View{
         fun refresh()
-
+        fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_title: String, board_content: String)
     }
 
     interface Presenter {
-
         var view: View
         var mContext:Context
 
@@ -28,8 +27,9 @@ interface ContractFeedbackDetail {
 
         fun removeItems(position: Int, id: Int, context: Context)
 
-        fun updateItems(position: Int)
+        fun updateItems(list: ArrayList<ModelFeedbackDetail>, feedback_Id: Int, board_id: Int, title: String, content: String, adapterFeedbackDetail: AdapterFeedbackDetail)
 
+        fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_title: String, board_content: String)
     }
 
 }
