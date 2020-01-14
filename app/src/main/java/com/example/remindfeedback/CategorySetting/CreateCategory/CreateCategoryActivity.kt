@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -67,6 +68,7 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
             val title = intent.getStringExtra("title")
             val color = intent.getStringExtra("color")
             modifyID = intent.getIntExtra("id", -1)
+            Log.e("주제 수정 id", modifyID.toString())
             create_Category_Title.setText(title)
             selected_Color.setBackgroundColor(Color.parseColor(color))
         }else{
@@ -93,10 +95,12 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
 
         val intent = Intent()
         if(chooseColor.equals("")){
-            setResult(Activity.RESULT_CANCELED, intent)
-            finish()
+//            setResult(Activity.RESULT_CANCELED, intent)
+            Toast.makeText(this, "색상을 선택해주세요.", Toast.LENGTH_SHORT).show()
         }else{
-            intent.putExtra("id", modifyID)
+            if(modifyID != -1){
+                intent.putExtra("id", modifyID)
+            }
             intent.putExtra("title", create_Category_Title.text.toString())
             intent.putExtra("color", chooseColor)
             setResult(Activity.RESULT_OK, intent)

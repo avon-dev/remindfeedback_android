@@ -20,7 +20,7 @@ interface ContractCategorySetting {
 
         fun removeItems(id: Int, context: Context)
 
-        fun updateItems(id: Int, color: String, title: String)
+        fun updateItems(list: ArrayList<ModelCategorySetting>, id: Int, color: String, title: String, adapterCategorySetting: AdapterCategorySetting)
 
         fun showModifyActivity(id: Int, color: String, title: String)
     }
