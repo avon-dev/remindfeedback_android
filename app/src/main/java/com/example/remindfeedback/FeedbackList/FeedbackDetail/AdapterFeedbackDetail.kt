@@ -95,7 +95,8 @@ class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<Model
                     dialogInterface!!.dismiss()
                 }
                 delete_Tv.setOnClickListener{
-                    // removeAt(adapterPosition)
+                    removeAt(adapterPosition)
+                    presenterFeedbackDetail.removeItems(feedback_detail_list.board_id, context)
                     dialogInterface!!.dismiss()
                 }
                 dialog.setView(mView)

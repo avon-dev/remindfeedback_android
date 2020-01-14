@@ -59,7 +59,6 @@ interface ServiceAPI {
     @DELETE("category/deleteone/{category_id}")
     fun DeleteCategory(@Path("category_id") category_id: Int): Call<ResponseBody>
 
-
     //내 정보 가져오기
     @GET("mypage")
     fun GetMyPage(): Call<GetMyPage>
@@ -91,8 +90,6 @@ interface ServiceAPI {
     @PUT("board/text/update/{board_id}")
     fun UpdateBoardText(@Path("board_id") board_id: Int, @Body createBoardText: CreateBoardText): Call<GetAllBoard>
 
-    // 글 타입의 보드 삭제
-
     //사진타입의 보드 생성
     @Multipart
     @POST("board/picture/create")
@@ -114,6 +111,10 @@ interface ServiceAPI {
         @Part("board_content") board_content: RequestBody,
         @Part videofile: MultipartBody.Part?
     ): Call<GetAllBoard>
+
+    // 보드 삭제
+    @DELETE("board/{board_id}")
+    fun DeleteBoard(@Path("board_id") board_id: Int): Call<ResponseBody>
 
     //댓글 생성
     @POST("comment/create")

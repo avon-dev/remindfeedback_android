@@ -25,7 +25,7 @@ interface ContractFeedbackDetail {
 
         fun addVideoItems(list: ArrayList<ModelFeedbackDetail>,createboardVideo: CreateboardVideo, adapterFeedbackDetail: AdapterFeedbackDetail)
 
-        fun removeItems(position: Int, id: Int, context: Context)
+        fun removeItems(id: Int, context: Context)
 
         fun updateItems(list: ArrayList<ModelFeedbackDetail>, feedback_Id: Int, board_id: Int, title: String, content: String, adapterFeedbackDetail: AdapterFeedbackDetail)
 

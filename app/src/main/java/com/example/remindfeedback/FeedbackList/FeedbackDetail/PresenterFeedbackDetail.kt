@@ -6,10 +6,7 @@ import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.Model
 import com.example.remindfeedback.FeedbackList.ModelFeedback
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody
+import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -203,8 +200,26 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
         })
     }
 
+    override fun removeItems(id: Int, context: Context) {
+        Log.e("보드 삭제 AdapterFeedbackDetail removeItem id =>", "$id")
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<ResponseBody> = apiService.DeleteBoard(board_id = id)
+        register_request.enqueue(object : Callback<ResponseBody>{
 
-    override fun removeItems(position: Int, id: Int, context: Context) {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if(response.isSuccessful){
+                    Log.e("보드 삭제 성공", "Success")
+                    view.refresh()
+                }else{
+
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("보드 삭제 실패", t.message)
+            }
+
+        })
     }
 
     override fun updateItems(list: ArrayList<ModelFeedbackDetail>,feedback_id: Int, board_id: Int, title: String, content: String, adapterFeedbackDetail: AdapterFeedbackDetail) {
