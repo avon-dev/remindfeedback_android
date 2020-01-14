@@ -6,10 +6,7 @@ import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.Model
 import com.example.remindfeedback.FeedbackList.ModelFeedback
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody
+import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -239,7 +236,23 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
     }
 
 
-    override fun removeItems(position: Int, id: Int, context: Context) {
+    override fun removeItems(board_id: Int, context: Context) {
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<ResponseBody> = apiService.DeleteBoard(board_id)
+        register_request.enqueue(object : Callback<ResponseBody> {
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.e("성공!", "딜리트 성공")
+                    view.refresh()
+                } else {
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("실패", t.message)
+            }
+        })
     }
 
     override fun updateItems(position: Int) {

@@ -1,12 +1,15 @@
 package com.example.remindfeedback.FeedbackList.FeedbackDetail
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.Post.PostActivity
 import com.example.remindfeedback.R
@@ -49,10 +52,10 @@ class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<Model
         val feedback_Detail_Date = itemView.findViewById<TextView>(R.id.feedback_Detail_Date_Tv)
         val feedback_Detail_Contents = itemView.findViewById<TextView>(R.id.feedback_Detail_Contents)
         val feedback_Detail_Image = itemView.findViewById<ImageView>(R.id.feedback_Detail_Image)
+        val feedback_Detail_More = itemView.findViewById<ImageView>(R.id.feedback_Detail_More)
 
 
         fun bind (feedback_detail_list: ModelFeedbackDetail, context: Context) {
-
             feedback_Detail_Title.text = feedback_detail_list.title
             feedback_Detail_Date.text = feedback_detail_list.date
             //0(글), 1(사진), 2(영상), 3(녹음)
@@ -74,6 +77,27 @@ class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<Model
                 intent.putExtra("feedback_id", feedback_detail_list.feedback_id)
                 intent.putExtra("board_id", feedback_detail_list.board_id)
                 context.startActivity(intent)
+            }
+            feedback_Detail_More.setOnClickListener{
+                var dialogInterface: DialogInterface? = null
+                val dialog = AlertDialog.Builder(context)
+                val edialog : LayoutInflater = LayoutInflater.from(context)
+                val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
+
+                val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
+                val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
+
+                update_Tv.setOnClickListener{
+                    dialogInterface!!.dismiss()
+                }
+                delete_Tv.setOnClickListener{//보드 삭제
+                    removeAt(adapterPosition)
+                    presenterFeedbackDetail.removeItems(feedback_detail_list.board_id, context)
+                    dialogInterface!!.dismiss()
+                }
+                dialog.setView(mView)
+                dialog.create()
+                dialogInterface = dialog.show()
             }
 
         }

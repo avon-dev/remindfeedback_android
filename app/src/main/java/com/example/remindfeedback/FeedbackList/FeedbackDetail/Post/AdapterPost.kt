@@ -1,12 +1,14 @@
 package com.example.remindfeedback.FeedbackList.FeedbackDetail.Post
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.AdapterFeedbackDetail
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.ModelFeedbackDetail
@@ -16,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_my_page.*
 import java.net.URL
 import java.util.ArrayList
 
-class AdapterPost(val context: Context, val arrayList: ArrayList<ModelComment>) :   RecyclerView.Adapter<AdapterPost.Holder>() {
+class AdapterPost(val context: Context, val arrayList: ArrayList<ModelComment>, val presenterPost: PresenterPost) :   RecyclerView.Adapter<AdapterPost.Holder>() {
 
     fun addItem(item: ModelComment) {//아이템 추가
         if (arrayList != null) {//널체크 해줘야함
@@ -74,6 +76,27 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelComment>) 
 
             itemView.setOnClickListener {
 
+            }
+            post_Comment_More.setOnClickListener{
+                var dialogInterface: DialogInterface? = null
+                val dialog = AlertDialog.Builder(context)
+                val edialog : LayoutInflater = LayoutInflater.from(context)
+                val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
+
+                val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
+                val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
+
+                update_Tv.setOnClickListener{
+                    dialogInterface!!.dismiss()
+                }
+                delete_Tv.setOnClickListener{//보드 삭제
+                    removeAt(adapterPosition)
+                    presenterPost.removeItems(comment_list.comment_id, context)
+                    dialogInterface!!.dismiss()
+                }
+                dialog.setView(mView)
+                dialog.create()
+                dialogInterface = dialog.show()
             }
 
         }

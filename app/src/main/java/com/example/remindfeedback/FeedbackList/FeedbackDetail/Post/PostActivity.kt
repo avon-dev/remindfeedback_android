@@ -91,12 +91,18 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     var arrayList = arrayListOf<ModelComment>(
         //ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1)
         )
-    val mAdapter = AdapterPost(this, arrayList)
+    lateinit var mAdapter:AdapterPost
 
     private val r = Runnable { updateSeekProgress() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
+
+        presenterPost = PresenterPost().apply {
+            view = this@PostActivity
+            mContext = this@PostActivity
+        }
+        mAdapter = AdapterPost(this, arrayList, presenterPost)
 
         //액션바 설정
         var ab: ActionBar = this.supportActionBar!!
@@ -108,10 +114,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         post_Comment_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
 
 
-        presenterPost = PresenterPost().apply {
-            view = this@PostActivity
-            mContext = this@PostActivity
-        }
 
         var intent:Intent= intent
         board_id = intent.getIntExtra("board_id", -1)

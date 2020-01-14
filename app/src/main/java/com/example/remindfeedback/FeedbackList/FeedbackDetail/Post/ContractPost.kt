@@ -23,7 +23,7 @@ interface ContractPost {
 
         fun addComment(adapterPost: AdapterPost, createComment: CreateComment, arrayList: ArrayList<ModelComment>)
 
-        fun removeItems(position: Int, id: Int, context: Context)
+        fun removeItems(comment_id: Int, context: Context)
 
         fun updateItems(position: Int)
 

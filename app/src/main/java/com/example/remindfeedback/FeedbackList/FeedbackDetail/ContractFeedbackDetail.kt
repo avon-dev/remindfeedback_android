@@ -28,7 +28,7 @@ interface ContractFeedbackDetail {
 
         fun addRecordItems(list: ArrayList<ModelFeedbackDetail>,createboardRecord: CreateboardRecord, adapterFeedbackDetail: AdapterFeedbackDetail)
 
-        fun removeItems(position: Int, id: Int, context: Context)
+        fun removeItems(board_id: Int, context: Context)
 
         fun updateItems(position: Int)
 
