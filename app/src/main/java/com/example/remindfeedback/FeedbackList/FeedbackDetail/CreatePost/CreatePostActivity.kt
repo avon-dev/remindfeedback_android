@@ -293,8 +293,8 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                     if(data.clipData == null){
                         Toast.makeText(this, "이미지를 다중선택 할 수 없는 기기입니다.", Toast.LENGTH_SHORT).show()
                     }else{
-                        var clipData:ClipData = data.clipData
-                        Log.e("clipdata", data.clipData.itemCount.toString())
+                        var clipData:ClipData = data.clipData!!
+                        Log.e("clipdata", data.clipData!!.itemCount.toString())
                         if(clipData.itemCount > 3){
                             Toast.makeText(this, "이미지는 3장까지 선택할 수 있습니다.", Toast.LENGTH_SHORT).show()
                         }else if(clipData.itemCount ==1){
@@ -336,7 +336,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             }
             PICK_FROM_CAMERA_VIDEO -> {
                 //var mVideo = MediaStore.Video.Media.get
-                var uri:Uri = data!!.data
+                var uri:Uri = data!!.data!!
                 var uri_path:String = getPath(uri)
                 lastUri_1 = uri_path
 
