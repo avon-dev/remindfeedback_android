@@ -32,8 +32,8 @@ interface ServiceAPI {
     fun GetFeedback(@Path("start") start: Int): Call<GetFeedback>
 
     //피드백정보 모두 가져오기
-    @GET("feedback/all/{start}")
-    fun GetAllFeedback(@Path("start") start: Int): Call<GetAllFeedback>
+    @GET("feedback/all/{feedback_count}")
+    fun GetAllFeedback(@Path("feedback_count") feedback_count: Int): Call<GetAllFeedback>
 
     // 피드백 수정
     @PUT("feedback/update/{feedback_id}")
@@ -80,8 +80,8 @@ interface ServiceAPI {
     fun PatchPortrait(@Part portrait: MultipartBody.Part?): Call<GetMyPage>
 
     //하나의 피드백 내부 포스트들 가져오기
-    @GET("board/{feedbackid}/0")
-    fun GetAllBoard(@Path("feedbackid") feedback_id: Int): Call<GetAllBoard>
+    @GET("board/{feedbackid}/{board_count}")
+    fun GetAllBoard(@Path("feedbackid") feedback_id: Int,@Path("board_count") board_count: Int): Call<GetAllBoard>
 
     //글타입의 보드 생성
     @POST("board/text/create")

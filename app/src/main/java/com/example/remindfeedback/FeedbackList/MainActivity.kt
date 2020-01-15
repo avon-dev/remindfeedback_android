@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -19,6 +20,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.infinity_ex2.OnLoadMoreListener
 import com.example.remindfeedback.Alarm.AlarmActivity
 import com.example.remindfeedback.CategorySetting.CategorySettingActivity
 import com.example.remindfeedback.FeedbackList.CreateFeedback.CreateFeedbackActivity
@@ -36,9 +38,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val TAG = "MainActivity"
     internal lateinit var presenterMain: PresenterMain
     lateinit var mAdapter: AdapterMainFeedback
-
+    var feedback_count:Int = 0
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
-    var arrayList = arrayListOf<ModelFeedback>(
+    var arrayList = arrayListOf<ModelFeedback?>(
     )
 
 
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var fab_main: FloatingActionButton
     lateinit var fab_sub1: FloatingActionButton
     lateinit var fab_sub2: FloatingActionButton
-
+    lateinit var lm:LinearLayoutManager
     private var fab_open: Animation? = null
     var fab_close: Animation? = null
 
@@ -80,18 +82,44 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             view = this@MainActivity
             context = this@MainActivity
         }
-        mAdapter = AdapterMainFeedback(this, arrayList,presenterMain)
-
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
-        Main_Recyclerview.adapter = mAdapter
-        val lm = LinearLayoutManager(this)
+        lm = LinearLayoutManager(this)
         Main_Recyclerview.layoutManager = lm
+        mAdapter = AdapterMainFeedback(Main_Recyclerview,this, arrayList,presenterMain, this)
+        Main_Recyclerview.adapter = mAdapter
+
         Main_Recyclerview.setHasFixedSize(true) //아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
+
+        mAdapter!!.setOnLoadMoreListener(object : OnLoadMoreListener {
+            override fun onLoadMore() {
+                if (arrayList.size <= 20) {
+                    arrayList.add(null)
+                    mAdapter!!.notifyItemInserted(arrayList.size - 1)
+                    Handler().postDelayed({
+                        arrayList.removeAt(arrayList.size - 1)
+                        mAdapter!!.notifyItemRemoved(arrayList.size)
+
+                        //Generating more data
+                        val index = arrayList.size
+                        val end = index + 10
+                        feedback_count = index+10
+
+                        presenterMain.loadItems(arrayList,mAdapter,feedback_count)
+                        mAdapter!!.notifyDataSetChanged()
+                        mAdapter!!.setLoaded()
+                    }, 5000)
+                } else {
+                    Toast.makeText(this@MainActivity, "Loading data completed", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        })
+
 
 
         //presenter 정의하고 아이템을 불러옴
 
-        presenterMain.loadItems(arrayList, mAdapter)
+        presenterMain.loadItems(arrayList, mAdapter, feedback_count)
 
         //여기서부터는 스피너 관련코드
         var arrayAdapter = ArrayAdapter(
@@ -131,6 +159,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ed_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
         }
     }
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
