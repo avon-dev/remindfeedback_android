@@ -20,7 +20,7 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
 
 
     internal lateinit var presenterCreateCategory: PresenterCreateCategory
-    var chooseColor :String? = ""
+    var chooseColor: String? = ""
     var modifyID = -1
     lateinit var ab: ActionBar
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,25 +53,31 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
             100 -> {
                 when (resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
+                        another_Color_Select.setTextColor(Color.parseColor(data.getStringExtra("color")))
                         selected_Color.setBackgroundColor(Color.parseColor(data.getStringExtra("color")))
                         chooseColor = data.getStringExtra("color")
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(this@CreateCategoryActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+                    Activity.RESULT_CANCELED -> Toast.makeText(
+                        this@CreateCategoryActivity,
+                        "색상 선택을 취소하셨습니다.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
     }
 
     override fun setData() {
-        if(intent.hasExtra("title")){
+        if (intent.hasExtra("title")) {
             ab.setTitle("주제 수정")
             val title = intent.getStringExtra("title")
             val color = intent.getStringExtra("color")
             modifyID = intent.getIntExtra("id", -1)
             Log.e("주제 수정 id", modifyID.toString())
             create_Category_Title.setText(title)
+            another_Color_Select.setTextColor(Color.parseColor(color))
             selected_Color.setBackgroundColor(Color.parseColor(color))
-        }else{
+        } else {
         }
     }
 
@@ -84,9 +90,13 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
     // 타이틀바 메뉴를 클릭했을시
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle presses on the action bar items
-        when(item.itemId){
-            R.id.add_Category_Button -> { return add_Category_Button() }
-            else -> {return super.onOptionsItemSelected(item)}
+        when (item.itemId) {
+            R.id.add_Category_Button -> {
+                return add_Category_Button()
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
         }
     }
 
@@ -94,23 +104,24 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
     fun add_Category_Button(): Boolean {
 
         val intent = Intent()
-        if(chooseColor.equals("")){
-//            setResult(Activity.RESULT_CANCELED, intent)
-            Toast.makeText(this, "색상을 선택해주세요.", Toast.LENGTH_SHORT).show()
-        }else{
-            if(modifyID != -1){
+        if (create_Category_Title.text.toString().isEmpty()) {
+            Toast.makeText(this, "주제 이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
+        } else {
+            if (modifyID != -1) {
                 intent.putExtra("id", modifyID)
             }
             intent.putExtra("title", create_Category_Title.text.toString())
-            intent.putExtra("color", chooseColor)
+            if (chooseColor.equals("")) { // 색상 선택안하면 기본 색상으로 주제 생성
+                intent.putExtra("color", "#000000")
+            } else {
+                intent.putExtra("color", chooseColor)
+            }
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
 
         return true
     }
-
-
 
 
 }

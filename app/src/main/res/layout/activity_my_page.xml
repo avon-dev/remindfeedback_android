@@ -16,55 +16,45 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <FrameLayout
+            <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:background="@drawable/under_line_gray"
+                    android:orientation="vertical"
+                    android:padding="32dp">
 
-                <ImageView
-                        android:id="@+id/imageView6"
-                        android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:src="@drawable/ic_launcher_foreground" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_ImageView"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_margin="16dp"
+                        android:src="@drawable/ic_default_profile" />
 
-                <LinearLayout
+                <TextView
+                        android:id="@+id/mypage_Nickname_Tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_margin="8dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="사용자 이름"
+                        android:textSize="18sp" />
+
+                <TextView
+                        android:id="@+id/mypage_Introduction_Tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:orientation="vertical">
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:maxLines="1"
+                        android:text="사용자 상태메시지"
+                        android:textSize="16sp" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/profile_ImageView"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:layout_gravity="center_vertical|center_horizontal"
-                            android:src="@drawable/ic_default_profile" />
+            </LinearLayout>
 
-                    <TextView
-                            android:id="@+id/mypage_Nickname_Tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center_vertical"
-                            android:gravity="center_horizontal|center_vertical"
-                            android:text="3월 김철수" />
-
-                    <TextView
-                            android:id="@+id/mypage_Email_Tv_2"
-                            android:layout_width="match_parent"
-
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center_vertical"
-                            android:gravity="center_horizontal|center_vertical"
-                            android:text="rrxxxxx@naver.com" />
-                    <TextView
-                            android:id="@+id/mypage_Introduction_Tv"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center_vertical"
-                            android:layout_weight="1" android:gravity="center_horizontal|center_vertical"
-                            android:text="상태메시지"/>
-
-                </LinearLayout>
-            </FrameLayout>
 
             <TextView
                     android:id="@+id/textView9"
@@ -122,8 +112,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:gravity="right"
-                        android:textSize="14sp"
-                        android:text="인증된 이메일입니다." />
+                        android:text="인증된 이메일입니다."
+                        android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -132,7 +122,8 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/under_line_gray"
                     android:gravity="center"
-                    android:orientation="horizontal" android:padding="16dp">
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
                 <TextView
                         android:id="@+id/textView11"
@@ -141,13 +132,13 @@
                         android:layout_weight="1"
                         android:text="프로필 사진 변경"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
 
                 <ImageView
                         android:id="@+id/imageView9"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        app:srcCompat="@drawable/ic_right_black"/>
+                        app:srcCompat="@drawable/ic_right_black" />
             </LinearLayout>
 
             <LinearLayout
@@ -156,7 +147,8 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/under_line_gray"
                     android:gravity="center"
-                    android:orientation="horizontal" android:padding="16dp">
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
                 <TextView
                         android:id="@+id/textView12"
@@ -166,13 +158,13 @@
                         android:gravity="center_vertical"
                         android:text="닉네임 변경"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
 
                 <ImageView
                         android:id="@+id/imageView10"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        app:srcCompat="@drawable/ic_right_black"/>
+                        app:srcCompat="@drawable/ic_right_black" />
             </LinearLayout>
 
             <LinearLayout
@@ -181,7 +173,8 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/under_line_gray"
                     android:gravity="center"
-                    android:orientation="horizontal" android:padding="16dp">
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
                 <TextView
                         android:id="@+id/textView110"
@@ -190,13 +183,13 @@
                         android:layout_weight="1"
                         android:text="상태 메세지 변경"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
 
                 <ImageView
                         android:id="@+id/imageView90"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        app:srcCompat="@drawable/ic_right_black"/>
+                        app:srcCompat="@drawable/ic_right_black" />
             </LinearLayout>
 
 
@@ -216,7 +209,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/under_line_gray"
-                    android:orientation="horizontal" android:padding="16dp">
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
                 <TextView
                         android:id="@+id/textView14"
@@ -226,13 +220,13 @@
                         android:gravity="center_vertical"
                         android:text="계정 비밀번호 변경"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
 
                 <ImageView
                         android:id="@+id/imageView15"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        app:srcCompat="@drawable/ic_right_black"/>
+                        app:srcCompat="@drawable/ic_right_black" />
             </LinearLayout>
 
             <TextView
