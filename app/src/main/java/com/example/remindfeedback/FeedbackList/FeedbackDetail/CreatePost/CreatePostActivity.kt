@@ -21,9 +21,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import com.example.remindfeedback.R
+import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.Record.RecordActivity
 import com.soundcloud.android.crop.Crop
-import kotlinx.android.synthetic.main.activity_create_post.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -43,6 +42,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     private val PICK_FROM_ALBUM = 1
     private val PICK_FROM_CAMERA = 2
     private val PICK_FROM_CAMERA_VIDEO = 3
+    private val PICK_FROM_AUDIO = 4
     var lastUri_1: String? = null
     var lastUri_2: String? = null
     var lastUri_3: String? = null
@@ -77,12 +77,18 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             if(return_type == 1){//사진일경우
                 //사진이 선택되어있는경우 앨범인지 카메라인지 선택하는 뷰를 띄움
                 presenterCreatePost.picktureDialogViwe()
-            }else if(return_type == 2){//비디오일경우
-                imageBrowse()
             }
+            /*//녹음 비디오 관련 주석처리
+            else if(return_type == 2){//비디오일경우
+                imageBrowse()
+            }else if(return_type == 3){
+                val intent = Intent(this, RecordActivity::class.java)
+                startActivityForResult(intent,PICK_FROM_AUDIO)
+            }
+            */
         }
 
-
+        /* 비디오 녹음 관련 주석 해놓음
         contents_Type_Change_Button.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             val dialogView = layoutInflater.inflate(R.layout.dialog_contents_type, null)
@@ -128,6 +134,41 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 return_type = 2
                 add_File_View.visibility = View.VISIBLE
             }
+            builder.setView(dialogView)
+                .setPositiveButton("확인") { dialogInterface, i ->
+                    //mainTv.text = dialogText.text.toString()
+                    //mainRb.rating = dialogRatingBar.rating
+                    /* 확인일 때 main의 View의 값에 dialog View에 있는 값을 적용 */
+
+                }
+                .setNegativeButton("취소") { dialogInterface, i ->
+                    /* 취소일 때 아무 액션이 없으므로 빈칸 */
+                }
+                .show()
+        }
+        */
+        contents_Type_Change_Button.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            val dialogView = layoutInflater.inflate(R.layout.dialog_contents_type, null)
+            val contents_Photo = dialogView.findViewById<TextView>(R.id.contents_Photo)
+            val contents_Text = dialogView.findViewById<TextView>(R.id.contents_Text)
+
+            contents_Photo.setOnClickListener {
+                contents_Photo.setBackgroundResource(R.drawable.under_line_gray)
+                contents_Text.setBackgroundResource(R.drawable.all_line)
+                contents_Image.setImageResource(R.drawable.ic_photo_black)
+                return_type = 1
+                add_File_View.visibility = View.VISIBLE
+            }
+
+            contents_Text.setOnClickListener {
+                contents_Photo.setBackgroundResource(R.drawable.all_line)
+                contents_Text.setBackgroundResource(R.drawable.under_line_gray)
+                contents_Image.setImageResource(R.drawable.ic_text)
+                return_type = 0
+                add_File_View.visibility = View.GONE
+            }
+
             builder.setView(dialogView)
                 .setPositiveButton("확인") { dialogInterface, i ->
                     //mainTv.text = dialogText.text.toString()
@@ -193,7 +234,9 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             intent.putExtra("file2_uri", lastUri_2.toString())
             intent.putExtra("file3_uri", lastUri_3.toString())
         }else if(return_type == 2){
-            intent.putExtra("file1_uri", lastUri_1.toString())
+            intent.putExtra("video_uri", lastUri_1.toString())
+        }else if(return_type == 3){
+            intent.putExtra("record_uri", lastUri_1.toString())
         }
         setResult(Activity.RESULT_OK, intent)
         finish()
@@ -339,6 +382,15 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 var uri:Uri = data!!.data!!
                 var uri_path:String = getPath(uri)
                 lastUri_1 = uri_path
+
+            }
+            PICK_FROM_AUDIO -> {
+                if (data != null) {
+                    Log.e("record_uri", data.getStringExtra("recordUri"))
+                    lastUri_1 = data.getStringExtra("recordUri")
+                }else{
+                    Toast.makeText(this, "음성파일 처리 에러", Toast.LENGTH_SHORT).show()
+                }
 
             }
             Crop.REQUEST_CROP -> {

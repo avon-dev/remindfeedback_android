@@ -8,6 +8,7 @@ import com.example.remindfeedback.FeedbackList.FeedbackDetail.ModelFeedbackDetai
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,7 +39,7 @@ class PresenterPost:ContractPost.Presenter {
                             var mUser:commentUser = commentUser()
                             myList = mGetAllComment[i]
                             mUser = myList.user
-                            var postData: ModelComment = ModelComment(mUser.portrait, mUser.nickname, myList.comment_content, myList.createdAt)
+                            var postData: ModelComment = ModelComment(myList.id, mUser.portrait, mUser.nickname, myList.comment_content, myList.createdAt)
                             adapterPost.addItem(postData)
                             view.refresh()
                         }
@@ -83,7 +84,23 @@ class PresenterPost:ContractPost.Presenter {
         view.refresh()
     }
 
-    override fun removeItems(position: Int, id: Int, context: Context) {
+    override fun removeItems(comment_id: Int, context: Context) {
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<ResponseBody> = apiService.DeleteComment(comment_id)
+        register_request.enqueue(object : Callback<ResponseBody> {
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.e("성공!", "딜리트 성공")
+                    view.refresh()
+                } else {
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("실패", t.message)
+            }
+        })
     }
 
     override fun updateItems(position: Int) {

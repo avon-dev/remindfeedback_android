@@ -27,8 +27,6 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
         register_request.enqueue(object : Callback<GetAllBoard> {
             override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
                 if (response.isSuccessful) {
-
-
                     val getAllBoard: GetAllBoard = response.body()!!
                     val mGetAllBoard = getAllBoard.data
                     if (mGetAllBoard != null) {
@@ -200,24 +198,63 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
         })
     }
 
-    override fun removeItems(id: Int, context: Context) {
-        Log.e("보드 삭제 AdapterFeedbackDetail removeItem id =>", "$id")
+    override fun addRecordItems(list: ArrayList<ModelFeedbackDetail>,createboardRecord: CreateboardRecord, adapterFeedbackDetail: AdapterFeedbackDetail) {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+
+        lateinit var register_request: Call<GetAllBoard>
+        val record_File = File(createboardRecord.recordfile)
+        val requestBody = RequestBody.create(MediaType.parse("multipart/data"), record_File)
+        val multiPartBody = MultipartBody.Part
+            .createFormData("recordfile", record_File.name, requestBody)
+        register_request= apiService
+            .CreateBoardRecord(
+                RequestBody.create(MediaType.parse("multipart/data"), createboardRecord.feedback_id.toString()),
+                RequestBody.create(MediaType.parse("multipart/data"), createboardRecord.board_title),
+                RequestBody.create(MediaType.parse("multipart/data"), createboardRecord.board_content),
+                multiPartBody)
+        register_request.enqueue(object : Callback<GetAllBoard> {
+            override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
+                if (response.isSuccessful) {
+                    list.clear()
+                    loadItems(list, adapterFeedbackDetail, createboardRecord.feedback_id)
+                    view.refresh()
+                } else {
+                }
+                val StatusCode = response.code()
+                Log.e("post", "Status Code : $StatusCode")
+                Log.e("tag", "response=" + response.raw())
+            }
+            override fun onFailure(call: Call<GetAllBoard>, t: Throwable) {
+                //여기기서 실패가 뜨는데 이마 call모델이 달라서 그러는거같음, 근데 실패해도 별 상관없어서 새로고침 코드 여기에도 넣어둠
+                list.clear()
+                loadItems(list, adapterFeedbackDetail, createboardRecord.feedback_id)
+                view.refresh()
+                Log.e("tag", "response=" + t.message+"   "+t.cause)
+            }
+        })
+    }
+
+
+    override fun removeItems(board_id: Int, context: Context) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<ResponseBody> = apiService.DeleteBoard(board_id = id)
-        register_request.enqueue(object : Callback<ResponseBody>{
+        val register_request: Call<ResponseBody> = apiService.DeleteBoard(board_id)
+        register_request.enqueue(object : Callback<ResponseBody> {
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if(response.isSuccessful){
-                    Log.e("보드 삭제 성공", "Success")
+                if (response.isSuccessful) {
+                    Log.e("성공!", "딜리트 성공")
                     view.refresh()
-                }else{
-
+                } else {
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("보드 삭제 실패", t.message)
+                Log.e("실패", t.message)
             }
+        })
+    }
+
 
         })
     }

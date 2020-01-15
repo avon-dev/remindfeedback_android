@@ -1,9 +1,9 @@
 package com.example.remindfeedback.FeedbackList.FeedbackDetail
 
 import android.content.Context
-import com.example.remindfeedback.Alarm.ModelAlarm
 import com.example.remindfeedback.ServerModel.CreateBoardPicture
 import com.example.remindfeedback.ServerModel.CreateBoardText
+import com.example.remindfeedback.ServerModel.CreateboardRecord
 import com.example.remindfeedback.ServerModel.CreateboardVideo
 import java.util.ArrayList
 
@@ -25,7 +25,10 @@ interface ContractFeedbackDetail {
 
         fun addVideoItems(list: ArrayList<ModelFeedbackDetail>,createboardVideo: CreateboardVideo, adapterFeedbackDetail: AdapterFeedbackDetail)
 
-        fun removeItems(id: Int, context: Context)
+        fun addRecordItems(list: ArrayList<ModelFeedbackDetail>,createboardRecord: CreateboardRecord, adapterFeedbackDetail: AdapterFeedbackDetail)
+
+        fun removeItems(board_id: Int, context: Context)
+
 
         fun updateItems(list: ArrayList<ModelFeedbackDetail>, feedback_Id: Int, board_id: Int, title: String, content: String, adapterFeedbackDetail: AdapterFeedbackDetail)
 

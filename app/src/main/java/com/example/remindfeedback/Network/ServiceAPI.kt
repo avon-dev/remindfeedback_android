@@ -112,13 +112,27 @@ interface ServiceAPI {
         @Part videofile: MultipartBody.Part?
     ): Call<GetAllBoard>
 
-    // 보드 삭제
+    //녹음 타입의 보드 생성
+    @Multipart
+    @POST("board/record/create")
+    fun CreateBoardRecord(
+        @Part("feedback_id") feedback_id: RequestBody,
+        @Part("board_title") board_title: RequestBody,
+        @Part("board_content") board_content: RequestBody,
+        @Part recordfile: MultipartBody.Part?
+    ): Call<GetAllBoard>
+
+    //보드 삭제
     @DELETE("board/{board_id}")
     fun DeleteBoard(@Path("board_id") board_id: Int): Call<ResponseBody>
 
     //댓글 생성
     @POST("comment/create")
     fun CreateComment(@Body createComment: CreateComment): Call<CreateComment>
+
+    //댓글 삭제
+    @DELETE("comment/delete/{comment_id}")
+    fun DeleteComment(@Path("comment_id") comment_id: Int): Call<ResponseBody>
 
     //각 게시글의 댓글 가져오기
     @GET("comment/selectall/{board_id}")

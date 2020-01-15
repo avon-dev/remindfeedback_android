@@ -56,7 +56,6 @@ class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<Model
 
 
         fun bind (feedback_detail_list: ModelFeedbackDetail, context: Context) {
-
             feedback_Detail_Title.text = feedback_detail_list.title
             feedback_Detail_Date.text = feedback_detail_list.date
             //0(글), 1(사진), 2(영상), 3(녹음)
@@ -78,6 +77,27 @@ class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<Model
                 intent.putExtra("feedback_id", feedback_detail_list.feedback_id)
                 intent.putExtra("board_id", feedback_detail_list.board_id)
                 context.startActivity(intent)
+            }
+            feedback_Detail_More.setOnClickListener{
+                var dialogInterface: DialogInterface? = null
+                val dialog = AlertDialog.Builder(context)
+                val edialog : LayoutInflater = LayoutInflater.from(context)
+                val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
+
+                val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
+                val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
+
+                update_Tv.setOnClickListener{
+                    dialogInterface!!.dismiss()
+                }
+                delete_Tv.setOnClickListener{//보드 삭제
+                    removeAt(adapterPosition)
+                    presenterFeedbackDetail.removeItems(feedback_detail_list.board_id, context)
+                    dialogInterface!!.dismiss()
+                }
+                dialog.setView(mView)
+                dialog.create()
+                dialogInterface = dialog.show()
             }
 
             feedback_Detail_More.setOnClickListener {

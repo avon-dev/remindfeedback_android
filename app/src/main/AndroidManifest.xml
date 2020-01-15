@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
 
     <application
@@ -30,6 +31,9 @@
         <activity
                 android:name=".CategorySetting.CategorySettingActivity"
                 android:parentActivityName=".FeedbackList.MainActivity"/>
+        <activity
+                android:name=".FeedbackList.FeedbackDetail.CreatePost.Record.RecordActivity"
+                android:parentActivityName=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity"/>
         <activity
                 android:name=".FeedbackList.FeedbackDetail.Post.PostActivity"/>
         <activity

@@ -4,23 +4,17 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.remindfeedback.Alarm.AdapterAlarm
-import com.example.remindfeedback.Alarm.ModelAlarm
-import com.example.remindfeedback.Alarm.PresenterAlarm
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.Post.PostActivity
-import com.example.remindfeedback.FriendsList.FindFriends.FindFriendsActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.ServerModel.CreateBoardPicture
 import com.example.remindfeedback.ServerModel.CreateBoardText
+import com.example.remindfeedback.ServerModel.CreateboardRecord
 import com.example.remindfeedback.ServerModel.CreateboardVideo
-import kotlinx.android.synthetic.main.activity_alarm.*
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
 
 class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View{
@@ -77,8 +71,11 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
                             val createBoardPicture = CreateBoardPicture(data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"), data.getStringExtra("file1_uri"), data.getStringExtra("file2_uri"), data.getStringExtra("file3_uri") )
                             presenterFeedbackDetail.addPictureItems(arrayList,createBoardPicture, mAdapter)
                         }else if(data.getIntExtra("return_type", -1) == 2){//동영상일때
-                            val createboardVideo = CreateboardVideo(data.getIntExtra("feedback_id", -1),data.getStringExtra("board_title"), data.getStringExtra("board_content"),data.getStringExtra("file1_uri"))
+                            val createboardVideo = CreateboardVideo(data.getIntExtra("feedback_id", -1),data.getStringExtra("board_title"), data.getStringExtra("board_content"),data.getStringExtra("video_uri"))
                             presenterFeedbackDetail.addVideoItems(arrayList,createboardVideo, mAdapter)
+                        }else if(data.getIntExtra("return_type", -1) == 3){//녹음일때
+                            val createboardRecord = CreateboardRecord(data.getIntExtra("feedback_id", -1),data.getStringExtra("board_title"), data.getStringExtra("board_content"),data.getStringExtra("record_uri"))
+                            presenterFeedbackDetail.addRecordItems(arrayList,createboardRecord, mAdapter)
                         }
 
                     }
