@@ -100,6 +100,30 @@ class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<Model
                 dialogInterface = dialog.show()
             }
 
+            feedback_Detail_More.setOnClickListener {
+                var dialogInterface: DialogInterface? = null
+                val dialog = AlertDialog.Builder(context)
+                val edialog : LayoutInflater = LayoutInflater.from(context)
+                val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
+
+                val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
+                val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
+
+                update_Tv.setOnClickListener{
+                    Log.e("textTypeBoard 수정", "수정한다"+adapterPosition)
+                    presenterFeedbackDetail.modifyBoardActivity(feedback_detail_list.feedback_id, feedback_detail_list.board_id, feedback_detail_list.title, feedback_detail_list.content)
+                    dialogInterface!!.dismiss()
+                }
+                delete_Tv.setOnClickListener{
+                    removeAt(adapterPosition)
+                    presenterFeedbackDetail.removeItems(feedback_detail_list.board_id, context)
+                    dialogInterface!!.dismiss()
+                }
+                dialog.setView(mView)
+                dialog.create()
+                dialogInterface = dialog.show()
+            }
+
         }
     }
 

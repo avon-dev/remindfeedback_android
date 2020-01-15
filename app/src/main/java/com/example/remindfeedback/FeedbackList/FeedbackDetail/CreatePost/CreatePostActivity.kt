@@ -1,25 +1,25 @@
 package com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import com.example.remindfeedback.R
-import kotlinx.android.synthetic.main.activity_create_post.*
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
+import androidx.appcompat.app.ActionBar
+import android.content.Intent
 import android.graphics.Bitmap
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.Record.RecordActivity
 import com.soundcloud.android.crop.Crop
@@ -34,6 +34,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     var return_type:Int = 0
     internal lateinit var presenterCreatePost: PresenterCreatePost
     var feedback_id:Int = -1
+    var board_id:Int = -1
     lateinit var tempFile: File //찍은 사진 넣는부분
     lateinit var tempFile1: File //찍은 사진 넣는부분
     lateinit var tempFile2: File //찍은 사진 넣는부분
@@ -46,6 +47,8 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     var lastUri_2: String? = null
     var lastUri_3: String? = null
     var arrayList = arrayListOf<Uri?>()
+    lateinit var ab: ActionBar
+    var title: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +57,13 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         var intent:Intent = intent
         feedback_id = intent.getIntExtra("feedback_id",-1)
 
+        // 액션바 설정
+        ab = this!!.supportActionBar!!
+        ab.setTitle("새로운 피드백")
+        //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
+        ab.setDisplayHomeAsUpEnabled(true)
+
+        setData()
         presenterCreatePost = PresenterCreatePost().apply {
             view = this@CreatePostActivity
             mContext = this@CreatePostActivity
@@ -173,6 +183,22 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         }
     }
 
+    override fun setData() {
+        if(intent.hasExtra("title")){
+            ab.setTitle("수정")
+            feedback_id = intent.getIntExtra("feedback_id", -1)
+            board_id = intent.getIntExtra("board_id", -1)
+            Log.e("setData (feedback_id)", feedback_id.toString())
+            Log.e("setData (board_id)", board_id.toString())
+            val title = intent.getStringExtra("title")
+            val content = intent.getStringExtra("content")
+            create_Post_Title_Tv.setText(title)
+            create_Post_Script_Tv.setText(content)
+        }else{
+
+        }
+    }
+
     //타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.create_post_menu, menu)
@@ -187,14 +213,22 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             else -> {return super.onOptionsItemSelected(item)}
         }
     }
+
     //버튼 눌렀을때
     fun create_Post_Button(): Boolean {
         val intent = Intent()
         Log.e("return_type",return_type.toString())
         intent.putExtra("return_type", return_type)
-        intent.putExtra("board_title",  create_Post_Title_Tv.text.toString())
+        title = create_Post_Title_Tv.text.toString()
+        intent.putExtra("board_title", title)
         intent.putExtra("board_content", create_Post_Script_Tv.text.toString())
-        intent.putExtra("feedback_id", feedback_id)
+        if(feedback_id != -1){
+            intent.putExtra("feedback_id", feedback_id)
+        }
+        if(board_id != -1){
+            intent.putExtra("board_id", board_id)
+        }
+
         if(return_type == 1){
             intent.putExtra("file1_uri", lastUri_1.toString())
             intent.putExtra("file2_uri", lastUri_2.toString())
@@ -209,7 +243,6 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
         return true
     }
-
 
     //카메라 꺼내는 부분
     override fun cameraBrowse() {
@@ -303,8 +336,8 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                     if(data.clipData == null){
                         Toast.makeText(this, "이미지를 다중선택 할 수 없는 기기입니다.", Toast.LENGTH_SHORT).show()
                     }else{
-                        var clipData:ClipData = data.clipData
-                        Log.e("clipdata", data.clipData.itemCount.toString())
+                        var clipData:ClipData = data.clipData!!
+                        Log.e("clipdata", data.clipData!!.itemCount.toString())
                         if(clipData.itemCount > 3){
                             Toast.makeText(this, "이미지는 3장까지 선택할 수 있습니다.", Toast.LENGTH_SHORT).show()
                         }else if(clipData.itemCount ==1){
@@ -346,7 +379,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             }
             PICK_FROM_CAMERA_VIDEO -> {
                 //var mVideo = MediaStore.Video.Media.get
-                var uri:Uri = data!!.data
+                var uri:Uri = data!!.data!!
                 var uri_path:String = getPath(uri)
                 lastUri_1 = uri_path
 
