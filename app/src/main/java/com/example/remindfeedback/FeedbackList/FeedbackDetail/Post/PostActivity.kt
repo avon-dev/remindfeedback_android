@@ -68,6 +68,8 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     //게시물 아이디
     var board_id :Int = -1
 
+
+
     //exoplayer변수
     private var player: SimpleExoPlayer? = null
     private var playWhenReady = true
@@ -137,19 +139,15 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
                 //  new Player().execute(URL);
                 mediaplayer = Player()
                 mediaplayer.execute(record_url)
-
             } else {
                 if (mediaPlayer != null) {
-
                     playAudio()
-
                 }
             }
             R.id.post_Record_Pause_Button -> pauseAudio()
             else -> {
             }
         }
-
     }
 
     override fun refresh() {
