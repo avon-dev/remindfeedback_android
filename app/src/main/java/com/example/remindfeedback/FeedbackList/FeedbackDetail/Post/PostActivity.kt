@@ -49,7 +49,8 @@ import com.google.android.exoplayer2.util.Util
 import java.io.IOException
 
 
-class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener, View.OnClickListener, View.OnTouchListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnInfoListener{
+//class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener, View.OnClickListener, View.OnTouchListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnInfoListener{
+class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener{
 
 
 
@@ -68,6 +69,8 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     //게시물 아이디
     var board_id :Int = -1
 
+
+    /* 영상 녹음관련 코드는 모두 주석
     //exoplayer변수
     private var player: SimpleExoPlayer? = null
     private var playWhenReady = true
@@ -87,13 +90,14 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     private var lengthOfAudio: Int = 0
     private val handler = Handler()
 
-
+*/
     var arrayList = arrayListOf<ModelComment>(
         //ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1)
         )
     lateinit var mAdapter:AdapterPost
 
-    private val r = Runnable { updateSeekProgress() }
+    //녹음 관련이라 주석
+    //private val r = Runnable { updateSeekProgress() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
@@ -131,8 +135,13 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
 
 
     }
+
+    //레코드 관련 코드라서 주석
+
+    /*
     override fun onClick(v: View) {
         when (v.id) {
+
             R.id.post_Record_Play_Button -> if (flag == 0) {
                 //  new Player().execute(URL);
                 mediaplayer = Player()
@@ -148,9 +157,11 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             R.id.post_Record_Pause_Button -> pauseAudio()
             else -> {
             }
+
         }
 
     }
+*/
 
     override fun refresh() {
         mAdapter.notifyDataSetChanged()
@@ -181,7 +192,9 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             }
             viewPagerSetting()
 
-        }else if(contentsType == 2){//타입이 비디오일때
+        }
+        /* 비디오와 녹음은 주석
+        else if(contentsType == 2){//타입이 비디오일때
             post_Title_Tv.text = "[영상]"
             post_Picture.visibility = View.GONE
             post_Record.visibility = View.GONE
@@ -194,7 +207,9 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             file_name = fileUrl_1
             record_url = "https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+file_name
             recordSet()
-        }else{
+        }
+        */
+        else{
             Toast.makeText(this@PostActivity, "글을 불러올수 없습니다. 관리자에게 문의하세요.", Toast.LENGTH_SHORT).show()
             finish()
         }
@@ -204,25 +219,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     }
 
 
-    fun recordSet(){
-        progressDialog = ProgressDialog(this)
-        flag = 0
-        progressDialog.setMessage("Loading...")
-        progressDialog.setCancelable(false)
-        mediaPlayer = MediaPlayer()
 
-        play = findViewById<View>(R.id.post_Record_Play_Button) as Button
-        pause = findViewById<View>(R.id.post_Record_Pause_Button) as Button
-        seekBar = findViewById<View>(R.id.post_Record_Seekbar) as SeekBar
-        play.setOnClickListener(this)
-        pause.setOnClickListener(this)
-        seekBar.setOnTouchListener(this)
-        mediaPlayer!!.setOnBufferingUpdateListener(this)
-        mediaPlayer!!.setOnCompletionListener(this)
-
-        mediaPlayer!!.setOnInfoListener(this)
-
-    }
 
     //이 아래로 뷰페이저 관련 코드들
     private fun setupDataSources() {
@@ -240,6 +237,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         }
 
     }
+
     override fun onPageScrolled(i: Int, v: Float, i1: Int) {
 
     }
@@ -251,6 +249,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     override fun onPageScrollStateChanged(i: Int) {
 
     }
+
 
     override fun viewPagerSetting() {
         setupDataSources()
@@ -291,6 +290,9 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         }
     }
 
+
+    /*
+    //비디오관련 코드
     fun initializePlayer(filename:String?){
         if(player == null){
             player = ExoPlayerFactory.newSimpleInstance(this.getApplicationContext());
@@ -445,5 +447,5 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             mediaPlayer!!.pause()
         }
     }
-
+    */
 }

@@ -67,15 +67,18 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             if(return_type == 1){//사진일경우
                 //사진이 선택되어있는경우 앨범인지 카메라인지 선택하는 뷰를 띄움
                 presenterCreatePost.picktureDialogViwe()
-            }else if(return_type == 2){//비디오일경우
+            }
+            /*//녹음 비디오 관련 주석처리
+            else if(return_type == 2){//비디오일경우
                 imageBrowse()
             }else if(return_type == 3){
                 val intent = Intent(this, RecordActivity::class.java)
                 startActivityForResult(intent,PICK_FROM_AUDIO)
             }
+            */
         }
 
-
+        /* 비디오 녹음 관련 주석 해놓음
         contents_Type_Change_Button.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             val dialogView = layoutInflater.inflate(R.layout.dialog_contents_type, null)
@@ -121,6 +124,41 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 return_type = 2
                 add_File_View.visibility = View.VISIBLE
             }
+            builder.setView(dialogView)
+                .setPositiveButton("확인") { dialogInterface, i ->
+                    //mainTv.text = dialogText.text.toString()
+                    //mainRb.rating = dialogRatingBar.rating
+                    /* 확인일 때 main의 View의 값에 dialog View에 있는 값을 적용 */
+
+                }
+                .setNegativeButton("취소") { dialogInterface, i ->
+                    /* 취소일 때 아무 액션이 없으므로 빈칸 */
+                }
+                .show()
+        }
+        */
+        contents_Type_Change_Button.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            val dialogView = layoutInflater.inflate(R.layout.dialog_contents_type, null)
+            val contents_Photo = dialogView.findViewById<TextView>(R.id.contents_Photo)
+            val contents_Text = dialogView.findViewById<TextView>(R.id.contents_Text)
+
+            contents_Photo.setOnClickListener {
+                contents_Photo.setBackgroundResource(R.drawable.under_line_gray)
+                contents_Text.setBackgroundResource(R.drawable.all_line)
+                contents_Image.setImageResource(R.drawable.ic_photo_black)
+                return_type = 1
+                add_File_View.visibility = View.VISIBLE
+            }
+
+            contents_Text.setOnClickListener {
+                contents_Photo.setBackgroundResource(R.drawable.all_line)
+                contents_Text.setBackgroundResource(R.drawable.under_line_gray)
+                contents_Image.setImageResource(R.drawable.ic_text)
+                return_type = 0
+                add_File_View.visibility = View.GONE
+            }
+
             builder.setView(dialogView)
                 .setPositiveButton("확인") { dialogInterface, i ->
                     //mainTv.text = dialogText.text.toString()
