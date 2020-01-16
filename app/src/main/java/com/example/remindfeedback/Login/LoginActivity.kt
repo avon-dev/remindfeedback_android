@@ -25,11 +25,13 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
 
         //로그인버튼
         login_Button.setOnClickListener {
-            if(email_Edittext.text.isNotEmpty() && password_Edittext.text.isNotEmpty()){
+            if (email_Edittext.text.isNotEmpty() && password_Edittext.text.isNotEmpty()) {
                 presenterLogin.LogIn(email_Edittext.text.toString(), password_Edittext.text.toString())
-//                finish()
-            }else{
-                Toast.makeText(this, "이메일 또는 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                // finish()
+            } else if (email_Edittext.text.isEmpty()) {
+                Toast.makeText(this, "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            } else if (password_Edittext.text.isEmpty()) {
+                Toast.makeText(this, "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
 

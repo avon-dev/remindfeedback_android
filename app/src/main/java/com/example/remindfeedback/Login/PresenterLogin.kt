@@ -33,10 +33,14 @@ class PresenterLogin() : ContractLogin.Presenter {
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    var arr = response.headers().get("Set-Cookie")!!.split(";")
-                    var arr2 = arr[0].toString().split("=")
-                    Log.e("getme", arr2[1])
-                    getMe(arr2[1])
+                    if (response.headers().get("Set-Cookie") == null) {
+                        Toast.makeText(mContext, "아이디 또는 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        var arr = response.headers().get("Set-Cookie")!!.split(";")
+                        var arr2 = arr[0].toString().split("=")
+                        Log.e("getme", arr2[1])
+                        getMe(arr2[1])
+                    }
 
                 } else {
                     val StatusCode = response.code()
@@ -79,7 +83,12 @@ class PresenterLogin() : ContractLogin.Presenter {
         mContext.startActivity(intent)
     }
 
-    override fun showSplash(context: Context, activity: LoginActivity) { SplashView.showSplashView(activity, 3, R.drawable.logo_1, object : SplashView.OnSplashViewActionListener {
+    override fun showSplash(context: Context, activity: LoginActivity) {
+        SplashView.showSplashView(
+            activity,
+            3,
+            R.drawable.logo_1,
+            object : SplashView.OnSplashViewActionListener {
                 override fun onSplashImageClick(actionUrl: String) {
                     Log.d("SplashView", "img clicked. actionUrl: $actionUrl")
                     Toast.makeText(context, "img clicked.", Toast.LENGTH_SHORT).show()

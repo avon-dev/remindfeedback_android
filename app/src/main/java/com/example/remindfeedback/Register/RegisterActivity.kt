@@ -1,16 +1,12 @@
 package com.example.remindfeedback.Register
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
-import com.example.remindfeedback.FeedbackList.MainActivity
-import com.example.remindfeedback.FriendsList.PresenterFriendsList
+import androidx.appcompat.app.AppCompatActivity
 import com.example.remindfeedback.R
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
+import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity(), ContractRegister.View {
 
@@ -36,12 +32,34 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
         //회원가입버튼을 눌러서 presenter의 회원가입 기능을 실행시킴
         register_Button.setOnClickListener {
 
-            if(!password_Input.text.toString().equals(re_Password_Input.text.toString())){
-                Toast.makeText(this@RegisterActivity, "비밀번호와 비밀번호 확인이 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
-            }else{
-                if(email_Input.text.toString().equals("") || nickname_Input.text.toString().equals("")  || password_Input.text.toString().equals("")  || re_Password_Input.text.toString().equals("") ){
+            if (email_Input.text.toString().equals("") || nickname_Input.text.toString().equals("") || password_Input.text.toString().equals("") || re_Password_Input.text.toString().equals("")) {
+                Toast.makeText(this@RegisterActivity, "빈칸을 채워주세요.", Toast.LENGTH_SHORT).show()
+            } else {
+                // 이메일 형식 체크
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email_Input.text.toString()).matches()) {
+                    Toast.makeText(this, "이메일 형식이 아닙니다.", Toast.LENGTH_SHORT).show()
+                }
+                // 비밀번호 형식 체크
+                if (!Pattern.matches("^[A-Za-z0-9_@./#&+-]*.{6,20}\$", password_Input.text.toString())) {
+                    Toast.makeText(this, "비밀번호 형식을 지켜주세요.\n(영문 대소문자,숫자,특수문자 포함 6~20자)", Toast.LENGTH_SHORT).show()
+                }
+
+                if( !password_Input.text.toString().equals(re_Password_Input.text.toString()) ) {
+                    Toast.makeText(this@RegisterActivity, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
+
+            if (!password_Input.text.toString().equals(re_Password_Input.text.toString())) {
+            } else {
+                if (email_Input.text.toString().equals("") || nickname_Input.text.toString().equals("") || password_Input.text.toString().equals("") || re_Password_Input.text.toString().equals("")) {
                     Toast.makeText(this@RegisterActivity, "빈칸을 채워주세요.", Toast.LENGTH_SHORT).show()
-                }else{
+                } else {
+
+
+
+
                     presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString())
                     finish()
                 }
