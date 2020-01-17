@@ -34,7 +34,7 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
 
     private val TAG = "MyPageActivity"
     internal lateinit var presenterMyPage: PresenterMyPage
-    lateinit var imageData:String
+    var imageData:String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_page)
