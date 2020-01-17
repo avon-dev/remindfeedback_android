@@ -15,7 +15,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.infinity_ex2.OnLoadMoreListener
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.FeedbackDetailActivity
 import com.example.remindfeedback.R
 import java.text.SimpleDateFormat
@@ -27,32 +26,10 @@ import kotlin.collections.ArrayList
 class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val arrayList : ArrayList<ModelFeedback?>, var presenterMain: PresenterMain, private val activity: Activity) :   RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val VIEW_TYPE_ITEM = 0
     private val VIEW_TYPE_LOADING = 1
-    private var onLoadMoreListener: OnLoadMoreListener? = null
     private var isLoading: Boolean = false
     private val visibleThreshold = 5
     private var lastVisibleItem: Int = 0
     private var totalItemCount: Int = 0
-
-    init {
-        val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                totalItemCount = linearLayoutManager.itemCount
-                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition()
-                if (!isLoading && totalItemCount <= lastVisibleItem + visibleThreshold) {
-                    if (onLoadMoreListener != null) {
-                        onLoadMoreListener!!.onLoadMore()
-                    }
-                    isLoading = true
-                }
-            }
-        })
-        Log.e("로딩", "로딩")
-    }
-    fun setOnLoadMoreListener(mOnLoadMoreListener: OnLoadMoreListener) {
-        this.onLoadMoreListener = mOnLoadMoreListener
-    }
 
     override fun getItemViewType(position: Int): Int {
         return if (arrayList!![position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
