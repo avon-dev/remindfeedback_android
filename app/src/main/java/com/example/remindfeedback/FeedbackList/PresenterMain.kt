@@ -8,6 +8,7 @@ import android.widget.TextView
 import com.example.remindfeedback.CategorySetting.ModelCategorySetting
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
+import com.example.remindfeedback.etcProcess.MyProgress
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -26,6 +27,8 @@ class PresenterMain : ContractMain.Presenter {
 
     override fun loadItems(list: ArrayList<ModelFeedback?>, adapterMainFeedback: AdapterMainFeedback, feedback_count:Int) {
 
+        var myProgress: MyProgress = MyProgress(context)
+        myProgress.show()
         var feedback_lastid:Int = 0
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
@@ -78,6 +81,7 @@ class PresenterMain : ContractMain.Presenter {
                 } else {
                 }
                 Log.e("tag", "response=" + response.raw())
+                myProgress.dismiss()
             }
 
             override fun onFailure(call: Call<GetAllFeedback>, t: Throwable) {
