@@ -16,6 +16,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class PresenterMain : ContractMain.Presenter {
 
 
@@ -23,11 +24,12 @@ class PresenterMain : ContractMain.Presenter {
     lateinit override var context: Context
 
 
-    override fun loadItems(list: ArrayList<ModelFeedback>, adapterMainFeedback: AdapterMainFeedback) {
+    override fun loadItems(list: ArrayList<ModelFeedback?>, adapterMainFeedback: AdapterMainFeedback, feedback_count:Int) {
 
+        var feedback_lastid:Int = 0
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<GetAllFeedback> = apiService.GetAllFeedback(0)
+        val register_request: Call<GetAllFeedback> = apiService.GetAllFeedback(feedback_count, 10)
         register_request.enqueue(object : Callback<GetAllFeedback> {
 
             override fun onResponse(call: Call<GetAllFeedback>, response: Response<GetAllFeedback>) {
@@ -66,9 +68,10 @@ class PresenterMain : ContractMain.Presenter {
                                     val addData: ModelFeedback = ModelFeedback(mfl.id, "조언자", mfl.category,tag_Color, mfl.title, "dummy", dateNewFormat, false)
                                     adapterMainFeedback.addItem(addData)
                                 }
-
-                                view.refresh()
+                                feedback_lastid = mfl.id
                             }
+                            view.setFeedbackCount(feedback_lastid)
+                            view.refresh()
                         }
                     } else {
                     }
@@ -82,7 +85,10 @@ class PresenterMain : ContractMain.Presenter {
         })
     }
 
-    override fun addItems(list: ArrayList<ModelFeedback>,category_id:Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback) {
+
+
+
+    override fun addItems(list: ArrayList<ModelFeedback?>,category_id:Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback) {
         val date2 = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
         val dateNewFormat = sdf.format(date2)
@@ -99,7 +105,7 @@ class PresenterMain : ContractMain.Presenter {
                         ModelFeedback(-1, "조언자", category_id,color, title, "dummy", dateNewFormat, false)
                     adapterMainFeedback.addItem(addData)
                     list.clear()
-                    loadItems(list, adapterMainFeedback)
+                    loadItems(list, adapterMainFeedback,0)
                     view.refresh()
                 } else {
                     val StatusCode = response.code()
@@ -138,7 +144,7 @@ class PresenterMain : ContractMain.Presenter {
     }
 
     // 피드백 수정
-    override fun updateItems(list: ArrayList<ModelFeedback>,item_id:Int,category_id: Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback) {
+    override fun updateItems(list: ArrayList<ModelFeedback?>,item_id:Int,category_id: Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback) {
         val ndate: Date = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
@@ -149,7 +155,7 @@ class PresenterMain : ContractMain.Presenter {
             override fun onResponse(call: Call<CreateFeedback>, response: Response<CreateFeedback>) {
                 if (response.isSuccessful) {
                     list.clear()
-                    loadItems(list, adapterMainFeedback)
+                    loadItems(list, adapterMainFeedback,0)
                     view.refresh()
                 } else {
                 }
@@ -165,6 +171,7 @@ class PresenterMain : ContractMain.Presenter {
     override fun modifyFeedbackActivity(id: Int,category_id: Int, date: String?, title: String) {
         view.modifyFeedbackActivity(id, category_id,date, title)
     }
+
 
 
 }
