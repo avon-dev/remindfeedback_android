@@ -20,6 +20,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.infinity_ex2.OnLoadMoreListener
 import com.example.remindfeedback.Alarm.AlarmActivity
 import com.example.remindfeedback.CategorySetting.CategorySettingActivity
@@ -28,8 +29,10 @@ import com.example.remindfeedback.FriendsList.FriendsListActivity
 import com.example.remindfeedback.MyPage.MyPageActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Setting.SettingActivity
+import com.example.remindfeedback.etcProcess.InfiniteScrollListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -82,38 +85,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             view = this@MainActivity
             context = this@MainActivity
         }
-        //리사이클러뷰 관련, 어댑터, 레이아웃매니저
-        lm = LinearLayoutManager(this)
-        Main_Recyclerview.layoutManager = lm
-        mAdapter = AdapterMainFeedback(Main_Recyclerview,this, arrayList,presenterMain, this)
-        Main_Recyclerview.adapter = mAdapter
 
-        Main_Recyclerview.setHasFixedSize(true) //아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
-
-        mAdapter!!.setOnLoadMoreListener(object : OnLoadMoreListener {
-            override fun onLoadMore() {
-                if (arrayList.size <= 20) {
-                    arrayList.add(null)
-                    mAdapter!!.notifyItemInserted(arrayList.size - 1)
-                    Handler().postDelayed({
-                        arrayList.removeAt(arrayList.size - 1)
-                        mAdapter!!.notifyItemRemoved(arrayList.size)
-
-                        //Generating more data
-                        val index = arrayList.size
-                        val end = index + 10
-                        feedback_count = index+10
-
-                        presenterMain.loadItems(arrayList,mAdapter,feedback_count)
-                        mAdapter!!.notifyDataSetChanged()
-                        mAdapter!!.setLoaded()
-                    }, 5000)
-                } else {
-                    Toast.makeText(this@MainActivity, "Loading data completed", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        })
+        setRecyclerView(Main_Recyclerview)
 
 
 
@@ -158,6 +131,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ing_Btn.setBackgroundColor(Color.rgb(255, 255, 255))
             ed_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
         }
+    }
+
+
+    //피드백 마지막 아이디를 받아서 셋티해주는 부분
+    override fun setFeedbackCount(feedback_lastid: Int) {
+        feedback_count = feedback_lastid
+    }
+
+    // setRecyclerView : ComicFragment에서 평가할 도서 목록에 대한 RecyclerView를 초기화 및 정의하는 함수
+    fun setRecyclerView(recyclerView: RecyclerView){
+
+        //리사이클러뷰 관련, 어댑터, 레이아웃매니저
+        lm = LinearLayoutManager(this)
+        Main_Recyclerview.layoutManager = lm
+        mAdapter = AdapterMainFeedback(Main_Recyclerview,this, arrayList,presenterMain, this)
+        Main_Recyclerview.adapter = mAdapter
+        Main_Recyclerview.setHasFixedSize(true) //아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
+        Main_Recyclerview.clearOnScrollListeners()
+        Main_Recyclerview.addOnScrollListener(InfiniteScrollListener({
+            presenterMain.loadItems(arrayList, mAdapter,feedback_count)},lm))//갱신
+
+
     }
 
 

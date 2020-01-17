@@ -26,9 +26,10 @@ class PresenterMain : ContractMain.Presenter {
 
     override fun loadItems(list: ArrayList<ModelFeedback?>, adapterMainFeedback: AdapterMainFeedback, feedback_count:Int) {
 
+        var feedback_lastid:Int = 0
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<GetAllFeedback> = apiService.GetAllFeedback(feedback_count)
+        val register_request: Call<GetAllFeedback> = apiService.GetAllFeedback(feedback_count, 10)
         register_request.enqueue(object : Callback<GetAllFeedback> {
 
             override fun onResponse(call: Call<GetAllFeedback>, response: Response<GetAllFeedback>) {
@@ -67,9 +68,10 @@ class PresenterMain : ContractMain.Presenter {
                                     val addData: ModelFeedback = ModelFeedback(mfl.id, "조언자", mfl.category,tag_Color, mfl.title, "dummy", dateNewFormat, false)
                                     adapterMainFeedback.addItem(addData)
                                 }
-
-                                view.refresh()
+                                feedback_lastid = mfl.id
                             }
+                            view.setFeedbackCount(feedback_lastid)
+                            view.refresh()
                         }
                     } else {
                     }
@@ -82,6 +84,9 @@ class PresenterMain : ContractMain.Presenter {
             }
         })
     }
+
+
+
 
     override fun addItems(list: ArrayList<ModelFeedback?>,category_id:Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback) {
         val date2 = SimpleDateFormat("yyyy-MM-dd").parse(date)

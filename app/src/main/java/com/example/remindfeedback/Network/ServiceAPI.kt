@@ -32,8 +32,8 @@ interface ServiceAPI {
     fun GetFeedback(@Path("start") start: Int): Call<GetFeedback>
 
     //피드백정보 모두 가져오기
-    @GET("feedback/all/{feedback_count}")
-    fun GetAllFeedback(@Path("feedback_count") feedback_count: Int): Call<GetAllFeedback>
+    @GET("feedback/all/{feedback_count}/{limit}")
+    fun GetAllFeedback(@Path("feedback_count") feedback_count: Int, @Path("limit") limit: Int): Call<GetAllFeedback>
 
     // 피드백 수정
     @PUT("feedback/update/{feedback_id}")

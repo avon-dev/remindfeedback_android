@@ -9,6 +9,7 @@ interface ContractMain {
     interface View{
         fun refresh()
         fun modifyFeedbackActivity(id:Int,category_id: Int, date: String?, title: String)
+        fun setFeedbackCount(feedback_lastid:Int)
     }
 
     interface Presenter {

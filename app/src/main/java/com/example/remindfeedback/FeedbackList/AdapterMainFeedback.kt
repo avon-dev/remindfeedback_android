@@ -53,6 +53,7 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
     fun setOnLoadMoreListener(mOnLoadMoreListener: OnLoadMoreListener) {
         this.onLoadMoreListener = mOnLoadMoreListener
     }
+
     override fun getItemViewType(position: Int): Int {
         return if (arrayList!![position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
     }
