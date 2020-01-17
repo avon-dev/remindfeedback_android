@@ -34,7 +34,7 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
 
     private val TAG = "MyPageActivity"
     internal lateinit var presenterMyPage: PresenterMyPage
-    lateinit var imageData:String
+    var imageData:String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_page)
@@ -80,7 +80,7 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
     override fun setInfo(email: String, nickname: String, portrait: String?, introduction: String?) {
         mypage_Nickname_Tv.text = nickname
         mypage_Email_Tv.text = email
-        mypage_Email_Tv_2.text = email
+//        mypage_Email_Tv_2.text = email
         mypage_Introduction_Tv.text = introduction
         if(!portrait.equals("")){
             //이미지 설정해주는 부분

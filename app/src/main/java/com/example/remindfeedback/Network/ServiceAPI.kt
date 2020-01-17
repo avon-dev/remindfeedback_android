@@ -59,7 +59,6 @@ interface ServiceAPI {
     @DELETE("category/deleteone/{category_id}")
     fun DeleteCategory(@Path("category_id") category_id: Int): Call<ResponseBody>
 
-
     //내 정보 가져오기
     @GET("mypage")
     fun GetMyPage(): Call<GetMyPage>
@@ -86,6 +85,10 @@ interface ServiceAPI {
     //글타입의 보드 생성
     @POST("board/text/create")
     fun CreateBoardText(@Body createCategory: CreateBoardText): Call<GetAllBoard>
+
+    // 글 타입의 보드 수정
+    @PUT("board/text/update/{board_id}")
+    fun UpdateBoardText(@Path("board_id") board_id: Int, @Body createBoardText: CreateBoardText): Call<GetAllBoard>
 
     //사진타입의 보드 생성
     @Multipart

@@ -171,12 +171,10 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
             var strNow = nowDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
             // 피드백 날짜 - 형식으로 바꾸기
-            var fbSplit = feedback_list?.date!!.split("년 ", "월 ", "일")
-            Log.e("디데이", fbSplit.toString())
+            var fbSplit = feedback_list.date!!.split("년 ", "월 ", "일")
             var fbDate: String
             for (i in 0..2 step 1) {
                 fbDate = fbSplit[0] + "-" + fbSplit[1] + "-" + fbSplit[2]
-                Log.e("디데이", fbDate)
                 // 데이트포맷
                 var sdf = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
                 // 오늘 타임스탬프

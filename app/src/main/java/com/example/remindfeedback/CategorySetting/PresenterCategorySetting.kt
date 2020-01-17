@@ -34,7 +34,7 @@ class PresenterCategorySetting: ContractCategorySetting.Presenter {
                             myList = mCategory[i]
                             var addData: ModelCategorySetting =
                                 ModelCategorySetting(myList.category_id,myList.category_color, myList.category_title)
-                            Log.e("category_title", myList.category_title )
+                            Log.e("주제", "category_id: " + myList.category_id + ", category_title: " + myList.category_title )
                             adapterCategorySetting.addItem(addData)
                             view.refresh()
                         }
@@ -93,7 +93,7 @@ class PresenterCategorySetting: ContractCategorySetting.Presenter {
         })
     }
 
-    override fun updateItems(id: Int, color: String, title: String) {
+    override fun updateItems(list: ArrayList<ModelCategorySetting>, id: Int, color: String, title: String, adapterCategorySetting: AdapterCategorySetting) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         var modifyCategory: CreateCategory = CreateCategory(title, color)
@@ -102,13 +102,19 @@ class PresenterCategorySetting: ContractCategorySetting.Presenter {
 
             override fun onResponse(call: Call<GetCategory>, response: Response<GetCategory>) {
                 if (response.isSuccessful){
-                    Log.e("성공","수정 성공")
+                    Log.e("주제 수정","성공")
+                    list.clear()
+                    loadItems(adapterCategorySetting, list)
                     view.refresh()
                 }
             }
 
             override fun onFailure(call: Call<GetCategory>, t: Throwable) {
-                Log.e("실패", t.message)
+                Log.e("주제 수정 실패", t.message)
+                // 추후 call 모델 수정 필요
+                list.clear()
+                loadItems(adapterCategorySetting, list)
+                view.refresh()
             }
 
         })
@@ -117,7 +123,7 @@ class PresenterCategorySetting: ContractCategorySetting.Presenter {
     //업데이트 화면을 띄움
     override fun showModifyActivity(id: Int, color: String, title: String) {
         view.showModifyActivity(id, color, title)
-        Log.e("Presenter", id.toString())
+        Log.e("presenter (category_id)", id.toString())
     }
 
 

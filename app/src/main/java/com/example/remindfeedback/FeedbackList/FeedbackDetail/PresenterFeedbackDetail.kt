@@ -33,7 +33,7 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
                         for (i in 0 until mGetAllBoard.size) {
                             var myList: getAllBoardData = getAllBoardData()
                             myList = mGetAllBoard[i]
-                            var postData: ModelFeedbackDetail = ModelFeedbackDetail(feedback_Id, myList.id, myList.board_category, myList.board_title, myList.createdAt)
+                            var postData: ModelFeedbackDetail = ModelFeedbackDetail(feedback_Id, myList.id, myList.board_category, myList.board_title, myList.board_content, myList.createdAt)
                             adapterFeedbackDetail.addItem(postData)
                             view.refresh()
                         }
@@ -255,8 +255,34 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
         })
     }
 
-    override fun updateItems(position: Int) {
+
+    override fun updateItems(list: ArrayList<ModelFeedbackDetail>,feedback_id: Int, board_id: Int, title: String, content: String, adapterFeedbackDetail: AdapterFeedbackDetail) {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val modifyBoard: CreateBoardText = CreateBoardText(board_id, title, content)
+        val register_request: Call<GetAllBoard> = apiService.UpdateBoardText(board_id, modifyBoard)
+        register_request.enqueue(object : Callback<GetAllBoard> {
+
+            override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
+                if (response.isSuccessful) {
+                    list.clear()
+                    loadItems(list, adapterFeedbackDetail, feedback_id)
+                    view.refresh()
+                } else {
+                }
+            }
+            override fun onFailure(call: Call<GetAllBoard>, t: Throwable) {
+                Log.e("보드 수정 실패", t.message)
+                list.clear()
+                loadItems(list, adapterFeedbackDetail, feedback_id)
+                view.refresh()
+            }
+
+        })
+
     }
 
-
+    override fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_title: String, board_content: String) {
+        view.modifyBoardActivity(feedback_id, board_id, board_title, board_content)
+    }
 }

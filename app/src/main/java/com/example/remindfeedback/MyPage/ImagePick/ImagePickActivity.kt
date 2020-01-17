@@ -76,7 +76,12 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
         test_task = URLtoBitmapTask().apply {
             val intent:Intent = getIntent()
             val imageData:String = intent.getStringExtra("imageData")
-            url = URL(imageData)
+            Log.e("ddddd", imageData)
+            if(imageData.equals("")){
+                url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/portrait/1577851039123RemindFeedback_035710_3925581465076129527.jpg")
+            }else{
+                url = URL(imageData)
+            }
         }
         val bitmap: Bitmap = test_task.execute().get()
         modify_Profile_ImageView.setImageBitmap(bitmap)
@@ -146,7 +151,9 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
             PICK_FROM_ALBUM -> {
 
                 val photoUri = data!!.data
-                cropImage(photoUri)
+                if (photoUri != null) {
+                    cropImage(photoUri)
+                }
             }
             PICK_FROM_CAMERA -> {
                 val bitmap = MediaStore.Images.Media

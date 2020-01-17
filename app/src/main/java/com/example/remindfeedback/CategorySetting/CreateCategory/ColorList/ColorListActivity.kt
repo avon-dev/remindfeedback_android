@@ -8,22 +8,22 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.remindfeedback.R
 import kotlinx.android.synthetic.main.activity_color_list.*
 
-class ColorListActivity : AppCompatActivity(), ContractColorList.View{
+class ColorListActivity : AppCompatActivity(), ContractColorList.View {
 
     lateinit var mAdapter: AdapterColorList
     internal lateinit var presenterColorList: PresenterColorList
 
     var arrayList = arrayListOf<ModelColorList>(
-        ModelColorList("#ff4455"),
-        ModelColorList("#004455"),
-        ModelColorList("#994495"),
-        ModelColorList("#f55555"),
-        ModelColorList("#111111"),
-        ModelColorList("#888888"),
-        ModelColorList("#aaaaaa"),
-        ModelColorList("#bbbbbb"),
-        ModelColorList("#cccccc"),
-        ModelColorList("#010101")
+        ModelColorList("#E51C23"),
+        ModelColorList("#FF5722"),
+        ModelColorList("#FFFF00"),
+        ModelColorList("#259B24"),
+        ModelColorList("#18FFFF"),
+        ModelColorList("#3F51B5"),
+        ModelColorList("#9C27B0"),
+        ModelColorList("#FF4081"),
+        ModelColorList("#964B00"),
+        ModelColorList("#000000")
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +35,7 @@ class ColorListActivity : AppCompatActivity(), ContractColorList.View{
             view = this@ColorListActivity
             context = this@ColorListActivity
         }
-        mAdapter= AdapterColorList(this, arrayList,presenterColorList)
+        mAdapter = AdapterColorList(this, arrayList, presenterColorList)
 
 
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저

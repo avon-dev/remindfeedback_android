@@ -70,9 +70,9 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         Log.e("return", data.getIntExtra("id", -1).toString())
-                        presenterCategorySetting.updateItems(data.getIntExtra("id", -1),data.getStringExtra("color"),data.getStringExtra("title"))
+                        presenterCategorySetting.updateItems(arrayList, data.getIntExtra("id", -1),data.getStringExtra("color"),data.getStringExtra("title"), mAdapter)
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(this@CategorySettingActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+                    Activity.RESULT_CANCELED -> Toast.makeText(this@CategorySettingActivity, "주제 수정 취소됨", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -80,7 +80,7 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
 
     override fun showModifyActivity(id: Int, color: String, title: String) {
         val intent = Intent(this, CreateCategoryActivity::class.java)
-        Log.e("activity", id.toString())
+        Log.e("activity (category_id)", id.toString())
         intent.putExtra("id", id)
         intent.putExtra("color", color)
         intent.putExtra("title", title)
