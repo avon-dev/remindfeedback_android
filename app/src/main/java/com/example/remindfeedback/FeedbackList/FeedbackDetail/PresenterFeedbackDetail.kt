@@ -256,9 +256,6 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
     }
 
 
-        })
-    }
-
     override fun updateItems(list: ArrayList<ModelFeedbackDetail>,feedback_id: Int, board_id: Int, title: String, content: String, adapterFeedbackDetail: AdapterFeedbackDetail) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)

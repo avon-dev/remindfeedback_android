@@ -22,7 +22,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.Record.RecordActivity
+import com.example.remindfeedback.R
 import com.soundcloud.android.crop.Crop
+import kotlinx.android.synthetic.main.activity_create_post.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

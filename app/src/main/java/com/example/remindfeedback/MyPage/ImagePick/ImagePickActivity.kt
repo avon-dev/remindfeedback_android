@@ -146,7 +146,9 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
             PICK_FROM_ALBUM -> {
 
                 val photoUri = data!!.data
-                cropImage(photoUri)
+                if (photoUri != null) {
+                    cropImage(photoUri)
+                }
             }
             PICK_FROM_CAMERA -> {
                 val bitmap = MediaStore.Images.Media

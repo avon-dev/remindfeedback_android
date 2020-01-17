@@ -2,15 +2,12 @@ package com.example.remindfeedback.CategorySetting
 
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.R
@@ -23,7 +20,6 @@ class AdapterCategorySetting(val context: Context, val arrayList: ArrayList<Mode
     fun addItem(item: ModelCategorySetting) {//아이템 추가
         if (arrayList != null) {//널체크 해줘야함
             arrayList.add(item)
-
         }
     }
 
@@ -44,12 +40,6 @@ class AdapterCategorySetting(val context: Context, val arrayList: ArrayList<Mode
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(arrayList[position], context)
-
-        // 아이템 클릭 (추후 삭제)
-        holder.itemView.setOnClickListener {
-            Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
-        }
-
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {

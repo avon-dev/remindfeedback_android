@@ -2,12 +2,17 @@ package com.example.remindfeedback.MyPage
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.res.Resources
+import android.graphics.Color
+import android.text.InputFilter
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.marginTop
 import com.example.remindfeedback.FriendsList.ContractFriendsList
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.R
@@ -48,14 +53,21 @@ class PresenterMyPage : ContractMyPage.Presenter{
     override fun showDialog(showText: String, context: Context, params: FrameLayout.LayoutParams) {
         val container = FrameLayout(context)
         val et = EditText(context)
+        params.leftMargin = context.resources.getDimensionPixelSize(R.dimen.dialog_margin)
+        params.rightMargin = context.resources.getDimensionPixelSize(R.dimen.dialog_margin)
         et.setLayoutParams(params)
+        et.setSingleLine(true)
+
+        val FilterArray = arrayOfNulls<InputFilter>(1)
+        FilterArray[0] = InputFilter.LengthFilter(15)
+        et.setFilters(FilterArray)
 
         container.addView(et)
         val alt_bld = AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
         alt_bld.setTitle(showText+" 변경")
             .setMessage("변경할 "+showText+"을 입력하세요")
-            .setIcon(R.drawable.ic_add_black)
-            .setCancelable(false)
+            .setIcon(R.drawable.ic_how_to_reg_black_24dp)
+            .setCancelable(true)
             .setView(container)
             .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
                 val value = et.getText().toString()
@@ -71,6 +83,10 @@ class PresenterMyPage : ContractMyPage.Presenter{
             })
         val alert = alt_bld.create()
         alert.show()
+
+        // 메세지 텍스트 변경
+        var textView = alert.findViewById<TextView>(android.R.id.message)
+        textView?.setTextColor(Color.BLACK)
     }
 
 
