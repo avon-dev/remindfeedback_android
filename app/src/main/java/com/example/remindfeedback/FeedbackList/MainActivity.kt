@@ -29,6 +29,7 @@ import com.example.remindfeedback.MyPage.MyPageActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Setting.SettingActivity
 import com.example.remindfeedback.etcProcess.InfiniteScrollListener
+import com.example.remindfeedback.etcProcess.MyProgress
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -148,8 +149,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Main_Recyclerview.adapter = mAdapter
         Main_Recyclerview.setHasFixedSize(true) //아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
         Main_Recyclerview.clearOnScrollListeners()
-        Main_Recyclerview.addOnScrollListener(InfiniteScrollListener({
-            presenterMain.loadItems(arrayList, mAdapter,feedback_count)},lm))//갱신
+        //무한 스크롤을 위해 리스너 추가함
+        Main_Recyclerview.addOnScrollListener(InfiniteScrollListener({ presenterMain.loadItems(arrayList, mAdapter,feedback_count) },lm)
+
+        )//갱신
 
 
     }

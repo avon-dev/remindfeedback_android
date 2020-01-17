@@ -24,16 +24,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val arrayList : ArrayList<ModelFeedback?>, var presenterMain: PresenterMain, private val activity: Activity) :   RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val VIEW_TYPE_ITEM = 0
-    private val VIEW_TYPE_LOADING = 1
     private var isLoading: Boolean = false
     private val visibleThreshold = 5
     private var lastVisibleItem: Int = 0
     private var totalItemCount: Int = 0
 
-    override fun getItemViewType(position: Int): Int {
-        return if (arrayList!![position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
-    }
 
 
     fun addItem(item: ModelFeedback) {//아이템 추가
@@ -49,15 +44,7 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == VIEW_TYPE_ITEM) {
-            val view = LayoutInflater.from(activity).inflate(R.layout.item_main_feedback, parent, false)
-            return Holder(view)
-        } else if (viewType == VIEW_TYPE_LOADING) {
-            val view = LayoutInflater.from(activity).inflate(R.layout.item_loading, parent, false)
-            return LoadingViewHolder(view)
-        }
-
-        val view = LayoutInflater.from(context).inflate(R.layout.item_main_feedback, parent, false)
+        val view = LayoutInflater.from(activity).inflate(R.layout.item_main_feedback, parent, false)
         return Holder(view)
     }
 
@@ -171,7 +158,7 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
             var strNow = nowDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
             // 피드백 날짜 - 형식으로 바꾸기
-            var fbSplit = feedback_list.date!!.split("년 ", "월 ", "일")
+            var fbSplit = feedback_list?.date!!.split("년 ", "월 ", "일")
             var fbDate: String
             for (i in 0..2 step 1) {
                 fbDate = fbSplit[0] + "-" + fbSplit[1] + "-" + fbSplit[2]
