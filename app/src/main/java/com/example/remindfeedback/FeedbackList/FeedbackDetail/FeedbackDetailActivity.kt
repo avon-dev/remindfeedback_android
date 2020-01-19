@@ -36,6 +36,10 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
         //액션바 설정
         var ab: ActionBar = this!!.supportActionBar!!
         ab.setTitle("")
+        // 액션바 타이틀 가운데 정렬
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
+        supportActionBar?.setCustomView(R.layout.actionbar_title)
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
 

@@ -12,6 +12,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -38,8 +39,12 @@ class PresenterPost:ContractPost.Presenter {
                             var myList: getAllComment = getAllComment()
                             var mUser:commentUser = commentUser()
                             myList = mGetAllComment[i]
+                            val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(myList.createdAt)
+                            val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
+                            val dateNewFormat = sdf.format(date)
+
                             mUser = myList.user
-                            var postData: ModelComment = ModelComment(myList.id, mUser.portrait, mUser.nickname, myList.comment_content, myList.createdAt)
+                            var postData: ModelComment = ModelComment(myList.id, mUser.portrait, mUser.nickname, myList.comment_content, dateNewFormat)
                             adapterPost.addItem(postData)
                             view.refresh()
                         }
