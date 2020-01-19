@@ -59,14 +59,10 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
                         presenterFriendsList.addItems(data.getStringExtra("email"), mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@FriendsListActivity, "취소됨.", Toast.LENGTH_SHORT).show()
-
                 }
-
             }
         }
-
     }
-
 
     //타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

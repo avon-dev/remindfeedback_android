@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.activity_find_friends.*
 
 class FindFriendsActivity : AppCompatActivity(),ContractFindFriends.View {
 
+    internal lateinit var presenterFindFriends: PresenterFindFriends
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_find_friends)
@@ -22,6 +24,12 @@ class FindFriendsActivity : AppCompatActivity(),ContractFindFriends.View {
         ab.setTitle("친구 추가")
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
+
+        presenterFindFriends = PresenterFindFriends().apply {
+            view = this@FindFriendsActivity
+            mContext = this@FindFriendsActivity
+        }
+
     }
 
     //타이틀바에 어떤 menu를 적용할지 정하는부분
@@ -40,11 +48,14 @@ class FindFriendsActivity : AppCompatActivity(),ContractFindFriends.View {
     }
     //찾기버튼 눌렀을때
     fun friends_Find_Button(): Boolean {
-        Toast.makeText(this@FindFriendsActivity, "찾기 누름.", Toast.LENGTH_SHORT).show()
-        val intent = Intent()
-        intent.putExtra("email", find_Friends_Email.text.toString())
-        setResult(Activity.RESULT_OK, intent)
-        finish()
+        presenterFindFriends.searchFriend(find_Friends_Email.text.toString())
+
+
+//        Toast.makeText(this@FindFriendsActivity, "찾기 누름.", Toast.LENGTH_SHORT).show()
+//        val intent = Intent()
+//        intent.putExtra("email", find_Friends_Email.text.toString())
+//        setResult(Activity.RESULT_OK, intent)
+//        finish()
         return true
     }
 

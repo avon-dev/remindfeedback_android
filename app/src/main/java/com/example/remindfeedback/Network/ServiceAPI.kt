@@ -138,4 +138,13 @@ interface ServiceAPI {
     @GET("comment/selectall/{board_id}")
     fun GetAllComment(@Path("board_id") board_id: Int): Call<GetAllComments>
 
+    //내 친구 정보 가져오기
+    @GET("friend/allfriend")
+    fun GetFriends(): Call<GetFriends>
+
+    //친구 검색하기
+    @POST("friend/search")
+    fun SearchFriends(@Body searchEmailModel: SearchEmailModel): Call<SearchFriend>
+
+
 }
