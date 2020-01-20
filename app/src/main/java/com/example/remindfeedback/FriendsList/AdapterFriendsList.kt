@@ -2,6 +2,7 @@ package com.example.remindfeedback.FriendsList
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,6 +18,9 @@ import com.example.remindfeedback.FeedbackList.AdapterMainFeedback
 import com.example.remindfeedback.FeedbackList.ModelFeedback
 import com.example.remindfeedback.FriendsList.FriendsPage.FriendsPageActivity
 import com.example.remindfeedback.R
+import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import kotlinx.android.synthetic.main.activity_my_page.*
+import java.net.URL
 import java.util.ArrayList
 
 class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFriendsList>, val presenterFriendsList: PresenterFriendsList) :   RecyclerView.Adapter<AdapterFriendsList.Holder>() {
@@ -73,10 +77,12 @@ class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFri
                 friend_Reject_Button.visibility = View.VISIBLE
             }
 
-
-
-            //원래 각자의 프로필 이미지를 받아와야하지만 일단 기본이미지로 설정함
-            friends_List_Profile_Image.setImageResource(R.drawable.ic_default_profile)
+            var test_task: URLtoBitmapTask = URLtoBitmapTask()
+            test_task = URLtoBitmapTask().apply {
+                url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+friends_list.friendsProfileImage)
+            }
+            var bitmap: Bitmap = test_task.execute().get()
+            friends_List_Profile_Image.setImageBitmap(bitmap)
 
             //친구목록의 아이템을 선택하면 친구페이지로 가게됨
             itemView.setOnClickListener {

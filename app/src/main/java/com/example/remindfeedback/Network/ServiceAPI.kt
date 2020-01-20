@@ -162,5 +162,9 @@ interface ServiceAPI {
     @GET("friend/allrequest/send")
     fun GetRequestedFriendRequest(): Call<GetFriends>
 
+    //조언자목록 가져오기
+    @GET("friend/alladviser")
+    fun GetAdviser(): Call<GetFriends>
+
 
 }

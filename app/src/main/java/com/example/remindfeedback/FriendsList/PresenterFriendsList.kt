@@ -39,7 +39,7 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                         for (i in 0 until fList.size) {
                             var myList: getFriendsInfo = getFriendsInfo()
                             myList = fList[i]
-                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.introduction!!, myList.type, 0)
+                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type, 0)
                             adapterFriendsList.addItem(addData)
                             view.refresh()
                         }
@@ -72,7 +72,7 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                         for (i in 0 until fList.size) {
                             var myList: getFriendsInfo = getFriendsInfo()
                             myList = fList[i]
-                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.introduction!!, myList.type, 1)
+                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type, 1)
                             adapterFriendsList.addItem(addData)
                             view.refresh()
                         }
@@ -102,7 +102,7 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                         for (i in 0 until fList.size) {
                             var myList: getFriendsInfo = getFriendsInfo()
                             myList = fList[i]
-                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.introduction!!, myList.type,2)
+                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type,2)
                             adapterFriendsList.addItem(addData)
                             view.refresh()
                         }
