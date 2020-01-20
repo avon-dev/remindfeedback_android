@@ -61,7 +61,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
         // 액션바 설정
         ab = this!!.supportActionBar!!
-        ab.setTitle("새로운 피드백")
+        ab.setTitle("게시글 생성하기")
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
 
@@ -187,7 +187,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
     override fun setData() {
         if(intent.hasExtra("title")){
-            ab.setTitle("수정")
+            ab.setTitle("게시글 수정하기")
             feedback_id = intent.getIntExtra("feedback_id", -1)
             board_id = intent.getIntExtra("board_id", -1)
             Log.e("setData (feedback_id)", feedback_id.toString())

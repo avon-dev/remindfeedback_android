@@ -47,6 +47,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import java.io.IOException
+import java.text.SimpleDateFormat
 
 
 //class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener, View.OnClickListener, View.OnTouchListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnInfoListener{
@@ -213,8 +214,13 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             Toast.makeText(this@PostActivity, "글을 불러올수 없습니다. 관리자에게 문의하세요.", Toast.LENGTH_SHORT).show()
             finish()
         }
-        post_Title_Tv.text = post_Title_Tv.text.toString() + title
-        post_Date_Tv.text = date
+        post_Title_Tv.text = post_Title_Tv.text.toString() + " " + title
+
+        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date)
+        val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
+        val dateNewFormat = sdf.format(date)
+
+        post_Date_Tv.text = "작성일 : " + dateNewFormat
         post_Tv.text = content
     }
 

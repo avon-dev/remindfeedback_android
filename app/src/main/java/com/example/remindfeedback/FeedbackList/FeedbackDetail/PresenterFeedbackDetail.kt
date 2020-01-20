@@ -11,6 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.ArrayList
 
 class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
@@ -23,8 +24,10 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
     override fun loadItems(list: ArrayList<ModelFeedbackDetail>, adapterFeedbackDetail: AdapterFeedbackDetail, feedback_Id:Int) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
+
         val register_request: Call<GetAllBoard> = apiService.GetAllBoard(feedback_Id, 0)
         register_request.enqueue(object : Callback<GetAllBoard> {
+
             override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
                 if (response.isSuccessful) {
                     val getAllBoard: GetAllBoard = response.body()!!
@@ -33,7 +36,11 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
                         for (i in 0 until mGetAllBoard.size) {
                             var myList: getAllBoardData = getAllBoardData()
                             myList = mGetAllBoard[i]
-                            var postData: ModelFeedbackDetail = ModelFeedbackDetail(feedback_Id, myList.id, myList.board_category, myList.board_title, myList.board_content, myList.createdAt)
+                            val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(myList.createdAt)
+                            val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
+                            val dateNewFormat = sdf.format(date)
+
+                            var postData: ModelFeedbackDetail = ModelFeedbackDetail(feedback_Id, myList.id, myList.board_category, myList.board_title, myList.board_content, dateNewFormat)
                             adapterFeedbackDetail.addItem(postData)
                             view.refresh()
                         }

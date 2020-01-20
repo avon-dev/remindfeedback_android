@@ -101,6 +101,11 @@ interface ServiceAPI {
         @Part file2: MultipartBody.Part?,
         @Part file3: MultipartBody.Part?
     ): Call<GetAllBoard>
+    
+    // 사진 타입의 보드 수정
+    @Multipart
+    @PATCH("board/picture/files/{board_id}")
+    fun UpdateBoardPicture()
 
     //비디오 타입의 보드 생성
     @Multipart
