@@ -43,8 +43,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var mAdapter: AdapterMainFeedback
     var feedback_count:Int = 0
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
-    var arrayList = arrayListOf<ModelFeedback?>(
-    )
+    var arrayList = arrayListOf<ModelFeedback?>()
 
 
     //스피너에 사용할 배열
@@ -164,7 +163,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             111 -> {    // 피드백 추가 후 돌아왔을 때
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        presenterMain.addItems(arrayList,data.getStringExtra("category_id").toInt(),data.getStringExtra("date"),data.getStringExtra("title"),data.getStringExtra("color"),mAdapter)
+                        Log.e("mainactivity", data.getStringExtra("user_uid"))
+                        presenterMain.addItems(arrayList,data.getStringExtra("category_id").toInt(),data.getStringExtra("date"),data.getStringExtra("title"),data.getStringExtra("color"),data.getStringExtra("user_uid"),mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
@@ -173,7 +173,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         Log.e("return", data.getIntExtra("modify_id", -1).toString())
-                        presenterMain.updateItems(arrayList,data.getIntExtra("modify_id",-1),data.getIntExtra("category_id",-1),data.getStringExtra("date"), data.getStringExtra("title"),data.getStringExtra("color"),mAdapter)
+                        presenterMain.updateItems(arrayList,data.getIntExtra("modify_id",-1),data.getIntExtra("category_id",-1),data.getStringExtra("date"), data.getStringExtra("title"),data.getStringExtra("color"),data.getStringExtra("user_uid"),mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }

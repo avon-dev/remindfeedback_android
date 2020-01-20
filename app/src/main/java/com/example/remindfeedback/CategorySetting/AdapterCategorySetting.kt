@@ -3,6 +3,7 @@ package com.example.remindfeedback.CategorySetting
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,6 +66,7 @@ class AdapterCategorySetting(val context: Context, val arrayList: ArrayList<Mode
 
                 update_Tv.setOnClickListener{
                     presenterCategorySetting.showModifyActivity(categorySetting.id, categorySetting.color, categorySetting.title)
+                    Log.e("asdasdasdada",""+categorySetting.id+categorySetting.color+categorySetting.title)
                     dialogInterface!!.dismiss()
                 }
                 delete_Tv.setOnClickListener{

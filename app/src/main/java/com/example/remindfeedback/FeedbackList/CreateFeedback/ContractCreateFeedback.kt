@@ -13,7 +13,7 @@ interface ContractCreateFeedback {
 
         var view: View
         var mContext:Context
-
+        
     }
 
 }

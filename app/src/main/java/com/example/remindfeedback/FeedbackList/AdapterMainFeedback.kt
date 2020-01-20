@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.FeedbackDetailActivity
 import com.example.remindfeedback.R
+import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -92,10 +95,17 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
             if (feedback_list != null) {
                 main_Feedback_Tag_Color.setBackgroundColor(Color.parseColor(feedback_list.tagColor))
             }
+            if(!feedback_list!!.feederProfileImage.equals("")){
+                var test_task: URLtoBitmapTask = URLtoBitmapTask()
+                test_task = URLtoBitmapTask().apply {
+                    url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+feedback_list.feederProfileImage)
+                }
+                var bitmap: Bitmap = test_task.execute().get()
+                main_Feedback_Profile_Image.setImageBitmap(bitmap)
+            }else{
+                main_Feedback_Profile_Image.setImageResource(R.drawable.ic_default_profile)
+            }
 
-
-            //피더의 프로필 이미지 정의해주는부분, 원래 각자의 프로필 이미지를 받아와야하지만 일단 기본이미지로 설정함
-            main_Feedback_Profile_Image.setImageResource(R.drawable.ic_default_profile)
 
             //새로운 알람이 와있으면 visible 아니면 invisible
             if (feedback_list != null) {
