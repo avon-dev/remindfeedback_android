@@ -12,7 +12,10 @@ interface ContractFindFriends {
     interface Presenter {
 
         var view: View
+        var mContext:Context
 
+        fun searchFriend(email:String)
+        fun requestAddFriend(friend_uid:String)
     }
 
 }

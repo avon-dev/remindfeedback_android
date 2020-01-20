@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.example.remindfeedback.CategorySetting.ModelCategorySetting
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
@@ -34,7 +35,6 @@ class PresenterMain : ContractMain.Presenter {
         val apiService = RetrofitFactory.serviceAPI(client)
         val register_request: Call<GetAllFeedback> = apiService.GetAllFeedback(feedback_count, 10)
         register_request.enqueue(object : Callback<GetAllFeedback> {
-
             override fun onResponse(call: Call<GetAllFeedback>, response: Response<GetAllFeedback>) {
                 if (response.isSuccessful) {
                     val testItem: GetAllFeedback = response.body()!!
@@ -73,6 +73,7 @@ class PresenterMain : ContractMain.Presenter {
                                 }
                                 feedback_lastid = mfl.id
                             }
+
                             view.setFeedbackCount(feedback_lastid)
                             view.refresh()
                         }
@@ -85,6 +86,9 @@ class PresenterMain : ContractMain.Presenter {
             }
 
             override fun onFailure(call: Call<GetAllFeedback>, t: Throwable) {
+                myProgress.dismiss()
+                Toast.makeText(context, "데이터를 불러올 수 없습니다. 개발자에게 문의 해주세요",Toast.LENGTH_SHORT).show()
+                Log.e("getfeedbackError",t.message)
             }
         })
     }

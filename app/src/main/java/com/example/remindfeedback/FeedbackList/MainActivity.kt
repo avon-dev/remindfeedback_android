@@ -151,7 +151,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Main_Recyclerview.clearOnScrollListeners()
         //무한 스크롤을 위해 리스너 추가함
         Main_Recyclerview.addOnScrollListener(InfiniteScrollListener({ presenterMain.loadItems(arrayList, mAdapter,feedback_count) },lm)
-
         )//갱신
 
 

@@ -72,19 +72,21 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     }
 
     fun setData(){
-        var test_task: URLtoBitmapTask = URLtoBitmapTask()
-        test_task = URLtoBitmapTask().apply {
-            val intent:Intent = getIntent()
-            val imageData:String = intent.getStringExtra("imageData")
-            Log.e("ddddd", imageData)
-            if(imageData.equals("")){
-                url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/portrait/1577851039123RemindFeedback_035710_3925581465076129527.jpg")
-            }else{
+        val intent:Intent = getIntent()
+        if(!intent.getStringExtra("imageData").equals("")){
+            var test_task: URLtoBitmapTask = URLtoBitmapTask()
+            test_task = URLtoBitmapTask().apply {
+                val imageData:String = intent.getStringExtra("imageData")
+                Log.e("ddddd", imageData)
                 url = URL(imageData)
+                val bitmap: Bitmap = test_task.execute().get()
+                modify_Profile_ImageView.setImageBitmap(bitmap)
             }
+        }else{
+            modify_Profile_ImageView.setImageResource(R.drawable.ic_default_profile)
         }
-        val bitmap: Bitmap = test_task.execute().get()
-        modify_Profile_ImageView.setImageBitmap(bitmap)
+
+
     }
 
     //앨범 꺼내는부분
