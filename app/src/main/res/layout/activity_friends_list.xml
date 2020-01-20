@@ -7,6 +7,12 @@
         android:orientation="vertical"
         tools:context=".FriendsList.FriendsListActivity">
 
+    <com.google.android.material.tabs.TabLayout
+            android:id="@+id/friends_Tab_Layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+    </com.google.android.material.tabs.TabLayout>
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/freinds_List_Recyclerview"
             android:layout_width="match_parent"

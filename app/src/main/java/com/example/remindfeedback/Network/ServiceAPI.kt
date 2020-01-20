@@ -146,5 +146,21 @@ interface ServiceAPI {
     @POST("friend/search")
     fun SearchFriends(@Body searchEmailModel: SearchEmailModel): Call<SearchFriend>
 
+    //친구요청&수락 하기
+    @POST("friend/create")
+    fun CreateFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
+
+    //친구요청&수락 하기
+    @PUT("friend/reject")
+    fun RejectFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
+
+    //받은 친구요청 정보 가져오기
+    @GET("friend/allrequest/receive")
+    fun GetReceivedFriendRequest(): Call<GetFriends>
+
+    //보낸 친구요청 정보 가져오기
+    @GET("friend/allrequest/send")
+    fun GetRequestedFriendRequest(): Call<GetFriends>
+
 
 }

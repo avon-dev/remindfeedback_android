@@ -3,12 +3,11 @@ package com.example.remindfeedback.FriendsList
 import android.content.Context
 import android.content.res.AssetManager
 import android.util.Log
+import android.widget.Toast
 import com.example.remindfeedback.CategorySetting.ModelCategorySetting
 import com.example.remindfeedback.FeedbackList.ContractMain
 import com.example.remindfeedback.Network.RetrofitFactory
-import com.example.remindfeedback.ServerModel.GetCategory
-import com.example.remindfeedback.ServerModel.GetFriends
-import com.example.remindfeedback.ServerModel.myCategory_List
+import com.example.remindfeedback.ServerModel.*
 import okhttp3.OkHttpClient
 import org.json.JSONObject
 import retrofit2.Call
@@ -21,34 +20,31 @@ import java.util.ArrayList
 class PresenterFriendsList: ContractFriendsList.Presenter {
 
 
+
     lateinit override var view: ContractFriendsList.View
     lateinit override var context:Context
 
-    override fun loadItems(list: ArrayList<ModelFriendsList>) {
+    override fun loadItems(list: ArrayList<ModelFriendsList>, adapterFriendsList: AdapterFriendsList) {
+        list.clear()
+        view.refresh()
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val register_request: Call<GetFriends> = apiService.GetFriends()
         register_request.enqueue(object : Callback<GetFriends> {
             override fun onResponse(call: Call<GetFriends>, response: Response<GetFriends>) {
                 if (response.isSuccessful) {
-                    /*
-                    val category: GetFriends = response.body()!!
-                    val mCategory = category.data
-                    Log.e("asdㅁㄴㅇㅁㄴㅇ", mCategory.toString())
-                    if (mCategory != null) {
-                        for (i in 0 until mCategory.size) {
-
-                            var myList: myCategory_List = myCategory_List()
-                            myList = mCategory[i]
-                            var addData: ModelCategorySetting =
-                                ModelCategorySetting(myList.category_id,myList.category_color, myList.category_title)
-                            Log.e("주제", "category_id: " + myList.category_id + ", category_title: " + myList.category_title )
-                            adapterCategorySetting.addItem(addData)
+                    val fData: GetFriends = response.body()!!
+                    val fList = fData.data
+                    if (fList != null) {
+                        for (i in 0 until fList.size) {
+                            var myList: getFriendsInfo = getFriendsInfo()
+                            myList = fList[i]
+                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.introduction!!, myList.type, 0)
+                            adapterFriendsList.addItem(addData)
                             view.refresh()
                         }
                     } else {
                     }
-                    */
                 } else {
                     Log.e("asdasdasd", "뭔가 실패함")
                 }
@@ -61,21 +57,111 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
     }
 
 
-    override fun addItems(email:String, adapterFriendsList: AdapterFriendsList) {
-        val assetManager:AssetManager = context.resources.assets
-        val inputStream= assetManager.open("eFriendsList.json")
-        val jsonString = inputStream.bufferedReader().use { it.readText() }
+    override fun receivedFriendRequests(list: ArrayList<ModelFriendsList>, adapterFriendsList: AdapterFriendsList) {
+        list.clear()
+        view.refresh()
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<GetFriends> = apiService.GetReceivedFriendRequest()
+        register_request.enqueue(object : Callback<GetFriends> {
+            override fun onResponse(call: Call<GetFriends>, response: Response<GetFriends>) {
+                if (response.isSuccessful) {
+                    val fData: GetFriends = response.body()!!
+                    val fList = fData.data
+                    if (fList != null) {
+                        for (i in 0 until fList.size) {
+                            var myList: getFriendsInfo = getFriendsInfo()
+                            myList = fList[i]
+                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.introduction!!, myList.type, 1)
+                            adapterFriendsList.addItem(addData)
+                            view.refresh()
+                        }
+                    } else {
+                    }
+                } else {
+                }
 
-        val jObject = JSONObject(jsonString)
-        val jArray = jObject.getJSONArray("friends")
-
-        for (i in 0 until jArray.length()) {
-            val obj = jArray.getJSONObject(i)
-            if(obj.getString("friendsEmail").equals(email)){
-                var modelFriendsList:ModelFriendsList = ModelFriendsList(obj.getString("friendsName"),obj.getString("friendsScript"),obj.getString("friendsProfileImage"))
-                adapterFriendsList.addItem(modelFriendsList)
             }
-        }
+            override fun onFailure(call: Call<GetFriends>, t: Throwable) {
+            }
+        })
+    }
+
+    override fun requestedFriendsRequests(list: ArrayList<ModelFriendsList>, adapterFriendsList: AdapterFriendsList) {
+        list.clear()
+        view.refresh()
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<GetFriends> = apiService.GetRequestedFriendRequest()
+        register_request.enqueue(object : Callback<GetFriends> {
+            override fun onResponse(call: Call<GetFriends>, response: Response<GetFriends>) {
+                if (response.isSuccessful) {
+                    val fData: GetFriends = response.body()!!
+                    val fList = fData.data
+                    if (fList != null) {
+                        for (i in 0 until fList.size) {
+                            var myList: getFriendsInfo = getFriendsInfo()
+                            myList = fList[i]
+                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.introduction!!, myList.type,2)
+                            adapterFriendsList.addItem(addData)
+                            view.refresh()
+                        }
+                    } else {
+                    }
+                } else {
+                }
+
+            }
+            override fun onFailure(call: Call<GetFriends>, t: Throwable) {
+            }
+        })
+    }
+
+
+    override fun acceptRequest(list: ArrayList<ModelFriendsList>,user_uid: String, adapterFriendsList: AdapterFriendsList) {
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        var createFriend = CreateFriend(user_uid)
+        val register_request: Call<SearchFriend> = apiService.CreateFriend(createFriend)
+        register_request.enqueue(object : Callback<SearchFriend> {
+            override fun onResponse(call: Call<SearchFriend>, response: Response<SearchFriend>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(context, "친구요청이 수락되었습니다.", Toast.LENGTH_LONG).show()
+                    list.clear()
+                    receivedFriendRequests(list, adapterFriendsList)
+                    view.refresh()
+                } else {
+                    val StatusCode = response.code()
+                }
+            }
+            override fun onFailure(call: Call<SearchFriend>, t: Throwable) {
+            }
+        })
+    }
+
+    override fun rejectRequest(list: ArrayList<ModelFriendsList>,user_uid: String, adapterFriendsList: AdapterFriendsList) {
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        var createFriend = CreateFriend(user_uid)
+        val register_request: Call<SearchFriend> = apiService.RejectFriend(createFriend)
+        register_request.enqueue(object : Callback<SearchFriend> {
+            override fun onResponse(call: Call<SearchFriend>, response: Response<SearchFriend>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(context, "친구요청이 거절되었습니다.", Toast.LENGTH_LONG).show()
+                    list.clear()
+                    receivedFriendRequests(list, adapterFriendsList)
+                    view.refresh()
+                } else {
+                    val StatusCode = response.code()
+                }
+            }
+            override fun onFailure(call: Call<SearchFriend>, t: Throwable) {
+            }
+        })
+    }
+
+    override fun addItems(email:String, adapterFriendsList: AdapterFriendsList) {
+
     }
 
     override fun removeItems(position: Int, id: Int, context: Context) {

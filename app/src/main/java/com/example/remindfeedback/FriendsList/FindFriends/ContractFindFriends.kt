@@ -15,7 +15,7 @@ interface ContractFindFriends {
         var mContext:Context
 
         fun searchFriend(email:String)
-
+        fun requestAddFriend(friend_uid:String)
     }
 
 }
