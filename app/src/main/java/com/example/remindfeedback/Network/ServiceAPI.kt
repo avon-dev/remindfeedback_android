@@ -32,8 +32,8 @@ interface ServiceAPI {
     fun GetFeedback(@Path("start") start: Int): Call<GetFeedback>
 
     //피드백정보 모두 가져오기
-    @GET("feedback/all/{start}")
-    fun GetAllFeedback(@Path("start") start: Int): Call<GetAllFeedback>
+    @GET("feedback/all/{feedback_count}/{limit}")
+    fun GetAllFeedback(@Path("feedback_count") feedback_count: Int, @Path("limit") limit: Int): Call<GetAllFeedback>
 
     // 피드백 수정
     @PUT("feedback/update/{feedback_id}")
@@ -79,8 +79,8 @@ interface ServiceAPI {
     fun PatchPortrait(@Part portrait: MultipartBody.Part?): Call<GetMyPage>
 
     //하나의 피드백 내부 포스트들 가져오기
-    @GET("board/{feedbackid}/0")
-    fun GetAllBoard(@Path("feedbackid") feedback_id: Int): Call<GetAllBoard>
+    @GET("board/{feedbackid}/{board_count}")
+    fun GetAllBoard(@Path("feedbackid") feedback_id: Int,@Path("board_count") board_count: Int): Call<GetAllBoard>
 
     //글타입의 보드 생성
     @POST("board/text/create")
@@ -142,5 +142,34 @@ interface ServiceAPI {
     //각 게시글의 댓글 가져오기
     @GET("comment/selectall/{board_id}")
     fun GetAllComment(@Path("board_id") board_id: Int): Call<GetAllComments>
+
+    //내 친구 정보 가져오기
+    @GET("friend/allfriend")
+    fun GetFriends(): Call<GetFriends>
+
+    //친구 검색하기
+    @POST("friend/search")
+    fun SearchFriends(@Body searchEmailModel: SearchEmailModel): Call<SearchFriend>
+
+    //친구요청&수락 하기
+    @POST("friend/create")
+    fun CreateFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
+
+    //친구요청&수락 하기
+    @PUT("friend/reject")
+    fun RejectFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
+
+    //받은 친구요청 정보 가져오기
+    @GET("friend/allrequest/receive")
+    fun GetReceivedFriendRequest(): Call<GetFriends>
+
+    //보낸 친구요청 정보 가져오기
+    @GET("friend/allrequest/send")
+    fun GetRequestedFriendRequest(): Call<GetFriends>
+
+    //조언자목록 가져오기
+    @GET("friend/alladviser")
+    fun GetAdviser(): Call<GetFriends>
+
 
 }

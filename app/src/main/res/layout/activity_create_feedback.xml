@@ -141,11 +141,12 @@
                     android:textSize="20sp" />
 
             <LinearLayout
+                    android:id="@+id/create_Feedback_Add_Adviser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/under_line_gray"
-                    android:padding="16dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
                 <ImageView
                         android:id="@+id/create_Feedback_Button"

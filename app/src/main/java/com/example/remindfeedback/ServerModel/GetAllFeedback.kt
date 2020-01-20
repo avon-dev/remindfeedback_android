@@ -39,7 +39,7 @@ class myFeedback{
     @SerializedName("write_date")
     val write_date:String? = ""
     @SerializedName("complete")
-    val complete:Boolean = false
+    val complete:Int = -1
     @SerializedName("confirm")
     val confirm:Boolean = false
     @SerializedName("createdAt")

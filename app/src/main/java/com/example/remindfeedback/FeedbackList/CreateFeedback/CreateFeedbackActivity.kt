@@ -70,6 +70,10 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
                 calendarView.requestFocus()
             }
         }
+        create_Feedback_Add_Adviser.setOnClickListener{
+
+        }
+
         //날짜 구하는 코드
         val tz = TimeZone.getTimeZone("Asia/Seoul")
         val gc = GregorianCalendar(tz)

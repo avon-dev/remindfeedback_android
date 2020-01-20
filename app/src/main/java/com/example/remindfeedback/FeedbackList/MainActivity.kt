@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -19,6 +20,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.Alarm.AlarmActivity
 import com.example.remindfeedback.CategorySetting.CategorySettingActivity
 import com.example.remindfeedback.FeedbackList.CreateFeedback.CreateFeedbackActivity
@@ -26,8 +28,11 @@ import com.example.remindfeedback.FriendsList.FriendsListActivity
 import com.example.remindfeedback.MyPage.MyPageActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Setting.SettingActivity
+import com.example.remindfeedback.etcProcess.InfiniteScrollListener
+import com.example.remindfeedback.etcProcess.MyProgress
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -36,9 +41,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val TAG = "MainActivity"
     internal lateinit var presenterMain: PresenterMain
     lateinit var mAdapter: AdapterMainFeedback
-
+    var feedback_count:Int = 0
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
-    var arrayList = arrayListOf<ModelFeedback>(
+    var arrayList = arrayListOf<ModelFeedback?>(
     )
 
 
@@ -52,7 +57,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var fab_main: FloatingActionButton
     lateinit var fab_sub1: FloatingActionButton
     lateinit var fab_sub2: FloatingActionButton
-
+    lateinit var lm:LinearLayoutManager
     private var fab_open: Animation? = null
     var fab_close: Animation? = null
 
@@ -80,18 +85,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             view = this@MainActivity
             context = this@MainActivity
         }
-        mAdapter = AdapterMainFeedback(this, arrayList,presenterMain)
 
-        //리사이클러뷰 관련, 어댑터, 레이아웃매니저
-        Main_Recyclerview.adapter = mAdapter
-        val lm = LinearLayoutManager(this)
-        Main_Recyclerview.layoutManager = lm
-        Main_Recyclerview.setHasFixedSize(true) //아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
+        setRecyclerView(Main_Recyclerview)
+
 
 
         //presenter 정의하고 아이템을 불러옴
 
-        presenterMain.loadItems(arrayList, mAdapter)
+        presenterMain.loadItems(arrayList, mAdapter, feedback_count)
 
         //여기서부터는 스피너 관련코드
         var arrayAdapter = ArrayAdapter(
@@ -131,6 +132,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ed_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
         }
     }
+
+
+    //피드백 마지막 아이디를 받아서 셋티해주는 부분
+    override fun setFeedbackCount(feedback_lastid: Int) {
+        feedback_count = feedback_lastid
+    }
+
+    // setRecyclerView : ComicFragment에서 평가할 도서 목록에 대한 RecyclerView를 초기화 및 정의하는 함수
+    fun setRecyclerView(recyclerView: RecyclerView){
+
+        //리사이클러뷰 관련, 어댑터, 레이아웃매니저
+        lm = LinearLayoutManager(this)
+        Main_Recyclerview.layoutManager = lm
+        mAdapter = AdapterMainFeedback(Main_Recyclerview,this, arrayList,presenterMain, this)
+        Main_Recyclerview.adapter = mAdapter
+        Main_Recyclerview.setHasFixedSize(true) //아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
+        Main_Recyclerview.clearOnScrollListeners()
+        //무한 스크롤을 위해 리스너 추가함
+        Main_Recyclerview.addOnScrollListener(InfiniteScrollListener({ presenterMain.loadItems(arrayList, mAdapter,feedback_count) },lm)
+        )//갱신
+
+
+    }
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

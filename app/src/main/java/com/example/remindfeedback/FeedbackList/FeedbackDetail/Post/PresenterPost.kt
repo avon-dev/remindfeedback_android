@@ -114,7 +114,7 @@ class PresenterPost:ContractPost.Presenter {
     override fun typeInit(feedback_id: Int, board_id: Int) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<GetAllBoard> = apiService.GetAllBoard(feedback_id)
+        val register_request: Call<GetAllBoard> = apiService.GetAllBoard(feedback_id,0 )
         register_request.enqueue(object : Callback<GetAllBoard> {
             override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
                 if (response.isSuccessful) {

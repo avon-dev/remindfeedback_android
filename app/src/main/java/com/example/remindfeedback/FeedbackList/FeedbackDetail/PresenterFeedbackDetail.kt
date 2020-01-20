@@ -25,7 +25,7 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
 
-        val register_request: Call<GetAllBoard> = apiService.GetAllBoard(feedback_Id)
+        val register_request: Call<GetAllBoard> = apiService.GetAllBoard(feedback_Id, 0)
         register_request.enqueue(object : Callback<GetAllBoard> {
 
             override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {

@@ -5,12 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.remindfeedback.FriendsList.FindFriends.FindFriendsActivity
 import com.example.remindfeedback.R
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_friends_list.*
 
 class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
@@ -20,7 +22,7 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
 
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
     var arrayList = arrayListOf<ModelFriendsList>()
-    val mAdapter = AdapterFriendsList(this, arrayList)
+    lateinit var mAdapter:AdapterFriendsList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,17 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
 
+
+        //presenter 정의하고 아이템을 불러옴
+        presenterFriendsList = PresenterFriendsList().apply {
+            view = this@FriendsListActivity
+            context = this@FriendsListActivity
+        }
+        mAdapter = AdapterFriendsList(this, arrayList,presenterFriendsList)
+
+        presenterFriendsList.loadItems(arrayList,mAdapter)
+
+
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
         freinds_List_Recyclerview.adapter = mAdapter
         val lm = LinearLayoutManager(this)
@@ -39,14 +52,35 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
         freinds_List_Recyclerview.setHasFixedSize(true) //아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
 
 
-        //presenter 정의하고 아이템을 불러옴
-        presenterFriendsList = PresenterFriendsList().apply {
-            view = this@FriendsListActivity
-            context = this@FriendsListActivity
-        }
-        presenterFriendsList.loadItems(arrayList)
 
-
+//여기부터 탭바 코드
+        //3탭기능 구성
+        val tabs = findViewById<View>(R.id.friends_Tab_Layout) as TabLayout
+        tabs.addTab(tabs.newTab().setText("친구목록"))
+        tabs.addTab(tabs.newTab().setText("받은친구요청"))
+        tabs.addTab(tabs.newTab().setText("보낸친구요청"))
+        //탭버튼을 클릭했을 때 프레그먼트 동작
+        tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                //선택된 탭 번호 반환
+                val position = tab.position
+                if (position == 0) {
+                    Toast.makeText(this@FriendsListActivity, "친구목록", Toast.LENGTH_SHORT).show()
+                    presenterFriendsList.loadItems(arrayList,mAdapter)
+                } else if (position == 1) {
+                    Toast.makeText(this@FriendsListActivity, "받은친구요청", Toast.LENGTH_SHORT).show()
+                    presenterFriendsList.receivedFriendRequests(arrayList,mAdapter)
+                } else if (position == 2) {
+                    Toast.makeText(this@FriendsListActivity, "보낸친구요청", Toast.LENGTH_SHORT).show()
+                    presenterFriendsList.requestedFriendsRequests(arrayList,mAdapter)
+                }
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+            }
+            override fun onTabReselected(tab: TabLayout.Tab) {
+            }
+        })
+        //여기까지 탭바 코드
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -59,14 +93,10 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
                         presenterFriendsList.addItems(data.getStringExtra("email"), mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@FriendsListActivity, "취소됨.", Toast.LENGTH_SHORT).show()
-
                 }
-
             }
         }
-
     }
-
 
     //타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
