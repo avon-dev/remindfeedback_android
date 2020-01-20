@@ -101,11 +101,33 @@ interface ServiceAPI {
         @Part file2: MultipartBody.Part?,
         @Part file3: MultipartBody.Part?
     ): Call<GetAllBoard>
-    
-    // 사진 타입의 보드 수정
+
+    // 사진 타입의 보드 수정 - 전체(제목, 내용, 사진)
+    @Multipart
+    @PUT("board/picture/update/{board_id}")
+    fun UpdateBoardPictureAll(
+        @Path("board_id") board_id: Int,
+        @Part("board_title") board_title: RequestBody,
+        @Part("board_content") board_content: RequestBody,
+        @Part("updatefile1") updatefile1: Boolean,
+        @Part file1: MultipartBody.Part?,
+        @Part("updatefile2") updatefile2: Boolean,
+        @Part file2: MultipartBody.Part?,
+        @Part("updatefile3") updatefile3: Boolean,
+        @Part file3: MultipartBody.Part?
+    ): Call<GetAllBoard>
+
+    // 사진 타입의 보드 수정 - 사진만
     @Multipart
     @PATCH("board/picture/files/{board_id}")
-    fun UpdateBoardPicture()
+    fun UpdateBoardPicture(
+        @Part updatefile1: Boolean,
+        @Part file1: MultipartBody.Part?,
+        @Part updatefile2: Boolean,
+        @Part file2: MultipartBody.Part?,
+        @Part updatefile3: Boolean,
+        @Part file3: MultipartBody.Part?
+    ): Call<GetAllBoard>
 
     //비디오 타입의 보드 생성
     @Multipart

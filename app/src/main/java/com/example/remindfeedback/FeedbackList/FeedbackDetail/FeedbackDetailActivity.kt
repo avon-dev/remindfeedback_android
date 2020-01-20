@@ -90,7 +90,13 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
             112 -> {    // 보드 수정 후 돌아왔을 때
                 when(resultCode){
                     Activity.RESULT_OK -> if (data != null) {
-                        presenterFeedbackDetail.updateItems(arrayList, data.getIntExtra("feedback_id", -1), data.getIntExtra("board_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"), mAdapter)
+                        if ( data.getIntExtra("return_type", -1) == 0 ){    // 글
+                            val modifyBoardText = CreateBoardText( data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content") )
+                            presenterFeedbackDetail.updateTextItems(arrayList, data.getIntExtra("board_id", -1), modifyBoardText, mAdapter)
+                        }else if ( data.getIntExtra("return_type", -1) == 1 ) { // 사진
+                            val modifyBoardPicture = CreateBoardPicture(data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"), data.getStringExtra("file1_uri"), data.getStringExtra("file2_uri"), data.getStringExtra("file3_uri") )
+                            presenterFeedbackDetail.updatePictureItems(arrayList, data.getIntExtra("board_id", -1), modifyBoardPicture, mAdapter)
+                        }
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
