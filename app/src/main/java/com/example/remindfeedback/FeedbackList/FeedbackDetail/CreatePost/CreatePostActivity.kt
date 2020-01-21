@@ -63,7 +63,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         ab = this!!.supportActionBar!!
         ab.setTitle("게시글 생성하기")
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
-        ab.setDisplayHomeAsUpEnabled(true)
+//        ab.setDisplayHomeAsUpEnabled(true)
 
         setData()
         presenterCreatePost = PresenterCreatePost().apply {
@@ -196,6 +196,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             val content = intent.getStringExtra("content")
             create_Post_Title_Tv.setText(title)
             create_Post_Script_Tv.setText(content)
+            contents_Type_Change_Button.setText("")
         }else{
 
         }
