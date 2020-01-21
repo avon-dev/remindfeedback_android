@@ -77,7 +77,6 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
             var test_task: URLtoBitmapTask = URLtoBitmapTask()
             test_task = URLtoBitmapTask().apply {
                 val imageData:String = intent.getStringExtra("imageData")
-                Log.e("ddddd", imageData)
                 url = URL(imageData)
                 val bitmap: Bitmap = test_task.execute().get()
                 modify_Profile_ImageView.setImageBitmap(bitmap)

@@ -47,6 +47,17 @@ class PresenterMain : ContractMain.Presenter {
                             for (i in 0 until mFeedback.size) {
                                 var mfl: myFeedback = myFeedback()
                                 mfl = mFeedback[i]
+
+                                var adviserUser:adviserUser = adviserUser()
+                                if(mfl.user == null){
+                                    adviserUser.nickname = ""
+                                    adviserUser.portrait = ""
+                                }else{
+                                    adviserUser = mfl.user!!
+                                }
+
+
+                                Log.e("adviserUser", mfl.user.toString())
                                 val date =
                                     SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(mfl.write_date)
                                 val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
@@ -68,7 +79,9 @@ class PresenterMain : ContractMain.Presenter {
                                 }
                                 if(tag_Color ==null){
                                 }else{
-                                    val addData: ModelFeedback = ModelFeedback(mfl.id, "조언자", mfl.category,tag_Color, mfl.title, "dummy", dateNewFormat, false)
+                                    val addData: ModelFeedback = ModelFeedback(mfl.id,
+                                        adviserUser.nickname!!, mfl.category,tag_Color, mfl.title,
+                                        adviserUser.portrait!!, dateNewFormat, false)
                                     adapterMainFeedback.addItem(addData)
                                 }
                                 feedback_lastid = mfl.id
@@ -96,21 +109,20 @@ class PresenterMain : ContractMain.Presenter {
 
 
 
-    override fun addItems(list: ArrayList<ModelFeedback?>,category_id:Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback) {
+    override fun addItems(list: ArrayList<ModelFeedback?>,category_id:Int, date: String?, title: String,color:String,user_uid:String, adapterMainFeedback: AdapterMainFeedback) {
         val date2 = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
         val dateNewFormat = sdf.format(date2)
         val ndate: Date = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val createFeedback: CreateFeedback = CreateFeedback("aaaa", category_id, title, ndate)
+        val createFeedback: CreateFeedback = CreateFeedback(user_uid, category_id, title, ndate)
         val register_request: Call<CreateFeedback> = apiService.CreateFeedback(createFeedback)
         register_request.enqueue(object : Callback<CreateFeedback> {
-
             override fun onResponse(call: Call<CreateFeedback>, response: Response<CreateFeedback>) {
                 if (response.isSuccessful) {
                     val addData: ModelFeedback =
-                        ModelFeedback(-1, "조언자", category_id,color, title, "dummy", dateNewFormat, false)
+                        ModelFeedback(-1, "조언자", category_id,color, title, "프로필 이미지", dateNewFormat, false)
                     adapterMainFeedback.addItem(addData)
                     list.clear()
                     loadItems(list, adapterMainFeedback,0)
@@ -119,22 +131,18 @@ class PresenterMain : ContractMain.Presenter {
                     val StatusCode = response.code()
                 }
             }
-
             override fun onFailure(call: Call<CreateFeedback>, t: Throwable) {
             }
         })
 
 
     }
-
-
     override fun removeItems(id: Int, context: Context) {
         Log.e("리무브 테스트", "$id")
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val register_request: Call<ResponseBody> = apiService.DeleteFeedback(id)
         register_request.enqueue(object : Callback<ResponseBody> {
-
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Log.e("성공!", "딜리트 성공")
@@ -143,20 +151,18 @@ class PresenterMain : ContractMain.Presenter {
                     val StatusCode = response.code()
                 }
             }
-
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("실패", t.message)
-
             }
         })
     }
 
     // 피드백 수정
-    override fun updateItems(list: ArrayList<ModelFeedback?>,item_id:Int,category_id: Int, date: String?, title: String,color:String, adapterMainFeedback: AdapterMainFeedback) {
+    override fun updateItems(list: ArrayList<ModelFeedback?>,item_id:Int,category_id: Int, date: String?, title: String,color:String,user_uid:String, adapterMainFeedback: AdapterMainFeedback) {
         val ndate: Date = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val modifyFeedback: CreateFeedback = CreateFeedback("얍", category_id, title, ndate)
+        val modifyFeedback: CreateFeedback = CreateFeedback(user_uid, category_id, title, ndate)
         val register_request: Call<CreateFeedback> = apiService.ModifyFeedback(item_id, modifyFeedback)
         register_request.enqueue(object : Callback<CreateFeedback> {
 
@@ -179,7 +185,5 @@ class PresenterMain : ContractMain.Presenter {
     override fun modifyFeedbackActivity(id: Int,category_id: Int, date: String?, title: String) {
         view.modifyFeedbackActivity(id, category_id,date, title)
     }
-
-
 
 }

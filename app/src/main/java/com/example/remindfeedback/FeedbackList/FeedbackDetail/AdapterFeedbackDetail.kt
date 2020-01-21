@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.Post.PostActivity
 import com.example.remindfeedback.R
+import java.text.SimpleDateFormat
 import java.util.ArrayList
 
 class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<ModelFeedbackDetail>, val presenterFeedbackDetail: PresenterFeedbackDetail) :   RecyclerView.Adapter<AdapterFeedbackDetail.Holder>()  {
@@ -57,7 +58,13 @@ class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<Model
 
         fun bind (feedback_detail_list: ModelFeedbackDetail, context: Context) {
             feedback_Detail_Title.text = feedback_detail_list.title
-            feedback_Detail_Date.text = feedback_detail_list.date
+
+            val date =
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(feedback_detail_list.date)
+            val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
+            val dateNewFormat = sdf.format(date)
+
+            feedback_Detail_Date.text = dateNewFormat
             //0(글), 1(사진), 2(영상), 3(녹음)
             if(feedback_detail_list.contents_type == 2){
                 feedback_Detail_Contents.text = "비디오"

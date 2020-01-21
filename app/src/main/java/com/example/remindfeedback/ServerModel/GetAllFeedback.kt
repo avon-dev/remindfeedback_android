@@ -48,6 +48,15 @@ class myFeedback{
     val updatedAt:String? = ""
     @SerializedName("deletedAt")
     val deletedAt:String? = null
+    @SerializedName("user")
+    val user:adviserUser? = adviserUser()
+}
+
+class adviserUser{
+    @SerializedName("nickname")
+    var nickname:String? = ""
+    @SerializedName("portrait")
+    var portrait:String? = ""
 }
 
 class yourFeedback{

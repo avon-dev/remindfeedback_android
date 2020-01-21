@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.remindfeedback">
+        package="com.example.remindfeedback">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
 
     <application
             android:allowBackup="true"
@@ -18,70 +17,72 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".MyPage.ImagePick.ImagePickActivity">
-        </activity>
+        <activity android:name=".ChoiceAdviserActivity"></activity>
+        <activity android:name=".MyPage.ImagePick.ImagePickActivity"></activity>
         <activity
                 android:name="com.soundcloud.android.crop.CropImageActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
                 android:name=".CategorySetting.CreateCategory.ColorList.ColorListActivity"
-                android:theme="@style/Theme.MyDialog"/>
-        <activity android:name=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity"/>
+                android:theme="@style/Theme.MyDialog" />
+        <activity android:name=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity" />
         <activity
                 android:name=".CategorySetting.CategorySettingActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".FeedbackList.FeedbackDetail.CreatePost.Record.RecordActivity"
-                android:parentActivityName=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity"/>
-        <activity
-                android:name=".FeedbackList.FeedbackDetail.Post.PostActivity"/>
+                android:parentActivityName=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity" />
+        <activity android:name=".FeedbackList.FeedbackDetail.Post.PostActivity" />
         <activity
                 android:name=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".FriendsList.FriendsPage.FriendsPageActivity"
-                android:parentActivityName=".FriendsList.FriendsListActivity"/>
+                android:parentActivityName=".FriendsList.FriendsListActivity" />
         <activity
                 android:name=".Alarm.AlarmActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".Setting.SettingActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".MyPage.MyPageActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".FriendsList.FindFriends.FindFriendsActivity"
-                android:parentActivityName=".FriendsList.FriendsListActivity"/>
+                android:parentActivityName=".FriendsList.FriendsListActivity" />
         <activity
                 android:name=".CreateCategory.CreateCategoryActivity"
-                android:parentActivityName=".CategorySetting.CategorySettingActivity"/>
+                android:parentActivityName=".CategorySetting.CategorySettingActivity" />
         <activity
                 android:name=".FeedbackList.CreateFeedback.CreateFeedbackActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".FriendsList.FriendsListActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"/>
+                android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".Register.RegisterActivity"
-                android:parentActivityName=".Login.LoginActivity"/>
+                android:parentActivityName=".Login.LoginActivity" />
         <activity
                 android:name=".FeedbackList.CreateFeedback.PickCategory.PickCategoryActivity"
-                android:theme="@style/Theme.MyDialog"/>
+                android:theme="@style/Theme.MyDialog" />
+        <activity
+                android:name=".FeedbackList.CreateFeedback.ChoiceAdviser.ChoiceAdviserActivity" />
         <activity
                 android:name=".FeedbackList.MainActivity"
-                android:theme="@style/AppTheme.NoActionBar"/>
+                android:theme="@style/AppTheme.NoActionBar" />
         <activity
                 android:name=".Login.LoginActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
                 android:name="androidx.core.content.FileProvider"
                 android:authorities="com.example.remindfeedback.fileprovider"

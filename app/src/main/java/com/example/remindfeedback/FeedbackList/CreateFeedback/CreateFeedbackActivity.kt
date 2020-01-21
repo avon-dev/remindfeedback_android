@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.remindfeedback.CreateFeedback.ContractCreateFeedback
+import com.example.remindfeedback.FeedbackList.CreateFeedback.ChoiceAdviser.ChoiceAdviserActivity
 import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.PickCategoryActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
@@ -33,7 +34,7 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
     var modifyID:Int = -1
     var modify_Category_ID:Int = -1
     var intentColor:String = "#000000"
-
+    var adviser_uid = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +72,8 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
             }
         }
         create_Feedback_Add_Adviser.setOnClickListener{
-
+            val intent = Intent(this, ChoiceAdviserActivity::class.java)
+            startActivityForResult(intent, 101)
         }
 
         //날짜 구하는 코드
@@ -106,7 +108,7 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         super.onActivityResult(requestCode, resultCode, data)
 
         when(requestCode) {
-            100 -> {
+            100 -> {//이미지 선택
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         create_Feedback_Title_Tv.text = data.getStringExtra("title")
@@ -114,6 +116,14 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
                         create_Feedback_Id_Tv.text = data.getIntExtra("id", -1).toString()
                         intentColor = data.getStringExtra("color")
                         modify_Category_ID = data.getIntExtra("id", -1)
+                    }
+                    Activity.RESULT_CANCELED -> Toast.makeText(this@CreateFeedbackActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            101 -> {//조언자 선택
+                when(resultCode) {
+                    Activity.RESULT_OK -> if (data != null) {
+                        adviser_uid = data.getStringExtra("user_uid")
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@CreateFeedbackActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
@@ -166,6 +176,10 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
                 intent.putExtra("category_id", modify_Category_ID)
             }else{
                 intent.putExtra("category_id", create_Feedback_Id_Tv.text.toString())
+            }
+            Log.e("createfeedbackactivity", adviser_uid)
+            if(!adviser_uid.equals("")){
+                intent.putExtra("user_uid", adviser_uid)
             }
             intent.putExtra("title", create_Feedback_Title.text.toString())
             intent.putExtra("date", stringDate)

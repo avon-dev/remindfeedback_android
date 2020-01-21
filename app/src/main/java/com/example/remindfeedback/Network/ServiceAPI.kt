@@ -23,6 +23,11 @@ interface ServiceAPI {
     @GET("auth/me/")
     fun GET_User(): Call<ResponseBody>
 
+    //유저 정보 가져오기
+    @GET("users/{id}")
+    fun ShowUser(@Path("id") id: String): Call<UserInfo>
+
+
     //피드백 생성
     @POST("feedback/create")
     fun CreateFeedback(@Body createFeedback: CreateFeedback): Call<CreateFeedback>
@@ -48,11 +53,11 @@ interface ServiceAPI {
     fun GetCategory(): Call<GetCategory>
 
     //주제 생성
-    @POST("category/insert")
+    @POST("category/create")
     fun CreateCategory(@Body createCategory: CreateCategory): Call<GetCategory>
 
     // 주제 수정
-    @POST("category/update/{category_id}")
+    @PUT("category/update/{category_id}")
     fun ModifyCategory(@Path("category_id") category_id: Int, @Body createCategory: CreateCategory): Call<GetCategory>
 
     //주제 삭제
