@@ -71,12 +71,17 @@ class AdapterChoiceAdviser (val context: Context, val arrayList: ArrayList<Model
             friend_Reject_Button.visibility = View.GONE
 
 
-            var test_task: URLtoBitmapTask = URLtoBitmapTask()
-            test_task = URLtoBitmapTask().apply {
-                url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+friends_list.friendsProfileImage)
+            if(friends_list.friendsProfileImage.equals("")){
+                friends_List_Profile_Image.setImageResource(R.drawable.ic_default_profile)
+            }else{
+                var test_task: URLtoBitmapTask = URLtoBitmapTask()
+                test_task = URLtoBitmapTask().apply {
+                    url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+friends_list.friendsProfileImage)
+                }
+                var bitmap: Bitmap = test_task.execute().get()
+                friends_List_Profile_Image.setImageBitmap(bitmap)
             }
-            var bitmap: Bitmap = test_task.execute().get()
-            friends_List_Profile_Image.setImageBitmap(bitmap)
+
 
             itemView.setOnClickListener {
                 presenterChoiceAdviser.returnData(friends_list.friend_uid)
