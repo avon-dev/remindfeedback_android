@@ -118,7 +118,6 @@ class PresenterMain : ContractMain.Presenter {
                     val testItem: GetAllFeedback = response.body()!!
                     val allData:getAllData? = testItem.data
                     val mFeedback= allData!!.yourFeedback
-                    val mCategory= allData!!.category
                     var tag_Color:String? = null
                     if (allData != null) {
                         if (mFeedback != null) {
@@ -137,28 +136,10 @@ class PresenterMain : ContractMain.Presenter {
                                     SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(mfl.write_date)
                                 val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
                                 val dateNewFormat = sdf.format(date)
-                                if (mCategory != null) {
-                                    for(j in 0 until mCategory.size){
-                                        var category_list : category = category()
-                                        category_list = mCategory[j]
-                                        if(category_list.category_id == mfl.category){
-                                            //카테고리가 내 카테고리 목록에 존재하면 그걸로 표시하고 포문 끝냄
-                                            tag_Color = category_list.category_color
-                                            break
-                                        }
-                                        else{
-                                            //카테고리 목록에 없을시 검정색으로 표시
-                                            tag_Color = "#000000"
-                                        }
-                                    }
-                                }
-                                if(tag_Color ==null){
-                                }else{
-                                    val addData: ModelFeedback = ModelFeedback(mfl.id,
-                                        adviserUser.nickname!!, mfl.category,tag_Color, mfl.title,
-                                        adviserUser.portrait!!, dateNewFormat, false)
-                                    adapterMainFeedback.addItem(addData)
-                                }
+                                val addData: ModelFeedback = ModelFeedback(mfl.id,
+                                    adviserUser.nickname!!, mfl.category,"#000000", mfl.title,
+                                    adviserUser.portrait!!, dateNewFormat, false)
+                                adapterMainFeedback.addItem(addData)
                                 feedback_lastid = mfl.id
                             }
 
