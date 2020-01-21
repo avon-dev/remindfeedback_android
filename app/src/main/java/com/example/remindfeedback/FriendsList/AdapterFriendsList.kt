@@ -84,6 +84,8 @@ class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFri
                 }
                 var bitmap: Bitmap = test_task.execute().get()
                 friends_List_Profile_Image.setImageBitmap(bitmap)
+            }else{
+                friends_List_Profile_Image.setImageResource(R.drawable.ic_default_profile)
             }
 
 

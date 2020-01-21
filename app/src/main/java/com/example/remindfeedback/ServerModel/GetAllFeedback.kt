@@ -60,7 +60,30 @@ class adviserUser{
 }
 
 class yourFeedback{
-
+    @SerializedName("id")
+    val id:Int = -1
+    @SerializedName("user_uid")
+    val user_uid:String? = ""
+    @SerializedName("adviser_uid")
+    val adviser_uid:String? = ""
+    @SerializedName("category")
+    val category:Int = -1
+    @SerializedName("title")
+    val title:String = ""
+    @SerializedName("write_date")
+    val write_date:String? = ""
+    @SerializedName("complete")
+    val complete:Int = -1
+    @SerializedName("confirm")
+    val confirm:Boolean = false
+    @SerializedName("createdAt")
+    val createdAt:String? = ""
+    @SerializedName("updatedAt")
+    val updatedAt:String? = ""
+    @SerializedName("deletedAt")
+    val deletedAt:String? = null
+    @SerializedName("user")
+    val user:adviserUser? = adviserUser()
 }
 
 class category{
