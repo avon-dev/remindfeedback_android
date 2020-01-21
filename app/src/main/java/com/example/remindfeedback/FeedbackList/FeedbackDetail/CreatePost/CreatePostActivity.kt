@@ -162,6 +162,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                     contents_Photo.setBackgroundResource(R.drawable.under_line_gray)
                     contents_Text.setBackgroundResource(R.drawable.all_line)
                     contents_Image.setImageResource(R.drawable.ic_photo_black)
+                    contents_Type_Change_Button.setText("[ 사진 ]")
                     return_type = 1
                     add_File_View.visibility = View.VISIBLE
                 }
@@ -170,6 +171,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                     contents_Photo.setBackgroundResource(R.drawable.all_line)
                     contents_Text.setBackgroundResource(R.drawable.under_line_gray)
                     contents_Image.setImageResource(R.drawable.ic_text)
+                    contents_Type_Change_Button.setText("[ 글 ]")
                     return_type = 0
                     add_File_View.visibility = View.GONE
                 }
@@ -202,7 +204,6 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             if (intent.getIntExtra("board_category", -1) == 0) {  // 글
                 contents_Image.setImageResource(R.drawable.ic_text)
                 contents_Type_Change_Button.setText("[ 글 ]")
-                contents_Type_Change_Button.isClickable.not()
             } else if (intent.getIntExtra("board_category", -1) == 1) { // 사진
                 contents_Image.setImageResource(R.drawable.ic_photo_black)
                 contents_Type_Change_Button.setText("[ 사진 ]")
@@ -234,28 +235,37 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     fun create_Post_Button(): Boolean {
         val intent = Intent()
         Log.e("return_type", return_type.toString())
-        intent.putExtra("return_type", return_type)
-        title = create_Post_Title_Tv.text.toString()
-        intent.putExtra("board_title", title)
-        intent.putExtra("board_content", create_Post_Script_Tv.text.toString())
-        if (feedback_id != -1) {
-            intent.putExtra("feedback_id", feedback_id)
-        }
-        if (board_id != -1) {
-            intent.putExtra("board_id", board_id)
-        }
+        if (create_Post_Title_Tv.text.isEmpty()) {
+            Toast.makeText(this, "제목을 작성해 주세요.", Toast.LENGTH_SHORT).show()
+        } else if (create_Post_Script_Tv.text.isEmpty()) {
+            Toast.makeText(this, "내용을 작성해 주세요.", Toast.LENGTH_SHORT).show()
+        } else if (contents_Type_Change_Button.text == "컨텐츠 타입 선택") {
+            Toast.makeText(this, "컨텐츠 타입을 선택해 주세요.", Toast.LENGTH_SHORT).show()
+        } else {
 
-        if (return_type == 1) {
-            intent.putExtra("file1_uri", lastUri_1.toString())
-            intent.putExtra("file2_uri", lastUri_2.toString())
-            intent.putExtra("file3_uri", lastUri_3.toString())
-        } else if (return_type == 2) {
-            intent.putExtra("video_uri", lastUri_1.toString())
-        } else if (return_type == 3) {
-            intent.putExtra("record_uri", lastUri_1.toString())
+            intent.putExtra("return_type", return_type)
+            title = create_Post_Title_Tv.text.toString()
+            intent.putExtra("board_title", title)
+            intent.putExtra("board_content", create_Post_Script_Tv.text.toString())
+            if (feedback_id != -1) {
+                intent.putExtra("feedback_id", feedback_id)
+            }
+            if (board_id != -1) {
+                intent.putExtra("board_id", board_id)
+            }
+
+            if (return_type == 1) {
+                intent.putExtra("file1_uri", lastUri_1.toString())
+                intent.putExtra("file2_uri", lastUri_2.toString())
+                intent.putExtra("file3_uri", lastUri_3.toString())
+            } else if (return_type == 2) {
+                intent.putExtra("video_uri", lastUri_1.toString())
+            } else if (return_type == 3) {
+                intent.putExtra("record_uri", lastUri_1.toString())
+            }
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
-        setResult(Activity.RESULT_OK, intent)
-        finish()
 
         return true
     }
