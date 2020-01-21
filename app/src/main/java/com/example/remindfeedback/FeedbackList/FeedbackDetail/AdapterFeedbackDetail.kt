@@ -98,7 +98,7 @@ class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<Model
 
                 update_Tv.setOnClickListener{
                     Log.e("textTypeBoard 수정", "수정한다"+adapterPosition)
-                    presenterFeedbackDetail.modifyBoardActivity(feedback_detail_list.feedback_id, feedback_detail_list.board_id, feedback_detail_list.title, feedback_detail_list.content)
+                    presenterFeedbackDetail.modifyBoardActivity(feedback_detail_list.feedback_id, feedback_detail_list.board_id, feedback_detail_list.contents_type, feedback_detail_list.title, feedback_detail_list.content)
                     dialogInterface!!.dismiss()
                 }
                 delete_Tv.setOnClickListener{

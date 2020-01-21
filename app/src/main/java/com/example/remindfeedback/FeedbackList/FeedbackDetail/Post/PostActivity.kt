@@ -112,12 +112,13 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         //액션바 설정
         var ab: ActionBar = this.supportActionBar!!
         ab.setTitle("")
+//        ab.setDisplayHomeAsUpEnabled(true)
+
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
         post_Comment_Recyclerview.adapter = mAdapter
         val lm = LinearLayoutManager(this)
         post_Comment_Recyclerview.layoutManager = lm
         post_Comment_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
-
 
 
         var intent:Intent= intent

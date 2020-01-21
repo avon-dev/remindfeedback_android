@@ -263,17 +263,17 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
     }
 
 
-    override fun updateItems(list: ArrayList<ModelFeedbackDetail>,feedback_id: Int, board_id: Int, title: String, content: String, adapterFeedbackDetail: AdapterFeedbackDetail) {
+    override fun updateTextItems(list: ArrayList<ModelFeedbackDetail>, board_id: Int, createBoardText: CreateBoardText, adapterFeedbackDetail: AdapterFeedbackDetail) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val modifyBoard: CreateBoardText = CreateBoardText(board_id, title, content)
+        val modifyBoard: CreateBoardText = CreateBoardText(board_id, createBoardText.board_title, createBoardText.board_content)
         val register_request: Call<GetAllBoard> = apiService.UpdateBoardText(board_id, modifyBoard)
         register_request.enqueue(object : Callback<GetAllBoard> {
 
             override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
                 if (response.isSuccessful) {
                     list.clear()
-                    loadItems(list, adapterFeedbackDetail, feedback_id)
+                    loadItems(list, adapterFeedbackDetail, createBoardText.feedback_id)
                     view.refresh()
                 } else {
                 }
@@ -281,7 +281,7 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
             override fun onFailure(call: Call<GetAllBoard>, t: Throwable) {
                 Log.e("보드 수정 실패", t.message)
                 list.clear()
-                loadItems(list, adapterFeedbackDetail, feedback_id)
+                loadItems(list, adapterFeedbackDetail, createBoardText.feedback_id)
                 view.refresh()
             }
 
@@ -289,7 +289,82 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
 
     }
 
-    override fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_title: String, board_content: String) {
-        view.modifyBoardActivity(feedback_id, board_id, board_title, board_content)
+
+    override fun updatePictureItems(list: ArrayList<ModelFeedbackDetail>, board_id: Int, createBoardPicture: CreateBoardPicture, adapterFeedbackDetail: AdapterFeedbackDetail) {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+
+        lateinit var register_request: Call<GetAllBoard>
+
+        var multiPartBody2: MultipartBody.Part? = null
+        var multiPartBody3: MultipartBody.Part? = null
+
+        val image_File1 = File(createBoardPicture.file1)
+        val requestBody1 = RequestBody.create(MediaType.parse("multipart/data"), image_File1)
+        val multiPartBody1 = MultipartBody.Part.createFormData("file1", image_File1.name, requestBody1)
+
+        if(!createBoardPicture.file2.equals("null") && createBoardPicture.file3.equals("null")){
+            val image_File2 = File(createBoardPicture.file2)
+            val requestBody2 = RequestBody.create(MediaType.parse("multipart/data"), image_File2)
+            multiPartBody2 = MultipartBody.Part.createFormData("file2", image_File2.name, requestBody2)
+
+            register_request= apiService.UpdateBoardPictureAll(
+                board_id,
+                RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_title),
+                RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_content),
+                true, multiPartBody1, true, multiPartBody2, true, null)
+        }
+        if(!createBoardPicture.file2.equals("null") && !createBoardPicture.file3.equals("null")){
+            val image_File2 = File(createBoardPicture.file2)
+            val requestBody2 = RequestBody.create(MediaType.parse("multipart/data"), image_File2)
+            multiPartBody2 = MultipartBody.Part.createFormData("file2", image_File2.name, requestBody2)
+
+            val image_File3 = File(createBoardPicture.file3)
+            val requestBody3 = RequestBody.create(MediaType.parse("multipart/data"), image_File3)
+            multiPartBody3 = MultipartBody.Part.createFormData("file3", image_File3.name, requestBody3)
+
+            register_request= apiService.UpdateBoardPictureAll(
+                board_id,
+                RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_title),
+                RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_content),
+                true, multiPartBody1, true, multiPartBody2, true, multiPartBody3)
+        }
+        if(createBoardPicture.file2.equals("null") && createBoardPicture.file3.equals("null")){
+            register_request= apiService.UpdateBoardPictureAll(
+                board_id,
+                RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_title),
+                RequestBody.create(MediaType.parse("multipart/data"), createBoardPicture.board_content),
+                true, multiPartBody1, true, null, true, null)
+        }
+
+
+        register_request.enqueue(object : Callback<GetAllBoard> {
+
+            override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
+                if (response.isSuccessful) {
+                    list.clear()
+                    loadItems(list, adapterFeedbackDetail, createBoardPicture.feedback_id)
+                    view.refresh()
+                } else {
+                }
+                val StatusCode = response.code()
+                Log.e("post", "Status Code : $StatusCode")
+                Log.e("tag", "response=" + response.raw())
+
+            }
+
+            override fun onFailure(call: Call<GetAllBoard>, t: Throwable) {
+                list.clear()
+                loadItems(list, adapterFeedbackDetail, createBoardPicture.feedback_id)
+                view.refresh()
+                Log.e("tag", "response=" + t.message+"   "+t.cause)
+
+            }
+        })
+
+    }
+
+    override fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_category: Int, board_title: String, board_content: String) {
+        view.modifyBoardActivity(feedback_id, board_id, board_category, board_title, board_content)
     }
 }
