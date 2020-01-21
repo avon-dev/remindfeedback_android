@@ -48,7 +48,7 @@ class myFeedback{
     val updatedAt:String? = ""
     @SerializedName("deletedAt")
     val deletedAt:String? = null
-    @SerializedName("user")
+    @SerializedName("myfeedback")
     val user:adviserUser? = adviserUser()
 }
 
@@ -82,7 +82,7 @@ class yourFeedback{
     val updatedAt:String? = ""
     @SerializedName("deletedAt")
     val deletedAt:String? = null
-    @SerializedName("user")
+    @SerializedName("yourfeedback")
     val user:adviserUser? = adviserUser()
 }
 
