@@ -34,7 +34,7 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
         setContentView(R.layout.activity_feedback_detail)
 
         //액션바 설정
-        var ab: ActionBar = this!!.supportActionBar!!
+        var ab: ActionBar = this.supportActionBar!!
         ab.setTitle("")
         // 액션바 타이틀 가운데 정렬
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -105,16 +105,18 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
     }
 
     // 수정화면
-    override fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_title: String, board_content: String) {
+    override fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_category: Int, board_title: String, board_content: String) {
         val intent = Intent(this, CreatePostActivity::class.java)
         intent.putExtra("feedback_id", feedback_id)
         intent.putExtra("board_id", board_id)
         intent.putExtra("title", board_title)
         intent.putExtra("content", board_content)
+        intent.putExtra("board_category", board_category)
+        Log.e("보드 타입 (board_category)", board_category.toString())
         Log.e("보드 수정할 데이터1 (feedback_Id)", feedback_id.toString())
         Log.e("보드 수정할 데이터2 (board_id)", board_id.toString())
-        Log.e("보드 수정할 데이터3", board_title)
-        Log.e("보드 수정할 데이터4", board_content)
+        Log.e("보드 수정할 데이터3 (board_title)", board_title)
+        Log.e("보드 수정할 데이터4 (board_content)", board_content)
         startActivityForResult(intent, 112)
     }
 

@@ -364,7 +364,7 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
 
     }
 
-    override fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_title: String, board_content: String) {
-        view.modifyBoardActivity(feedback_id, board_id, board_title, board_content)
+    override fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_category: Int, board_title: String, board_content: String) {
+        view.modifyBoardActivity(feedback_id, board_id, board_category, board_title, board_content)
     }
 }
