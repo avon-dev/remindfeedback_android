@@ -36,11 +36,7 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
                         for (i in 0 until mGetAllBoard.size) {
                             var myList: getAllBoardData = getAllBoardData()
                             myList = mGetAllBoard[i]
-                            val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(myList.createdAt)
-                            val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
-                            val dateNewFormat = sdf.format(date)
-
-                            var postData: ModelFeedbackDetail = ModelFeedbackDetail(feedback_Id, myList.id, myList.board_category, myList.board_title, myList.board_content, dateNewFormat)
+                            var postData: ModelFeedbackDetail = ModelFeedbackDetail(feedback_Id, myList.id, myList.board_category, myList.board_title, myList.board_content, myList.createdAt)
                             adapterFeedbackDetail.addItem(postData)
                             view.refresh()
                         }
