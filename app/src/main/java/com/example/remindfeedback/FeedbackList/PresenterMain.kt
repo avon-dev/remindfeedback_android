@@ -47,6 +47,17 @@ class PresenterMain : ContractMain.Presenter {
                             for (i in 0 until mFeedback.size) {
                                 var mfl: myFeedback = myFeedback()
                                 mfl = mFeedback[i]
+
+                                var adviserUser:adviserUser = adviserUser()
+                                if(mfl.user == null){
+                                    adviserUser.nickname = ""
+                                    adviserUser.portrait = ""
+                                }else{
+                                    adviserUser = mfl.user!!
+                                }
+
+
+                                Log.e("adviserUser", mfl.user.toString())
                                 val date =
                                     SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(mfl.write_date)
                                 val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
@@ -69,8 +80,8 @@ class PresenterMain : ContractMain.Presenter {
                                 if(tag_Color ==null){
                                 }else{
                                     val addData: ModelFeedback = ModelFeedback(mfl.id,
-                                        mfl.adviser_uid!!, mfl.category,tag_Color, mfl.title,
-                                        getProfileImage(mfl.adviser_uid!!), dateNewFormat, false)
+                                        adviserUser.nickname!!, mfl.category,tag_Color, mfl.title,
+                                        adviserUser.portrait!!, dateNewFormat, false)
                                     adapterMainFeedback.addItem(addData)
                                 }
                                 feedback_lastid = mfl.id
@@ -174,35 +185,5 @@ class PresenterMain : ContractMain.Presenter {
     override fun modifyFeedbackActivity(id: Int,category_id: Int, date: String?, title: String) {
         view.modifyFeedbackActivity(id, category_id,date, title)
     }
-
-
-    override fun getProfileImage(user_uid:String):String{
-        var adviser_uid:String = ""
-        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
-        val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<UserInfo> = apiService.ShowUser(user_uid)
-        register_request.enqueue(object : Callback<UserInfo> {
-
-            override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
-                if (response.isSuccessful) {
-                    var userInfo = response.body()!!
-                    adviser_uid = userInfo.user_uid
-                    view.refresh()
-                } else {
-                    val StatusCode = response.code()
-                }
-            }
-
-            override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-                Log.e("실패", t.message)
-
-            }
-        })
-
-        Log.e("adviser_uid",adviser_uid)
-
-        return adviser_uid
-    }
-
 
 }
