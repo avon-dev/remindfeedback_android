@@ -1,9 +1,9 @@
-package com.example.remindfeedback.FriendsList
+package com.example.remindfeedback.FeedbackList.CreateFeedback.ChoiceAdviser
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,19 +12,16 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.remindfeedback.FeedbackList.AdapterMainFeedback
-import com.example.remindfeedback.FeedbackList.ModelFeedback
 import com.example.remindfeedback.FriendsList.FriendsPage.FriendsPageActivity
+import com.example.remindfeedback.FriendsList.ModelFriendsList
+import com.example.remindfeedback.FriendsList.PresenterFriendsList
 import com.example.remindfeedback.R
 import com.example.remindfeedback.etcProcess.URLtoBitmapTask
-import kotlinx.android.synthetic.main.activity_my_page.*
 import java.net.URL
 import java.util.ArrayList
 
-class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFriendsList>, val presenterFriendsList: PresenterFriendsList) :   RecyclerView.Adapter<AdapterFriendsList.Holder>() {
-
+class AdapterChoiceAdviser (val context: Context, val arrayList: ArrayList<ModelFriendsList>, val presenterChoiceAdviser: PresenterChoiceAdviser) :   RecyclerView.Adapter<AdapterChoiceAdviser.Holder>() {
 
     fun addItem(item: ModelFriendsList) {//아이템 추가
         if (arrayList != null) {//널체크 해줘야함
@@ -69,45 +66,30 @@ class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFri
             friends_List_Name.text = friends_list.friendsName
             friends_List_script.text = friends_list.friendsScript
             Log.e("viewinit", friends_list.viewinit.toString())
-            if(friends_list.viewinit == 0 || friends_list.viewinit == 2){//내가 요청했거나 이미 친구이면 수락 거절버튼 안보이게 함
-                friend_Accept_Button.visibility = View.GONE
-                friend_Reject_Button.visibility = View.GONE
-            }else{
-                friend_Accept_Button.visibility = View.VISIBLE
-                friend_Reject_Button.visibility = View.VISIBLE
-            }
 
-            if(!friends_list.friendsProfileImage.equals("")){
+            friend_Accept_Button.visibility = View.GONE
+            friend_Reject_Button.visibility = View.GONE
+
+
+            if(friends_list.friendsProfileImage.equals("")){
+                friends_List_Profile_Image.setImageResource(R.drawable.ic_default_profile)
+            }else{
                 var test_task: URLtoBitmapTask = URLtoBitmapTask()
                 test_task = URLtoBitmapTask().apply {
                     url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+friends_list.friendsProfileImage)
                 }
                 var bitmap: Bitmap = test_task.execute().get()
                 friends_List_Profile_Image.setImageBitmap(bitmap)
-            }else{
-                friends_List_Profile_Image.setImageResource(R.drawable.ic_default_profile)
             }
 
 
-            //친구목록의 아이템을 선택하면 친구페이지로 가게됨
             itemView.setOnClickListener {
-                val intent = Intent(context, FriendsPageActivity::class.java)
-                Toast.makeText(context, friends_list.friendsName+"의 친구페이지", Toast.LENGTH_SHORT).show()
-                context.startActivity(intent)
+                presenterChoiceAdviser.returnData(friends_list.friend_uid)
             }
 
-            //수락버튼 눌럿을때
-            friend_Accept_Button.setOnClickListener{
-                presenterFriendsList.acceptRequest(arrayList,friends_list.friend_uid, this@AdapterFriendsList)
-            }
-            //거절버튼 눌럿을때
-            friend_Reject_Button.setOnClickListener{
-                presenterFriendsList.rejectRequest(arrayList,friends_list.friend_uid, this@AdapterFriendsList)
-            }
 
         }
     }
-
 
 
 }

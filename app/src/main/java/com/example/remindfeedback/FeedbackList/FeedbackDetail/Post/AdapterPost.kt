@@ -16,6 +16,7 @@ import com.example.remindfeedback.R
 import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import kotlinx.android.synthetic.main.activity_my_page.*
 import java.net.URL
+import java.text.SimpleDateFormat
 import java.util.ArrayList
 
 class AdapterPost(val context: Context, val arrayList: ArrayList<ModelComment>, val presenterPost: PresenterPost) :   RecyclerView.Adapter<AdapterPost.Holder>() {
@@ -61,7 +62,12 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelComment>, 
 
             post_Comment_Name.text = comment_list.name
             post_Comment_Script.text = comment_list.script
-            post_Comment_Date.text = comment_list.date
+
+            val date =
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(comment_list.date)
+            val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
+            val dateNewFormat = sdf.format(date)
+            post_Comment_Date.text = dateNewFormat
 
             if(!comment_list.profileImage.equals("")){
                 //이미지 설정해주는 부분
@@ -71,6 +77,8 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelComment>, 
                 }
                 var bitmap: Bitmap = test_task.execute().get()
                 post_Comment_Profile_Image.setImageBitmap(bitmap)
+            }else{
+                post_Comment_Profile_Image.setImageResource(R.drawable.ic_default_profile)
             }
 
 

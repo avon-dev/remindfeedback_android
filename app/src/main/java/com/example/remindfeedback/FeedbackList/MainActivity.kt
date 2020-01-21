@@ -42,9 +42,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     internal lateinit var presenterMain: PresenterMain
     lateinit var mAdapter: AdapterMainFeedback
     var feedback_count:Int = 0
+    var feedbackMyYour = 0
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
-    var arrayList = arrayListOf<ModelFeedback?>(
-    )
+    var arrayList = arrayListOf<ModelFeedback?>()
 
 
     //스피너에 사용할 배열
@@ -150,7 +150,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Main_Recyclerview.setHasFixedSize(true) //아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
         Main_Recyclerview.clearOnScrollListeners()
         //무한 스크롤을 위해 리스너 추가함
-        Main_Recyclerview.addOnScrollListener(InfiniteScrollListener({ presenterMain.loadItems(arrayList, mAdapter,feedback_count) },lm)
+        //요청받은건지 요청 한건지 구별함
+        Main_Recyclerview.addOnScrollListener(InfiniteScrollListener({
+            if(feedbackMyYour == 0){
+                presenterMain.loadItems(arrayList, mAdapter,feedback_count)
+            }else if(feedbackMyYour == 1){
+                presenterMain.loadYourItems(arrayList, mAdapter,feedback_count)
+            }
+            }
+            ,lm)
         )//갱신
 
 
@@ -164,7 +172,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             111 -> {    // 피드백 추가 후 돌아왔을 때
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        presenterMain.addItems(arrayList,data.getStringExtra("category_id").toInt(),data.getStringExtra("date"),data.getStringExtra("title"),data.getStringExtra("color"),mAdapter)
+                        Log.e("mainactivity", data.getStringExtra("user_uid"))
+                        presenterMain.addItems(arrayList,data.getStringExtra("category_id").toInt(),data.getStringExtra("date"),data.getStringExtra("title"),data.getStringExtra("color"),data.getStringExtra("user_uid"),mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
@@ -173,7 +182,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 when(resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         Log.e("return", data.getIntExtra("modify_id", -1).toString())
-                        presenterMain.updateItems(arrayList,data.getIntExtra("modify_id",-1),data.getIntExtra("category_id",-1),data.getStringExtra("date"), data.getStringExtra("title"),data.getStringExtra("color"),mAdapter)
+                        presenterMain.updateItems(arrayList,data.getIntExtra("modify_id",-1),data.getIntExtra("category_id",-1),data.getStringExtra("date"), data.getStringExtra("title"),data.getStringExtra("color"),data.getStringExtra("user_uid"),mAdapter)
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
@@ -279,6 +288,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun request_Feedback() {
         Toast.makeText(this@MainActivity, "request_Feedback.", Toast.LENGTH_SHORT).show()
+        arrayList.clear()
+        feedback_count = 0
+        feedbackMyYour = 0//요청한거임
+        presenterMain.loadItems(arrayList, mAdapter, feedback_count)
         ing_Case.visibility = View.VISIBLE
         fab_main.visibility = View.VISIBLE
 
@@ -287,6 +300,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun receive_Feedback() {
         Toast.makeText(this@MainActivity, "receive_Feedback.", Toast.LENGTH_SHORT).show()
+        arrayList.clear()
+        feedback_count = 0
+        feedbackMyYour = 1//요청받은거임
+        presenterMain.loadYourItems(arrayList, mAdapter, feedback_count)
+
         ing_Case.visibility = View.INVISIBLE
         fab_main.visibility = View.INVISIBLE
         fab_sub1.startAnimation(fab_close)
