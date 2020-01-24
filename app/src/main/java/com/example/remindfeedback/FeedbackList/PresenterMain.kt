@@ -137,7 +137,7 @@ class PresenterMain : ContractMain.Presenter {
                                 val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
                                 val dateNewFormat = sdf.format(date)
                                 val addData: ModelFeedback = ModelFeedback(mfl.id,
-                                    adviserUser.nickname!!, mfl.category,"#000000", mfl.title,
+                                    adviserUser.nickname!!, mfl.category,"#BBBBBB", mfl.title,
                                     adviserUser.portrait!!, dateNewFormat, false)
                                 adapterMainFeedback.addItem(addData)
                                 feedback_lastid = mfl.id

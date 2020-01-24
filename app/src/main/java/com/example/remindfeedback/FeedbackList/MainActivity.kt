@@ -154,7 +154,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Main_Recyclerview.addOnScrollListener(InfiniteScrollListener({
             if(feedbackMyYour == 0){
                 presenterMain.loadItems(arrayList, mAdapter,feedback_count)
+                Log.e("feedbackMyYour", "feedbackMyYour"+feedbackMyYour)
             }else if(feedbackMyYour == 1){
+                Log.e("feedbackMyYour", "feedbackMyYour"+feedbackMyYour)
                 presenterMain.loadYourItems(arrayList, mAdapter,feedback_count)
             }
             }
@@ -292,8 +294,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         feedback_count = 0
         feedbackMyYour = 0//요청한거임
         presenterMain.loadItems(arrayList, mAdapter, feedback_count)
+
+        setRecyclerView(Main_Recyclerview)
         ing_Case.visibility = View.VISIBLE
         fab_main.visibility = View.VISIBLE
+        Log.e("request_Feedback", "feedbackMyYour"+feedbackMyYour)
 
 
     }
@@ -304,6 +309,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         feedback_count = 0
         feedbackMyYour = 1//요청받은거임
         presenterMain.loadYourItems(arrayList, mAdapter, feedback_count)
+
+        setRecyclerView(Main_Recyclerview)
+
+        Log.e("receive_Feedback", "feedbackMyYour"+feedbackMyYour)
 
         ing_Case.visibility = View.INVISIBLE
         fab_main.visibility = View.INVISIBLE
@@ -317,6 +326,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun friends_List() {
         val intent = Intent(this, FriendsListActivity::class.java)
         startActivity(intent)
+
     }
 
     fun category_Setting() {

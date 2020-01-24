@@ -17,7 +17,6 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".ChoiceAdviserActivity"></activity>
         <activity android:name=".MyPage.ImagePick.ImagePickActivity"></activity>
         <activity
                 android:name="com.soundcloud.android.crop.CropImageActivity"
@@ -36,7 +35,7 @@
                 android:parentActivityName=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity"/>
         <activity
                 android:name=".FeedbackList.FeedbackDetail.Post.PostActivity"
-                android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"/>/>
+                android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"/>
         <activity
                 android:name=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"
                 android:parentActivityName=".FeedbackList.MainActivity" />
