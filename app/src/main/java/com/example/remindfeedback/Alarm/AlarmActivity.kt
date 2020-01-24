@@ -82,14 +82,15 @@ class AlarmActivity : AppCompatActivity(), ContractAlarm.View {
                     presenterAlarm.loadFeedback(arrayList)
                 }
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab) {
             }
+
             override fun onTabReselected(tab: TabLayout.Tab) {
             }
         })
         //여기까지 탭바 코드
     }
-
 
 
     override fun refresh() {

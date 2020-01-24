@@ -16,7 +16,8 @@ import java.util.HashMap
  * Created by wilson on 2015/9/6.
  * An example of ViewPagerAdapter
  */
-class ViewPagerAdapter(private val mContext: Context, private val mJSONArray: JSONArray //data source
+class ViewPagerAdapter(
+    private val mContext: Context, private val mJSONArray: JSONArray //data source
 ) : PagerAdapter() {
 
     private val mHashMap: HashMap<Int, ViewPagerItemView>

@@ -10,7 +10,8 @@ import java.net.URL
 
 class URLtoBitmapTask() : AsyncTask<Void, Void, Bitmap>() {
     //액티비티에서 설정해줌
-    lateinit var url:URL
+    lateinit var url: URL
+
     override fun doInBackground(vararg params: Void?): Bitmap {
         val bitmap = BitmapFactory.decodeStream(url.openStream())
         return bitmap
@@ -25,7 +26,6 @@ class URLtoBitmapTask() : AsyncTask<Void, Void, Bitmap>() {
         super.onPostExecute(result)
 
     }
-
 
 
 }

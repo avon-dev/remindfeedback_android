@@ -1,3 +1,3 @@
 package com.example.remindfeedback.ServerModel
 
-class CreateFriend(var user_uid:String)
+class CreateFriend(var user_uid: String)

@@ -40,11 +40,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     ContractMain.View, View.OnClickListener {
 
 
-
     private val TAG = "MainActivity"
     internal lateinit var presenterMain: PresenterMain
     lateinit var mAdapter: AdapterMainFeedback
-    var feedback_count:Int = 0
+    var feedback_count: Int = 0
     var feedbackMyYour = 0//피드백이 내가 요청한건지 요청 받은건지
     var feedbackIngEd = 0//피드백이 진행중인지 진행완료인지
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
@@ -61,7 +60,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var fab_main: FloatingActionButton
     lateinit var fab_sub1: FloatingActionButton
     lateinit var fab_sub2: FloatingActionButton
-    lateinit var lm:LinearLayoutManager
+    lateinit var lm: LinearLayoutManager
     private var fab_open: Animation? = null
     var fab_close: Animation? = null
 
@@ -93,7 +92,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setRecyclerView(Main_Recyclerview)
 
 
-
         //presenter 정의하고 아이템을 불러옴
 
         presenterMain.loadItems(arrayList, mAdapter, feedback_count)
@@ -107,7 +105,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         category_Spinner.setAdapter(arrayAdapter)
         category_Spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                Toast.makeText(applicationContext, spinnerArray[i].toString() + "가 선택되었습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    spinnerArray[i].toString() + "가 선택되었습니다.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
@@ -131,24 +133,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ing_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
             ed_Btn.setBackgroundColor(Color.rgb(255, 255, 255))
             when (feedbackIngEd) {
-                0 -> {}//이미 0이면 그대로
-                1 -> {feedbackIngEd = 0
-                    IngEdInit(feedbackIngEd)} }
+                0 -> {
+                }//이미 0이면 그대로
+                1 -> {
+                    feedbackIngEd = 0
+                    IngEdInit(feedbackIngEd)
+                }
+            }
         }
         ed_Btn.setOnClickListener {
             ing_Btn.setBackgroundColor(Color.rgb(255, 255, 255))
             ed_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
 
-            when(feedbackIngEd){
-                0 ->{feedbackIngEd = 1
-                    IngEdInit(feedbackIngEd)}
-                1-> {} }//이미 1이면 그대로
+            when (feedbackIngEd) {
+                0 -> {
+                    feedbackIngEd = 1
+                    IngEdInit(feedbackIngEd)
+                }
+                1 -> {
+                }
+            }//이미 1이면 그대로
         }
     }
 
     //진행중인거 완료된거 구별해서 아이템 불러오는 부분
     override fun IngEdInit(mfeedbackIngEd: Int) {
-        when(feedbackIngEd){
+        when (feedbackIngEd) {
             0 -> {//진행중인거
                 arrayList.clear()
                 feedback_count = 0
@@ -170,60 +180,91 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     // setRecyclerView : ComicFragment에서 평가할 도서 목록에 대한 RecyclerView를 초기화 및 정의하는 함수
-    fun setRecyclerView(recyclerView: RecyclerView){
+    fun setRecyclerView(recyclerView: RecyclerView) {
 
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
         lm = LinearLayoutManager(this)
         Main_Recyclerview.layoutManager = lm
-        mAdapter = AdapterMainFeedback(Main_Recyclerview,this, arrayList,presenterMain, this,feedbackMyYour)
+        mAdapter = AdapterMainFeedback(
+            Main_Recyclerview,
+            this,
+            arrayList,
+            presenterMain,
+            this,
+            feedbackMyYour
+        )
         Main_Recyclerview.adapter = mAdapter
         Main_Recyclerview.setHasFixedSize(true) //아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
         Main_Recyclerview.clearOnScrollListeners()
         //무한 스크롤을 위해 리스너 추가함
         //요청받은건지 요청 한건지 구별함
         Main_Recyclerview.addOnScrollListener(InfiniteScrollListener({
-            if(feedbackMyYour == 0){
-                presenterMain.loadItems(arrayList, mAdapter,feedback_count)
-                Log.e("feedbackMyYour", "feedbackMyYour"+feedbackMyYour)
-            }else if(feedbackMyYour == 1){
-                Log.e("feedbackMyYour", "feedbackMyYour"+feedbackMyYour)
-                presenterMain.loadYourItems(arrayList, mAdapter,feedback_count)
+            if (feedbackMyYour == 0) {
+                presenterMain.loadItems(arrayList, mAdapter, feedback_count)
+                Log.e("feedbackMyYour", "feedbackMyYour" + feedbackMyYour)
+            } else if (feedbackMyYour == 1) {
+                Log.e("feedbackMyYour", "feedbackMyYour" + feedbackMyYour)
+                presenterMain.loadYourItems(arrayList, mAdapter, feedback_count)
             }
-            }
-            ,lm)
+        }
+            , lm)
         )//갱신
 
 
     }
 
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when(requestCode) {
+        when (requestCode) {
             111 -> {    // 피드백 추가 후 돌아왔을 때
-                when(resultCode) {
+                when (resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         Log.e("mainactivity", data.getStringExtra("user_uid"))
-                        presenterMain.addItems(arrayList,data.getStringExtra("category_id").toInt(),data.getStringExtra("date"),data.getStringExtra("title"),data.getStringExtra("color"),data.getStringExtra("user_uid"),mAdapter)
+                        presenterMain.addItems(
+                            arrayList,
+                            data.getStringExtra("category_id").toInt(),
+                            data.getStringExtra("date"),
+                            data.getStringExtra("title"),
+                            data.getStringExtra("color"),
+                            data.getStringExtra("user_uid"),
+                            mAdapter
+                        )
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+                    Activity.RESULT_CANCELED -> Toast.makeText(
+                        this@MainActivity,
+                        "취소됨.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             112 -> {    // 피드백 수정 후 돌아왔을 때
-                when(resultCode) {
+                when (resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         Log.e("return", data.getIntExtra("modify_id", -1).toString())
-                        presenterMain.updateItems(arrayList,data.getIntExtra("modify_id",-1),data.getIntExtra("category_id",-1),data.getStringExtra("date"), data.getStringExtra("title"),data.getStringExtra("color"),data.getStringExtra("user_uid"),mAdapter)
+                        presenterMain.updateItems(
+                            arrayList,
+                            data.getIntExtra("modify_id", -1),
+                            data.getIntExtra("category_id", -1),
+                            data.getStringExtra("date"),
+                            data.getStringExtra("title"),
+                            data.getStringExtra("color"),
+                            data.getStringExtra("user_uid"),
+                            mAdapter
+                        )
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(this@MainActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+                    Activity.RESULT_CANCELED -> Toast.makeText(
+                        this@MainActivity,
+                        "취소됨.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
     }
 
     // 피드백 수정화면
-    override fun modifyFeedbackActivity(id: Int, category_id: Int,date: String?, title: String) {
+    override fun modifyFeedbackActivity(id: Int, category_id: Int, date: String?, title: String) {
         val intent = Intent(this, CreateFeedbackActivity::class.java)
         Log.e("activity", id.toString())
         intent.putExtra("id", id)
@@ -231,8 +272,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Log.e("modifyFeedbackActivity", category_id.toString())
         intent.putExtra("title", title)
         intent.putExtra("date", date)
-        startActivityForResult(intent,112)
+        startActivityForResult(intent, 112)
     }
+
     //fab을 위해서 onclick 상속받음
     override fun onClick(v: View?) {
         when (v!!.getId()) {

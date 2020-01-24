@@ -85,7 +85,7 @@ interface ServiceAPI {
 
     //하나의 피드백 내부 포스트들 가져오기
     @GET("board/{feedbackid}/{board_count}")
-    fun GetAllBoard(@Path("feedbackid") feedback_id: Int,@Path("board_count") board_count: Int): Call<GetAllBoard>
+    fun GetAllBoard(@Path("feedbackid") feedback_id: Int, @Path("board_count") board_count: Int): Call<GetAllBoard>
 
     //글타입의 보드 생성
     @POST("board/text/create")

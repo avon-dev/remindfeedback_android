@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import com.example.remindfeedback.R
 
-class SettingActivity : AppCompatActivity(),ContractSetting.View {
+class SettingActivity : AppCompatActivity(), ContractSetting.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

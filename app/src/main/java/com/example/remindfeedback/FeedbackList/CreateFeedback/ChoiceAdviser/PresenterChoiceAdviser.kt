@@ -16,14 +16,17 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
 
-class PresenterChoiceAdviser: ContractChoiceAdviser.Presenter {
+class PresenterChoiceAdviser : ContractChoiceAdviser.Presenter {
 
 
     lateinit override var view: ContractChoiceAdviser.View
     lateinit override var context: Context
 
 
-    override fun loadItems(list: ArrayList<ModelFriendsList>, adapterChoiceAdviser: AdapterChoiceAdviser) {
+    override fun loadItems(
+        list: ArrayList<ModelFriendsList>,
+        adapterChoiceAdviser: AdapterChoiceAdviser
+    ) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val register_request: Call<GetFriends> = apiService.GetAdviser()
@@ -36,7 +39,14 @@ class PresenterChoiceAdviser: ContractChoiceAdviser.Presenter {
                         for (i in 0 until fList.size) {
                             var myList: getFriendsInfo = getFriendsInfo()
                             myList = fList[i]
-                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type, 0)
+                            var addData: ModelFriendsList = ModelFriendsList(
+                                myList.user_uid,
+                                myList.nickname!!,
+                                myList.introduction!!,
+                                myList.portrait!!,
+                                myList.type,
+                                0
+                            )
                             adapterChoiceAdviser.addItem(addData)
                             Log.e("asdasd", myList.nickname)
                             view.refresh()
@@ -54,12 +64,11 @@ class PresenterChoiceAdviser: ContractChoiceAdviser.Presenter {
         })
     }
 
-    override fun returnData(user_uid:String){
+    override fun returnData(user_uid: String) {
         Log.e("adapter choice", user_uid)
 
         view.returnData(user_uid)
     }
-
 
 
 }

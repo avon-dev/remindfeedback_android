@@ -13,7 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.R
 import java.util.ArrayList
 
-class AdapterAlarm (val context: Context, val arrayList: ArrayList<ModelAlarm>) :   RecyclerView.Adapter<AdapterAlarm.Holder>() {
+class AdapterAlarm(val context: Context, val arrayList: ArrayList<ModelAlarm>) :
+    RecyclerView.Adapter<AdapterAlarm.Holder>() {
 
 
     fun addItem(item: ModelAlarm) {//아이템 추가
@@ -52,14 +53,14 @@ class AdapterAlarm (val context: Context, val arrayList: ArrayList<ModelAlarm>) 
         val alarm_Alarm = itemView.findViewById<ImageView>(R.id.alarm_Alarm)
 
 
-        fun bind (alarm_list: ModelAlarm, context: Context) {
+        fun bind(alarm_list: ModelAlarm, context: Context) {
 
             //상대이름, 피드백제목, 피드백 작성일 등 정의해줌
             alarm_Script.text = alarm_list.script
             alarm_Date.text = alarm_list.date
 
-            if(alarm_list.newAlarm){
-            }else{
+            if (alarm_list.newAlarm) {
+            } else {
                 alarm_Alarm.visibility = View.INVISIBLE
             }
 
@@ -68,7 +69,7 @@ class AdapterAlarm (val context: Context, val arrayList: ArrayList<ModelAlarm>) 
 
             //일단 클릭하면 알람의 타입이 무엇인지 토스트로 띄움
             itemView.setOnClickListener {
-                Toast.makeText(context, ""+alarm_list.type, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "" + alarm_list.type, Toast.LENGTH_SHORT).show()
             }
 
         }

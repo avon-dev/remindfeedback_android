@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName
 import org.json.JSONArray
 import org.json.JSONObject
 
-class GetFeedback{
+class GetFeedback {
     @SerializedName("success")
-    var success:Boolean = false
+    var success: Boolean = false
     @SerializedName("data")
     var data: List<myFeedback_List>? = null
     @SerializedName("message")
-    var message:String? = ""
+    var message: String? = ""
 }
 
 

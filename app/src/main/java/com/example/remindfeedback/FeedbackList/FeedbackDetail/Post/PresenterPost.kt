@@ -18,18 +18,25 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class PresenterPost:ContractPost.Presenter {
+class PresenterPost : ContractPost.Presenter {
 
 
     lateinit override var view: ContractPost.View
     lateinit override var mContext: Context
 
-    override fun getComment(list: ArrayList<ModelComment>, adapterPost: AdapterPost, board_id: Int) {
+    override fun getComment(
+        list: ArrayList<ModelComment>,
+        adapterPost: AdapterPost,
+        board_id: Int
+    ) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val register_request: Call<GetAllComments> = apiService.GetAllComment(board_id)
         register_request.enqueue(object : Callback<GetAllComments> {
-            override fun onResponse(call: Call<GetAllComments>, response: Response<GetAllComments>) {
+            override fun onResponse(
+                call: Call<GetAllComments>,
+                response: Response<GetAllComments>
+            ) {
                 if (response.isSuccessful) {
 
                     val getAllComment: GetAllComments = response.body()!!
@@ -37,14 +44,21 @@ class PresenterPost:ContractPost.Presenter {
                     if (mGetAllComment != null) {
                         for (i in 0 until mGetAllComment.size) {
                             var myList: getAllComment = getAllComment()
-                            var mUser:commentUser = commentUser()
+                            var mUser: commentUser = commentUser()
                             myList = mGetAllComment[i]
-                            val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(myList.createdAt)
+                            val date =
+                                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(myList.createdAt)
                             val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
                             val dateNewFormat = sdf.format(date)
 
                             mUser = myList.user
-                            var postData: ModelComment = ModelComment(myList.id, mUser.portrait, mUser.nickname, myList.comment_content, dateNewFormat)
+                            var postData: ModelComment = ModelComment(
+                                myList.id,
+                                mUser.portrait,
+                                mUser.nickname,
+                                myList.comment_content,
+                                dateNewFormat
+                            )
                             adapterPost.addItem(postData)
                             view.refresh()
                         }
@@ -64,7 +78,11 @@ class PresenterPost:ContractPost.Presenter {
     }
 
 
-    override fun addComment(adapterPost: AdapterPost,createComment: CreateComment, list: ArrayList<ModelComment>) {
+    override fun addComment(
+        adapterPost: AdapterPost,
+        createComment: CreateComment,
+        list: ArrayList<ModelComment>
+    ) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val register_request: Call<CreateComment> = apiService.CreateComment(createComment)
@@ -73,7 +91,7 @@ class PresenterPost:ContractPost.Presenter {
             override fun onResponse(call: Call<CreateComment>, response: Response<CreateComment>) {
                 if (response.isSuccessful) {
                     list.clear()
-                        getComment(list, adapterPost, createComment.board_id)
+                    getComment(list, adapterPost, createComment.board_id)
                     view.refresh()
                 } else {
                 }
@@ -102,6 +120,7 @@ class PresenterPost:ContractPost.Presenter {
                 } else {
                 }
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("실패", t.message)
             }
@@ -114,7 +133,7 @@ class PresenterPost:ContractPost.Presenter {
     override fun typeInit(feedback_id: Int, board_id: Int) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<GetAllBoard> = apiService.GetAllBoard(feedback_id,0 )
+        val register_request: Call<GetAllBoard> = apiService.GetAllBoard(feedback_id, 0)
         register_request.enqueue(object : Callback<GetAllBoard> {
             override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
                 if (response.isSuccessful) {
@@ -124,8 +143,16 @@ class PresenterPost:ContractPost.Presenter {
                         for (i in 0 until mGetAllBoard.size) {
                             var myList: getAllBoardData = getAllBoardData()
                             myList = mGetAllBoard[i]
-                            if(myList.id == board_id){//내가 선택한 포스팅일때
-                                view.setView(myList.board_category, myList.board_file1, myList.board_file2, myList.board_file3, myList.board_title, myList.createdAt, myList.board_content)
+                            if (myList.id == board_id) {//내가 선택한 포스팅일때
+                                view.setView(
+                                    myList.board_category,
+                                    myList.board_file1,
+                                    myList.board_file2,
+                                    myList.board_file3,
+                                    myList.board_title,
+                                    myList.createdAt,
+                                    myList.board_content
+                                )
                             }
                             //var postData: ModelFeedbackDetail = ModelFeedbackDetail(myList.fk_feedbackId, myList.id, myList.board_category, myList.board_title, myList.createdAt)
                             view.refresh()

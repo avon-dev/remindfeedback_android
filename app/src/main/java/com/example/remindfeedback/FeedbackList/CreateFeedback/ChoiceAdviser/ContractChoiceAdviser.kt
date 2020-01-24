@@ -8,10 +8,10 @@ import com.example.remindfeedback.FriendsList.ModelFriendsList
 import java.util.ArrayList
 
 interface ContractChoiceAdviser {
-    interface View{
+    interface View {
         fun refresh()
 
-        fun returnData(user_uid:String)
+        fun returnData(user_uid: String)
 
     }
 
@@ -21,7 +21,7 @@ interface ContractChoiceAdviser {
 
         fun loadItems(list: ArrayList<ModelFriendsList>, adapterChoiceAdviser: AdapterChoiceAdviser)
 
-        fun returnData(user_uid:String)
+        fun returnData(user_uid: String)
 
     }
 }

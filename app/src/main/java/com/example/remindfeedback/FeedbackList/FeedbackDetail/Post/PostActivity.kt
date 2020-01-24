@@ -51,14 +51,13 @@ import java.text.SimpleDateFormat
 
 
 //class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener, View.OnClickListener, View.OnTouchListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnInfoListener{
-class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener{
-
+class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener {
 
 
     private val TAG = "PostActivity"
     internal lateinit var presenterPost: PresenterPost
-    lateinit var imageData:String
-    var file_name:String? = ""
+    lateinit var imageData: String
+    var file_name: String? = ""
 
     private var mViewPager: ViewPager? = null
     private var mViewPagerAdapter: ViewPagerAdapter? = null
@@ -68,7 +67,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     private var ALBUM_NUM = 0
     private var ALBUM_RES = arrayListOf<String>()
     //게시물 아이디
-    var board_id :Int = -1
+    var board_id: Int = -1
 
 
     /* 영상 녹음관련 코드는 모두 주석
@@ -94,8 +93,8 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
 */
     var arrayList = arrayListOf<ModelComment>(
         //ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1)
-        )
-    lateinit var mAdapter:AdapterPost
+    )
+    lateinit var mAdapter: AdapterPost
 
     //녹음 관련이라 주석
     //private val r = Runnable { updateSeekProgress() }
@@ -121,15 +120,22 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         post_Comment_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
 
 
-        var intent:Intent= intent
+        var intent: Intent = intent
         board_id = intent.getIntExtra("board_id", -1)
-        presenterPost.typeInit(intent.getIntExtra("feedback_id", -1), intent.getIntExtra("board_id", -1))
+        presenterPost.typeInit(
+            intent.getIntExtra("feedback_id", -1),
+            intent.getIntExtra("board_id", -1)
+        )
         presenterPost.getComment(arrayList, mAdapter, board_id)
 
         //댓글다는 부분
         comment_Commit_Button.setOnClickListener {
-            if(!comment_EditText.text.toString().equals("")){
-                presenterPost.addComment(mAdapter, CreateComment(board_id, comment_EditText.text.toString()), arrayList)
+            if (!comment_EditText.text.toString().equals("")) {
+                presenterPost.addComment(
+                    mAdapter,
+                    CreateComment(board_id, comment_EditText.text.toString()),
+                    arrayList
+                )
                 comment_EditText.setText("")
             }
 
@@ -168,28 +174,37 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     override fun refresh() {
         mAdapter.notifyDataSetChanged()
     }
+
     //포스팅의 컨텐츠 타입과 파일들이 넘어옴
-    override fun setView(contentsType: Int, fileUrl_1: String?, fileUrl_2: String?, fileUrl_3: String?, title:String, date:String, content:String) {
-        if(contentsType == 0){//타입이 글일때
+    override fun setView(
+        contentsType: Int,
+        fileUrl_1: String?,
+        fileUrl_2: String?,
+        fileUrl_3: String?,
+        title: String,
+        date: String,
+        content: String
+    ) {
+        if (contentsType == 0) {//타입이 글일때
             post_Title_Tv.text = "[글]"
             post_Picture.visibility = View.GONE
             exoPlayerView.visibility = View.GONE
             post_Record.visibility = View.GONE
-        }else if(contentsType == 1){//타입이 사진일때
+        } else if (contentsType == 1) {//타입이 사진일때
             exoPlayerView.visibility = View.GONE
             post_Record.visibility = View.GONE
             post_Title_Tv.text = "[사진]"
             //파일이 있으면 넘버에 추가
-            if(fileUrl_1 != null){
-                ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_1)
+            if (fileUrl_1 != null) {
+                ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + fileUrl_1)
                 ALBUM_NUM++
             }
-            if(fileUrl_2 != null){
-                ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_2)
+            if (fileUrl_2 != null) {
+                ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + fileUrl_2)
                 ALBUM_NUM++
             }
-            if(fileUrl_3 != null){
-                ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fileUrl_3)
+            if (fileUrl_3 != null) {
+                ALBUM_RES.add("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + fileUrl_3)
                 ALBUM_NUM++
             }
             viewPagerSetting()
@@ -211,8 +226,9 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             recordSet()
         }
         */
-        else{
-            Toast.makeText(this@PostActivity, "글을 불러올수 없습니다. 관리자에게 문의하세요.", Toast.LENGTH_SHORT).show()
+        else {
+            Toast.makeText(this@PostActivity, "글을 불러올수 없습니다. 관리자에게 문의하세요.", Toast.LENGTH_SHORT)
+                .show()
             finish()
         }
         post_Title_Tv.text = post_Title_Tv.text.toString() + " " + title
@@ -224,8 +240,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         post_Date_Tv.text = "작성일 : " + dateNewFormat
         post_Tv.text = content
     }
-
-
 
 
     //이 아래로 뷰페이저 관련 코드들
@@ -279,7 +293,10 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             } else {
                 imageView.setImageResource(R.drawable.indicator_idle)
             }
-            val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            val lp = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
             lp.leftMargin = 5
             lp.rightMargin = 5
             indicators[i] = imageView

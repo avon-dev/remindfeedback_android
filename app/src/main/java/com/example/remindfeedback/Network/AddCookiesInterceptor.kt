@@ -11,7 +11,7 @@ class AddCookiesInterceptor : Interceptor {
     internal lateinit var context: Context
 
     //생성자
-    constructor(context: Context){
+    constructor(context: Context) {
         this.context = context
     }
 

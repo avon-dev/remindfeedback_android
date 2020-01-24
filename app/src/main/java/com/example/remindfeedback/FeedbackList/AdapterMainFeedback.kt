@@ -27,12 +27,18 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val arrayList : ArrayList<ModelFeedback?>, var presenterMain: PresenterMain, private val activity: Activity, val feedbackMyYour:Int) :   RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AdapterMainFeedback(
+    recyclerView: RecyclerView,
+    val context: Context,
+    val arrayList: ArrayList<ModelFeedback?>,
+    var presenterMain: PresenterMain,
+    private val activity: Activity,
+    val feedbackMyYour: Int
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var isLoading: Boolean = false
     private val visibleThreshold = 5
     private var lastVisibleItem: Int = 0
     private var totalItemCount: Int = 0
-
 
 
     fun addItem(item: ModelFeedback) {//아이템 추가
@@ -55,14 +61,15 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
     override fun getItemCount(): Int {
         return arrayList.size
     }
+
     fun setLoaded() {
         isLoading = false
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if(holder is Holder){
+        if (holder is Holder) {
             holder.bind(arrayList[position], context)
-        }else if(holder is LoadingViewHolder){
+        } else if (holder is LoadingViewHolder) {
             holder.progressBar.isIndeterminate = true
         }
 
@@ -74,14 +81,14 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
         val main_Feedback_Tag_Color = itemView.findViewById<TextView>(R.id.main_Feedback_Tag_Color)
         val main_Feedback_Script = itemView.findViewById<TextView>(R.id.main_Feedback_Script)
         val main_Feedback_Date = itemView.findViewById<TextView>(R.id.main_Feedback_Date)
-        val main_Feedback_Profile_Image = itemView.findViewById<ImageView>(R.id.main_Feedback_Profile_Image)
+        val main_Feedback_Profile_Image =
+            itemView.findViewById<ImageView>(R.id.main_Feedback_Profile_Image)
         val main_Feedback_Alarm = itemView.findViewById<ImageView>(R.id.main_Feedback_Alarm)
         val main_Feedback_Name = itemView.findViewById<TextView>(R.id.main_Feedback_Name)
         val main_Feedback_Dday = itemView.findViewById<TextView>(R.id.main_Feedback_Dday)
 
 
-
-        fun bind (feedback_list: ModelFeedback?, context: Context) {
+        fun bind(feedback_list: ModelFeedback?, context: Context) {
 
             //상대이름, 피드백제목, 피드백 작성일 등 정의해줌
             if (feedback_list != null) {
@@ -96,30 +103,39 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
             if (feedback_list != null) {
                 main_Feedback_Tag_Color.setBackgroundColor(Color.parseColor(feedback_list.tagColor))
             }
-            if(!feedback_list!!.feederProfileImage.equals("")){
+            if (!feedback_list!!.feederProfileImage.equals("")) {
                 var test_task: URLtoBitmapTask = URLtoBitmapTask()
                 test_task = URLtoBitmapTask().apply {
-                    url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+feedback_list.feederProfileImage)
+                    url =
+                        URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + feedback_list.feederProfileImage)
                 }
                 var bitmap: Bitmap = test_task.execute().get()
                 main_Feedback_Profile_Image.setImageBitmap(bitmap)
-            }else{
+            } else {
                 main_Feedback_Profile_Image.setImageResource(R.drawable.ic_default_profile)
             }
 
-            when(feedback_list.complete){
-                -1 ->{itemView.setBackgroundColor(Color.WHITE)}//어떤 상태도 아님
-                0 -> {itemView.setBackgroundColor(Color.RED)}//피드백 완료 거절 상태
-                1 -> {itemView.setBackgroundColor(Color.parseColor("#E1EFEA"))}//피드백 완료 요청 상태
-                2 -> {itemView.setBackgroundColor(Color.parseColor("#ACFF96"))}//피드백 완료 수락 상태
+            when (feedback_list.complete) {
+                -1 -> {
+                    itemView.setBackgroundColor(Color.WHITE)
+                }//어떤 상태도 아님
+                0 -> {
+                    itemView.setBackgroundColor(Color.RED)
+                }//피드백 완료 거절 상태
+                1 -> {
+                    itemView.setBackgroundColor(Color.parseColor("#E1EFEA"))
+                }//피드백 완료 요청 상태
+                2 -> {
+                    itemView.setBackgroundColor(Color.parseColor("#ACFF96"))
+                }//피드백 완료 수락 상태
             }
 
 
             //새로운 알람이 와있으면 visible 아니면 invisible
             if (feedback_list != null) {
-                if(feedback_list.alarm == false){
+                if (feedback_list.alarm == false) {
 
-                }else{
+                } else {
                     main_Feedback_Alarm.visibility = View.INVISIBLE
                 }
             }
@@ -137,34 +153,47 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
             }
 
             //꾹 눌렀을때
-            itemView.setOnLongClickListener{
-                    var dialogInterface: DialogInterface? = null
-                    val dialog = AlertDialog.Builder(context)
-                    val edialog : LayoutInflater = LayoutInflater.from(context)
-                    val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
+            itemView.setOnLongClickListener {
+                var dialogInterface: DialogInterface? = null
+                val dialog = AlertDialog.Builder(context)
+                val edialog: LayoutInflater = LayoutInflater.from(context)
+                val mView: View = edialog.inflate(R.layout.dialog_update_delete, null)
 
-                    val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
-                    val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
+                val update_Tv: TextView = mView.findViewById(R.id.update_Tv)
+                val delete_Tv: TextView = mView.findViewById(R.id.delete_Tv)
 
-                    update_Tv.setOnClickListener{
-                        Log.e("asda", "수정"+adapterPosition)
-                        if (feedback_list != null) {
-                            if(feedbackMyYour == 1){ Toast.makeText(context, "다른사람의 피드백을 수정할 수 없습니다.",Toast.LENGTH_LONG).show() }
-                            else{presenterMain.modifyFeedbackActivity(feedback_list.feedback_Id,feedback_list.category, feedback_list.date, feedback_list.title) }
+                update_Tv.setOnClickListener {
+                    Log.e("asda", "수정" + adapterPosition)
+                    if (feedback_list != null) {
+                        if (feedbackMyYour == 1) {
+                            Toast.makeText(context, "다른사람의 피드백을 수정할 수 없습니다.", Toast.LENGTH_LONG)
+                                .show()
+                        } else {
+                            presenterMain.modifyFeedbackActivity(
+                                feedback_list.feedback_Id,
+                                feedback_list.category,
+                                feedback_list.date,
+                                feedback_list.title
+                            )
                         }
-                        dialogInterface!!.dismiss()
                     }
-                    delete_Tv.setOnClickListener{
-                        if (feedback_list != null) {
-                            if(feedbackMyYour == 1){ Toast.makeText(context, "다른사람의 피드백을 삭제할 수 없습니다.",Toast.LENGTH_LONG).show() }
-                            else{removeAt(adapterPosition)
-                                presenterMain.removeItems(feedback_list.feedback_Id, context) }
+                    dialogInterface!!.dismiss()
+                }
+                delete_Tv.setOnClickListener {
+                    if (feedback_list != null) {
+                        if (feedbackMyYour == 1) {
+                            Toast.makeText(context, "다른사람의 피드백을 삭제할 수 없습니다.", Toast.LENGTH_LONG)
+                                .show()
+                        } else {
+                            removeAt(adapterPosition)
+                            presenterMain.removeItems(feedback_list.feedback_Id, context)
                         }
-                        dialogInterface!!.dismiss()
                     }
-                    dialog.setView(mView)
-                    dialog.create()
-                    dialogInterface = dialog.show()
+                    dialogInterface!!.dismiss()
+                }
+                dialog.setView(mView)
+                dialog.create()
+                dialogInterface = dialog.show()
                 return@setOnLongClickListener true
             }
 
@@ -189,13 +218,12 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
 
                 if (differInt == 0) {
                     main_Feedback_Dday.setText("D - Day")
-                } else if (differInt < 0){
+                } else if (differInt < 0) {
                     main_Feedback_Dday.setText("D + " + Math.abs(differInt))
-                } else if (differInt > 0){
+                } else if (differInt > 0) {
                     main_Feedback_Dday.setText("D - " + differInt)
                 }
             }
-
 
 
         }
@@ -208,7 +236,6 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
             progressBar = view.findViewById(R.id.progressBar1) as ProgressBar
         }
     }
-
 
 
 }

@@ -4,28 +4,27 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 
-
-class GetFriends{
+class GetFriends {
     @SerializedName("success")
-    var success:Boolean = false
+    var success: Boolean = false
     @SerializedName("data")
     var data: List<getFriendsInfo>? = null
     @SerializedName("message")
-    var message:String? = ""
+    var message: String? = ""
 }
 
-class getFriendsInfo{
+class getFriendsInfo {
 
     @SerializedName("user_uid")
-    var user_uid:String = ""
+    var user_uid: String = ""
     @SerializedName("email")
-    var email:String = ""
+    var email: String = ""
     @SerializedName("nickname")
-    var nickname:String? = ""
+    var nickname: String? = ""
     @SerializedName("portrait")
-    var portrait:String? = ""
+    var portrait: String? = ""
     @SerializedName("introduction")
-    var introduction:String? = ""
+    var introduction: String? = ""
     @SerializedName("type")
-    var type:Int = -2
+    var type: Int = -2
 }

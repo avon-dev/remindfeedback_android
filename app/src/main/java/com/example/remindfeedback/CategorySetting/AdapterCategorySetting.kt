@@ -15,7 +15,11 @@ import com.example.remindfeedback.R
 import java.util.*
 
 
-class AdapterCategorySetting(val context: Context, val arrayList: ArrayList<ModelCategorySetting>, var presenterCategorySetting: PresenterCategorySetting) :   RecyclerView.Adapter<AdapterCategorySetting.Holder>()  {
+class AdapterCategorySetting(
+    val context: Context,
+    val arrayList: ArrayList<ModelCategorySetting>,
+    var presenterCategorySetting: PresenterCategorySetting
+) : RecyclerView.Adapter<AdapterCategorySetting.Holder>() {
 
 
     fun addItem(item: ModelCategorySetting) {//아이템 추가
@@ -31,7 +35,8 @@ class AdapterCategorySetting(val context: Context, val arrayList: ArrayList<Mode
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_category_setting, parent, false)
+        val view =
+            LayoutInflater.from(context).inflate(R.layout.item_category_setting, parent, false)
         return Holder(view)
     }
 
@@ -49,7 +54,7 @@ class AdapterCategorySetting(val context: Context, val arrayList: ArrayList<Mode
         val category_More = itemView.findViewById<ImageView>(R.id.category_More)
 
 
-        fun bind (categorySetting: ModelCategorySetting, context: Context) {
+        fun bind(categorySetting: ModelCategorySetting, context: Context) {
             //헥사코드인식해서 배경으로 만듦
             category_Color.setBackgroundColor(Color.parseColor(categorySetting.color))
             category_Title.text = categorySetting.title
@@ -58,18 +63,25 @@ class AdapterCategorySetting(val context: Context, val arrayList: ArrayList<Mode
             category_More.setOnClickListener {
                 var dialogInterface: DialogInterface? = null
                 val dialog = AlertDialog.Builder(context)
-                val edialog : LayoutInflater = LayoutInflater.from(context)
-                val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
+                val edialog: LayoutInflater = LayoutInflater.from(context)
+                val mView: View = edialog.inflate(R.layout.dialog_update_delete, null)
 
-                val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
-                val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
+                val update_Tv: TextView = mView.findViewById(R.id.update_Tv)
+                val delete_Tv: TextView = mView.findViewById(R.id.delete_Tv)
 
-                update_Tv.setOnClickListener{
-                    presenterCategorySetting.showModifyActivity(categorySetting.id, categorySetting.color, categorySetting.title)
-                    Log.e("asdasdasdada",""+categorySetting.id+categorySetting.color+categorySetting.title)
+                update_Tv.setOnClickListener {
+                    presenterCategorySetting.showModifyActivity(
+                        categorySetting.id,
+                        categorySetting.color,
+                        categorySetting.title
+                    )
+                    Log.e(
+                        "asdasdasdada",
+                        "" + categorySetting.id + categorySetting.color + categorySetting.title
+                    )
                     dialogInterface!!.dismiss()
                 }
-                delete_Tv.setOnClickListener{
+                delete_Tv.setOnClickListener {
                     removeAt(adapterPosition)
                     presenterCategorySetting.removeItems(categorySetting.id, context)
                     dialogInterface!!.dismiss()

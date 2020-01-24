@@ -21,7 +21,11 @@ import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import java.net.URL
 import java.util.ArrayList
 
-class AdapterChoiceAdviser (val context: Context, val arrayList: ArrayList<ModelFriendsList>, val presenterChoiceAdviser: PresenterChoiceAdviser) :   RecyclerView.Adapter<AdapterChoiceAdviser.Holder>() {
+class AdapterChoiceAdviser(
+    val context: Context,
+    val arrayList: ArrayList<ModelFriendsList>,
+    val presenterChoiceAdviser: PresenterChoiceAdviser
+) : RecyclerView.Adapter<AdapterChoiceAdviser.Holder>() {
 
     fun addItem(item: ModelFriendsList) {//아이템 추가
         if (arrayList != null) {//널체크 해줘야함
@@ -53,14 +57,14 @@ class AdapterChoiceAdviser (val context: Context, val arrayList: ArrayList<Model
 
         //모델의 변수들 정의하는부분
         val friends_List_script = itemView.findViewById<TextView>(R.id.friends_List_script)
-        val friends_List_Profile_Image = itemView.findViewById<ImageView>(R.id.friends_List_Profile_Image)
+        val friends_List_Profile_Image =
+            itemView.findViewById<ImageView>(R.id.friends_List_Profile_Image)
         val friends_List_Name = itemView.findViewById<TextView>(R.id.friends_List_Name)
         val friend_Accept_Button = itemView.findViewById<Button>(R.id.friend_Accept_Button)
         val friend_Reject_Button = itemView.findViewById<Button>(R.id.friend_Reject_Button)
 
 
-
-        fun bind (friends_list: ModelFriendsList, context: Context) {
+        fun bind(friends_list: ModelFriendsList, context: Context) {
 
             //상대이름, 피드백제목, 피드백 작성일 등 정의해줌
             friends_List_Name.text = friends_list.friendsName
@@ -71,12 +75,13 @@ class AdapterChoiceAdviser (val context: Context, val arrayList: ArrayList<Model
             friend_Reject_Button.visibility = View.GONE
 
 
-            if(friends_list.friendsProfileImage.equals("")){
+            if (friends_list.friendsProfileImage.equals("")) {
                 friends_List_Profile_Image.setImageResource(R.drawable.ic_default_profile)
-            }else{
+            } else {
                 var test_task: URLtoBitmapTask = URLtoBitmapTask()
                 test_task = URLtoBitmapTask().apply {
-                    url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+friends_list.friendsProfileImage)
+                    url =
+                        URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + friends_list.friendsProfileImage)
                 }
                 var bitmap: Bitmap = test_task.execute().get()
                 friends_List_Profile_Image.setImageBitmap(bitmap)

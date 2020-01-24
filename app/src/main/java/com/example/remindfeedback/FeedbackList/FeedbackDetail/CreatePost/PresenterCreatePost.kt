@@ -15,7 +15,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PresenterCreatePost:ContractCreatePost.Presenter {
+class PresenterCreatePost : ContractCreatePost.Presenter {
 
 
     override lateinit var view: ContractCreatePost.View
@@ -30,13 +30,14 @@ class PresenterCreatePost:ContractCreatePost.Presenter {
         fun toast_p() {
             view.imageBrowse() //앨범
         }
-        fun toast_n(){
+
+        fun toast_n() {
             view.cameraBrowse() //카메라
         }
 
-        var dialog_listener = object: DialogInterface.OnClickListener{
+        var dialog_listener = object : DialogInterface.OnClickListener {
             override fun onClick(dialog: DialogInterface?, which: Int) {
-                when(which){
+                when (which) {
                     DialogInterface.BUTTON_POSITIVE ->
                         toast_p()
                     DialogInterface.BUTTON_NEGATIVE ->
@@ -45,8 +46,8 @@ class PresenterCreatePost:ContractCreatePost.Presenter {
             }
         }
 
-        dialog.setPositiveButton("앨범",dialog_listener)
-        dialog.setNegativeButton("카메라",dialog_listener)
+        dialog.setPositiveButton("앨범", dialog_listener)
+        dialog.setNegativeButton("카메라", dialog_listener)
         dialog.show()
     }
 
@@ -56,9 +57,10 @@ class PresenterCreatePost:ContractCreatePost.Presenter {
         val imageFileName = "RemindFeedback_" + timeStamp + "_"
 
         // 이미지가 저장될 폴더 이름 ( RemindFeedback )
-        val storageDir = File(Environment.getExternalStorageDirectory().toString() + "/RemindFeedback/")
+        val storageDir =
+            File(Environment.getExternalStorageDirectory().toString() + "/RemindFeedback/")
         //폴더 없으면 만들어줌
-        if (!storageDir.exists()){
+        if (!storageDir.exists()) {
             storageDir.mkdirs()
         }
         // 파일 생성
@@ -66,6 +68,7 @@ class PresenterCreatePost:ContractCreatePost.Presenter {
         Log.e("Tag", "createImageFile : " + image.absolutePath)
         return image
     }
+
     override fun rotateImage(source: Bitmap, angle: Float): Bitmap {
         val matrix = Matrix()
         matrix.postRotate(90F)
@@ -74,7 +77,6 @@ class PresenterCreatePost:ContractCreatePost.Presenter {
             matrix, true
         )
     }
-
 
 
 }

@@ -2,13 +2,13 @@ package com.example.remindfeedback.ServerModel
 
 import com.google.gson.annotations.SerializedName
 
-class GetAllFeedback{
+class GetAllFeedback {
     @SerializedName("success")
-    var success:Boolean = false
+    var success: Boolean = false
     @SerializedName("data")
     var data: getAllData? = null
     @SerializedName("message")
-    var message:String? = ""
+    var message: String? = ""
 }
 
 
@@ -25,72 +25,72 @@ class getAllData {
 }
 
 
-class myFeedback{
+class myFeedback {
     @SerializedName("id")
-    val id:Int = -1
+    val id: Int = -1
     @SerializedName("user_uid")
-    val user_uid:String? = ""
+    val user_uid: String? = ""
     @SerializedName("adviser_uid")
-    val adviser_uid:String? = ""
+    val adviser_uid: String? = ""
     @SerializedName("category")
-    val category:Int = -1
+    val category: Int = -1
     @SerializedName("title")
-    val title:String = ""
+    val title: String = ""
     @SerializedName("write_date")
-    val write_date:String? = ""
+    val write_date: String? = ""
     @SerializedName("complete")
-    val complete:Int = -1
+    val complete: Int = -1
     @SerializedName("confirm")
-    val confirm:Boolean = false
+    val confirm: Boolean = false
     @SerializedName("createdAt")
-    val createdAt:String? = ""
+    val createdAt: String? = ""
     @SerializedName("updatedAt")
-    val updatedAt:String? = ""
+    val updatedAt: String? = ""
     @SerializedName("deletedAt")
-    val deletedAt:String? = null
+    val deletedAt: String? = null
     @SerializedName("myfeedback")
-    val user:adviserUser? = adviserUser()
+    val user: adviserUser? = adviserUser()
 }
 
-class adviserUser{
+class adviserUser {
     @SerializedName("nickname")
-    var nickname:String? = ""
+    var nickname: String? = ""
     @SerializedName("portrait")
-    var portrait:String? = ""
+    var portrait: String? = ""
 }
 
-class yourFeedback{
+class yourFeedback {
     @SerializedName("id")
-    val id:Int = -1
+    val id: Int = -1
     @SerializedName("user_uid")
-    val user_uid:String? = ""
+    val user_uid: String? = ""
     @SerializedName("adviser_uid")
-    val adviser_uid:String? = ""
+    val adviser_uid: String? = ""
     @SerializedName("category")
-    val category:Int = -1
+    val category: Int = -1
     @SerializedName("title")
-    val title:String = ""
+    val title: String = ""
     @SerializedName("write_date")
-    val write_date:String? = ""
+    val write_date: String? = ""
     @SerializedName("complete")
-    val complete:Int = -1
+    val complete: Int = -1
     @SerializedName("confirm")
-    val confirm:Boolean = false
+    val confirm: Boolean = false
     @SerializedName("createdAt")
-    val createdAt:String? = ""
+    val createdAt: String? = ""
     @SerializedName("updatedAt")
-    val updatedAt:String? = ""
+    val updatedAt: String? = ""
     @SerializedName("deletedAt")
-    val deletedAt:String? = null
+    val deletedAt: String? = null
     @SerializedName("yourfeedback")
-    val user:adviserUser? = adviserUser()
+    val user: adviserUser? = adviserUser()
 }
 
-class category{
+class category {
     @SerializedName("category_id")
-    val category_id:Int = -1
+    val category_id: Int = -1
     @SerializedName("category_title")
-    val category_title:String? = ""
+    val category_title: String? = ""
     @SerializedName("category_color")
-    val category_color:String? = null
+    val category_color: String? = null
 }
