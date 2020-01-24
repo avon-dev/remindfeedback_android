@@ -13,7 +13,8 @@
                 android:id="@+id/receive_Feedback"
                 android:icon="@drawable/ic_left_black"
                 android:title="요청 받은 피드백"/>
-        <item
+
+            <item
                 android:id="@+id/category_Setting"
                 android:icon="@drawable/ic_list_black"
                 android:title="주제설정"/>

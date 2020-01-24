@@ -36,6 +36,8 @@ interface ContractFeedbackDetail {
         fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_category: Int, board_title: String, board_content: String)
 
         fun completeRequest(feedback_id: Int)
+
+        fun completeAccept(feedback_id:Int)
     }
 
 }

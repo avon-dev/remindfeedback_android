@@ -2,8 +2,6 @@ package com.example.remindfeedback.FeedbackList.FeedbackDetail
 
 import android.content.Context
 import android.util.Log
-import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.ModelPickCategory
-import com.example.remindfeedback.FeedbackList.ModelFeedback
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
 import okhttp3.*
@@ -11,12 +9,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.ArrayList
 
 class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
-
-
 
     lateinit override var view: ContractFeedbackDetail.View
     lateinit override var mContext: Context
@@ -369,7 +364,7 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
     override fun completeRequest(feedback_id: Int) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        var completeRequest:CompleteRequest = CompleteRequest(feedback_id)
+        var completeRequest:AboutComplete = AboutComplete(feedback_id)
         val register_request: Call<ResponseBody> = apiService.CompleteRequest(completeRequest)
         register_request.enqueue(object : Callback<ResponseBody> {
 
@@ -386,5 +381,27 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
 
         })
 
+    }
+
+    //요철 수락 하는부분
+    override fun completeAccept(feedback_id: Int) {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        var completeRequest:AboutComplete = AboutComplete(feedback_id)
+        val register_request: Call<ResponseBody> = apiService.CompleteAccept(completeRequest)
+        register_request.enqueue(object : Callback<ResponseBody> {
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    view.refresh()
+                } else {
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("실패", t.message)
+                view.refresh()
+            }
+
+        })
     }
 }

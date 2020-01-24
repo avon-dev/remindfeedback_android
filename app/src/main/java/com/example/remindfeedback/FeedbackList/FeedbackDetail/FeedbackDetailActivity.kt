@@ -131,6 +131,7 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         when(feedbackMyYour){
             0 -> { menuInflater.inflate(R.menu.feedback_detail_menu, menu) }
+            1 -> {menuInflater.inflate(R.menu.feedback_detail_adviser_menu, menu)}
         }
         return true
     }
@@ -141,6 +142,7 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
         when(item.itemId){
             R.id.create_Post_Button -> { return create_Post_Button() }
             R.id.complete_Request_Button -> {return complete_Request_Button()}
+            R.id.complete_Accept_Button -> {return  complete_Accept_Button()}
             else -> {return super.onOptionsItemSelected(item)}
         }
     }
@@ -152,6 +154,11 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
     }
     fun complete_Request_Button():Boolean{
         presenterFeedbackDetail.completeRequest(feedback_id)
+        return true
+    }
+
+    fun complete_Accept_Button():Boolean{
+        presenterFeedbackDetail.completeAccept(feedback_id)
         return true
     }
 

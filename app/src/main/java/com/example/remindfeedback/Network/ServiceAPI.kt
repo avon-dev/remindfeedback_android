@@ -200,7 +200,11 @@ interface ServiceAPI {
 
     //피드백 완료요청하기
     @POST("feedback/complete/request")
-    fun CompleteRequest(@Body completeRequest: CompleteRequest): Call<ResponseBody>
+    fun CompleteRequest(@Body completeRequest: AboutComplete): Call<ResponseBody>
+
+    //피드백 완료요청하기
+    @POST("feedback/complete/accept")
+    fun CompleteAccept(@Body acceptRequest: AboutComplete): Call<ResponseBody>
 
 
 }
