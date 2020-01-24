@@ -162,12 +162,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             0 -> {//진행중인거
                 arrayList.clear()
                 feedback_count = 0
+                feedbackMyYour = 0
                 presenterMain.loadItems(arrayList, mAdapter, feedback_count)
                 setRecyclerView(Main_Recyclerview)
             }
             1 -> {//진행완료인거
                 arrayList.clear()
                 feedback_count = 0
+                feedbackMyYour = 2//원래 내꺼면 0 아니면 1인데 내꺼중에 진행완료인거를 2로 둠
                 presenterMain.loadCompleteItems(arrayList, mAdapter, feedback_count)
                 setRecyclerView(Main_Recyclerview)
             }

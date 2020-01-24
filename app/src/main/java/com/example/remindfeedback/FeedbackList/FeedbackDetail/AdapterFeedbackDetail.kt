@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.Post.PostActivity
@@ -97,27 +98,31 @@ class AdapterFeedbackDetail(
             }
 
             feedback_Detail_More.setOnClickListener {
-                if (feedbackMyYour == 0) {//내 피드백이라면 수정삭제를 할 수 있음
+                if (feedbackMyYour == 0 || feedbackMyYour == 2) {//내 피드백이라면 수정삭제를 할 수 있음
                     var dialogInterface: DialogInterface? = null
                     val dialog = AlertDialog.Builder(context)
-                    val edialog: LayoutInflater = LayoutInflater.from(context)
-                    val mView: View = edialog.inflate(R.layout.dialog_update_delete, null)
+                    val edialog : LayoutInflater = LayoutInflater.from(context)
+                    val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
 
-                    val update_Tv: TextView = mView.findViewById(R.id.update_Tv)
-                    val delete_Tv: TextView = mView.findViewById(R.id.delete_Tv)
+                    val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
+                    val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
 
-                    update_Tv.setOnClickListener {
-                        Log.e("textTypeBoard 수정", "수정한다" + adapterPosition)
-                        presenterFeedbackDetail.modifyBoardActivity(
-                            feedback_detail_list.feedback_id,
-                            feedback_detail_list.board_id,
-                            feedback_detail_list.contents_type,
-                            feedback_detail_list.title,
-                            feedback_detail_list.content
-                        )
+                    update_Tv.setOnClickListener{
+                        if(feedbackMyYour != 2){//완료된 피드백이면 수정할 수 없음
+                            Log.e("textTypeBoard 수정", "수정한다" + adapterPosition)
+                            presenterFeedbackDetail.modifyBoardActivity(
+                                feedback_detail_list.feedback_id,
+                                feedback_detail_list.board_id,
+                                feedback_detail_list.contents_type,
+                                feedback_detail_list.title,
+                                feedback_detail_list.content
+                            )
+                        }else{//완료된거면 수정 할 수 없음
+                            Toast.makeText(context, "이미 완료된 피드백은 수정 할 수 없습니다.", Toast.LENGTH_LONG).show()
+                        }
                         dialogInterface!!.dismiss()
                     }
-                    delete_Tv.setOnClickListener {
+                    delete_Tv.setOnClickListener{
                         removeAt(adapterPosition)
                         presenterFeedbackDetail.removeItems(feedback_detail_list.board_id, context)
                         dialogInterface!!.dismiss()
@@ -125,6 +130,8 @@ class AdapterFeedbackDetail(
                     dialog.setView(mView)
                     dialog.create()
                     dialogInterface = dialog.show()
+
+
                 }
 
             }

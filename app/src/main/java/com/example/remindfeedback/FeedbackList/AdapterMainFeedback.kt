@@ -154,46 +154,44 @@ class AdapterMainFeedback(
 
             //꾹 눌렀을때
             itemView.setOnLongClickListener {
-                var dialogInterface: DialogInterface? = null
-                val dialog = AlertDialog.Builder(context)
-                val edialog: LayoutInflater = LayoutInflater.from(context)
-                val mView: View = edialog.inflate(R.layout.dialog_update_delete, null)
+                if(feedbackMyYour == 0 || feedbackMyYour == 2){
+                    var dialogInterface: DialogInterface? = null
+                    val dialog = AlertDialog.Builder(context)
+                    val edialog: LayoutInflater = LayoutInflater.from(context)
+                    val mView: View = edialog.inflate(R.layout.dialog_update_delete, null)
 
-                val update_Tv: TextView = mView.findViewById(R.id.update_Tv)
-                val delete_Tv: TextView = mView.findViewById(R.id.delete_Tv)
+                    val update_Tv: TextView = mView.findViewById(R.id.update_Tv)
+                    val delete_Tv: TextView = mView.findViewById(R.id.delete_Tv)
 
-                update_Tv.setOnClickListener {
-                    Log.e("asda", "수정" + adapterPosition)
-                    if (feedback_list != null) {
-                        if (feedbackMyYour == 1) {
-                            Toast.makeText(context, "다른사람의 피드백을 수정할 수 없습니다.", Toast.LENGTH_LONG)
-                                .show()
-                        } else {
-                            presenterMain.modifyFeedbackActivity(
-                                feedback_list.feedback_Id,
-                                feedback_list.category,
-                                feedback_list.date,
-                                feedback_list.title
-                            )
+                    update_Tv.setOnClickListener {
+                        if(feedbackMyYour == 0){
+                            Log.e("asda", "수정" + adapterPosition)
+                            if (feedback_list != null) {
+                                presenterMain.modifyFeedbackActivity(
+                                    feedback_list.feedback_Id,
+                                    feedback_list.category,
+                                    feedback_list.date,
+                                    feedback_list.title
+                                )
+                            }
+
+                        }else{
+                            Toast.makeText(context, "이미 완료된 피드백은 수정할 수 없습니다.",Toast.LENGTH_LONG).show()
                         }
+                        dialogInterface!!.dismiss()
                     }
-                    dialogInterface!!.dismiss()
-                }
-                delete_Tv.setOnClickListener {
-                    if (feedback_list != null) {
-                        if (feedbackMyYour == 1) {
-                            Toast.makeText(context, "다른사람의 피드백을 삭제할 수 없습니다.", Toast.LENGTH_LONG)
-                                .show()
-                        } else {
+                    delete_Tv.setOnClickListener {
+                        if (feedback_list != null) {
                             removeAt(adapterPosition)
                             presenterMain.removeItems(feedback_list.feedback_Id, context)
                         }
+                        dialogInterface!!.dismiss()
                     }
-                    dialogInterface!!.dismiss()
+                    dialog.setView(mView)
+                    dialog.create()
+                    dialogInterface = dialog.show()
                 }
-                dialog.setView(mView)
-                dialog.create()
-                dialogInterface = dialog.show()
+
                 return@setOnLongClickListener true
             }
 
