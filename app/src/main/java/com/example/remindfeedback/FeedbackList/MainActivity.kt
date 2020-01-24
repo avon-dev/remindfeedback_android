@@ -40,11 +40,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     ContractMain.View, View.OnClickListener {
 
 
+
     private val TAG = "MainActivity"
     internal lateinit var presenterMain: PresenterMain
     lateinit var mAdapter: AdapterMainFeedback
     var feedback_count:Int = 0
-    var feedbackMyYour = 0
+    var feedbackMyYour = 0//피드백이 내가 요청한건지 요청 받은건지
+    var feedbackIngEd = 0//피드백이 진행중인지 진행완료인지
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
     var arrayList = arrayListOf<ModelFeedback?>()
 
@@ -128,15 +130,41 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ing_Btn.setOnClickListener {
             ing_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
             ed_Btn.setBackgroundColor(Color.rgb(255, 255, 255))
+            when (feedbackIngEd) {
+                0 -> {}//이미 0이면 그대로
+                1 -> {feedbackIngEd = 0
+                    IngEdInit(feedbackIngEd)} }
         }
         ed_Btn.setOnClickListener {
             ing_Btn.setBackgroundColor(Color.rgb(255, 255, 255))
             ed_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
+
+            when(feedbackIngEd){
+                0 ->{feedbackIngEd = 1
+                    IngEdInit(feedbackIngEd)}
+                1-> {} }//이미 1이면 그대로
         }
     }
 
+    //진행중인거 완료된거 구별해서 아이템 불러오는 부분
+    override fun IngEdInit(mfeedbackIngEd: Int) {
+        when(feedbackIngEd){
+            0 -> {//진행중인거
+                arrayList.clear()
+                feedback_count = 0
+                presenterMain.loadItems(arrayList, mAdapter, feedback_count)
+                setRecyclerView(Main_Recyclerview)
+            }
+            1 -> {//진행완료인거
+                arrayList.clear()
+                feedback_count = 0
+                presenterMain.loadCompleteItems(arrayList, mAdapter, feedback_count)
+                setRecyclerView(Main_Recyclerview)
+            }
+        }
+    }
 
-    //피드백 마지막 아이디를 받아서 셋티해주는 부분
+    //피드백 마지막 아이디를 받아서 셋팅해주는 부분
     override fun setFeedbackCount(feedback_lastid: Int) {
         feedback_count = feedback_lastid
     }
@@ -291,6 +319,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun request_Feedback() {
         arrayList.clear()
+        feedbackIngEd = 0
         feedback_count = 0
         feedbackMyYour = 0//요청한거임
         presenterMain.loadItems(arrayList, mAdapter, feedback_count)
@@ -304,6 +333,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun receive_Feedback() {
         arrayList.clear()
         feedback_count = 0
+        feedbackIngEd = 0
         feedbackMyYour = 1//요청받은거임
         presenterMain.loadYourItems(arrayList, mAdapter, feedback_count)
 

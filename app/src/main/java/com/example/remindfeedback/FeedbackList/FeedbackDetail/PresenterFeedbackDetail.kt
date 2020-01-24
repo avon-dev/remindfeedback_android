@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
+import com.example.remindfeedback.etcProcess.BasicDialog
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -362,46 +363,51 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
 
     //완료 요청 하는부분
     override fun completeRequest(feedback_id: Int) {
-        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
-        val apiService = RetrofitFactory.serviceAPI(client)
-        var completeRequest:AboutComplete = AboutComplete(feedback_id)
-        val register_request: Call<ResponseBody> = apiService.CompleteRequest(completeRequest)
-        register_request.enqueue(object : Callback<ResponseBody> {
+        var basicDialog: BasicDialog = BasicDialog("피드백 완료 요청 하시겠습니까?", mContext,{val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+            val apiService = RetrofitFactory.serviceAPI(client)
+            var completeRequest:AboutComplete = AboutComplete(feedback_id)
+            val register_request: Call<ResponseBody> = apiService.CompleteRequest(completeRequest)
+            register_request.enqueue(object : Callback<ResponseBody> {
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    view.refresh()
-                } else {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        view.refresh()
+                    } else {
+                    }
                 }
-            }
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("실패", t.message)
-                view.refresh()
-            }
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("실패", t.message)
+                    view.refresh()
+                }
 
-        })
-
+            })}, {})
+        basicDialog.makeDialog()
     }
 
     //요철 수락 하는부분
     override fun completeAccept(feedback_id: Int) {
-        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
-        val apiService = RetrofitFactory.serviceAPI(client)
-        var completeRequest:AboutComplete = AboutComplete(feedback_id)
-        val register_request: Call<ResponseBody> = apiService.CompleteAccept(completeRequest)
-        register_request.enqueue(object : Callback<ResponseBody> {
+        Log.e("completeAccept", ""+feedback_id)
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    view.refresh()
-                } else {
+        var basicDialog: BasicDialog = BasicDialog("정말로 수락 하시겠습니까?", mContext, {val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+            val apiService = RetrofitFactory.serviceAPI(client)
+            var completeRequest:AboutComplete = AboutComplete(feedback_id)
+            val register_request: Call<ResponseBody> = apiService.CompleteAccept(completeRequest)
+            register_request.enqueue(object : Callback<ResponseBody> {
+
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        view.refresh()
+                    } else {
+                    }
                 }
-            }
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("실패", t.message)
-                view.refresh()
-            }
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("실패", t.message)
+                    view.refresh()
+                }
 
-        })
+            })
+        }, {})
+        basicDialog.makeDialog()
+
     }
 }

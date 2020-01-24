@@ -110,8 +110,8 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
             when(feedback_list.complete){
                 -1 ->{itemView.setBackgroundColor(Color.WHITE)}//어떤 상태도 아님
                 0 -> {itemView.setBackgroundColor(Color.RED)}//피드백 완료 거절 상태
-                1 -> {itemView.setBackgroundColor(Color.GRAY)}//피드백 완료 요청 상태
-                2 -> {itemView.setBackgroundColor(Color.GREEN)}//피드백 완료 수락 상태
+                1 -> {itemView.setBackgroundColor(Color.parseColor("#E1EFEA"))}//피드백 완료 요청 상태
+                2 -> {itemView.setBackgroundColor(Color.parseColor("#ACFF96"))}//피드백 완료 수락 상태
             }
 
 
