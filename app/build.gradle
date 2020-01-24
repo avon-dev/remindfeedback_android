@@ -42,9 +42,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0-alpha06'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    //스플래시 화면 -> 없앨수도
-    api project(':splashview')
-
     //이미지 동그랗게 해주는 부분
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 

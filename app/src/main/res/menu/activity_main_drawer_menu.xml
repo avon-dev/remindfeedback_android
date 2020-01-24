@@ -21,7 +21,8 @@
 
     </item>
 
-    <item android:title="Alert">
+    <!--알림은 알파버전에서 제외함-->
+    <!--item android:title="Alert">
         <menu>
             <item
                     android:id="@+id/feedback_Request_Alarm"
@@ -30,7 +31,7 @@
             />
 
         </menu>
-    </item>
+    </item-->
 
     <item android:title="General">
         <menu>

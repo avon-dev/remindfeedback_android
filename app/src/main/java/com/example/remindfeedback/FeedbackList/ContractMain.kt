@@ -10,7 +10,6 @@ interface ContractMain {
         fun refresh()
         fun modifyFeedbackActivity(id:Int,category_id: Int, date: String?, title: String)
         fun setFeedbackCount(feedback_lastid:Int)
-        fun showPostDetail(modelFeedback: ModelFeedback)
 
     }
 
@@ -29,8 +28,6 @@ interface ContractMain {
         fun updateItems(list: ArrayList<ModelFeedback?>,item_id:Int,category_id: Int, date: String?, title: String,color:String,user_uid:String, adapterMainFeedback: AdapterMainFeedback)
 
         fun modifyFeedbackActivity(id:Int, category_id: Int, date: String?, title: String)
-
-        fun showPostDetail(modelFeedback: ModelFeedback)
     }
 
 }

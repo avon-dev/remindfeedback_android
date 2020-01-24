@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
         lm = LinearLayoutManager(this)
         Main_Recyclerview.layoutManager = lm
-        mAdapter = AdapterMainFeedback(Main_Recyclerview,this, arrayList,presenterMain, this)
+        mAdapter = AdapterMainFeedback(Main_Recyclerview,this, arrayList,presenterMain, this,feedbackMyYour)
         Main_Recyclerview.adapter = mAdapter
         Main_Recyclerview.setHasFixedSize(true) //아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
         Main_Recyclerview.clearOnScrollListeners()
@@ -205,18 +205,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         intent.putExtra("date", date)
         startActivityForResult(intent,112)
     }
-
-    //피드백디테일 화면으로 넘어가는 부분, feedbackMyYour를 가져가기 위해 어댑터에서 클릭시 presenter를 거쳐서 여기서 실행
-    override fun showPostDetail(modelFeedback: ModelFeedback) {
-        val intent = Intent(this, FeedbackDetailActivity::class.java)
-        intent.putExtra("feedback_id", modelFeedback.feedback_Id)
-        intent.putExtra("title", modelFeedback.title)
-        intent.putExtra("date", modelFeedback.date)
-        intent.putExtra("feedbackMyYour", feedbackMyYour)
-        startActivity(intent)
-    }
-
-
     //fab을 위해서 onclick 상속받음
     override fun onClick(v: View?) {
         when (v!!.getId()) {
@@ -277,8 +265,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.alarm_Alarm -> true
-            R.id.search_Button -> true
+            //필요없을거같이서 일단 지움
+            //R.id.alarm_Alarm -> true
+            //R.id.search_Button -> true
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -292,7 +281,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.category_Setting -> category_Setting()
             R.id.mypage -> mypage()
             R.id.setting -> setting()
-            R.id.feedback_Request_Alarm -> feedback_Request_Alarm()
+            //R.id.feedback_Request_Alarm -> feedback_Request_Alarm() //알림은 알파버전에서 제외함
 
         }
         drawer_layout.closeDrawer(GravityCompat.START)

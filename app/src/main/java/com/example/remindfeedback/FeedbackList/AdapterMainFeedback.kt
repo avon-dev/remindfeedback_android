@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +27,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val arrayList : ArrayList<ModelFeedback?>, var presenterMain: PresenterMain, private val activity: Activity) :   RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val arrayList : ArrayList<ModelFeedback?>, var presenterMain: PresenterMain, private val activity: Activity, val feedbackMyYour:Int) :   RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var isLoading: Boolean = false
     private val visibleThreshold = 5
     private var lastVisibleItem: Int = 0
@@ -118,52 +119,45 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
 
             //그냥 클릭했을때
             itemView.setOnClickListener {
-                presenterMain.showPostDetail(feedback_list)
-                /*
                 val intent = Intent(context, FeedbackDetailActivity::class.java)
-                if (feedback_list != null) {
-                    intent.putExtra("feedback_id", feedback_list.feedback_Id)
-                }
-                if (feedback_list != null) {
-                    intent.putExtra("title", feedback_list.title)
-                }
-                if (feedback_list != null) {
-                    intent.putExtra("date", feedback_list.date)
-                }
+                intent.putExtra("feedback_id", feedback_list.feedback_Id)
+                intent.putExtra("title", feedback_list.title)
+                intent.putExtra("date", feedback_list.date)
+                intent.putExtra("feedbackMyYour", feedbackMyYour)
                 context.startActivity(intent)
-                */
+
 
             }
 
             //꾹 눌렀을때
             itemView.setOnLongClickListener{
-                var dialogInterface: DialogInterface? = null
-                val dialog = AlertDialog.Builder(context)
-                val edialog : LayoutInflater = LayoutInflater.from(context)
-                val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
+                    var dialogInterface: DialogInterface? = null
+                    val dialog = AlertDialog.Builder(context)
+                    val edialog : LayoutInflater = LayoutInflater.from(context)
+                    val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
 
-                val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
-                val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
+                    val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
+                    val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
 
-                update_Tv.setOnClickListener{
-                    Log.e("asda", "수정"+adapterPosition)
-                    if (feedback_list != null) {
-                        presenterMain.modifyFeedbackActivity(feedback_list.feedback_Id,feedback_list.category, feedback_list.date, feedback_list.title)
+                    update_Tv.setOnClickListener{
+                        Log.e("asda", "수정"+adapterPosition)
+                        if (feedback_list != null) {
+                            if(feedbackMyYour == 1){ Toast.makeText(context, "다른사람의 피드백을 수정할 수 없습니다.",Toast.LENGTH_LONG).show() }
+                            else{presenterMain.modifyFeedbackActivity(feedback_list.feedback_Id,feedback_list.category, feedback_list.date, feedback_list.title) }
+                        }
+                        dialogInterface!!.dismiss()
                     }
-                    dialogInterface!!.dismiss()
-                }
-                delete_Tv.setOnClickListener{
-                    removeAt(adapterPosition)
-                    if (feedback_list != null) {
-                        presenterMain.removeItems(feedback_list.feedback_Id, context)
+                    delete_Tv.setOnClickListener{
+                        if (feedback_list != null) {
+                            if(feedbackMyYour == 1){ Toast.makeText(context, "다른사람의 피드백을 삭제할 수 없습니다.",Toast.LENGTH_LONG).show() }
+                            else{removeAt(adapterPosition)
+                                presenterMain.removeItems(feedback_list.feedback_Id, context) }
+                        }
+                        dialogInterface!!.dismiss()
                     }
-                    dialogInterface!!.dismiss()
-                }
-                dialog.setView(mView)
-                dialog.create()
-                dialogInterface = dialog.show()
-
-
+                    dialog.setView(mView)
+                    dialog.create()
+                    dialogInterface = dialog.show()
                 return@setOnLongClickListener true
             }
 

@@ -48,13 +48,6 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
             view = this@FeedbackDetailActivity
             mContext = this@FeedbackDetailActivity
         }
-        mAdapter = AdapterFeedbackDetail(this, arrayList, presenterFeedbackDetail)
-
-        //리사이클러뷰 관련, 어댑터, 레이아웃매니저
-        feedback_Detail_Recyclerview.adapter = mAdapter
-        val lm = LinearLayoutManager(this)
-        feedback_Detail_Recyclerview.layoutManager = lm
-        feedback_Detail_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
 
         val intent = intent
         feedback_id= intent.getIntExtra("feedback_id", -1)
@@ -63,6 +56,16 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
         Log.e("넘어온 feedbackMyYour", feedbackMyYour.toString())
         feedback_Detail_Title_Tv.text = "["+intent.getStringExtra("title")+"]에 대한 피드백"
         feedback_Detail_Date_Tv.text = "목표일 : "+intent.getStringExtra("date")
+
+
+        mAdapter = AdapterFeedbackDetail(this, arrayList, presenterFeedbackDetail, feedbackMyYour)
+
+        //리사이클러뷰 관련, 어댑터, 레이아웃매니저
+        feedback_Detail_Recyclerview.adapter = mAdapter
+        val lm = LinearLayoutManager(this)
+        feedback_Detail_Recyclerview.layoutManager = lm
+        feedback_Detail_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
+
 
         presenterFeedbackDetail.loadItems(arrayList, mAdapter,feedback_id)
 

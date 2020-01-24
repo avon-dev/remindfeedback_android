@@ -16,7 +16,7 @@ import com.example.remindfeedback.R
 import java.text.SimpleDateFormat
 import java.util.ArrayList
 
-class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<ModelFeedbackDetail>, val presenterFeedbackDetail: PresenterFeedbackDetail) :   RecyclerView.Adapter<AdapterFeedbackDetail.Holder>()  {
+class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<ModelFeedbackDetail>, val presenterFeedbackDetail: PresenterFeedbackDetail, val feedbackMyYour:Int) :   RecyclerView.Adapter<AdapterFeedbackDetail.Holder>()  {
 
 
     fun addItem(item: ModelFeedbackDetail) {//아이템 추가
@@ -55,8 +55,8 @@ class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<Model
         val feedback_Detail_Image = itemView.findViewById<ImageView>(R.id.feedback_Detail_Image)
         val feedback_Detail_More = itemView.findViewById<ImageView>(R.id.feedback_Detail_More)
 
-
         fun bind (feedback_detail_list: ModelFeedbackDetail, context: Context) {
+            if(feedbackMyYour == 1){ feedback_Detail_More.visibility = View.GONE }//남이 등록한 피드백의경우 수정 삭제 버튼을 안보이게 지움
             feedback_Detail_Title.text = feedback_detail_list.title
 
             val date =
@@ -88,27 +88,30 @@ class AdapterFeedbackDetail(val context: Context, val arrayList: ArrayList<Model
             }
 
             feedback_Detail_More.setOnClickListener {
-                var dialogInterface: DialogInterface? = null
-                val dialog = AlertDialog.Builder(context)
-                val edialog : LayoutInflater = LayoutInflater.from(context)
-                val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
+                if(feedbackMyYour == 0){//내 피드백이라면 수정삭제를 할 수 있음
+                    var dialogInterface: DialogInterface? = null
+                    val dialog = AlertDialog.Builder(context)
+                    val edialog : LayoutInflater = LayoutInflater.from(context)
+                    val mView : View = edialog.inflate(R.layout.dialog_update_delete,null)
 
-                val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
-                val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
+                    val update_Tv : TextView = mView.findViewById(R.id.update_Tv)
+                    val delete_Tv : TextView = mView.findViewById(R.id.delete_Tv)
 
-                update_Tv.setOnClickListener{
-                    Log.e("textTypeBoard 수정", "수정한다"+adapterPosition)
-                    presenterFeedbackDetail.modifyBoardActivity(feedback_detail_list.feedback_id, feedback_detail_list.board_id, feedback_detail_list.contents_type, feedback_detail_list.title, feedback_detail_list.content)
-                    dialogInterface!!.dismiss()
+                    update_Tv.setOnClickListener{
+                        Log.e("textTypeBoard 수정", "수정한다"+adapterPosition)
+                        presenterFeedbackDetail.modifyBoardActivity(feedback_detail_list.feedback_id, feedback_detail_list.board_id, feedback_detail_list.contents_type, feedback_detail_list.title, feedback_detail_list.content)
+                        dialogInterface!!.dismiss()
+                    }
+                    delete_Tv.setOnClickListener{
+                        removeAt(adapterPosition)
+                        presenterFeedbackDetail.removeItems(feedback_detail_list.board_id, context)
+                        dialogInterface!!.dismiss()
+                    }
+                    dialog.setView(mView)
+                    dialog.create()
+                    dialogInterface = dialog.show()
                 }
-                delete_Tv.setOnClickListener{
-                    removeAt(adapterPosition)
-                    presenterFeedbackDetail.removeItems(feedback_detail_list.board_id, context)
-                    dialogInterface!!.dismiss()
-                }
-                dialog.setView(mView)
-                dialog.create()
-                dialogInterface = dialog.show()
+
             }
 
         }
