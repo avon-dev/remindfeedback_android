@@ -24,6 +24,7 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
     private val TAG = "FeedbackDetailActivity"
     internal lateinit var presenterFeedbackDetail: PresenterFeedbackDetail
     var feedback_id:Int = -1
+    var feedbackMyYour:Int = -1
     lateinit var mAdapter:AdapterFeedbackDetail
 
     var arrayList = arrayListOf<ModelFeedbackDetail>(
@@ -57,6 +58,9 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
 
         val intent = intent
         feedback_id= intent.getIntExtra("feedback_id", -1)
+        feedbackMyYour = intent.getIntExtra("feedbackMyYour", -1)
+
+        Log.e("넘어온 feedbackMyYour", feedbackMyYour.toString())
         feedback_Detail_Title_Tv.text = "["+intent.getStringExtra("title")+"]에 대한 피드백"
         feedback_Detail_Date_Tv.text = "목표일 : "+intent.getStringExtra("date")
 
@@ -122,7 +126,9 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
 
     //타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.feedback_detail_menu, menu)
+        when(feedbackMyYour){
+            0 -> { menuInflater.inflate(R.menu.feedback_detail_menu, menu) }
+        }
         return true
     }
 

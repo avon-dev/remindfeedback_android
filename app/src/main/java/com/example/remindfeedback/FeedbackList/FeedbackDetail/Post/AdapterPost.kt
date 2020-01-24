@@ -63,11 +63,7 @@ class AdapterPost(val context: Context, val arrayList: ArrayList<ModelComment>, 
             post_Comment_Name.text = comment_list.name
             post_Comment_Script.text = comment_list.script
 
-            val date =
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(comment_list.date)
-            val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
-            val dateNewFormat = sdf.format(date)
-            post_Comment_Date.text = dateNewFormat
+            post_Comment_Date.text = comment_list.date
 
             if(!comment_list.profileImage.equals("")){
                 //이미지 설정해주는 부분

@@ -118,6 +118,8 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
 
             //그냥 클릭했을때
             itemView.setOnClickListener {
+                presenterMain.showPostDetail(feedback_list)
+                /*
                 val intent = Intent(context, FeedbackDetailActivity::class.java)
                 if (feedback_list != null) {
                     intent.putExtra("feedback_id", feedback_list.feedback_Id)
@@ -129,6 +131,8 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
                     intent.putExtra("date", feedback_list.date)
                 }
                 context.startActivity(intent)
+                */
+
             }
 
             //꾹 눌렀을때

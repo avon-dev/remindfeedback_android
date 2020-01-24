@@ -241,4 +241,8 @@ class PresenterMain : ContractMain.Presenter {
         view.modifyFeedbackActivity(id, category_id,date, title)
     }
 
+    override fun showPostDetail(modelFeedback: ModelFeedback) {
+        view.showPostDetail(modelFeedback)
+    }
+
 }

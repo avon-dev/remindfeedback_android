@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.Alarm.AlarmActivity
 import com.example.remindfeedback.CategorySetting.CategorySettingActivity
 import com.example.remindfeedback.FeedbackList.CreateFeedback.CreateFeedbackActivity
+import com.example.remindfeedback.FeedbackList.FeedbackDetail.FeedbackDetailActivity
 import com.example.remindfeedback.FriendsList.FriendsListActivity
 import com.example.remindfeedback.MyPage.MyPageActivity
 import com.example.remindfeedback.R
@@ -37,6 +38,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     ContractMain.View, View.OnClickListener {
+
 
     private val TAG = "MainActivity"
     internal lateinit var presenterMain: PresenterMain
@@ -204,6 +206,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         startActivityForResult(intent,112)
     }
 
+    //피드백디테일 화면으로 넘어가는 부분, feedbackMyYour를 가져가기 위해 어댑터에서 클릭시 presenter를 거쳐서 여기서 실행
+    override fun showPostDetail(modelFeedback: ModelFeedback) {
+        val intent = Intent(this, FeedbackDetailActivity::class.java)
+        intent.putExtra("feedback_id", modelFeedback.feedback_Id)
+        intent.putExtra("title", modelFeedback.title)
+        intent.putExtra("date", modelFeedback.date)
+        intent.putExtra("feedbackMyYour", feedbackMyYour)
+        startActivity(intent)
+    }
+
+
     //fab을 위해서 onclick 상속받음
     override fun onClick(v: View?) {
         when (v!!.getId()) {
@@ -272,7 +285,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     //네비게이션바에서 아이템 클릭시
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        Log.e(TAG, "onNavigationItemSelected")
         when (item.itemId) {
             R.id.request_Feedback -> request_Feedback()
             R.id.receive_Feedback -> receive_Feedback()
@@ -289,7 +301,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     fun request_Feedback() {
-        Toast.makeText(this@MainActivity, "request_Feedback.", Toast.LENGTH_SHORT).show()
         arrayList.clear()
         feedback_count = 0
         feedbackMyYour = 0//요청한거임
@@ -298,21 +309,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setRecyclerView(Main_Recyclerview)
         ing_Case.visibility = View.VISIBLE
         fab_main.visibility = View.VISIBLE
-        Log.e("request_Feedback", "feedbackMyYour"+feedbackMyYour)
-
 
     }
 
     fun receive_Feedback() {
-        Toast.makeText(this@MainActivity, "receive_Feedback.", Toast.LENGTH_SHORT).show()
         arrayList.clear()
         feedback_count = 0
         feedbackMyYour = 1//요청받은거임
         presenterMain.loadYourItems(arrayList, mAdapter, feedback_count)
 
         setRecyclerView(Main_Recyclerview)
-
-        Log.e("receive_Feedback", "feedbackMyYour"+feedbackMyYour)
 
         ing_Case.visibility = View.INVISIBLE
         fab_main.visibility = View.INVISIBLE
