@@ -34,6 +34,8 @@ interface ContractFeedbackDetail {
         fun updatePictureItems(list: ArrayList<ModelFeedbackDetail>, board_id: Int, createBoardPicture: CreateBoardPicture, adapterFeedbackDetail: AdapterFeedbackDetail)
 
         fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_category: Int, board_title: String, board_content: String)
+
+        fun completeRequest(feedback_id: Int)
     }
 
 }

@@ -17,6 +17,7 @@ import java.util.ArrayList
 class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
 
 
+
     lateinit override var view: ContractFeedbackDetail.View
     lateinit override var mContext: Context
 
@@ -362,5 +363,28 @@ class PresenterFeedbackDetail:ContractFeedbackDetail.Presenter {
 
     override fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_category: Int, board_title: String, board_content: String) {
         view.modifyBoardActivity(feedback_id, board_id, board_category, board_title, board_content)
+    }
+
+    //완료 요청 하는부분
+    override fun completeRequest(feedback_id: Int) {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        var completeRequest:CompleteRequest = CompleteRequest(feedback_id)
+        val register_request: Call<ResponseBody> = apiService.CompleteRequest(completeRequest)
+        register_request.enqueue(object : Callback<ResponseBody> {
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    view.refresh()
+                } else {
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("실패", t.message)
+                view.refresh()
+            }
+
+        })
+
     }
 }

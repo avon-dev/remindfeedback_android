@@ -79,7 +79,7 @@ class PresenterMain : ContractMain.Presenter {
                                 }else{
                                     val addData: ModelFeedback = ModelFeedback(mfl.id,
                                         adviserUser.nickname!!, mfl.category,tag_Color, mfl.title,
-                                        adviserUser.portrait!!, dateNewFormat, false)
+                                        adviserUser.portrait!!, dateNewFormat, mfl.complete,false)
                                     adapterMainFeedback.addItem(addData)
                                 }
                                 feedback_lastid = mfl.id
@@ -138,7 +138,7 @@ class PresenterMain : ContractMain.Presenter {
                                 val dateNewFormat = sdf.format(date)
                                 val addData: ModelFeedback = ModelFeedback(mfl.id,
                                     adviserUser.nickname!!, mfl.category,"#BBBBBB", mfl.title,
-                                    adviserUser.portrait!!, dateNewFormat, false)
+                                    adviserUser.portrait!!, dateNewFormat, mfl.complete,false)
                                 adapterMainFeedback.addItem(addData)
                                 feedback_lastid = mfl.id
                             }
@@ -177,7 +177,7 @@ class PresenterMain : ContractMain.Presenter {
             override fun onResponse(call: Call<CreateFeedback>, response: Response<CreateFeedback>) {
                 if (response.isSuccessful) {
                     val addData: ModelFeedback =
-                        ModelFeedback(-1, "조언자", category_id,color, title, "프로필 이미지", dateNewFormat, false)
+                        ModelFeedback(-1, "조언자", category_id,color, title, "프로필 이미지", dateNewFormat, -1,false)
                     adapterMainFeedback.addItem(addData)
                     list.clear()
                     loadItems(list, adapterMainFeedback,0)

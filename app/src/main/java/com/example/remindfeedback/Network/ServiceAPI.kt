@@ -198,5 +198,9 @@ interface ServiceAPI {
     @GET("friend/alladviser")
     fun GetAdviser(): Call<GetFriends>
 
+    //피드백 완료요청하기
+    @POST("feedback/complete/request")
+    fun CompleteRequest(@Body completeRequest: CompleteRequest): Call<ResponseBody>
+
 
 }

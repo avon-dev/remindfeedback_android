@@ -140,6 +140,7 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
         // Handle presses on the action bar items
         when(item.itemId){
             R.id.create_Post_Button -> { return create_Post_Button() }
+            R.id.complete_Request_Button -> {return complete_Request_Button()}
             else -> {return super.onOptionsItemSelected(item)}
         }
     }
@@ -147,6 +148,10 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
         val intent = Intent(this, CreatePostActivity::class.java)
         intent.putExtra("feedback_id", feedback_id)
         startActivityForResult(intent, 111)
+        return true
+    }
+    fun complete_Request_Button():Boolean{
+        presenterFeedbackDetail.completeRequest(feedback_id)
         return true
     }
 

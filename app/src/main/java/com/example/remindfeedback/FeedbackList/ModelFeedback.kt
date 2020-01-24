@@ -11,4 +11,5 @@ data class ModelFeedback (var feedback_Id: Int
                           , var title:String
                           , var feederProfileImage:String
                           , var date:String?
+                          , var complete:Int
                           , var alarm:Boolean)

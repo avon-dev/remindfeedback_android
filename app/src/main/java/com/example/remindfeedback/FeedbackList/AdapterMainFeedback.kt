@@ -107,6 +107,13 @@ class AdapterMainFeedback(recyclerView: RecyclerView,val context: Context, val a
                 main_Feedback_Profile_Image.setImageResource(R.drawable.ic_default_profile)
             }
 
+            when(feedback_list.complete){
+                -1 ->{itemView.setBackgroundColor(Color.WHITE)}//어떤 상태도 아님
+                0 -> {itemView.setBackgroundColor(Color.RED)}//피드백 완료 거절 상태
+                1 -> {itemView.setBackgroundColor(Color.GRAY)}//피드백 완료 요청 상태
+                2 -> {itemView.setBackgroundColor(Color.GREEN)}//피드백 완료 수락 상태
+            }
+
 
             //새로운 알람이 와있으면 visible 아니면 invisible
             if (feedback_list != null) {
