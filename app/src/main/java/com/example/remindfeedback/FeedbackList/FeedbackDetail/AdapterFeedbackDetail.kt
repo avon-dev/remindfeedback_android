@@ -50,12 +50,9 @@ class AdapterFeedbackDetail(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(arrayList[position], context)
-
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-
         val feedback_Detail_Title = itemView.findViewById<TextView>(R.id.feedback_Detail_Title_Tv)
         val feedback_Detail_Date = itemView.findViewById<TextView>(R.id.feedback_Detail_Date_Tv)
         val feedback_Detail_Contents =

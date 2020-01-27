@@ -25,6 +25,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
     internal lateinit var presenterFeedbackDetail: PresenterFeedbackDetail
     var feedback_id: Int = -1
     var feedbackMyYour: Int = -1
+    var feedback_complete:Int = -2
     lateinit var mAdapter: AdapterFeedbackDetail
 
     var arrayList = arrayListOf<ModelFeedbackDetail>(
@@ -36,7 +37,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
 
         //액션바 설정
         var ab: ActionBar = this.supportActionBar!!
-        ab.setTitle("")
+        ab.setTitle(" ")
         // 액션바 타이틀 가운데 정렬
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
@@ -52,7 +53,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
         val intent = intent
         feedback_id = intent.getIntExtra("feedback_id", -1)
         feedbackMyYour = intent.getIntExtra("feedbackMyYour", -1)
-
+        feedback_complete = intent.getIntExtra("complete", -2)
         Log.e("넘어온 feedbackMyYour", feedbackMyYour.toString())
         feedback_Detail_Title_Tv.text = "[" + intent.getStringExtra("title") + "]에 대한 피드백"
         feedback_Detail_Date_Tv.text = "목표일 : " + intent.getStringExtra("date")
@@ -203,11 +204,16 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
     //타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         when (feedbackMyYour) {
-            0 -> {
+            0 -> {//내꺼
                 menuInflater.inflate(R.menu.feedback_detail_menu, menu)
             }
-            1 -> {
-                menuInflater.inflate(R.menu.feedback_detail_adviser_menu, menu)
+            1 -> {//다른사람꺼
+                Log.e("feedback_complete", feedback_complete.toString())
+                when(feedback_complete){
+                    1 -> {
+                        menuInflater.inflate(R.menu.feedback_detail_adviser_menu, menu)
+                    }
+                }
             }
         }
         return true
@@ -226,6 +232,9 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
             R.id.complete_Accept_Button -> {
                 return complete_Accept_Button()
             }
+            R.id.complete_Reject_Button -> {
+                return  complete_Reject_Button()
+            }
             else -> {
                 return super.onOptionsItemSelected(item)
             }
@@ -240,17 +249,42 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
     }
 
     fun complete_Request_Button(): Boolean {
-        presenterFeedbackDetail.completeRequest(feedback_id)
+        when(feedback_complete){
+            -1, 0 -> { presenterFeedbackDetail.completeRequest(feedback_id) }
+            1 -> { Toast.makeText(this, "이미 완료 요청된 피드백 입니다.", Toast.LENGTH_LONG).show() }
+            2 -> { Toast.makeText(this, "이미 완료된 피드백 입니다.", Toast.LENGTH_LONG).show()}
+        }
         return true
     }
 
     fun complete_Accept_Button(): Boolean {
-        presenterFeedbackDetail.completeAccept(feedback_id)
+        when(feedback_complete){
+            1 -> { presenterFeedbackDetail.completeAccept(feedback_id) }
+            -1, 0 -> { Toast.makeText(this, "완료요청 되지않은 피드백입니다.", Toast.LENGTH_LONG).show() }
+            2 -> { Toast.makeText(this, "이미 완료된 피드백입니다.", Toast.LENGTH_LONG).show() }
+        }
         return true
+    }
+    fun complete_Reject_Button():Boolean{
+        when(feedback_complete){
+            1 -> { presenterFeedbackDetail.completeReject(feedback_id) }
+            0 -> { Toast.makeText(this, "이미 거절한 피드백입니다.", Toast.LENGTH_LONG).show() }
+            -1 -> { Toast.makeText(this, "완료 요청되지 않은 피드백입니다.", Toast.LENGTH_LONG).show() }
+            2 -> { Toast.makeText(this, "이미 완료된 피드백입니다.", Toast.LENGTH_LONG).show() }
+
+        }
+
+        return true
+    }
+
+    //프레젠터에서 컴플리트값을 바꿔줌
+    override fun setFeedbackComplete(mFeedbackComplete:Int){
+        feedback_complete = mFeedbackComplete
     }
 
     override fun refresh() {
         mAdapter.notifyDataSetChanged()
     }
+
 
 }

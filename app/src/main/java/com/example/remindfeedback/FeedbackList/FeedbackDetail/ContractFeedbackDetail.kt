@@ -17,6 +17,8 @@ interface ContractFeedbackDetail {
             board_title: String,
             board_content: String
         )
+
+        fun setFeedbackComplete(mFeedbackComplete:Int)
     }
 
     interface Presenter {
@@ -80,6 +82,9 @@ interface ContractFeedbackDetail {
         fun completeRequest(feedback_id: Int)
 
         fun completeAccept(feedback_id: Int)
+
+        fun completeReject(feedback_id: Int)
+
     }
 
 }

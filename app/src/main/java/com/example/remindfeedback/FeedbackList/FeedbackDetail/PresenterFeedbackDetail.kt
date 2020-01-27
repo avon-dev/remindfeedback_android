@@ -14,6 +14,7 @@ import java.util.ArrayList
 
 class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
 
+
     lateinit override var view: ContractFeedbackDetail.View
     lateinit override var mContext: Context
 
@@ -495,6 +496,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
                     response: Response<ResponseBody>
                 ) {
                     if (response.isSuccessful) {
+                        view.setFeedbackComplete(1)
                         view.refresh()
                     } else {
                     }
@@ -526,6 +528,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
                     response: Response<ResponseBody>
                 ) {
                     if (response.isSuccessful) {
+                        view.setFeedbackComplete(2)
                         view.refresh()
                     } else {
                     }
@@ -540,5 +543,34 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
         }, {})
         basicDialog.makeDialog()
 
+    }
+
+    override fun completeReject(feedback_id: Int) {
+        var basicDialog: BasicDialog = BasicDialog("정말로 거절 하시겠습니까?", mContext, {
+            val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+            val apiService = RetrofitFactory.serviceAPI(client)
+            var completeRequest: AboutComplete = AboutComplete(feedback_id)
+            val register_request: Call<ResponseBody> = apiService.CompleteReject(completeRequest)
+            register_request.enqueue(object : Callback<ResponseBody> {
+
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.isSuccessful) {
+                        view.setFeedbackComplete(0)
+                        view.refresh()
+                    } else {
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("실패", t.message)
+                    view.refresh()
+                }
+
+            })
+        }, {})
+        basicDialog.makeDialog()
     }
 }

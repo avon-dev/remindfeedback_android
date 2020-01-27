@@ -173,6 +173,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 presenterMain.loadCompleteItems(arrayList, mAdapter, feedback_count)
                 setRecyclerView(Main_Recyclerview)
             }
+
         }
     }
 
@@ -330,6 +331,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        arrayList.clear()
+        feedback_count = 0
+        when(feedbackMyYour){
+            0 -> { presenterMain.loadItems(arrayList, mAdapter, feedback_count) }//내꺼진행중
+            1 -> { presenterMain.loadYourItems(arrayList, mAdapter, feedback_count) } //다른사람꺼
+            2 -> {presenterMain.loadCompleteItems(arrayList, mAdapter, feedback_count)}}//내꺼 진행완료
+
+        setRecyclerView(Main_Recyclerview)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.options_menu, menu)
         return true
@@ -362,34 +375,40 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     fun request_Feedback() {
-        arrayList.clear()
-        feedbackIngEd = 0
-        feedback_count = 0
-        feedbackMyYour = 0//요청한거임
-        presenterMain.loadItems(arrayList, mAdapter, feedback_count)
-
-        setRecyclerView(Main_Recyclerview)
-        ing_Case.visibility = View.VISIBLE
-        fab_main.visibility = View.VISIBLE
-
+       if(feedbackMyYour == 0 && feedbackIngEd == 0){
+       }else{
+           arrayList.clear()
+           feedbackIngEd = 0
+           feedback_count = 0
+           feedbackMyYour = 0//요청한거임
+           presenterMain.loadItems(arrayList, mAdapter, feedback_count)
+           ing_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
+           ed_Btn.setBackgroundColor(Color.rgb(255, 255, 255))
+           setRecyclerView(Main_Recyclerview)
+           ing_Case.visibility = View.VISIBLE
+           fab_main.visibility = View.VISIBLE
+       }
     }
 
     fun receive_Feedback() {
-        arrayList.clear()
-        feedback_count = 0
-        feedbackIngEd = 0
-        feedbackMyYour = 1//요청받은거임
-        presenterMain.loadYourItems(arrayList, mAdapter, feedback_count)
+       if(feedbackMyYour == 1){
+       }else{
+           arrayList.clear()
+           feedback_count = 0
+           feedbackIngEd = 0
+           feedbackMyYour = 1//요청받은거임
+           presenterMain.loadYourItems(arrayList, mAdapter, feedback_count)
 
-        setRecyclerView(Main_Recyclerview)
+           setRecyclerView(Main_Recyclerview)
 
-        ing_Case.visibility = View.INVISIBLE
-        fab_main.visibility = View.INVISIBLE
-        fab_sub1.startAnimation(fab_close)
-        fab_sub2.startAnimation(fab_close)
-        fab_sub1.setClickable(false)
-        fab_sub2.setClickable(false)
-        isFabOpen = false
+           ing_Case.visibility = View.INVISIBLE
+           fab_main.visibility = View.INVISIBLE
+           fab_sub1.startAnimation(fab_close)
+           fab_sub2.startAnimation(fab_close)
+           fab_sub1.setClickable(false)
+           fab_sub2.setClickable(false)
+           isFabOpen = false
+       }
     }
 
     fun friends_List() {

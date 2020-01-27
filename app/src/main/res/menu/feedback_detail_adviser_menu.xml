@@ -5,6 +5,9 @@
     <item android:id="@+id/complete_Accept_Button"
             android:title="요청 수락"
             app:showAsAction="always" />
+    <item android:id="@+id/complete_Reject_Button"
+            android:title="요청 거절"
+            app:showAsAction="always" />
 
 
 </menu>

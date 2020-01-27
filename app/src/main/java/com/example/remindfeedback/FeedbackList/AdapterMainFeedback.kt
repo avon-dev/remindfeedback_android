@@ -147,6 +147,7 @@ class AdapterMainFeedback(
                 intent.putExtra("title", feedback_list.title)
                 intent.putExtra("date", feedback_list.date)
                 intent.putExtra("feedbackMyYour", feedbackMyYour)
+                intent.putExtra("complete", feedback_list.complete)
                 context.startActivity(intent)
 
 
