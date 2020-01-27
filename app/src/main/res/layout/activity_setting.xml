@@ -144,6 +144,25 @@
                     android:text="버그 제보"
                     android:textColor="#585858"
                     android:textSize="20sp" />
+            <TextView
+                    android:id="@+id/textView43"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line"
+                    android:padding="16dp"
+                    android:text="친구관리"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/blocked_Friends"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line_gray"
+                    android:padding="16dp"
+                    android:text="차단한 친구"
+                    android:textColor="#585858"
+                    android:textSize="20sp" />
 
             <TextView
                     android:id="@+id/textView14"

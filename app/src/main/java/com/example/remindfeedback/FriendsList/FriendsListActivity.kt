@@ -42,7 +42,16 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
         }
         mAdapter = AdapterFriendsList(this, arrayList,presenterFriendsList)
 
-        presenterFriendsList.loadItems(arrayList,mAdapter)
+        val tabs = findViewById<View>(R.id.friends_Tab_Layout) as TabLayout
+
+        var intent:Intent = intent
+        if(intent.hasExtra("blocked")){//설정의 차단친구관리에서 넘어오는 인텐트
+            presenterFriendsList.loadBlockedFriends(arrayList,mAdapter)
+            tabs.visibility = View.GONE
+            ab.setTitle("차단한 친구 목록")
+        }else{
+            presenterFriendsList.loadItems(arrayList,mAdapter)
+        }
 
 
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
@@ -55,7 +64,6 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
 
 //여기부터 탭바 코드
         //3탭기능 구성
-        val tabs = findViewById<View>(R.id.friends_Tab_Layout) as TabLayout
         tabs.addTab(tabs.newTab().setText("친구목록"))
         tabs.addTab(tabs.newTab().setText("받은친구요청"))
         tabs.addTab(tabs.newTab().setText("보낸친구요청"))

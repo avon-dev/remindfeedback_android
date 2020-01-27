@@ -182,9 +182,21 @@ interface ServiceAPI {
     @POST("friend/create")
     fun CreateFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
 
-    //친구요청&수락 하기
+    //친구요청 거절 하기
     @PUT("friend/reject")
     fun RejectFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
+
+    //친구차단 하기
+    @PUT("friend/block")
+    fun BlockFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
+
+    //친구차단 해제하기
+    @PUT("friend/unblock")
+    fun UnBlockFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
+
+    //내 친구 차단목록 가져오기
+    @GET("friend/allblock")
+    fun GetBlockedFriends(): Call<GetFriends>
 
     //받은 친구요청 정보 가져오기
     @GET("friend/allrequest/receive")
