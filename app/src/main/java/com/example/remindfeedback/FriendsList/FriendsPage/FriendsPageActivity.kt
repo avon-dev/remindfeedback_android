@@ -16,7 +16,5 @@ class FriendsPageActivity : AppCompatActivity(), ContractFriendsPage.View {
         ab.setTitle("친구 페이지")
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
-
-
     }
 }

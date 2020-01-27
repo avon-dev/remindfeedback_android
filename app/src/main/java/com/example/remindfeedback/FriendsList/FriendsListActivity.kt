@@ -62,7 +62,7 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
 
 
 
-//여기부터 탭바 코드
+        //여기부터 탭바 코드
         //3탭기능 구성
         tabs.addTab(tabs.newTab().setText("친구목록"))
         tabs.addTab(tabs.newTab().setText("받은친구요청"))
@@ -108,7 +108,9 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
 
     //타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.friends_list_menu, menu)
+        if(!intent.hasExtra("blocked")){//차단목록이 아닐경우에
+            menuInflater.inflate(R.menu.friends_list_menu, menu)
+        }
         return true
     }
 
@@ -134,7 +136,6 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
 
     override fun refresh() {
         mAdapter.notifyDataSetChanged()
-
     }
 
 }

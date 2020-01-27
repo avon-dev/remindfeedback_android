@@ -104,6 +104,9 @@ class AdapterMainFeedback(
                 main_Feedback_Tag_Color.setBackgroundColor(Color.parseColor(feedback_list.tagColor))
             }
             if (!feedback_list!!.feederProfileImage.equals("")) {
+                main_Feedback_Profile_Image.visibility = View.VISIBLE//조언자가 있을때
+                main_Feedback_Alarm.visibility = View.VISIBLE
+
                 var test_task: URLtoBitmapTask = URLtoBitmapTask()
                 test_task = URLtoBitmapTask().apply {
                     url =
@@ -112,7 +115,16 @@ class AdapterMainFeedback(
                 var bitmap: Bitmap = test_task.execute().get()
                 main_Feedback_Profile_Image.setImageBitmap(bitmap)
             } else {
-                main_Feedback_Profile_Image.setImageResource(R.drawable.ic_default_profile)
+                if(feedback_list.adviser.equals("")){
+                    main_Feedback_Profile_Image.visibility = View.INVISIBLE//조언자가 없을때
+                    main_Feedback_Alarm.visibility = View.INVISIBLE
+                }else{
+                    main_Feedback_Profile_Image.visibility = View.VISIBLE//조언자가 있을때
+                    main_Feedback_Alarm.visibility = View.VISIBLE
+
+                    main_Feedback_Profile_Image.setImageResource(R.drawable.ic_default_profile)
+                }
+
             }
 
             when (feedback_list.complete) {

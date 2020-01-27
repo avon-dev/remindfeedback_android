@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -48,6 +49,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var feedbackIngEd = 0//피드백이 진행중인지 진행완료인지
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
     var arrayList = arrayListOf<ModelFeedback?>()
+
+
 
 
     //스피너에 사용할 배열
@@ -121,11 +124,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fab_open = AnimationUtils.loadAnimation(mContext, R.animator.fab_open)
         fab_close = AnimationUtils.loadAnimation(mContext, R.animator.fab_close)
         fab_main = findViewById(R.id.fab_main)
-        fab_sub1 = findViewById(R.id.fab_sub1)
-        fab_sub2 = findViewById(R.id.fab_sub2)
+//        fab_sub1 = findViewById(R.id.fab_sub1)
+//        fab_sub2 = findViewById(R.id.fab_sub2)
         fab_main.setOnClickListener(this);
-        fab_sub1.setOnClickListener(this);
-        fab_sub2.setOnClickListener(this);
+//        fab_sub1.setOnClickListener(this);
+//        fab_sub2.setOnClickListener(this);
 
 
 
@@ -283,6 +286,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (v!!.getId()) {
             R.id.fab_main ->
                 toggleFab()
+            /*
             R.id.fab_sub1 -> {
                 toggleFab()
                 Toast.makeText(this, "1번!!", Toast.LENGTH_SHORT).show()
@@ -294,11 +298,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 toggleFab()
                 Toast.makeText(this, "2번!!", Toast.LENGTH_SHORT).show()
             }
+            */
         }
     }
 
     //fab정의
     private fun toggleFab() {
+        //원래 fab_sub2에 있던 부분인데 그냥 메인누르면 실행되게 함
+        val intent = Intent(this, CreateFeedbackActivity::class.java)
+        startActivityForResult(intent, 111)
+
+        /*
         if (isFabOpen) {
             fab_main.setImageResource(R.drawable.ic_add_black)
             fab_sub1.startAnimation(fab_close)
@@ -314,6 +324,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             fab_sub2.setClickable(true)
             isFabOpen = true
         }
+        */
     }
 
     //리사이클러뷰를 리프레시하는 용도
@@ -385,8 +396,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
            ing_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
            ed_Btn.setBackgroundColor(Color.rgb(255, 255, 255))
            setRecyclerView(Main_Recyclerview)
+           //ing_Linear.visibility = View.VISIBLE
            ing_Case.visibility = View.VISIBLE
            fab_main.visibility = View.VISIBLE
+           category_Spinner.visibility = View.VISIBLE
        }
     }
 
@@ -401,13 +414,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
            setRecyclerView(Main_Recyclerview)
 
-           ing_Case.visibility = View.INVISIBLE
-           fab_main.visibility = View.INVISIBLE
-           fab_sub1.startAnimation(fab_close)
-           fab_sub2.startAnimation(fab_close)
-           fab_sub1.setClickable(false)
-           fab_sub2.setClickable(false)
-           isFabOpen = false
+           //ing_Linear.visibility = View.GONE
+           ing_Case.visibility = View.GONE
+           fab_main.visibility = View.GONE
+           category_Spinner.visibility = View.GONE
+//           fab_sub1.startAnimation(fab_close)
+//           fab_sub2.startAnimation(fab_close)
+//           fab_sub1.setClickable(false)
+//           fab_sub2.setClickable(false)
+//           isFabOpen = false
        }
     }
 

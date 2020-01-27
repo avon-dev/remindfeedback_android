@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import com.example.remindfeedback.CategorySetting.ModelCategorySetting
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
@@ -23,7 +24,6 @@ class PresenterMain : ContractMain.Presenter {
 
     lateinit override var view: ContractMain.View
     lateinit override var context: Context
-
 
     override fun loadItems(
         list: ArrayList<ModelFeedback?>,
@@ -138,26 +138,27 @@ class PresenterMain : ContractMain.Presenter {
                                 var mfl: yourFeedback = yourFeedback()
                                 mfl = mFeedback[i]
 
-                                var adviserUser: adviserUser = adviserUser()
-                                if (mfl.user == null) { //조언자가 없을경우 공백으로표시
-                                    adviserUser.nickname = ""
-                                    adviserUser.portrait = ""
-                                } else {
-                                    adviserUser = mfl.user!!
+                                if(mfl.complete != 2){
+                                    var adviserUser: adviserUser = adviserUser()
+                                    if (mfl.user == null) { //조언자가 없을경우 공백으로표시
+                                        adviserUser.nickname = ""
+                                        adviserUser.portrait = ""
+                                    } else {
+                                        adviserUser = mfl.user!!
+                                    }
+                                    val date =
+                                        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(mfl.write_date)
+                                    val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
+                                    val dateNewFormat = sdf.format(date)
+                                    val addData: ModelFeedback = ModelFeedback(
+                                        mfl.id,
+                                        adviserUser.nickname!!, mfl.category, "#BBBBBB", mfl.title,
+                                        adviserUser.portrait!!, dateNewFormat, mfl.complete, false
+                                    )
+                                    adapterMainFeedback.addItem(addData)
+                                    feedback_lastid = mfl.id
                                 }
-                                val date =
-                                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(mfl.write_date)
-                                val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
-                                val dateNewFormat = sdf.format(date)
-                                val addData: ModelFeedback = ModelFeedback(
-                                    mfl.id,
-                                    adviserUser.nickname!!, mfl.category, "#BBBBBB", mfl.title,
-                                    adviserUser.portrait!!, dateNewFormat, mfl.complete, false
-                                )
-                                adapterMainFeedback.addItem(addData)
-                                feedback_lastid = mfl.id
                             }
-
                             view.setFeedbackCount(feedback_lastid)
                             view.refresh()
                         }
