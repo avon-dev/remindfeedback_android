@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider
 import com.example.remindfeedback.R
 import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import com.soundcloud.android.crop.Crop
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_image_pick.*
 import java.io.File
 import java.io.FileOutputStream
@@ -74,13 +75,19 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     fun setData(){
         val intent:Intent = getIntent()
         if(!intent.getStringExtra("imageData").equals("")){
+            /*
             var test_task: URLtoBitmapTask = URLtoBitmapTask()
             test_task = URLtoBitmapTask().apply {
                 val imageData:String = intent.getStringExtra("imageData")
                 url = URL(imageData)
+                Log.e("url", url.toString())
                 val bitmap: Bitmap = test_task.execute().get()
                 modify_Profile_ImageView.setImageBitmap(bitmap)
             }
+            */
+            Picasso.get().load(intent.getStringExtra("imageData")).into(modify_Profile_ImageView);
+
+
         }else{
             modify_Profile_ImageView.setImageResource(R.drawable.ic_default_profile)
         }

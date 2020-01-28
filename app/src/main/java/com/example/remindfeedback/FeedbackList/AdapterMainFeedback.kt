@@ -35,10 +35,6 @@ class AdapterMainFeedback(
     private val activity: Activity,
     val feedbackMyYour: Int
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var isLoading: Boolean = false
-    private val visibleThreshold = 5
-    private var lastVisibleItem: Int = 0
-    private var totalItemCount: Int = 0
 
 
     fun addItem(item: ModelFeedback) {//아이템 추가
@@ -60,10 +56,6 @@ class AdapterMainFeedback(
 
     override fun getItemCount(): Int {
         return arrayList.size
-    }
-
-    fun setLoaded() {
-        isLoading = false
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -90,6 +82,8 @@ class AdapterMainFeedback(
 
         fun bind(feedback_list: ModelFeedback?, context: Context) {
 
+            Log.e("왜 안나옴", feedback_list!!.title)
+
             //상대이름, 피드백제목, 피드백 작성일 등 정의해줌
             if (feedback_list != null) {
                 main_Feedback_Name.text = feedback_list.adviser
@@ -115,6 +109,7 @@ class AdapterMainFeedback(
                 var bitmap: Bitmap = test_task.execute().get()
                 main_Feedback_Profile_Image.setImageBitmap(bitmap)
             } else {
+
                 if(feedback_list.adviser.equals("")){
                     main_Feedback_Profile_Image.visibility = View.INVISIBLE//조언자가 없을때
                     main_Feedback_Alarm.visibility = View.INVISIBLE
@@ -208,33 +203,39 @@ class AdapterMainFeedback(
                 return@setOnLongClickListener true
             }
 
-            // 디데이
-            var nowDate = LocalDate.now()
-            var strNow = nowDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            if(feedback_list.complete != 2){//완료가 아닐경우
+                main_Feedback_Dday.visibility = View.VISIBLE
+                // 디데이
+                var nowDate = LocalDate.now()
+                var strNow = nowDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
-            // 피드백 날짜 - 형식으로 바꾸기
-            var fbSplit = feedback_list?.date!!.split("년 ", "월 ", "일")
-            var fbDate: String
-            for (i in 0..2 step 1) {
-                fbDate = fbSplit[0] + "-" + fbSplit[1] + "-" + fbSplit[2]
-                // 데이트포맷
-                var sdf = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
-                // 오늘 타임스탬프
-                var todayTimestamp = sdf.parse(strNow).time
-                // 비교할 타임스탬프
-                var feedbackTimestamp = sdf.parse(fbDate).time
+                // 피드백 날짜 - 형식으로 바꾸기
+                var fbSplit = feedback_list?.date!!.split("년 ", "월 ", "일")
+                var fbDate: String
+                for (i in 0..2 step 1) {
+                    fbDate = fbSplit[0] + "-" + fbSplit[1] + "-" + fbSplit[2]
+                    // 데이트포맷
+                    var sdf = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+                    // 오늘 타임스탬프
+                    var todayTimestamp = sdf.parse(strNow).time
+                    // 비교할 타임스탬프
+                    var feedbackTimestamp = sdf.parse(fbDate).time
 
-                var differ = (feedbackTimestamp - todayTimestamp) / (24 * 60 * 60 * 1000)
-                var differInt = differ.toInt()
+                    var differ = (feedbackTimestamp - todayTimestamp) / (24 * 60 * 60 * 1000)
+                    var differInt = differ.toInt()
 
-                if (differInt == 0) {
-                    main_Feedback_Dday.setText("D - Day")
-                } else if (differInt < 0) {
-                    main_Feedback_Dday.setText("D + " + Math.abs(differInt))
-                } else if (differInt > 0) {
-                    main_Feedback_Dday.setText("D - " + differInt)
+                    if (differInt == 0) {
+                        main_Feedback_Dday.setText("D - Day")
+                    } else if (differInt < 0) {
+                        main_Feedback_Dday.setText("D + " + Math.abs(differInt))
+                    } else if (differInt > 0) {
+                        main_Feedback_Dday.setText("D - " + differInt)
+                    }
                 }
+            }else{//완료일경우
+                main_Feedback_Dday.visibility = View.GONE
             }
+
 
 
         }

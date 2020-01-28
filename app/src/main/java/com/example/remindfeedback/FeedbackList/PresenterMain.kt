@@ -36,7 +36,7 @@ class PresenterMain : ContractMain.Presenter {
         var feedback_lastid: Int = 0
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<GetAllFeedback> = apiService.GetAllFeedback(feedback_count, 10)
+        val register_request: Call<GetAllFeedback> = apiService.GetAllFeedback(feedback_count, 20)
         register_request.enqueue(object : Callback<GetAllFeedback> {
             override fun onResponse(
                 call: Call<GetAllFeedback>,
@@ -121,7 +121,7 @@ class PresenterMain : ContractMain.Presenter {
         var feedback_lastid: Int = 0
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<GetAllFeedback> = apiService.GetAllFeedback(feedback_count, 10)
+        val register_request: Call<GetAllFeedback> = apiService.GetAllFeedback(feedback_count, 20)
         register_request.enqueue(object : Callback<GetAllFeedback> {
             override fun onResponse(
                 call: Call<GetAllFeedback>,
@@ -189,7 +189,7 @@ class PresenterMain : ContractMain.Presenter {
         var feedback_lastid: Int = 0
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<GetAllFeedback> = apiService.GetAllFeedback(feedback_count, 10)
+        val register_request: Call<GetAllFeedback> = apiService.GetAllFeedback(feedback_count, 20)
         register_request.enqueue(object : Callback<GetAllFeedback> {
             override fun onResponse(
                 call: Call<GetAllFeedback>,

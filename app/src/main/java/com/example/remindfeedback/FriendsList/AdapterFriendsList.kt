@@ -101,6 +101,11 @@ class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFri
             //친구목록의 아이템을 선택하면 친구페이지로 가게됨
             itemView.setOnClickListener {
                 val intent = Intent(context, FriendsPageActivity::class.java)
+                intent.putExtra("nickname", friends_list.friendsName)
+                intent.putExtra("profileimage", friends_list.friendsProfileImage)
+                intent.putExtra("script", friends_list.friendsScript)
+                intent.putExtra("friend_uid", friends_list.friend_uid)
+                intent.putExtra("type", friends_list.type)
                 Toast.makeText(context, friends_list.friendsName+"의 친구페이지", Toast.LENGTH_SHORT).show()
                 context.startActivity(intent)
             }
@@ -117,9 +122,9 @@ class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFri
                     block_Tv.setText("차단 해제")
                 }
                 block_Tv.setOnClickListener {
-                    if(friends_list.viewinit == 3){
+                    if(friends_list.viewinit == 3){//차단해제
                         presenterFriendsList.unBlockRequest(arrayList,friends_list.friend_uid, this@AdapterFriendsList)
-                    }else{
+                    }else{//차단
                         presenterFriendsList.blockRequest(arrayList,friends_list.friend_uid, this@AdapterFriendsList )
                     }
                     dialogInterface!!.dismiss()
