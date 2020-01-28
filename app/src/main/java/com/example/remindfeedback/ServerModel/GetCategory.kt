@@ -3,13 +3,13 @@ package com.example.remindfeedback.ServerModel
 import com.google.gson.annotations.SerializedName
 
 //show all category에 사용
-class GetCategory{
+class GetCategory {
     @SerializedName("success")
-    var success:Boolean = false
+    var success: Boolean = false
     @SerializedName("data")
     var data: List<myCategory_List>? = null
     @SerializedName("message")
-    var message:String? = ""
+    var message: String? = ""
 }
 
 

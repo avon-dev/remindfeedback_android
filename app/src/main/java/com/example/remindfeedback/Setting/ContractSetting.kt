@@ -2,7 +2,7 @@ package com.example.remindfeedback.Setting
 
 interface ContractSetting {
 
-    interface View{
+    interface View {
 
     }
 

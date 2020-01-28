@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/under_line"
+            android:orientation="horizontal">
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+            <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/main_Feedback_Profile_Image"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="5dp"
+                        android:src="@mipmap/ic_launcher" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/main_Feedback_Alarm"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/red"
+                        android:textSize="20dp" />
+            </FrameLayout>
+
+            <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="match_parent"
+                    android:textColor="#929292"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="이름" />
+
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/textView29"
+                android:layout_width="7dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/black" />
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+
+            <TextView
+                    android:id="@+id/textView31"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="#929292"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_radius"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:text="D-24" />
+
+            <TextView
+                    android:id="@+id/textView32"
+                    android:textColor="#929292"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="2020년 02월 20일" />
+
+            <TextView
+                    android:id="@+id/textView33"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="#5b5b5b"
+                    android:gravity="center_vertical"
+                    android:text="wpdpdpdpppppppppppp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

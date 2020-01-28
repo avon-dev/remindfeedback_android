@@ -41,6 +41,7 @@
                     android:background="@drawable/spinner_type1" />
 
             <LinearLayout
+                    android:id="@+id/ing_Linear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/under_line"
@@ -75,7 +76,7 @@
                         android:layout_gravity="left"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/textView39" android:layout_weight="1"/>
-                <TextView
+                <!--TextView
                         android:id="@+id/recent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -109,7 +110,7 @@
                         android:layout_gravity="center_vertical|center_horizontal"
                         android:gravity="center_horizontal|center_vertical"
                         android:text="  알림 순"
-                        android:textSize="15dp" />
+                        android:textSize="15dp" /-->
 
             </LinearLayout>
 

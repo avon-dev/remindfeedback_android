@@ -24,7 +24,7 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
         //ModelCategorySetting("red", "첫번째 주제")
     )
 
-    lateinit var mAdapter:AdapterCategorySetting
+    lateinit var mAdapter: AdapterCategorySetting
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,8 +41,8 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
             view = this@CategorySettingActivity
             context = this@CategorySettingActivity
         }
-        mAdapter= AdapterCategorySetting(this, arrayList, presenterCategorySetting)
-        presenterCategorySetting.loadItems(mAdapter,arrayList)
+        mAdapter = AdapterCategorySetting(this, arrayList, presenterCategorySetting)
+        presenterCategorySetting.loadItems(mAdapter, arrayList)
 
 
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
@@ -57,22 +57,40 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        when(requestCode) {
+        when (requestCode) {
             100 -> {//크리에이트 화면에서 돌아왔을때
-                when(resultCode) {
+                when (resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        presenterCategorySetting.addItems(data.getStringExtra("color"),data.getStringExtra("title"),mAdapter)
+                        presenterCategorySetting.addItems(
+                            data.getStringExtra("color"),
+                            data.getStringExtra("title"),
+                            mAdapter
+                        )
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(this@CategorySettingActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+                    Activity.RESULT_CANCELED -> Toast.makeText(
+                        this@CategorySettingActivity,
+                        "취소됨.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             101 -> {//업데이트화면에서 돌아왔을때
-                when(resultCode) {
+                when (resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         Log.e("return", data.getIntExtra("id", -1).toString())
-                        presenterCategorySetting.updateItems(arrayList, data.getIntExtra("id", -1),data.getStringExtra("color"),data.getStringExtra("title"), mAdapter)
+                        presenterCategorySetting.updateItems(
+                            arrayList,
+                            data.getIntExtra("id", -1),
+                            data.getStringExtra("color"),
+                            data.getStringExtra("title"),
+                            mAdapter
+                        )
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(this@CategorySettingActivity, "주제 수정 취소됨", Toast.LENGTH_SHORT).show()
+                    Activity.RESULT_CANCELED -> Toast.makeText(
+                        this@CategorySettingActivity,
+                        "주제 수정 취소됨",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -84,7 +102,7 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
         intent.putExtra("id", id)
         intent.putExtra("color", color)
         intent.putExtra("title", title)
-        startActivityForResult(intent,101)
+        startActivityForResult(intent, 101)
     }
 
     // 타이틀바에 어떤 menu를 적용할지 정하는부분
@@ -109,7 +127,7 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
     // 추가버튼 눌렀을때
     fun create_category_Button(): Boolean {
         val intent = Intent(this, CreateCategoryActivity::class.java)
-        startActivityForResult(intent,100)
+        startActivityForResult(intent, 100)
         return true
     }
 

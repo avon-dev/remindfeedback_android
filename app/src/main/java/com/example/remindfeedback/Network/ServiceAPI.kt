@@ -85,7 +85,7 @@ interface ServiceAPI {
 
     //하나의 피드백 내부 포스트들 가져오기
     @GET("board/{feedbackid}/{board_count}")
-    fun GetAllBoard(@Path("feedbackid") feedback_id: Int,@Path("board_count") board_count: Int): Call<GetAllBoard>
+    fun GetAllBoard(@Path("feedbackid") feedback_id: Int, @Path("board_count") board_count: Int): Call<GetAllBoard>
 
     //글타입의 보드 생성
     @POST("board/text/create")
@@ -182,9 +182,21 @@ interface ServiceAPI {
     @POST("friend/create")
     fun CreateFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
 
-    //친구요청&수락 하기
+    //친구요청 거절 하기
     @PUT("friend/reject")
     fun RejectFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
+
+    //친구차단 하기
+    @PUT("friend/block")
+    fun BlockFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
+
+    //친구차단 해제하기
+    @PUT("friend/unblock")
+    fun UnBlockFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
+
+    //내 친구 차단목록 가져오기
+    @GET("friend/allblock")
+    fun GetBlockedFriends(): Call<GetFriends>
 
     //받은 친구요청 정보 가져오기
     @GET("friend/allrequest/receive")
@@ -197,6 +209,19 @@ interface ServiceAPI {
     //조언자목록 가져오기
     @GET("friend/alladviser")
     fun GetAdviser(): Call<GetFriends>
+
+    //피드백 완료요청하기
+    @POST("feedback/complete/request")
+    fun CompleteRequest(@Body completeRequest: AboutComplete): Call<ResponseBody>
+
+    //피드백 완료요청 수락하기
+    @POST("feedback/complete/accept")
+    fun CompleteAccept(@Body acceptRequest: AboutComplete): Call<ResponseBody>
+
+    //피드백 완료요청 거절하기
+    @POST("feedback/complete/reject")
+    fun CompleteReject(@Body acceptRequest: AboutComplete): Call<ResponseBody>
+
 
 
 }

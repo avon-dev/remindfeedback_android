@@ -4,21 +4,21 @@ import com.google.gson.annotations.SerializedName
 
 class GetAllComments {
     @SerializedName("success")
-    var success:Boolean = false
+    var success: Boolean = false
     @SerializedName("data")
-    var data:List<getAllComment>? = null
+    var data: List<getAllComment>? = null
     @SerializedName("message")
-    var message:String? = ""
+    var message: String? = ""
 }
 
 
-class getAllComment{
+class getAllComment {
     @SerializedName("id")
-    var id:Int = -1
+    var id: Int = -1
     @SerializedName("comment_content")
-    var comment_content:String = ""
+    var comment_content: String = ""
     @SerializedName("confirm")
-    var confirm:Boolean = false
+    var confirm: Boolean = false
     @SerializedName("createdAt")
     var createdAt: String = ""
     @SerializedName("updatedAt")
@@ -28,12 +28,12 @@ class getAllComment{
     @SerializedName("fk_user_uid")
     var fk_user_uid: String? = ""
     @SerializedName("fk_board_id")
-    var fk_board_id:Int = -1
+    var fk_board_id: Int = -1
     @SerializedName("user")
     var user: commentUser = commentUser()
 }
 
-class commentUser{
+class commentUser {
     @SerializedName("nickname")
     var nickname: String = ""
     @SerializedName("portrait")

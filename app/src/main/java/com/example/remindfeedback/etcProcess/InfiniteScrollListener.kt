@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 class InfiniteScrollListener(
     val func: () -> Unit,
     val layoutManager: LinearLayoutManager
-) : RecyclerView.OnScrollListener(){
+) : RecyclerView.OnScrollListener() {
 
     private var previousTotal = 0
     private var loading = true
@@ -31,7 +31,8 @@ class InfiniteScrollListener(
                 }
             }
             if (!loading && (totalItemCount - visibleItemCount)
-                <= (firstVisibleItem + visibleThreshold)) {
+                <= (firstVisibleItem + visibleThreshold)
+            ) {
                 // 끝에 도달 했을 때
                 Log.e("로딩끝", "로딩끝")
                 func() // 매개변수로 넘겨받은 람다식 함수

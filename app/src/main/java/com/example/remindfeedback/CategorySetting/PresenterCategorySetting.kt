@@ -11,13 +11,16 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
 
-class PresenterCategorySetting: ContractCategorySetting.Presenter {
+class PresenterCategorySetting : ContractCategorySetting.Presenter {
 
 
     override lateinit var view: ContractCategorySetting.View
     override lateinit var context: Context
 
-    override fun loadItems(adapterCategorySetting: AdapterCategorySetting, list: ArrayList<ModelCategorySetting>) {
+    override fun loadItems(
+        adapterCategorySetting: AdapterCategorySetting,
+        list: ArrayList<ModelCategorySetting>
+    ) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val register_request: Call<GetCategory> = apiService.GetCategory()
@@ -33,8 +36,15 @@ class PresenterCategorySetting: ContractCategorySetting.Presenter {
                             var myList: myCategory_List = myCategory_List()
                             myList = mCategory[i]
                             var addData: ModelCategorySetting =
-                                ModelCategorySetting(myList.category_id,myList.category_color, myList.category_title)
-                            Log.e("주제", "category_id: " + myList.category_id + ", category_title: " + myList.category_title )
+                                ModelCategorySetting(
+                                    myList.category_id,
+                                    myList.category_color,
+                                    myList.category_title
+                                )
+                            Log.e(
+                                "주제",
+                                "category_id: " + myList.category_id + ", category_title: " + myList.category_title
+                            )
                             adapterCategorySetting.addItem(addData)
                             view.refresh()
                         }
@@ -50,17 +60,18 @@ class PresenterCategorySetting: ContractCategorySetting.Presenter {
         })
     }
 
-    override fun addItems(color:String, title:String, mAdapter:AdapterCategorySetting) {
+    override fun addItems(color: String, title: String, mAdapter: AdapterCategorySetting) {
 
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        var createCategory:CreateCategory = CreateCategory(title, color)
+        var createCategory: CreateCategory = CreateCategory(title, color)
         val register_request: Call<GetCategory> = apiService.CreateCategory(createCategory)
         register_request.enqueue(object : Callback<GetCategory> {
 
             override fun onResponse(call: Call<GetCategory>, response: Response<GetCategory>) {
                 if (response.isSuccessful) {
-                    var modelCategorySetting:ModelCategorySetting = ModelCategorySetting(-1, color,title )
+                    var modelCategorySetting: ModelCategorySetting =
+                        ModelCategorySetting(-1, color, title)
                     mAdapter.addItem(modelCategorySetting)
                     view.refresh()
                 } else {
@@ -87,22 +98,29 @@ class PresenterCategorySetting: ContractCategorySetting.Presenter {
                 } else {
                 }
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("실패", t.message)
             }
         })
     }
 
-    override fun updateItems(list: ArrayList<ModelCategorySetting>, id: Int, color: String, title: String, adapterCategorySetting: AdapterCategorySetting) {
+    override fun updateItems(
+        list: ArrayList<ModelCategorySetting>,
+        id: Int,
+        color: String,
+        title: String,
+        adapterCategorySetting: AdapterCategorySetting
+    ) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         var modifyCategory: CreateCategory = CreateCategory(title, color)
         val request: Call<GetCategory> = apiService.ModifyCategory(id, modifyCategory)
-        request.enqueue(object : Callback<GetCategory>{
+        request.enqueue(object : Callback<GetCategory> {
 
             override fun onResponse(call: Call<GetCategory>, response: Response<GetCategory>) {
-                if (response.isSuccessful){
-                    Log.e("주제 수정","성공")
+                if (response.isSuccessful) {
+                    Log.e("주제 수정", "성공")
                     list.clear()
                     loadItems(adapterCategorySetting, list)
                     view.refresh()

@@ -11,15 +11,16 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
 
-class PresenterPickCategory:ContractPickCategory.Presenter {
+class PresenterPickCategory : ContractPickCategory.Presenter {
 
 
     override lateinit var view: ContractPickCategory.View
     override lateinit var context: Context
 
     override fun returnData(modelPickCategory: ModelPickCategory) {
-            view.returnData(modelPickCategory)
+        view.returnData(modelPickCategory)
     }
+
     override fun getData(arrayData: ArrayList<ModelPickCategory>) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
@@ -33,7 +34,11 @@ class PresenterPickCategory:ContractPickCategory.Presenter {
                         for (i in 0 until mCategory.size) {
                             var myList: myCategory_List = myCategory_List()
                             myList = mCategory[i]
-                            var pickCategory: ModelPickCategory = ModelPickCategory(myList.category_id, myList.category_color, myList.category_title)
+                            var pickCategory: ModelPickCategory = ModelPickCategory(
+                                myList.category_id,
+                                myList.category_color,
+                                myList.category_title
+                            )
                             arrayData.add(pickCategory)
                             view.refresh()
                         }

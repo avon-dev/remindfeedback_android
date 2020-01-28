@@ -4,7 +4,7 @@ import android.content.Context
 import org.jetbrains.annotations.Contract
 
 interface ContractCreateFeedback {
-    interface View{
+    interface View {
         fun setData()
 
     }
@@ -12,8 +12,8 @@ interface ContractCreateFeedback {
     interface Presenter {
 
         var view: View
-        var mContext:Context
-        
+        var mContext: Context
+
     }
 
 }

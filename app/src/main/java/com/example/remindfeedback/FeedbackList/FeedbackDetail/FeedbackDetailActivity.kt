@@ -18,13 +18,15 @@ import com.example.remindfeedback.ServerModel.CreateboardRecord
 import com.example.remindfeedback.ServerModel.CreateboardVideo
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
 
-class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View{
+class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View {
 
 
     private val TAG = "FeedbackDetailActivity"
     internal lateinit var presenterFeedbackDetail: PresenterFeedbackDetail
-    var feedback_id:Int = -1
-    lateinit var mAdapter:AdapterFeedbackDetail
+    var feedback_id: Int = -1
+    var feedbackMyYour: Int = -1
+    var feedback_complete:Int = -2
+    lateinit var mAdapter: AdapterFeedbackDetail
 
     var arrayList = arrayListOf<ModelFeedbackDetail>(
     )
@@ -35,7 +37,7 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
 
         //액션바 설정
         var ab: ActionBar = this.supportActionBar!!
-        ab.setTitle("")
+        ab.setTitle(" ")
         // 액션바 타이틀 가운데 정렬
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
@@ -47,7 +49,17 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
             view = this@FeedbackDetailActivity
             mContext = this@FeedbackDetailActivity
         }
-        mAdapter = AdapterFeedbackDetail(this, arrayList, presenterFeedbackDetail)
+
+        val intent = intent
+        feedback_id = intent.getIntExtra("feedback_id", -1)
+        feedbackMyYour = intent.getIntExtra("feedbackMyYour", -1)
+        feedback_complete = intent.getIntExtra("complete", -2)
+        Log.e("넘어온 feedbackMyYour", feedbackMyYour.toString())
+        feedback_Detail_Title_Tv.text = "[" + intent.getStringExtra("title") + "]에 대한 피드백"
+        feedback_Detail_Date_Tv.text = "목표일 : " + intent.getStringExtra("date")
+
+
+        mAdapter = AdapterFeedbackDetail(this, arrayList, presenterFeedbackDetail, feedbackMyYour)
 
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
         feedback_Detail_Recyclerview.adapter = mAdapter
@@ -55,57 +67,126 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
         feedback_Detail_Recyclerview.layoutManager = lm
         feedback_Detail_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
 
-        val intent = intent
-        feedback_id= intent.getIntExtra("feedback_id", -1)
-        feedback_Detail_Title_Tv.text = "["+intent.getStringExtra("title")+"]에 대한 피드백"
-        feedback_Detail_Date_Tv.text = "목표일 : "+intent.getStringExtra("date")
 
-        presenterFeedbackDetail.loadItems(arrayList, mAdapter,feedback_id)
+        presenterFeedbackDetail.loadItems(arrayList, mAdapter, feedback_id)
 
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when(requestCode) {
+        when (requestCode) {
             111 -> {    // 보드 추가 후 돌아왔을 때
-                when(resultCode) {
+                when (resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        if(data.getIntExtra("return_type", -1) == 0){//글일때
-                            val createBoardText = CreateBoardText(data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"))
-                            presenterFeedbackDetail.addTextItems(arrayList,createBoardText, mAdapter)
-                        }else if(data.getIntExtra("return_type", -1) == 1){//사진일때
-                            val createBoardPicture = CreateBoardPicture(data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"), data.getStringExtra("file1_uri"), data.getStringExtra("file2_uri"), data.getStringExtra("file3_uri") )
-                            presenterFeedbackDetail.addPictureItems(arrayList,createBoardPicture, mAdapter)
-                        }else if(data.getIntExtra("return_type", -1) == 2){//동영상일때
-                            val createboardVideo = CreateboardVideo(data.getIntExtra("feedback_id", -1),data.getStringExtra("board_title"), data.getStringExtra("board_content"),data.getStringExtra("video_uri"))
-                            presenterFeedbackDetail.addVideoItems(arrayList,createboardVideo, mAdapter)
-                        }else if(data.getIntExtra("return_type", -1) == 3){//녹음일때
-                            val createboardRecord = CreateboardRecord(data.getIntExtra("feedback_id", -1),data.getStringExtra("board_title"), data.getStringExtra("board_content"),data.getStringExtra("record_uri"))
-                            presenterFeedbackDetail.addRecordItems(arrayList,createboardRecord, mAdapter)
+                        if (data.getIntExtra("return_type", -1) == 0) {//글일때
+                            val createBoardText = CreateBoardText(
+                                data.getIntExtra("feedback_id", -1),
+                                data.getStringExtra("board_title"),
+                                data.getStringExtra("board_content")
+                            )
+                            presenterFeedbackDetail.addTextItems(
+                                arrayList,
+                                createBoardText,
+                                mAdapter
+                            )
+                        } else if (data.getIntExtra("return_type", -1) == 1) {//사진일때
+                            val createBoardPicture = CreateBoardPicture(
+                                data.getIntExtra("feedback_id", -1),
+                                data.getStringExtra("board_title"),
+                                data.getStringExtra("board_content"),
+                                data.getStringExtra("file1_uri"),
+                                data.getStringExtra("file2_uri"),
+                                data.getStringExtra("file3_uri")
+                            )
+                            presenterFeedbackDetail.addPictureItems(
+                                arrayList,
+                                createBoardPicture,
+                                mAdapter
+                            )
+                        } else if (data.getIntExtra("return_type", -1) == 2) {//동영상일때
+                            val createboardVideo = CreateboardVideo(
+                                data.getIntExtra("feedback_id", -1),
+                                data.getStringExtra("board_title"),
+                                data.getStringExtra("board_content"),
+                                data.getStringExtra("video_uri")
+                            )
+                            presenterFeedbackDetail.addVideoItems(
+                                arrayList,
+                                createboardVideo,
+                                mAdapter
+                            )
+                        } else if (data.getIntExtra("return_type", -1) == 3) {//녹음일때
+                            val createboardRecord = CreateboardRecord(
+                                data.getIntExtra("feedback_id", -1),
+                                data.getStringExtra("board_title"),
+                                data.getStringExtra("board_content"),
+                                data.getStringExtra("record_uri")
+                            )
+                            presenterFeedbackDetail.addRecordItems(
+                                arrayList,
+                                createboardRecord,
+                                mAdapter
+                            )
                         }
 
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(this@FeedbackDetailActivity, "취소됨.", Toast.LENGTH_SHORT).show()
+                    Activity.RESULT_CANCELED -> Toast.makeText(
+                        this@FeedbackDetailActivity,
+                        "취소됨.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             112 -> {    // 보드 수정 후 돌아왔을 때
-                when(resultCode){
+                when (resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        if ( data.getIntExtra("return_type", -1) == 0 ){    // 글
-                            val modifyBoardText = CreateBoardText( data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content") )
-                            presenterFeedbackDetail.updateTextItems(arrayList, data.getIntExtra("board_id", -1), modifyBoardText, mAdapter)
-                        }else if ( data.getIntExtra("return_type", -1) == 1 ) { // 사진
-                            val modifyBoardPicture = CreateBoardPicture(data.getIntExtra("feedback_id", -1), data.getStringExtra("board_title"), data.getStringExtra("board_content"), data.getStringExtra("file1_uri"), data.getStringExtra("file2_uri"), data.getStringExtra("file3_uri") )
-                            presenterFeedbackDetail.updatePictureItems(arrayList, data.getIntExtra("board_id", -1), modifyBoardPicture, mAdapter)
+                        if (data.getIntExtra("return_type", -1) == 0) {    // 글
+                            val modifyBoardText = CreateBoardText(
+                                data.getIntExtra("feedback_id", -1),
+                                data.getStringExtra("board_title"),
+                                data.getStringExtra("board_content")
+                            )
+                            presenterFeedbackDetail.updateTextItems(
+                                arrayList,
+                                data.getIntExtra("board_id", -1),
+                                modifyBoardText,
+                                mAdapter
+                            )
+                        } else if (data.getIntExtra("return_type", -1) == 1) { // 사진
+                            val modifyBoardPicture = CreateBoardPicture(
+                                data.getIntExtra("feedback_id", -1),
+                                data.getStringExtra("board_title"),
+                                data.getStringExtra("board_content"),
+                                data.getStringExtra("file1_uri"),
+                                data.getStringExtra("file2_uri"),
+                                data.getStringExtra("file3_uri")
+                            )
+                            presenterFeedbackDetail.updatePictureItems(
+                                arrayList,
+                                data.getIntExtra("board_id", -1),
+                                modifyBoardPicture,
+                                mAdapter
+                            )
                         }
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(this, "취소됨.", Toast.LENGTH_SHORT).show()
+                    Activity.RESULT_CANCELED -> Toast.makeText(
+                        this,
+                        "취소됨.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
     }
 
     // 수정화면
-    override fun modifyBoardActivity(feedback_id: Int, board_id: Int, board_category: Int, board_title: String, board_content: String) {
+    override fun modifyBoardActivity(
+        feedback_id: Int,
+        board_id: Int,
+        board_category: Int,
+        board_title: String,
+        board_content: String
+    ) {
         val intent = Intent(this, CreatePostActivity::class.java)
         intent.putExtra("feedback_id", feedback_id)
         intent.putExtra("board_id", board_id)
@@ -122,18 +203,44 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
 
     //타이틀바에 어떤 menu를 적용할지 정하는부분
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.feedback_detail_menu, menu)
+        when (feedbackMyYour) {
+            0 -> {//내꺼
+                menuInflater.inflate(R.menu.feedback_detail_menu, menu)
+            }
+            1 -> {//다른사람꺼
+                Log.e("feedback_complete", feedback_complete.toString())
+                when(feedback_complete){
+                    1 -> {
+                        menuInflater.inflate(R.menu.feedback_detail_adviser_menu, menu)
+                    }
+                }
+            }
+        }
         return true
     }
 
     //타이틀바 메뉴를 클릭했을시
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle presses on the action bar items
-        when(item.itemId){
-            R.id.create_Post_Button -> { return create_Post_Button() }
-            else -> {return super.onOptionsItemSelected(item)}
+        when (item.itemId) {
+            R.id.create_Post_Button -> {
+                return create_Post_Button()
+            }
+            R.id.complete_Request_Button -> {
+                return complete_Request_Button()
+            }
+            R.id.complete_Accept_Button -> {
+                return complete_Accept_Button()
+            }
+            R.id.complete_Reject_Button -> {
+                return  complete_Reject_Button()
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
         }
     }
+
     fun create_Post_Button(): Boolean {
         val intent = Intent(this, CreatePostActivity::class.java)
         intent.putExtra("feedback_id", feedback_id)
@@ -141,8 +248,43 @@ class FeedbackDetailActivity : AppCompatActivity() , ContractFeedbackDetail.View
         return true
     }
 
+    fun complete_Request_Button(): Boolean {
+        when(feedback_complete){
+            -1, 0 -> { presenterFeedbackDetail.completeRequest(feedback_id) }
+            1 -> { Toast.makeText(this, "이미 완료 요청된 피드백 입니다.", Toast.LENGTH_LONG).show() }
+            2 -> { Toast.makeText(this, "이미 완료된 피드백 입니다.", Toast.LENGTH_LONG).show()}
+        }
+        return true
+    }
+
+    fun complete_Accept_Button(): Boolean {
+        when(feedback_complete){
+            1 -> { presenterFeedbackDetail.completeAccept(feedback_id) }
+            -1, 0 -> { Toast.makeText(this, "완료요청 되지않은 피드백입니다.", Toast.LENGTH_LONG).show() }
+            2 -> { Toast.makeText(this, "이미 완료된 피드백입니다.", Toast.LENGTH_LONG).show() }
+        }
+        return true
+    }
+    fun complete_Reject_Button():Boolean{
+        when(feedback_complete){
+            1 -> { presenterFeedbackDetail.completeReject(feedback_id) }
+            0 -> { Toast.makeText(this, "이미 거절한 피드백입니다.", Toast.LENGTH_LONG).show() }
+            -1 -> { Toast.makeText(this, "완료 요청되지 않은 피드백입니다.", Toast.LENGTH_LONG).show() }
+            2 -> { Toast.makeText(this, "이미 완료된 피드백입니다.", Toast.LENGTH_LONG).show() }
+
+        }
+
+        return true
+    }
+
+    //프레젠터에서 컴플리트값을 바꿔줌
+    override fun setFeedbackComplete(mFeedbackComplete:Int){
+        feedback_complete = mFeedbackComplete
+    }
+
     override fun refresh() {
         mAdapter.notifyDataSetChanged()
     }
+
 
 }

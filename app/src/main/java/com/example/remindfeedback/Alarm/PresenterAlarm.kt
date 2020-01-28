@@ -3,13 +3,14 @@ package com.example.remindfeedback.Alarm
 import android.content.Context
 import java.util.ArrayList
 
-class PresenterAlarm : ContractAlarm.Presenter{
+class PresenterAlarm : ContractAlarm.Presenter {
 
 
     lateinit override var view: ContractAlarm.View
     //알람만 불러오는거
     override fun loadAlarm(list: ArrayList<ModelAlarm>) {
     }
+
     //피드백만 불러오는거
     override fun loadFeedback(list: ArrayList<ModelAlarm>) {
     }

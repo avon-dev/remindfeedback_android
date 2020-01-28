@@ -2,7 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
+    <!--지금은 쓸모없을거같아서 일단 지움-->
+    <!--item
             android:id="@+id/search_Button"
             android:icon="@drawable/ic_search_black"
             android:title="Search"
@@ -11,7 +12,7 @@
             android:id="@+id/alarm_Button"
             android:icon="@drawable/ic_bell_black"
             android:title="Search"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"/-->
 
 
 

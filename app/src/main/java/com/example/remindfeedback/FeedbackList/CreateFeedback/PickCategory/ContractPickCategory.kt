@@ -6,7 +6,7 @@ import com.example.remindfeedback.CategorySetting.ModelCategorySetting
 import java.util.ArrayList
 
 interface ContractPickCategory {
-    interface View{
+    interface View {
         fun refresh()
         fun returnData(modelPickCategory: ModelPickCategory)
     }
@@ -16,6 +16,6 @@ interface ContractPickCategory {
         var view: View
         var context: Context
         fun returnData(modelPickCategory: ModelPickCategory)
-        fun getData(arrayData:ArrayList<ModelPickCategory>)
+        fun getData(arrayData: ArrayList<ModelPickCategory>)
     }
 }

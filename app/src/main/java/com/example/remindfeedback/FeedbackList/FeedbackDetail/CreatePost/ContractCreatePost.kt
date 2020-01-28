@@ -7,7 +7,7 @@ import com.example.remindfeedback.ServerModel.CreateBoardText
 import java.io.File
 
 interface ContractCreatePost {
-    interface View{
+    interface View {
         fun cameraBrowse()
         fun imageBrowse()
         fun getPath(uri: Uri): String
@@ -18,7 +18,7 @@ interface ContractCreatePost {
 
     interface Presenter {
         var view: View
-        var mContext:Context
+        var mContext: Context
         fun picktureDialogViwe()
         fun createImageFile(): File
         fun rotateImage(source: Bitmap, angle: Float): Bitmap

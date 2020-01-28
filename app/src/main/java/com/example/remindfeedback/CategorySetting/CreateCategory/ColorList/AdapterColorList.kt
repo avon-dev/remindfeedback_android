@@ -13,10 +13,11 @@ import com.example.remindfeedback.R
 import java.util.ArrayList
 
 
-
-
-
-class AdapterColorList(val context: Context, val arrayList: ArrayList<ModelColorList>, var presenterColorList: PresenterColorList) :   RecyclerView.Adapter<AdapterColorList.Holder>() {
+class AdapterColorList(
+    val context: Context,
+    val arrayList: ArrayList<ModelColorList>,
+    var presenterColorList: PresenterColorList
+) : RecyclerView.Adapter<AdapterColorList.Holder>() {
 
     fun addItem(item: ModelColorList) {//아이템 추가
         if (arrayList != null) {//널체크 해줘야함
@@ -47,12 +48,12 @@ class AdapterColorList(val context: Context, val arrayList: ArrayList<ModelColor
         val color_Holder = itemView.findViewById<TextView>(R.id.color_Holder)
 
 
-        fun bind (colorList: ModelColorList, context: Context) {
+        fun bind(colorList: ModelColorList, context: Context) {
             //헥사코드인식해서 배경으로 만듦
             color_Base_Tv.setBackgroundColor(Color.parseColor(colorList.color))
             color_Holder.text = colorList.color
-            Log.e("tag",colorList.color)
-            color_Base_Tv.setOnClickListener(){
+            Log.e("tag", colorList.color)
+            color_Base_Tv.setOnClickListener() {
                 color_Base_Tv.text = "✔"
                 val intent = Intent()
                 presenterColorList.returnColor(color_Holder.text.toString())

@@ -8,12 +8,12 @@ import okhttp3.Response
 import java.io.IOException
 import java.util.HashSet
 
-class ReceivedCookiesInterceptor: Interceptor {
+class ReceivedCookiesInterceptor : Interceptor {
     internal lateinit var preferences: SharedPreferences
     internal lateinit var context: Context
 
     //생성자
-    constructor(context: Context){
+    constructor(context: Context) {
         this.context = context
     }
 
@@ -26,7 +26,8 @@ class ReceivedCookiesInterceptor: Interceptor {
                 cookies.add(header)
             }
             // Preference에 cookies를 넣어주는 작업을 수행
-            val arr = cookies.toString().split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val arr = cookies.toString().split(";".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()
             val arr2 = arr[0].split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             Log.e("cookieInterceptor", arr2[1])
             preferences = context.getSharedPreferences("USERSIGN", 0)

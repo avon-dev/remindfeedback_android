@@ -10,7 +10,7 @@ import com.example.remindfeedback.R
 import kotlinx.android.synthetic.main.activity_color_list.*
 import kotlinx.android.synthetic.main.activity_pick_category.*
 
-class PickCategoryActivity : AppCompatActivity(), ContractPickCategory.View{
+class PickCategoryActivity : AppCompatActivity(), ContractPickCategory.View {
 
 
     lateinit var mAdapter: AdapterPickCategory
@@ -27,7 +27,7 @@ class PickCategoryActivity : AppCompatActivity(), ContractPickCategory.View{
             view = this@PickCategoryActivity
             context = this@PickCategoryActivity
         }
-        mAdapter= AdapterPickCategory(this, arrayList,presenterPickCategory)
+        mAdapter = AdapterPickCategory(this, arrayList, presenterPickCategory)
         presenterPickCategory.getData(arrayList)
 
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저

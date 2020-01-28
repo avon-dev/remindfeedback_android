@@ -6,16 +6,16 @@ import com.example.remindfeedback.CategorySetting.ModelCategorySetting
 import java.util.ArrayList
 
 interface ContractColorList {
-    interface View{
+    interface View {
         fun refresh()
-        fun returnColor(color:String)
+        fun returnColor(color: String)
     }
 
     interface Presenter {
 
         var view: View
         var context: Context
-        fun returnColor(color:String)
+        fun returnColor(color: String)
 
     }
 }

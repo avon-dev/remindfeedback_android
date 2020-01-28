@@ -1,11 +1,22 @@
 package com.example.remindfeedback.FriendsList.FriendsPage
 
+import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import com.example.remindfeedback.R
+import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import kotlinx.android.synthetic.main.activity_friends_page.*
+import java.net.URL
 
 class FriendsPageActivity : AppCompatActivity(), ContractFriendsPage.View {
+
+    lateinit var friendsProfileimage:String
+    lateinit var friendsScript:String
+    lateinit var friendsNickname:String
+    lateinit var friendsUid:String
+    var friendsType:Int = -2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +28,33 @@ class FriendsPageActivity : AppCompatActivity(), ContractFriendsPage.View {
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
 
+        var intent: Intent = intent
+        friendsProfileimage = intent.getStringExtra("profileimage")
+        friendsScript = intent.getStringExtra("script")
+        friendsNickname = intent.getStringExtra("nickname")
+        friendsUid = intent.getStringExtra("friend_uid")
+        friendsType = intent.getIntExtra("type", -2)
+
+        viewSetting()
+
+    }
+
+
+    fun viewSetting(){
+        friendpage_Nickname_Tv.text = friendsNickname
+        friendpage_Script_Tv.text = friendsScript
+        friendpage_ImageView
+
+        if(!friendsProfileimage.equals("")){
+            var test_task: URLtoBitmapTask = URLtoBitmapTask()
+            test_task = URLtoBitmapTask().apply {
+                url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+friendsProfileimage)
+            }
+            var bitmap: Bitmap = test_task.execute().get()
+            friendpage_ImageView.setImageBitmap(bitmap)
+        }else{
+            friendpage_ImageView.setImageResource(R.drawable.ic_default_profile)
+        }
 
     }
 }

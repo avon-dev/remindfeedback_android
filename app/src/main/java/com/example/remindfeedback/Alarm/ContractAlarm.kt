@@ -5,7 +5,7 @@ import java.util.ArrayList
 
 interface ContractAlarm {
 
-    interface View{
+    interface View {
         fun refresh()
     }
 
@@ -19,11 +19,11 @@ interface ContractAlarm {
 
         fun loadFeedback(list: ArrayList<ModelAlarm>)
 
-        fun addItems(position:Int)
+        fun addItems(position: Int)
 
-        fun removeItems(position:Int, id:Int, context: Context)
+        fun removeItems(position: Int, id: Int, context: Context)
 
-        fun updateItems(position:Int)
+        fun updateItems(position: Int)
     }
 
 }

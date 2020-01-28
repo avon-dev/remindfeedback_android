@@ -7,9 +7,18 @@ import java.util.ArrayList
 
 interface ContractPost {
 
-    interface View{
+    interface View {
         fun refresh()
-        fun setView(contentsType:Int,fileUrl_1:String?, fileUrl_2:String?, fileUrl_3:String?, title:String, date:String, content:String)
+        fun setView(
+            contentsType: Int,
+            fileUrl_1: String?,
+            fileUrl_2: String?,
+            fileUrl_3: String?,
+            title: String,
+            date: String,
+            content: String
+        )
+
         fun viewPagerSetting()
 
     }
@@ -17,16 +26,20 @@ interface ContractPost {
     interface Presenter {
 
         var view: View
-        var mContext:Context
+        var mContext: Context
 
         fun getComment(list: ArrayList<ModelComment>, adapterPost: AdapterPost, board_id: Int)
 
-        fun addComment(adapterPost: AdapterPost, createComment: CreateComment, arrayList: ArrayList<ModelComment>)
+        fun addComment(
+            adapterPost: AdapterPost,
+            createComment: CreateComment,
+            arrayList: ArrayList<ModelComment>
+        )
 
         fun removeItems(comment_id: Int, context: Context)
 
         fun updateItems(position: Int)
 
-        fun typeInit(feedback_id:Int, board_id:Int)
+        fun typeInit(feedback_id: Int, board_id: Int)
     }
 }
