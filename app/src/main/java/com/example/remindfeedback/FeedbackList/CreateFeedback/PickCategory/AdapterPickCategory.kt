@@ -51,7 +51,11 @@ class AdapterPickCategory(
 
         fun bind(colorList: ModelPickCategory, context: Context) {
             //헥사코드인식해서 배경으로 만듦
-            pick_Category_Color_Tv.setBackgroundColor(Color.parseColor(colorList.color))
+            if(colorList.color.equals("")){
+                pick_Category_Color_Tv.visibility = View.INVISIBLE
+            }else{
+                pick_Category_Color_Tv.setBackgroundColor(Color.parseColor(colorList.color))
+            }
             pick_Category_Title_Tv.text = colorList.title
             pick_Category_Id_Tv.text = colorList.id.toString()
             itemView.setOnClickListener() {

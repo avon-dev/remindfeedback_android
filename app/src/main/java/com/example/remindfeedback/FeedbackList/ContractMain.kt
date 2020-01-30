@@ -3,6 +3,7 @@ package com.example.remindfeedback.FeedbackList
 import android.content.Context
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.ModelPickCategory
 import java.util.*
 
 interface ContractMain {
@@ -60,7 +61,14 @@ interface ContractMain {
 
         fun modifyFeedbackActivity(id: Int, category_id: Int, date: String?, title: String)
 
+        fun getSpinnerArray(list:ArrayList<ModelPickCategory>)
 
+        fun categoryFilter(
+            category_id: Int,
+            list: ArrayList<ModelFeedback?>,
+            adapterMainFeedback: AdapterMainFeedback,
+            feedback_count: Int,
+            feedbackIngEd: Int)
     }
 
 }

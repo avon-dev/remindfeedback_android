@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import com.example.remindfeedback.CategorySetting.ModelCategorySetting
+import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.ModelPickCategory
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
 import com.example.remindfeedback.etcProcess.MyProgress
@@ -377,6 +378,144 @@ class PresenterMain : ContractMain.Presenter {
     // 피드백 수정화면 띄우기
     override fun modifyFeedbackActivity(id: Int, category_id: Int, date: String?, title: String) {
         view.modifyFeedbackActivity(id, category_id, date, title)
+    }
+
+    override fun getSpinnerArray(list: ArrayList<ModelPickCategory>) {
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<GetCategory> = apiService.GetCategory()
+        register_request.enqueue(object : Callback<GetCategory> {
+            override fun onResponse(call: Call<GetCategory>, response: Response<GetCategory>) {
+                if (response.isSuccessful) {
+                    val category: GetCategory = response.body()!!
+                    val mCategory = category.data
+                    Log.e("asdㅁㄴㅇㅁㄴㅇ", mCategory.toString())
+                    if (mCategory != null) {
+                        for (i in 0 until mCategory.size) {
+
+                            var myList: myCategory_List = myCategory_List()
+                            myList = mCategory[i]
+                            /*
+                            var addData: ModelCategorySetting =
+                                ModelCategorySetting(
+                                    myList.category_id,
+                                    myList.category_color,
+                                    myList.category_title
+                                )
+                            */
+                            list.add(ModelPickCategory(myList.category_id, myList.category_color, myList.category_title))
+                            view.refresh()
+                        }
+                    } else {
+                    }
+                } else {
+                    Log.e("asdasdasd", "뭔가 실패함")
+                }
+            }
+
+            override fun onFailure(call: Call<GetCategory>, t: Throwable) {
+            }
+        })
+    }
+
+    override fun categoryFilter(
+        category_id: Int,
+        list: ArrayList<ModelFeedback?>,
+        adapterMainFeedback: AdapterMainFeedback,
+        feedback_count: Int,
+        feedbackIngEd:Int
+    ) {
+        var myProgress: MyProgress = MyProgress(context)
+        myProgress.show()
+        var feedback_lastid: Int = 0
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<GetAllFeedback> = apiService.GetAllFeedback(feedback_count, 20)
+        register_request.enqueue(object : Callback<GetAllFeedback> {
+            override fun onResponse(
+                call: Call<GetAllFeedback>,
+                response: Response<GetAllFeedback>
+            ) {
+                if (response.isSuccessful) {
+                    val testItem: GetAllFeedback = response.body()!!
+                    val allData: getAllData? = testItem.data
+                    val mFeedback = allData!!.myFeedback
+                    val mCategory = allData!!.category
+                    var tag_Color: String? = null
+                    if (allData != null) {
+                        if (mFeedback != null) {
+                            for (i in 0 until mFeedback.size) {
+                                var mfl: myFeedback = myFeedback()
+                                mfl = mFeedback[i]
+
+                                var adviserUser: adviserUser = adviserUser()
+                                if (mfl.user == null) { //조언자가 없을경우 공백으로표시
+                                    adviserUser.nickname = ""
+                                    adviserUser.portrait = ""
+                                } else {
+                                    adviserUser = mfl.user!!
+                                }
+                                val date =
+                                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(mfl.write_date)
+                                val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
+                                val dateNewFormat = sdf.format(date)
+                                if (mCategory != null) {
+                                    for (j in 0 until mCategory.size) {
+                                        var category_list: category = category()
+                                        category_list = mCategory[j]
+                                        if (category_list.category_id == mfl.category) {
+                                            //카테고리가 내 카테고리 목록에 존재하면 그걸로 표시하고 포문 끝냄
+                                            tag_Color = category_list.category_color
+                                            break
+                                        } else {
+                                            //카테고리 목록에 없을시 검정색으로 표시
+                                            tag_Color = "#000000"
+                                        }
+                                    }
+                                }
+                                if(feedbackIngEd == 0){//진행중인것
+
+                                    if (tag_Color == null || mfl.complete == 2 || mfl.category != category_id) {//피드백 완료된건 아이템에 추가하지 않음
+                                    } else {
+                                        val addData: ModelFeedback = ModelFeedback(
+                                            mfl.id,
+                                            adviserUser.nickname!!, mfl.category, tag_Color, mfl.title,
+                                            adviserUser.portrait!!, dateNewFormat, mfl.complete, false
+                                        )
+                                        adapterMainFeedback.addItem(addData)
+                                    }
+                                }else{//진행완료인것
+
+                                    if (tag_Color == null || mfl.complete != 2 || mfl.category != category_id) {//피드백 완료된건 아이템에 추가하지 않음
+                                    } else {
+                                        val addData: ModelFeedback = ModelFeedback(
+                                            mfl.id,
+                                            adviserUser.nickname!!, mfl.category, tag_Color, mfl.title,
+                                            adviserUser.portrait!!, dateNewFormat, mfl.complete, false
+                                        )
+                                        adapterMainFeedback.addItem(addData)
+                                    }
+                                }
+                                feedback_lastid = mfl.id
+                            }
+                            view.setFeedbackCount(feedback_lastid)
+                            view.refresh()
+                        }
+                    } else {
+                    }
+                } else {
+                }
+                Log.e("tag", "response=" + response.raw())
+                myProgress.dismiss()
+            }
+
+            override fun onFailure(call: Call<GetAllFeedback>, t: Throwable) {
+                myProgress.dismiss()
+                Toast.makeText(context, "데이터를 불러올 수 없습니다. 개발자에게 문의 해주세요", Toast.LENGTH_SHORT).show()
+                Log.e("getfeedbackError", t.message)
+            }
+        })
+
     }
 
 

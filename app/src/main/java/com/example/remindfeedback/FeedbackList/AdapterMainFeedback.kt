@@ -81,9 +81,6 @@ class AdapterMainFeedback(
 
 
         fun bind(feedback_list: ModelFeedback?, context: Context) {
-
-            Log.e("왜 안나옴", feedback_list!!.title)
-
             //상대이름, 피드백제목, 피드백 작성일 등 정의해줌
             if (feedback_list != null) {
                 main_Feedback_Name.text = feedback_list.adviser
@@ -109,19 +106,18 @@ class AdapterMainFeedback(
                 var bitmap: Bitmap = test_task.execute().get()
                 main_Feedback_Profile_Image.setImageBitmap(bitmap)
             } else {
-
                 if(feedback_list.adviser.equals("")){
                     main_Feedback_Profile_Image.visibility = View.INVISIBLE//조언자가 없을때
                     main_Feedback_Alarm.visibility = View.INVISIBLE
                 }else{
                     main_Feedback_Profile_Image.visibility = View.VISIBLE//조언자가 있을때
                     main_Feedback_Alarm.visibility = View.VISIBLE
-
                     main_Feedback_Profile_Image.setImageResource(R.drawable.ic_default_profile)
                 }
 
             }
 
+            //임시로 색깔 넣어줌 시각적으로 보기위해
             when (feedback_list.complete) {
                 -1 -> {
                     itemView.setBackgroundColor(Color.WHITE)
@@ -156,8 +152,6 @@ class AdapterMainFeedback(
                 intent.putExtra("feedbackMyYour", feedbackMyYour)
                 intent.putExtra("complete", feedback_list.complete)
                 context.startActivity(intent)
-
-
             }
 
             //꾹 눌렀을때
