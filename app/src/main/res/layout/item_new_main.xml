@@ -82,25 +82,28 @@
                     android:paddingRight="3dp"
                     android:text="D-24" />
 
-            <TextView
-                    android:id="@+id/main_Feedback_Date"
-                    android:textColor="#929292"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="2020년 02월 20일" />
+
 
             <TextView
                     android:id="@+id/main_Feedback_Script"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginTop="4dp"
                     android:textColor="#5b5b5b"
                     android:gravity="center_vertical"
                     android:text="wpdpdpdpppppppppppp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                    android:id="@+id/main_Feedback_Date"
+                    android:textColor="#929292"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="2020년 02월 20일" />
+
         </LinearLayout>
     </LinearLayout>
 

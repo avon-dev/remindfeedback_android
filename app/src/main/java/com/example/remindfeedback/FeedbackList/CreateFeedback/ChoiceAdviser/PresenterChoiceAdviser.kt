@@ -41,6 +41,7 @@ class PresenterChoiceAdviser : ContractChoiceAdviser.Presenter {
                             myList = fList[i]
                             var addData: ModelFriendsList = ModelFriendsList(
                                 myList.user_uid,
+                                myList.id,
                                 myList.nickname!!,
                                 myList.introduction!!,
                                 myList.portrait!!,

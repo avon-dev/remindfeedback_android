@@ -58,7 +58,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     //스피너에 사용할 배열
     var spinnerArray = arrayListOf<ModelPickCategory>(ModelPickCategory(-2, "", "전체보기"))
-    private val mContext: Context = this
 
 
     lateinit var fab_main: FloatingActionButton
@@ -108,8 +107,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         //여기부터 fab코드
-        fab_open = AnimationUtils.loadAnimation(mContext, R.animator.fab_open)
-        fab_close = AnimationUtils.loadAnimation(mContext, R.animator.fab_close)
+        fab_open = AnimationUtils.loadAnimation(this, R.animator.fab_open)
+        fab_close = AnimationUtils.loadAnimation(this, R.animator.fab_close)
         fab_main = findViewById(R.id.fab_main)
 //        fab_sub1 = findViewById(R.id.fab_sub1)
 //        fab_sub2 = findViewById(R.id.fab_sub2)
@@ -206,16 +205,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }else{//필터하는중일때
                     presenterMain.categoryFilter(selectedCategoryId,arrayList, mAdapter, feedback_count,feedbackIngEd )
                 }
-                Log.e("feedbackMyYour", "feedbackMyYour" + feedbackMyYour)
             } else if (feedbackMyYour == 1) {
-                Log.e("feedbackMyYour", "feedbackMyYour" + feedbackMyYour)
                 presenterMain.loadYourItems(arrayList, mAdapter, feedback_count)
             }
         }
             , lm)
         )//갱신
-
-
     }
 
 

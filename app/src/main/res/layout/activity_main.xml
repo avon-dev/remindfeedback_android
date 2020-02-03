@@ -42,9 +42,12 @@
                     android:background="@drawable/spinner_type1" /-->
             <LinearLayout
                     android:id="@+id/category_Spinner"
+                    android:background="@drawable/spinner_type2"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginStart="10dp"
+                    android:layout_marginEnd = "10dp"
+                    android:layout_marginTop = "5dp"
                     android:orientation="horizontal">
 
                 <TextView

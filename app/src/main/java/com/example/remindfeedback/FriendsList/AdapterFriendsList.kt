@@ -123,9 +123,9 @@ class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFri
                 }
                 block_Tv.setOnClickListener {
                     if(friends_list.viewinit == 3){//차단해제
-                        presenterFriendsList.unBlockRequest(arrayList,friends_list.friend_uid, this@AdapterFriendsList)
+                        presenterFriendsList.unBlockRequest(arrayList,friends_list.friend_uid,friends_list.friend_id, this@AdapterFriendsList)
                     }else{//차단
-                        presenterFriendsList.blockRequest(arrayList,friends_list.friend_uid, this@AdapterFriendsList )
+                        presenterFriendsList.blockRequest(arrayList,friends_list.friend_uid,friends_list.friend_id, this@AdapterFriendsList )
                     }
                     dialogInterface!!.dismiss()
                 }
@@ -143,7 +143,7 @@ class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFri
             }
             //거절버튼 눌럿을때
             friend_Reject_Button.setOnClickListener{
-                presenterFriendsList.rejectRequest(arrayList,friends_list.friend_uid, this@AdapterFriendsList)
+                presenterFriendsList.rejectRequest(arrayList,friends_list.friend_uid,friends_list.friend_id, this@AdapterFriendsList)
             }
 
         }

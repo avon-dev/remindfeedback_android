@@ -50,7 +50,7 @@ class AdapterMainFeedback(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(activity).inflate(R.layout.item_main_feedback, parent, false)
+        val view = LayoutInflater.from(activity).inflate(R.layout.item_new_main, parent, false)
         return Holder(view)
     }
 

@@ -12,7 +12,7 @@ import retrofit2.http.POST
 interface ServiceAPI {
 
     //회원가입
-    @POST("auth/signup")
+    @POST("auth/register")
     fun SignUp(@Body json_account: SignUp): Call<SignUp>
 
     //로그인
@@ -29,39 +29,40 @@ interface ServiceAPI {
 
 
     //피드백 생성
-    @POST("feedback/create")
+    @POST("feedbacks/")
     fun CreateFeedback(@Body createFeedback: CreateFeedback): Call<CreateFeedback>
-
+/*
     //내가 요청한 피드백정보 가져오기
-    @GET("feedback/my/{start}")
+    @GET("feedbacks/my/{start}")
     fun GetFeedback(@Path("start") start: Int): Call<GetFeedback>
+*/
 
     //피드백정보 모두 가져오기
-    @GET("feedback/all/{feedback_count}/{limit}")
-    fun GetAllFeedback(@Path("feedback_count") feedback_count: Int, @Path("limit") limit: Int): Call<GetAllFeedback>
+    @GET("feedbacks/{lastid}/{limit}")
+    fun GetAllFeedback(@Path("lastid") lastid: Int, @Path("limit") limit: Int): Call<GetAllFeedback>
 
     // 피드백 수정
-    @PUT("feedback/update/{feedback_id}")
+    @PUT("feedbacks/{feedback_id}")
     fun ModifyFeedback(@Path("feedback_id") feedback_id: Int, @Body createFeedback: CreateFeedback): Call<CreateFeedback>
 
     //피드백 삭제
-    @DELETE("feedback/{feedback_id}")
+    @DELETE("feedbacks/{feedback_id}")
     fun DeleteFeedback(@Path("feedback_id") feedback_id: Int): Call<ResponseBody>
 
     //내 주제 정보 가져오기
-    @GET("category/selectall")
+    @GET("categories")
     fun GetCategory(): Call<GetCategory>
 
     //주제 생성
-    @POST("category/create")
+    @POST("categories")
     fun CreateCategory(@Body createCategory: CreateCategory): Call<GetCategory>
 
     // 주제 수정
-    @PUT("category/update/{category_id}")
+    @PUT("categories/{category_id}")
     fun ModifyCategory(@Path("category_id") category_id: Int, @Body createCategory: CreateCategory): Call<GetCategory>
 
     //주제 삭제
-    @DELETE("category/deleteone/{category_id}")
+    @DELETE("categories/{category_id}")
     fun DeleteCategory(@Path("category_id") category_id: Int): Call<ResponseBody>
 
     //내 정보 가져오기
@@ -70,34 +71,34 @@ interface ServiceAPI {
 
     //내 닉네임 수정하기
     @FormUrlEncoded
-    @PATCH("mypage/update/nickname")
+    @PATCH("mypage/nickname")
     fun PatchNickname(@Field("nickname") nickname: String): Call<GetMyPage>
 
     //내 상태메세지 수정하기
     @FormUrlEncoded
-    @PATCH("mypage/update/introduction")
+    @PATCH("mypage/introduction")
     fun PatchIntoduction(@Field("introduction") introduction: String?): Call<GetMyPage>
 
     //내 프로필 이미지 수정하기
     @Multipart
-    @PATCH("mypage/update/portrait")
+    @PATCH("mypage/portrait")
     fun PatchPortrait(@Part portrait: MultipartBody.Part?): Call<GetMyPage>
 
     //하나의 피드백 내부 포스트들 가져오기
-    @GET("board/{feedbackid}/{board_count}")
-    fun GetAllBoard(@Path("feedbackid") feedback_id: Int, @Path("board_count") board_count: Int): Call<GetAllBoard>
+    @GET("board/cards/{feedbackid}/{lastid}/20")
+    fun GetAllBoard(@Path("feedbackid") feedback_id: Int, @Path("lastid") lastid: Int): Call<GetAllBoard>
 
     //글타입의 보드 생성
-    @POST("board/text/create")
+    @POST("board/cards/text")
     fun CreateBoardText(@Body createCategory: CreateBoardText): Call<GetAllBoard>
 
     // 글 타입의 보드 수정
-    @PUT("board/text/update/{board_id}")
+    @PUT("board/cards/text/{board_id}")
     fun UpdateBoardText(@Path("board_id") board_id: Int, @Body createBoardText: CreateBoardText): Call<GetAllBoard>
 
     //사진타입의 보드 생성
     @Multipart
-    @POST("board/picture/create")
+    @POST("board/cards/picture/")
     fun CreateBoardPictue(
         @Part("feedback_id") feedback_id: RequestBody,
         @Part("board_title") board_title: RequestBody,
@@ -109,7 +110,7 @@ interface ServiceAPI {
 
     // 사진 타입의 보드 수정 - 전체(제목, 내용, 사진)
     @Multipart
-    @PUT("board/picture/update/{board_id}")
+    @PUT("board/cards/picture/{board_id}")
     fun UpdateBoardPictureAll(
         @Path("board_id") board_id: Int,
         @Part("board_title") board_title: RequestBody,
@@ -124,7 +125,7 @@ interface ServiceAPI {
 
     // 사진 타입의 보드 수정 - 사진만
     @Multipart
-    @PATCH("board/picture/files/{board_id}")
+    @PATCH("board/cards/picture/files/{board_id}")
     fun UpdateBoardPicture(
         @Part updatefile1: Boolean,
         @Part file1: MultipartBody.Part?,
@@ -136,7 +137,7 @@ interface ServiceAPI {
 
     //비디오 타입의 보드 생성
     @Multipart
-    @POST("board/video/create")
+    @POST("board/cards/video")
     fun CreateBoardVideo(
         @Part("feedback_id") feedback_id: RequestBody,
         @Part("board_title") board_title: RequestBody,
@@ -146,7 +147,7 @@ interface ServiceAPI {
 
     //녹음 타입의 보드 생성
     @Multipart
-    @POST("board/record/create")
+    @POST("board/cards/record")
     fun CreateBoardRecord(
         @Part("feedback_id") feedback_id: RequestBody,
         @Part("board_title") board_title: RequestBody,
@@ -155,72 +156,72 @@ interface ServiceAPI {
     ): Call<GetAllBoard>
 
     //보드 삭제
-    @DELETE("board/{board_id}")
+    @DELETE("board/cards/{board_id}")
     fun DeleteBoard(@Path("board_id") board_id: Int): Call<ResponseBody>
 
     //댓글 생성
-    @POST("comment/create")
+    @POST("comments")
     fun CreateComment(@Body createComment: CreateComment): Call<CreateComment>
 
     //댓글 삭제
-    @DELETE("comment/delete/{comment_id}")
+    @DELETE("comments/{comment_id}")
     fun DeleteComment(@Path("comment_id") comment_id: Int): Call<ResponseBody>
 
     //각 게시글의 댓글 가져오기
-    @GET("comment/selectall/{board_id}")
+    @GET("comments/all/{board_id}")
     fun GetAllComment(@Path("board_id") board_id: Int): Call<GetAllComments>
 
     //내 친구 정보 가져오기
-    @GET("friend/allfriend")
+    @GET("friends")
     fun GetFriends(): Call<GetFriends>
 
     //친구 검색하기
-    @POST("friend/search")
+    @POST("friends/search")
     fun SearchFriends(@Body searchEmailModel: SearchEmailModel): Call<SearchFriend>
 
     //친구요청&수락 하기
-    @POST("friend/create")
+    @POST("friends")
     fun CreateFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
 
     //친구요청 거절 하기
-    @PUT("friend/reject")
-    fun RejectFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
+    @PATCH("friends/rejection/{friend_id}")
+    fun RejectFriend(@Path("friend_id") friend_id: Int, @Body rejectFriend: RejectFriend): Call<SearchFriend>
 
     //친구차단 하기
-    @PUT("friend/block")
-    fun BlockFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
+    @PATCH("friends/block/{friend_id}")
+    fun BlockFriend(@Path("feedback_id") feedback_id: Int,@Body rejectFriend: RejectFriend): Call<SearchFriend>
 
     //친구차단 해제하기
-    @PUT("friend/unblock")
-    fun UnBlockFriend(@Body createFriend: CreateFriend): Call<SearchFriend>
+    @PATCH("friends/unblock/{friend_id}")
+    fun UnBlockFriend(@Path("friend_id") friend_id: Int,@Body rejectFriend: RejectFriend): Call<SearchFriend>
 
     //내 친구 차단목록 가져오기
-    @GET("friend/allblock")
+    @GET("friends/block")
     fun GetBlockedFriends(): Call<GetFriends>
 
     //받은 친구요청 정보 가져오기
-    @GET("friend/allrequest/receive")
+    @GET("friends/reception")
     fun GetReceivedFriendRequest(): Call<GetFriends>
 
     //보낸 친구요청 정보 가져오기
-    @GET("friend/allrequest/send")
+    @GET("friends/transmission")
     fun GetRequestedFriendRequest(): Call<GetFriends>
 
     //조언자목록 가져오기
-    @GET("friend/alladviser")
+    @GET("friends/adviser")
     fun GetAdviser(): Call<GetFriends>
 
     //피드백 완료요청하기
-    @POST("feedback/complete/request")
-    fun CompleteRequest(@Body completeRequest: AboutComplete): Call<ResponseBody>
+    @POST("feedbacks/request/{feedback_id}")
+    fun CompleteRequest(@Path("feedback_id") feedback_id: Int): Call<ResponseBody>
 
     //피드백 완료요청 수락하기
-    @POST("feedback/complete/accept")
-    fun CompleteAccept(@Body acceptRequest: AboutComplete): Call<ResponseBody>
+    @POST("feedbacks/accept/{feedback_id}")
+    fun CompleteAccept(@Path("feedback_id") feedback_id: Int): Call<ResponseBody>
 
     //피드백 완료요청 거절하기
-    @POST("feedback/complete/reject")
-    fun CompleteReject(@Body acceptRequest: AboutComplete): Call<ResponseBody>
+    @POST("feedbacks/reject/{feedback_id}")
+    fun CompleteReject(@Path("feedback_id") feedback_id: Int): Call<ResponseBody>
 
 
 

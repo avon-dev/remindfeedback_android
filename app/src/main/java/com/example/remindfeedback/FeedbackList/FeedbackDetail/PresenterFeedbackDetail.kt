@@ -487,8 +487,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
         var basicDialog: BasicDialog = BasicDialog("피드백 완료 요청 하시겠습니까?", mContext, {
             val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
             val apiService = RetrofitFactory.serviceAPI(client)
-            var completeRequest: AboutComplete = AboutComplete(feedback_id)
-            val register_request: Call<ResponseBody> = apiService.CompleteRequest(completeRequest)
+            val register_request: Call<ResponseBody> = apiService.CompleteRequest(feedback_id)
             register_request.enqueue(object : Callback<ResponseBody> {
 
                 override fun onResponse(
@@ -519,8 +518,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
         var basicDialog: BasicDialog = BasicDialog("정말로 수락 하시겠습니까?", mContext, {
             val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
             val apiService = RetrofitFactory.serviceAPI(client)
-            var completeRequest: AboutComplete = AboutComplete(feedback_id)
-            val register_request: Call<ResponseBody> = apiService.CompleteAccept(completeRequest)
+            val register_request: Call<ResponseBody> = apiService.CompleteAccept(feedback_id)
             register_request.enqueue(object : Callback<ResponseBody> {
 
                 override fun onResponse(
@@ -549,8 +547,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
         var basicDialog: BasicDialog = BasicDialog("정말로 거절 하시겠습니까?", mContext, {
             val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
             val apiService = RetrofitFactory.serviceAPI(client)
-            var completeRequest: AboutComplete = AboutComplete(feedback_id)
-            val register_request: Call<ResponseBody> = apiService.CompleteReject(completeRequest)
+            val register_request: Call<ResponseBody> = apiService.CompleteReject(feedback_id)
             register_request.enqueue(object : Callback<ResponseBody> {
 
                 override fun onResponse(
