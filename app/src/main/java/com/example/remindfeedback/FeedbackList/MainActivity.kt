@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var selectedCategoryId = -2
     //리사이클러뷰에서 쓸 리스트와 어댑터 선언
     var arrayList = arrayListOf<ModelFeedback?>()
-
+    private var lastTimeBackPressed:Long=-1500
 
 
 
@@ -367,9 +367,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            // (현재 버튼 누른 시간-이전에 버튼 누른 시간) <=1.5초일 때 동작
+            if(System.currentTimeMillis()-lastTimeBackPressed<=1500)
+                finish()
+            lastTimeBackPressed=System.currentTimeMillis()
+            Toast.makeText(this,"한 번 더 누르면 종료됩니다",Toast.LENGTH_SHORT).show()
         }
     }
+
+
 
     override fun onRestart() {
         super.onRestart()

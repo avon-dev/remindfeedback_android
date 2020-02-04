@@ -229,15 +229,15 @@ interface ServiceAPI {
     fun GetAdviser(): Call<GetFriends>
 
     //피드백 완료요청하기
-    @POST("feedbacks/request/{feedback_id}")
+    @PATCH("feedbacks/request/{feedback_id}")
     fun CompleteRequest(@Path("feedback_id") feedback_id: Int): Call<ResponseBody>
 
     //피드백 완료요청 수락하기
-    @POST("feedbacks/accept/{feedback_id}")
+    @PATCH("feedbacks/approval/{feedback_id}")
     fun CompleteAccept(@Path("feedback_id") feedback_id: Int): Call<ResponseBody>
 
     //피드백 완료요청 거절하기
-    @POST("feedbacks/reject/{feedback_id}")
+    @PATCH("feedbacks/rejection/{feedback_id}")
     fun CompleteReject(@Path("feedback_id") feedback_id: Int): Call<ResponseBody>
 
 

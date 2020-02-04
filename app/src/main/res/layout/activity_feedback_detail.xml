@@ -39,15 +39,17 @@
 
         <ImageView
                 android:id="@+id/photo_Iv"
+                android:layout_marginRight = "15dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                app:srcCompat="@drawable/ic_photo_alpha" />
+                app:srcCompat="@drawable/ic_photo_black" />
 
         <ImageView
                 android:id="@+id/text_Iv"
+                android:layout_marginRight = "15dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                app:srcCompat="@drawable/ic_text_alpha" />
+                app:srcCompat="@drawable/ic_text" />
 
         <!--<ImageView
                     android:id="@+id/video_Iv"

@@ -32,7 +32,6 @@ import java.io.OutputStream
 
 
 class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
-
     var return_type: Int = 0
     internal lateinit var presenterCreatePost: PresenterCreatePost
     var feedback_id: Int = -1
@@ -74,6 +73,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         //초기 뷰셋팅
         add_File_View.visibility = View.GONE
         contents_Image.setImageResource(R.drawable.ic_text)
+        contents_Type_Change_Button.text = "[ 글 ]"
 
         add_File_View.setOnClickListener() {
             if (return_type == 1) {//사진일경우
@@ -239,9 +239,9 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             Toast.makeText(this, "제목을 작성해 주세요.", Toast.LENGTH_SHORT).show()
         } else if (create_Post_Script_Tv.text.isEmpty()) {
             Toast.makeText(this, "내용을 작성해 주세요.", Toast.LENGTH_SHORT).show()
-        } else if (contents_Type_Change_Button.text == "컨텐츠 타입 선택") {
-            Toast.makeText(this, "컨텐츠 타입을 선택해 주세요.", Toast.LENGTH_SHORT).show()
-        } else {
+        } else if(return_type != 0 && lastUri_1 == null){
+            Toast.makeText(this, "파일을 선택해 주세요", Toast.LENGTH_LONG).show()
+        }else {
 
             intent.putExtra("return_type", return_type)
             title = create_Post_Title_Tv.text.toString()
@@ -438,6 +438,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         cursor.moveToFirst()
         return cursor.getString(column_index)
     }
+
 
 
 }
