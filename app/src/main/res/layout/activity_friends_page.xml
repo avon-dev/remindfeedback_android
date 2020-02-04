@@ -55,7 +55,7 @@
 
     </LinearLayout>
 
-    <TextView
+    <!--<TextView
             android:id="@+id/textView14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,6 +94,6 @@
             android:background="@drawable/under_line_gray"
             android:paddingLeft="20dp"
             android:text="3건"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />-->
 
 </LinearLayout>
