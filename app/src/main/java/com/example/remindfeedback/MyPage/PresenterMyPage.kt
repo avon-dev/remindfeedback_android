@@ -2,6 +2,7 @@ package com.example.remindfeedback.MyPage
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.text.InputFilter
@@ -25,8 +26,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import com.example.remindfeedback.FeedbackList.MainActivity
-
-
+import com.example.remindfeedback.Login.LoginActivity
 
 
 class PresenterMyPage : ContractMyPage.Presenter{
