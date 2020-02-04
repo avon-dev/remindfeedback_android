@@ -50,8 +50,14 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
                         if (!Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$", password_Input.text.toString())) {
                             Toast.makeText(this, "비밀번호 형식을 지켜주세요.\n(영문,숫자,특수문자 포함 최소 8글자)", Toast.LENGTH_SHORT).show()
                         } else {
-                            presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString())
-                            //finish()
+
+                            // 이용약관 동의 확인
+                            if ( !chk_1.isChecked || !chk_2.isChecked || !chk_3.isChecked ) {
+                                Toast.makeText(this, "이용약관에 모두 동의하여 주세요.", Toast.LENGTH_SHORT).show()
+                            } else {
+                                presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString())
+                                //finish()
+                            }
                         }
                     }
 
