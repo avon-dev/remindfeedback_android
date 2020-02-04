@@ -26,7 +26,10 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
     var feedback_id: Int = -1
     var feedbackMyYour: Int = -1
     var feedback_complete:Int = -2
+    var feedback_adviser:String = "" //어드바이저가 있는지 판단해서 완료요청을 할지 아니면 바로 완료로 옮겨버릴지 판단
     lateinit var mAdapter: AdapterFeedbackDetail
+    var photoBoolean:Boolean = true
+    var textBoolean:Boolean = true
 
     var arrayList = arrayListOf<ModelFeedbackDetail>(
     )
@@ -54,6 +57,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
         feedback_id = intent.getIntExtra("feedback_id", -1)
         feedbackMyYour = intent.getIntExtra("feedbackMyYour", -1)
         feedback_complete = intent.getIntExtra("complete", -2)
+        feedback_adviser = intent.getStringExtra("adviser")
         Log.e("넘어온 feedbackMyYour", feedbackMyYour.toString())
         feedback_Detail_Title_Tv.text = "[" + intent.getStringExtra("title") + "]에 대한 피드백"
         feedback_Detail_Date_Tv.text = "목표일 : " + intent.getStringExtra("date")
@@ -68,8 +72,32 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
         feedback_Detail_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
 
 
-        presenterFeedbackDetail.loadItems(arrayList, mAdapter, feedback_id)
+        presenterFeedbackDetail.loadItems(arrayList, mAdapter, feedback_id, photoBoolean, textBoolean)
 
+
+        photo_Iv.setOnClickListener{
+            if(photoBoolean == true){
+                photoBoolean = false
+                photo_Iv.setImageResource(R.drawable.ic_photo_alpha)
+                presenterFeedbackDetail.loadItems(arrayList, mAdapter, feedback_id, photoBoolean, textBoolean)
+            }else{
+                photoBoolean = true
+                photo_Iv.setImageResource(R.drawable.ic_photo_black)
+                presenterFeedbackDetail.loadItems(arrayList, mAdapter, feedback_id, photoBoolean, textBoolean)
+            }
+        }
+
+        text_Iv.setOnClickListener{
+            if(textBoolean == true){
+                textBoolean = false
+                text_Iv.setImageResource(R.drawable.ic_text_alpha)
+                presenterFeedbackDetail.loadItems(arrayList, mAdapter, feedback_id, photoBoolean, textBoolean)
+            }else{
+                textBoolean = true
+                text_Iv.setImageResource(R.drawable.ic_text)
+                presenterFeedbackDetail.loadItems(arrayList, mAdapter, feedback_id, photoBoolean, textBoolean)
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -247,16 +275,20 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
         startActivityForResult(intent, 111)
         return true
     }
-
+    //완료요청
     fun complete_Request_Button(): Boolean {
         when(feedback_complete){
-            -1, 0 -> { presenterFeedbackDetail.completeRequest(feedback_id) }
+            -1, 0 -> {
+                if(feedback_adviser.equals("")){
+                    presenterFeedbackDetail.completeAccept(feedback_id)//조언자가 없는 피드백이라 그냥 수락하게 함
+                }else{ presenterFeedbackDetail.completeRequest(feedback_id) }
+            }
             1 -> { Toast.makeText(this, "이미 완료 요청된 피드백 입니다.", Toast.LENGTH_LONG).show() }
             2 -> { Toast.makeText(this, "이미 완료된 피드백 입니다.", Toast.LENGTH_LONG).show()}
         }
         return true
     }
-
+    //완료수락
     fun complete_Accept_Button(): Boolean {
         when(feedback_complete){
             1 -> { presenterFeedbackDetail.completeAccept(feedback_id) }
@@ -265,6 +297,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
         }
         return true
     }
+    //완료거절
     fun complete_Reject_Button():Boolean{
         when(feedback_complete){
             1 -> { presenterFeedbackDetail.completeReject(feedback_id) }

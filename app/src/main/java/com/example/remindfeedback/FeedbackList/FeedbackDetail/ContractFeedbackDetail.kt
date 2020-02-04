@@ -28,7 +28,9 @@ interface ContractFeedbackDetail {
         fun loadItems(
             list: ArrayList<ModelFeedbackDetail>,
             adapterFeedbackDetail: AdapterFeedbackDetail,
-            feedback_Id: Int
+            feedback_Id: Int,
+            photoBoolean: Boolean,
+            textBoolean: Boolean
         )
 
         fun addTextItems(

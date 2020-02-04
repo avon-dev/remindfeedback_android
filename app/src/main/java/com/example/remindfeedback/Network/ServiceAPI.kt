@@ -25,7 +25,7 @@ interface ServiceAPI {
 
     //내정보 가져오기
     @GET("auth/me/")
-    fun GET_User(): Call<ResponseBody>
+    fun GET_User(): Call<GetMe>
 
     //비밀번호 찾기 요청
     @POST("auth/password/")
@@ -99,7 +99,8 @@ interface ServiceAPI {
     //내 프로필 이미지 수정하기
     @Multipart
     @PATCH("mypage/portrait")
-    fun PatchPortrait(@Part portrait: MultipartBody.Part?): Call<GetMyPage>
+    fun PatchPortrait(@Part portrait: MultipartBody.Part?,
+                      @Part("updatefile") updatefile: RequestBody): Call<GetMyPage>
 
     //하나의 피드백 내부 포스트들 가져오기
     @GET("board/cards/{feedbackid}/{lastid}/20")
@@ -229,15 +230,15 @@ interface ServiceAPI {
     fun GetAdviser(): Call<GetFriends>
 
     //피드백 완료요청하기
-    @POST("feedbacks/request/{feedback_id}")
+    @PATCH("feedbacks/request/{feedback_id}")
     fun CompleteRequest(@Path("feedback_id") feedback_id: Int): Call<ResponseBody>
 
     //피드백 완료요청 수락하기
-    @POST("feedbacks/accept/{feedback_id}")
+    @PATCH("feedbacks/approval/{feedback_id}")
     fun CompleteAccept(@Path("feedback_id") feedback_id: Int): Call<ResponseBody>
 
     //피드백 완료요청 거절하기
-    @POST("feedbacks/reject/{feedback_id}")
+    @PATCH("feedbacks/rejection/{feedback_id}")
     fun CompleteReject(@Path("feedback_id") feedback_id: Int): Call<ResponseBody>
 
 

@@ -2,6 +2,7 @@ package com.example.remindfeedback.FeedbackList.FeedbackDetail
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
 import com.example.remindfeedback.etcProcess.BasicDialog
@@ -11,6 +12,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.util.ArrayList
+import android.app.Activity
+
+
 
 class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
 
@@ -22,7 +26,9 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
     override fun loadItems(
         list: ArrayList<ModelFeedbackDetail>,
         adapterFeedbackDetail: AdapterFeedbackDetail,
-        feedback_Id: Int
+        feedback_Id: Int,
+        photoBoolean: Boolean,
+        textBoolean: Boolean
     ) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
@@ -35,18 +41,28 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
                     val getAllBoard: GetAllBoard = response.body()!!
                     val mGetAllBoard = getAllBoard.data
                     if (mGetAllBoard != null) {
+                        list.clear()
                         for (i in 0 until mGetAllBoard.size) {
                             var myList: getAllBoardData = getAllBoardData()
                             myList = mGetAllBoard[i]
-                            var postData: ModelFeedbackDetail = ModelFeedbackDetail(
-                                feedback_Id,
-                                myList.id,
-                                myList.board_category,
-                                myList.board_title,
-                                myList.board_content,
-                                myList.createdAt
-                            )
-                            adapterFeedbackDetail.addItem(postData)
+
+                            Log.e("머징", photoBoolean.toString()+ textBoolean.toString())
+                            if(photoBoolean == true && textBoolean == true){
+                                var postData: ModelFeedbackDetail = ModelFeedbackDetail(feedback_Id, myList.id, myList.board_category, myList.board_title, myList.board_content, myList.createdAt)
+                                adapterFeedbackDetail.addItem(postData)
+                            }else if(photoBoolean == true && textBoolean == false){
+                                if(myList.board_category == 1){
+                                    var postData: ModelFeedbackDetail = ModelFeedbackDetail(feedback_Id, myList.id, myList.board_category, myList.board_title, myList.board_content, myList.createdAt)
+                                    adapterFeedbackDetail.addItem(postData)
+                                }
+                            }else if(photoBoolean == false && textBoolean == true){
+                                if(myList.board_category == 0){
+                                    var postData: ModelFeedbackDetail = ModelFeedbackDetail(feedback_Id, myList.id, myList.board_category, myList.board_title, myList.board_content, myList.createdAt)
+                                    adapterFeedbackDetail.addItem(postData)
+                                }
+                            }else{
+                            }
+
                             view.refresh()
                         }
                     } else {
@@ -78,7 +94,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
             override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
                 if (response.isSuccessful) {
                     list.clear()
-                    loadItems(list, adapterFeedbackDetail, createBoardText.feedback_id)
+                    loadItems(list, adapterFeedbackDetail, createBoardText.feedback_id, true, true)
                     view.refresh()
                 } else {
                 }
@@ -87,7 +103,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
             override fun onFailure(call: Call<GetAllBoard>, t: Throwable) {
                 //여기기서 실패가 뜨는데 이마 call모델이 달라서 그러는거같음, 근데 실패해도 별 상관없어서 새로고침 코드 여기에도 넣어둠
                 list.clear()
-                loadItems(list, adapterFeedbackDetail, createBoardText.feedback_id)
+                loadItems(list, adapterFeedbackDetail, createBoardText.feedback_id, true, true)
                 view.refresh()
             }
         })
@@ -188,7 +204,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
             override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
                 if (response.isSuccessful) {
                     list.clear()
-                    loadItems(list, adapterFeedbackDetail, createBoardPicture.feedback_id)
+                    loadItems(list, adapterFeedbackDetail, createBoardPicture.feedback_id, true, true)
                     view.refresh()
                 } else {
                 }
@@ -201,7 +217,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
             override fun onFailure(call: Call<GetAllBoard>, t: Throwable) {
                 //여기기서 실패가 뜨는데 이마 call모델이 달라서 그러는거같음, 근데 실패해도 별 상관없어서 새로고침 코드 여기에도 넣어둠
                 list.clear()
-                loadItems(list, adapterFeedbackDetail, createBoardPicture.feedback_id)
+                loadItems(list, adapterFeedbackDetail, createBoardPicture.feedback_id, true, true)
                 view.refresh()
                 Log.e("tag", "response=" + t.message + "   " + t.cause)
 
@@ -240,7 +256,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
             override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
                 if (response.isSuccessful) {
                     list.clear()
-                    loadItems(list, adapterFeedbackDetail, createboardVideo.feedback_id)
+                    loadItems(list, adapterFeedbackDetail, createboardVideo.feedback_id, true, true)
                     view.refresh()
                 } else {
                 }
@@ -253,7 +269,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
             override fun onFailure(call: Call<GetAllBoard>, t: Throwable) {
                 //여기기서 실패가 뜨는데 이마 call모델이 달라서 그러는거같음, 근데 실패해도 별 상관없어서 새로고침 코드 여기에도 넣어둠
                 list.clear()
-                loadItems(list, adapterFeedbackDetail, createboardVideo.feedback_id)
+                loadItems(list, adapterFeedbackDetail, createboardVideo.feedback_id, true, true)
                 view.refresh()
                 Log.e("tag", "response=" + t.message + "   " + t.cause)
             }
@@ -293,7 +309,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
             override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
                 if (response.isSuccessful) {
                     list.clear()
-                    loadItems(list, adapterFeedbackDetail, createboardRecord.feedback_id)
+                    loadItems(list, adapterFeedbackDetail, createboardRecord.feedback_id, true, true)
                     view.refresh()
                 } else {
                 }
@@ -305,7 +321,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
             override fun onFailure(call: Call<GetAllBoard>, t: Throwable) {
                 //여기기서 실패가 뜨는데 이마 call모델이 달라서 그러는거같음, 근데 실패해도 별 상관없어서 새로고침 코드 여기에도 넣어둠
                 list.clear()
-                loadItems(list, adapterFeedbackDetail, createboardRecord.feedback_id)
+                loadItems(list, adapterFeedbackDetail, createboardRecord.feedback_id, true, true)
                 view.refresh()
                 Log.e("tag", "response=" + t.message + "   " + t.cause)
             }
@@ -350,7 +366,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
             override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
                 if (response.isSuccessful) {
                     list.clear()
-                    loadItems(list, adapterFeedbackDetail, createBoardText.feedback_id)
+                    loadItems(list, adapterFeedbackDetail, createBoardText.feedback_id, true, true)
                     view.refresh()
                 } else {
                 }
@@ -359,7 +375,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
             override fun onFailure(call: Call<GetAllBoard>, t: Throwable) {
                 Log.e("보드 수정 실패", t.message)
                 list.clear()
-                loadItems(list, adapterFeedbackDetail, createBoardText.feedback_id)
+                loadItems(list, adapterFeedbackDetail, createBoardText.feedback_id, true, true)
                 view.refresh()
             }
 
@@ -451,7 +467,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
             override fun onResponse(call: Call<GetAllBoard>, response: Response<GetAllBoard>) {
                 if (response.isSuccessful) {
                     list.clear()
-                    loadItems(list, adapterFeedbackDetail, createBoardPicture.feedback_id)
+                    loadItems(list, adapterFeedbackDetail, createBoardPicture.feedback_id, true, true)
                     view.refresh()
                 } else {
                 }
@@ -463,7 +479,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
 
             override fun onFailure(call: Call<GetAllBoard>, t: Throwable) {
                 list.clear()
-                loadItems(list, adapterFeedbackDetail, createBoardPicture.feedback_id)
+                loadItems(list, adapterFeedbackDetail, createBoardPicture.feedback_id, true, true)
                 view.refresh()
                 Log.e("tag", "response=" + t.message + "   " + t.cause)
 
@@ -526,8 +542,10 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
                     response: Response<ResponseBody>
                 ) {
                     if (response.isSuccessful) {
+                        Toast.makeText(mContext, "피드백이 완료 되었습니다.", Toast.LENGTH_LONG).show()
                         view.setFeedbackComplete(2)
                         view.refresh()
+                        (mContext as Activity).finish()
                     } else {
                     }
                 }
@@ -540,7 +558,6 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
             })
         }, {})
         basicDialog.makeDialog()
-
     }
 
     override fun completeReject(feedback_id: Int) {

@@ -1,6 +1,7 @@
 package com.example.remindfeedback.FeedbackList
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.widget.ImageView
@@ -536,6 +537,37 @@ class PresenterMain : ContractMain.Presenter {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
             }
         })
+    }
+
+    override fun getMe() {
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+
+        val register_request: Call<GetMe> = apiService.GET_User()
+        register_request.enqueue(object : Callback<GetMe> {
+
+            override fun onResponse(call: Call<GetMe>, response: Response<GetMe>) {
+                if (response.isSuccessful) {
+                    var getMe:GetMe = response.body()!!
+                    var myInfo:getMyInfo = getMe.data!!
+
+                    var nickname = myInfo.nickname
+                    var email = myInfo.email
+                    var portrait = myInfo.portrait
+
+
+                    view.setNavData(nickname!!, email, portrait!!)
+                } else {
+                    val StatusCode = response.code()
+                    Log.e("post", "Status Code : $StatusCode")
+                }
+                Log.e("tag", "response=" + response.raw())
+            }
+
+            override fun onFailure(call: Call<GetMe>, t: Throwable) {
+            }
+        })
+
     }
 
 
