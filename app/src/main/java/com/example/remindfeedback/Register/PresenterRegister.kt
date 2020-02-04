@@ -31,6 +31,8 @@ class PresenterRegister: ContractRegister.Presenter {
                 Log.e("tag", "response=" + response.raw())
             }
             override fun onFailure(call: Call<SignUp>, t: Throwable) {
+                Log.e("회원가입 실패", t.message)
+
             }
         })
     }
