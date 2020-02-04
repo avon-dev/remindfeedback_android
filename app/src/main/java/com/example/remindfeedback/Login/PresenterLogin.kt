@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.example.remindfeedback.FeedbackList.MainActivity
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.R
+import com.example.remindfeedback.ServerModel.GetMe
 import com.example.remindfeedback.ServerModel.LogIn
 import com.example.remindfeedback.ServerModel.RequestFindPassword
 import okhttp3.OkHttpClient
@@ -60,10 +61,10 @@ class PresenterLogin() : ContractLogin.Presenter {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
 
-        val register_request: Call<ResponseBody> = apiService.GET_User()
-        register_request.enqueue(object : Callback<ResponseBody> {
+        val register_request: Call<GetMe> = apiService.GET_User()
+        register_request.enqueue(object : Callback<GetMe> {
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            override fun onResponse(call: Call<GetMe>, response: Response<GetMe>) {
                 if (response.isSuccessful) {
                     Log.e("getuser", "여기 겟유저")
                     Log.e("response", " ${response.headers()}")
@@ -75,7 +76,7 @@ class PresenterLogin() : ContractLogin.Presenter {
                 Log.e("tag", "response=" + response.raw())
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            override fun onFailure(call: Call<GetMe>, t: Throwable) {
             }
         })
 

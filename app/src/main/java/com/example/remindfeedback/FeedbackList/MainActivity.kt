@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -13,9 +14,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -35,10 +34,14 @@ import com.example.remindfeedback.Setting.SettingActivity
 import com.example.remindfeedback.etcProcess.BasicDialog
 import com.example.remindfeedback.etcProcess.InfiniteScrollListener
 import com.example.remindfeedback.etcProcess.MyProgress
+import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.nav_header.*
+import java.net.URL
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     ContractMain.View, View.OnClickListener {
@@ -55,8 +58,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var arrayList = arrayListOf<ModelFeedback?>()
     private var lastTimeBackPressed:Long=-1500
 
-
-
+    lateinit var nav_Nickname_Tv:TextView
+    lateinit var nav_Portrait_Iv:ImageView
+    lateinit var nav_Email_Tv:TextView
     //스피너에 사용할 배열
     var spinnerArray = arrayListOf<ModelPickCategory>(ModelPickCategory(-2, "", "전체보기"))
 
@@ -76,36 +80,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
 
         setSelectCategory()
-
-        //드로어 네비게이션 관련 코드
-        setSupportActionBar(toolbar)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
-        navView.setNavigationItemSelectedListener(this)
-
         ing_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
         presenterMain = PresenterMain().apply {
             view = this@MainActivity
             context = this@MainActivity
         }
+        setNavView()
 
         setRecyclerView(Main_Recyclerview)
-
-
         //presenter 정의하고 아이템을 불러옴
 
         presenterMain.loadItems(arrayList, mAdapter, feedback_count)
-
-
         presenterMain.getSpinnerArray(spinnerArray)
-
-
 
         //여기부터 fab코드
         fab_open = AnimationUtils.loadAnimation(this, R.animator.fab_open)
@@ -150,6 +136,49 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             intent.putExtra("isMain", true)
             startActivityForResult(intent, 113)
         }
+    }
+
+    //네비게이션 셋팅
+    fun setNavView(){
+        //드로어 네비게이션 관련 코드
+        setSupportActionBar(toolbar)
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val toggle = ActionBarDrawerToggle(
+            this, drawer_layout, toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+        drawer_layout.addDrawerListener(toggle)
+        toggle.syncState()
+        navView.setNavigationItemSelectedListener(this)
+        val nav_header_view = navView.getHeaderView(0)
+
+        nav_Nickname_Tv = nav_header_view.findViewById<View>(R.id.nav_Nickname_Tv) as TextView
+        nav_Portrait_Iv = nav_header_view.findViewById<View>(R.id.nav_Portrait_Iv) as ImageView
+        nav_Email_Tv = nav_header_view.findViewById<View>(R.id.nav_Email_Tv) as TextView
+
+        presenterMain.getMe()
+
+    }
+
+    //네비게이션 뷰셋팅
+    override fun setNavData(nickname: String, email: String, portrait: String) {
+        nav_Nickname_Tv.text = nickname
+        nav_Email_Tv.text = email
+        //Picasso.get().load("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+portrait).into(nav_Portrait_Iv)
+
+       if(!portrait.equals("")){
+           var test_task: URLtoBitmapTask = URLtoBitmapTask()
+           test_task = URLtoBitmapTask().apply {
+               url =
+                   URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + portrait)
+           }
+           var bitmap: Bitmap = test_task.execute().get()
+           nav_Portrait_Iv.setImageBitmap(bitmap)
+       }else{
+           nav_Portrait_Iv.setImageResource(R.drawable.ic_default_profile)
+       }
+
     }
 
     //진행중인거 완료된거 구별해서 아이템 불러오는 부분

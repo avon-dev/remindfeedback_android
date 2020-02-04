@@ -12,6 +12,7 @@ interface ContractMain {
         fun modifyFeedbackActivity(id: Int, category_id: Int, date: String?, title: String)
         fun setFeedbackCount(feedback_lastid: Int)
         fun IngEdInit(feedbackIngEd: Int)
+        fun setNavData(nickname:String, email:String, portrait:String)
     }
 
     interface Presenter {
@@ -71,6 +72,8 @@ interface ContractMain {
             feedbackIngEd: Int)
 
         fun logout()
+
+        fun getMe()
     }
 
 }

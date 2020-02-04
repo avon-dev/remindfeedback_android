@@ -17,11 +17,13 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
+
         <activity
                 android:name=".Login.FindPassword.FindPasswordActivity"
-                android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".MyPage.ImagePick.ImagePickActivity"
-                android:screenOrientation="portrait"/>
+                android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+                android:name=".MyPage.ImagePick.ImagePickActivity"
+                android:screenOrientation="portrait" />
         <activity
                 android:name="com.soundcloud.android.crop.CropImageActivity"
                 android:screenOrientation="portrait"
@@ -41,19 +43,19 @@
                 android:parentActivityName=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity" />
         <activity
                 android:name=".FeedbackList.FeedbackDetail.Post.PostActivity"
-                android:screenOrientation="portrait"
-                android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity" />
+                android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"
-                android:screenOrientation="portrait"
-                android:parentActivityName=".FeedbackList.MainActivity" />
+                android:parentActivityName=".FeedbackList.MainActivity"
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".FriendsList.FriendsPage.FriendsPageActivity"
                 android:parentActivityName=".FriendsList.FriendsListActivity" />
         <activity
                 android:name=".Alarm.AlarmActivity"
-                android:screenOrientation="portrait"
-                android:parentActivityName=".FeedbackList.MainActivity" />
+                android:parentActivityName=".FeedbackList.MainActivity"
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".Setting.SettingActivity"
                 android:parentActivityName=".FeedbackList.MainActivity" />
@@ -71,17 +73,18 @@
                 android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
                 android:name=".FriendsList.FriendsListActivity"
-                android:screenOrientation="portrait"
-                android:parentActivityName=".FeedbackList.MainActivity" />
+                android:parentActivityName=".FeedbackList.MainActivity"
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".Register.RegisterActivity"
                 android:parentActivityName=".Login.LoginActivity" />
         <activity
                 android:name=".FeedbackList.CreateFeedback.PickCategory.PickCategoryActivity"
-                android:screenOrientation="portrait"
+                android:screenOrientation="unspecified"
                 android:theme="@style/Theme.MyDialog" />
-        <activity android:name=".FeedbackList.CreateFeedback.ChoiceAdviser.ChoiceAdviserActivity"
-                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".FeedbackList.CreateFeedback.ChoiceAdviser.ChoiceAdviserActivity"
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".FeedbackList.MainActivity"
                 android:screenOrientation="portrait"

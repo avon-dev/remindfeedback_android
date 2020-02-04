@@ -139,10 +139,12 @@ class PresenterMyPage : ContractMyPage.Presenter{
 
         val image_File = File(fileUri)
         val requestBody = RequestBody.create(MediaType.parse("multipart/data"), image_File)
+        val requestBody2 = RequestBody.create(MediaType.parse("multipart/data"), "true")
+
         val multiPartBody = MultipartBody.Part
             .createFormData("portrait", image_File.name, requestBody)
 
-        val request : Call<GetMyPage> = apiService.PatchPortrait(multiPartBody)
+        val request : Call<GetMyPage> = apiService.PatchPortrait(multiPartBody,requestBody2)
         request.enqueue(object : Callback<GetMyPage> {
             override fun onResponse(call: Call<GetMyPage>, response: Response<GetMyPage>) {
                 if (response.isSuccessful) {
