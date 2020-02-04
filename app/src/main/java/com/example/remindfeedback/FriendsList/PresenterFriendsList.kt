@@ -39,7 +39,7 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                         for (i in 0 until fList.size) {
                             var myList: getFriendsInfo = getFriendsInfo()
                             myList = fList[i]
-                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type, 0)
+                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid,myList.id ,myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type, 0)
                             adapterFriendsList.addItem(addData)
                             view.refresh()
                         }
@@ -72,7 +72,7 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                         for (i in 0 until fList.size) {
                             var myList: getFriendsInfo = getFriendsInfo()
                             myList = fList[i]
-                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type, 1)
+                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid,myList.id, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type, 1)
                             adapterFriendsList.addItem(addData)
                             view.refresh()
                         }
@@ -102,7 +102,7 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                         for (i in 0 until fList.size) {
                             var myList: getFriendsInfo = getFriendsInfo()
                             myList = fList[i]
-                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type,2)
+                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid,myList.id, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type,2)
                             adapterFriendsList.addItem(addData)
                             view.refresh()
                         }
@@ -139,11 +139,11 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
         })
     }
 
-    override fun rejectRequest(list: ArrayList<ModelFriendsList>,user_uid: String, adapterFriendsList: AdapterFriendsList) {
+    override fun rejectRequest(list: ArrayList<ModelFriendsList>,user_uid: String,friend_id:Int, adapterFriendsList: AdapterFriendsList) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        var createFriend = CreateFriend(user_uid)
-        val register_request: Call<SearchFriend> = apiService.RejectFriend(createFriend)
+        var rejectFreidn = RejectFriend(user_uid,friend_id)
+        val register_request: Call<SearchFriend> = apiService.RejectFriend(friend_id,rejectFreidn)
         register_request.enqueue(object : Callback<SearchFriend> {
             override fun onResponse(call: Call<SearchFriend>, response: Response<SearchFriend>) {
                 if (response.isSuccessful) {
@@ -161,11 +161,11 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
     }
 
 
-    override fun blockRequest(list: ArrayList<ModelFriendsList>,user_uid: String, adapterFriendsList: AdapterFriendsList) {
+    override fun blockRequest(list: ArrayList<ModelFriendsList>,user_uid: String,friend_id:Int, adapterFriendsList: AdapterFriendsList) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        var createFriend = CreateFriend(user_uid)
-        val register_request: Call<SearchFriend> = apiService.BlockFriend(createFriend)
+        var rejectFriend = RejectFriend(user_uid, friend_id)
+        val register_request: Call<SearchFriend> = apiService.BlockFriend(friend_id,rejectFriend)
         register_request.enqueue(object : Callback<SearchFriend> {
             override fun onResponse(call: Call<SearchFriend>, response: Response<SearchFriend>) {
                 if (response.isSuccessful) {
@@ -182,11 +182,11 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
         })
     }
 
-    override fun unBlockRequest(list: ArrayList<ModelFriendsList>,user_uid: String, adapterFriendsList: AdapterFriendsList) {
+    override fun unBlockRequest(list: ArrayList<ModelFriendsList>,user_uid: String,friend_id:Int, adapterFriendsList: AdapterFriendsList) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        var createFriend = CreateFriend(user_uid)
-        val register_request: Call<SearchFriend> = apiService.UnBlockFriend(createFriend)
+        var rejectFriend = RejectFriend(user_uid, friend_id)
+        val register_request: Call<SearchFriend> = apiService.UnBlockFriend(friend_id,rejectFriend)
         register_request.enqueue(object : Callback<SearchFriend> {
             override fun onResponse(call: Call<SearchFriend>, response: Response<SearchFriend>) {
                 if (response.isSuccessful) {
@@ -218,7 +218,7 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                         for (i in 0 until fList.size) {
                             var myList: getFriendsInfo = getFriendsInfo()
                             myList = fList[i]
-                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type, 3)
+                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid,myList.id, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type, 3)
                             adapterFriendsList.addItem(addData)
                             view.refresh()
                         }

@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:alpha="0.87"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:paddingLeft="13dp"
             android:text="Default"
             android:textColor="#000"

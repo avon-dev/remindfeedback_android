@@ -39,7 +39,7 @@ class myFeedback {
     @SerializedName("write_date")
     val write_date: String? = ""
     @SerializedName("complete")
-    val complete: Int = -1
+    val complete: Int = -2
     @SerializedName("confirm")
     val confirm: Boolean = false
     @SerializedName("createdAt")
@@ -48,7 +48,7 @@ class myFeedback {
     val updatedAt: String? = ""
     @SerializedName("deletedAt")
     val deletedAt: String? = null
-    @SerializedName("myfeedback")
+    @SerializedName("adviser")
     val user: adviserUser? = adviserUser()
 }
 
@@ -82,7 +82,7 @@ class yourFeedback {
     val updatedAt: String? = ""
     @SerializedName("deletedAt")
     val deletedAt: String? = null
-    @SerializedName("yourfeedback")
+    @SerializedName("adviser")
     val user: adviserUser? = adviserUser()
 }
 

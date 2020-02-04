@@ -27,6 +27,7 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import android.R.attr.bitmap
 import android.graphics.Bitmap
+import com.example.remindfeedback.etcProcess.BasicDialog
 import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 
 
@@ -73,6 +74,16 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
             intent.putExtra("imageData", imageData)
             Log.e("aaaaa", imageData)
             startActivityForResult(intent, 100)
+        }
+        logout_Button.setOnClickListener{
+            var basicDialog: BasicDialog = BasicDialog("로그아웃 하시겠습니까?", this, { presenterMyPage.logout()
+                finish()}, {})
+            basicDialog.makeDialog()
+        }
+        delete_Account_Button.setOnClickListener{
+            var basicDialog: BasicDialog = BasicDialog("회원탈퇴 하시겠습니까?", this, { presenterMyPage.deleteAccount()
+                finish()}, {})
+            basicDialog.makeDialog()
         }
     }
 

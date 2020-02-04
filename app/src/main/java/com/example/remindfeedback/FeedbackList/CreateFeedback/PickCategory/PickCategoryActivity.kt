@@ -1,6 +1,7 @@
 package com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory
 
 import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
@@ -27,6 +28,12 @@ class PickCategoryActivity : AppCompatActivity(), ContractPickCategory.View {
             view = this@PickCategoryActivity
             context = this@PickCategoryActivity
         }
+        var intent: Intent = intent
+        if(intent.hasExtra("isMain")){
+            arrayList.add(ModelPickCategory(-2, "", "전체보기"))
+        }
+
+
         mAdapter = AdapterPickCategory(this, arrayList, presenterPickCategory)
         presenterPickCategory.getData(arrayList)
 

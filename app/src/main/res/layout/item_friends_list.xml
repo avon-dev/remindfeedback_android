@@ -32,6 +32,8 @@
                 android:id="@+id/friends_List_script"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:fontFamily="@font/font"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"

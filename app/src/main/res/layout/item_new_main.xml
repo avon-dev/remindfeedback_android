@@ -42,7 +42,7 @@
             </FrameLayout>
 
             <TextView
-                    android:id="@+id/textView16"
+                    android:id="@+id/main_Feedback_Name"
                     android:layout_width="match_parent"
                     android:textColor="#929292"
                     android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
         </LinearLayout>
 
         <TextView
-                android:id="@+id/textView29"
+                android:id="@+id/main_Feedback_Tag_Color"
                 android:layout_width="7dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -71,7 +71,7 @@
 
 
             <TextView
-                    android:id="@+id/textView31"
+                    android:id="@+id/main_Feedback_Dday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -82,25 +82,28 @@
                     android:paddingRight="3dp"
                     android:text="D-24" />
 
+
+
             <TextView
-                    android:id="@+id/textView32"
+                    android:id="@+id/main_Feedback_Script"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#5b5b5b"
+                    android:gravity="center_vertical"
+                    android:text="wpdpdpdpppppppppppp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                    android:id="@+id/main_Feedback_Date"
                     android:textColor="#929292"
                     android:gravity="center_vertical"
-                    android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="2020년 02월 20일" />
 
-            <TextView
-                    android:id="@+id/textView33"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="#5b5b5b"
-                    android:gravity="center_vertical"
-                    android:text="wpdpdpdpppppppppppp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
         </LinearLayout>
     </LinearLayout>
 

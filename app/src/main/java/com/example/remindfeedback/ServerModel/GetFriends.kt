@@ -14,7 +14,8 @@ class GetFriends {
 }
 
 class getFriendsInfo {
-
+    @SerializedName("id")
+    var id: Int = -2
     @SerializedName("user_uid")
     var user_uid: String = ""
     @SerializedName("email")

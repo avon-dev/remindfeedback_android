@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.AssetManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -50,7 +52,7 @@ class AdapterMainFeedback(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(activity).inflate(R.layout.item_main_feedback, parent, false)
+        val view = LayoutInflater.from(activity).inflate(R.layout.item_new_main, parent, false)
         return Holder(view)
     }
 
@@ -81,9 +83,6 @@ class AdapterMainFeedback(
 
 
         fun bind(feedback_list: ModelFeedback?, context: Context) {
-
-            Log.e("왜 안나옴", feedback_list!!.title)
-
             //상대이름, 피드백제목, 피드백 작성일 등 정의해줌
             if (feedback_list != null) {
                 main_Feedback_Name.text = feedback_list.adviser
@@ -99,8 +98,7 @@ class AdapterMainFeedback(
             }
             if (!feedback_list!!.feederProfileImage.equals("")) {
                 main_Feedback_Profile_Image.visibility = View.VISIBLE//조언자가 있을때
-                main_Feedback_Alarm.visibility = View.VISIBLE
-
+                main_Feedback_Alarm.visibility = View.INVISIBLE//일단 안보이게
                 var test_task: URLtoBitmapTask = URLtoBitmapTask()
                 test_task = URLtoBitmapTask().apply {
                     url =
@@ -109,19 +107,20 @@ class AdapterMainFeedback(
                 var bitmap: Bitmap = test_task.execute().get()
                 main_Feedback_Profile_Image.setImageBitmap(bitmap)
             } else {
-
                 if(feedback_list.adviser.equals("")){
-                    main_Feedback_Profile_Image.visibility = View.INVISIBLE//조언자가 없을때
+                    main_Feedback_Profile_Image.visibility = View.VISIBLE//조언자가 없을때
                     main_Feedback_Alarm.visibility = View.INVISIBLE
+                    main_Feedback_Profile_Image.setImageResource(R.drawable.ourlogo)
+
                 }else{
                     main_Feedback_Profile_Image.visibility = View.VISIBLE//조언자가 있을때
-                    main_Feedback_Alarm.visibility = View.VISIBLE
-
+                    main_Feedback_Alarm.visibility = View.INVISIBLE//일단 안보이게
                     main_Feedback_Profile_Image.setImageResource(R.drawable.ic_default_profile)
                 }
 
             }
 
+            //임시로 색깔 넣어줌 시각적으로 보기위해
             when (feedback_list.complete) {
                 -1 -> {
                     itemView.setBackgroundColor(Color.WHITE)
@@ -156,8 +155,6 @@ class AdapterMainFeedback(
                 intent.putExtra("feedbackMyYour", feedbackMyYour)
                 intent.putExtra("complete", feedback_list.complete)
                 context.startActivity(intent)
-
-
             }
 
             //꾹 눌렀을때
