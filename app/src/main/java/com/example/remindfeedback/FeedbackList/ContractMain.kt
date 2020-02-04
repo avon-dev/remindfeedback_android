@@ -69,6 +69,8 @@ interface ContractMain {
             adapterMainFeedback: AdapterMainFeedback,
             feedback_count: Int,
             feedbackIngEd: Int)
+
+        fun logout()
     }
 
 }

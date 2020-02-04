@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.AssetManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -96,8 +98,7 @@ class AdapterMainFeedback(
             }
             if (!feedback_list!!.feederProfileImage.equals("")) {
                 main_Feedback_Profile_Image.visibility = View.VISIBLE//조언자가 있을때
-                main_Feedback_Alarm.visibility = View.VISIBLE
-
+                main_Feedback_Alarm.visibility = View.INVISIBLE//일단 안보이게
                 var test_task: URLtoBitmapTask = URLtoBitmapTask()
                 test_task = URLtoBitmapTask().apply {
                     url =
@@ -107,11 +108,13 @@ class AdapterMainFeedback(
                 main_Feedback_Profile_Image.setImageBitmap(bitmap)
             } else {
                 if(feedback_list.adviser.equals("")){
-                    main_Feedback_Profile_Image.visibility = View.INVISIBLE//조언자가 없을때
+                    main_Feedback_Profile_Image.visibility = View.VISIBLE//조언자가 없을때
                     main_Feedback_Alarm.visibility = View.INVISIBLE
+                    main_Feedback_Profile_Image.setImageResource(R.drawable.ourlogo)
+
                 }else{
                     main_Feedback_Profile_Image.visibility = View.VISIBLE//조언자가 있을때
-                    main_Feedback_Alarm.visibility = View.VISIBLE
+                    main_Feedback_Alarm.visibility = View.INVISIBLE//일단 안보이게
                     main_Feedback_Profile_Image.setImageResource(R.drawable.ic_default_profile)
                 }
 

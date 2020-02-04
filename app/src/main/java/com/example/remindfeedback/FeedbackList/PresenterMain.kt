@@ -62,6 +62,8 @@ class PresenterMain : ContractMain.Presenter {
                                 } else {
                                     adviserUser = mfl.user!!
                                 }
+
+
                                 val date =
                                     SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(mfl.write_date)
                                 val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
@@ -274,6 +276,7 @@ class PresenterMain : ContractMain.Presenter {
         user_uid: String,
         adapterMainFeedback: AdapterMainFeedback
     ) {
+        list.clear()
         val date2 = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
         val dateNewFormat = sdf.format(date2)
@@ -300,9 +303,8 @@ class PresenterMain : ContractMain.Presenter {
                             -1,
                             false
                         )
-                    adapterMainFeedback.addItem(addData)
-                    list.clear()
-                    loadItems(list, adapterMainFeedback, 0)
+                    //adapterMainFeedback.addItem(addData)
+                    //loadItems(list, adapterMainFeedback, 0)
                     view.refresh()
                 } else {
                     val StatusCode = response.code()
@@ -516,6 +518,24 @@ class PresenterMain : ContractMain.Presenter {
             }
         })
 
+    }
+
+    override fun logout() {
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<ResponseBody> = apiService.LogOut()
+        register_request.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.e("로그아웃", "성공")
+                } else {
+                    Log.e("asdasdasd", "뭔가 실패함")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+        })
     }
 
 

@@ -18,6 +18,9 @@ interface ContractMyPage {
         fun getInfo()
         fun showDialog(showText:String, context: Context, params: FrameLayout.LayoutParams)
         fun patchPortrait(fileUri:String?)
+        fun logout()
+        fun requestDeleteAccount()
+        fun deleteAccount()
     }
 
 }

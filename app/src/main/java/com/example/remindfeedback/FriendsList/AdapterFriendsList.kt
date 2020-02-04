@@ -21,6 +21,7 @@ import com.example.remindfeedback.FeedbackList.ModelFeedback
 import com.example.remindfeedback.FriendsList.FriendsPage.FriendsPageActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_my_page.*
 import java.net.URL
 import java.util.ArrayList
@@ -87,12 +88,8 @@ class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFri
             }
 
             if(!friends_list.friendsProfileImage.equals("")){
-                var test_task: URLtoBitmapTask = URLtoBitmapTask()
-                test_task = URLtoBitmapTask().apply {
-                    url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+friends_list.friendsProfileImage)
-                }
-                var bitmap: Bitmap = test_task.execute().get()
-                friends_List_Profile_Image.setImageBitmap(bitmap)
+                Picasso.get().load("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+friends_list.friendsProfileImage).into(friends_List_Profile_Image)
+
             }else{
                 friends_List_Profile_Image.setImageResource(R.drawable.ic_default_profile)
             }
@@ -145,7 +142,6 @@ class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFri
             friend_Reject_Button.setOnClickListener{
                 presenterFriendsList.rejectRequest(arrayList,friends_list.friend_uid,friends_list.friend_id, this@AdapterFriendsList)
             }
-
         }
     }
 

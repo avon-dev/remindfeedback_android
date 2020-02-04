@@ -32,6 +32,7 @@ import com.example.remindfeedback.FriendsList.FriendsListActivity
 import com.example.remindfeedback.MyPage.MyPageActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Setting.SettingActivity
+import com.example.remindfeedback.etcProcess.BasicDialog
 import com.example.remindfeedback.etcProcess.InfiniteScrollListener
 import com.example.remindfeedback.etcProcess.MyProgress
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -220,14 +221,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             111 -> {    // 피드백 추가 후 돌아왔을 때
                 when (resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        Log.e("mainactivity", data.getStringExtra("user_uid"))
+                        var user_uid:String = ""
+                        if(data.hasExtra("user_uid")){
+                            user_uid = data.getStringExtra("user_uid")
+                        }
                         presenterMain.addItems(
                             arrayList,
                             data.getStringExtra("category_id").toInt(),
                             data.getStringExtra("date"),
                             data.getStringExtra("title"),
                             data.getStringExtra("color"),
-                            data.getStringExtra("user_uid"),
+                            user_uid,
                             mAdapter
                         )
                     }
@@ -428,6 +432,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.category_Setting -> category_Setting()
             R.id.mypage -> mypage()
             R.id.setting -> setting()
+            R.id.logout -> logout()
             //R.id.feedback_Request_Alarm -> feedback_Request_Alarm() //알림은 알파버전에서 제외함
 
         }
@@ -503,6 +508,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun feedback_Request_Alarm() {
         val intent = Intent(this, AlarmActivity::class.java)
         startActivity(intent)
+    }
+
+    fun logout(){
+        var basicDialog: BasicDialog = BasicDialog("로그아웃 하시겠습니까?", this, { presenterMain.logout()
+            finish()}, {})
+        basicDialog.makeDialog()
     }
 
 

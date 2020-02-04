@@ -24,6 +24,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import com.example.remindfeedback.FeedbackList.MainActivity
+
+
+
 
 class PresenterMyPage : ContractMyPage.Presenter{
 
@@ -153,6 +157,63 @@ class PresenterMyPage : ContractMyPage.Presenter{
             }
         })
     }
+    override fun logout() {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<ResponseBody> = apiService.LogOut()
+        register_request.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.e("로그아웃", "성공")
+                } else {
+                    Log.e("asdasdasd", "뭔가 실패함")
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+        })
+    }
+
+    //비밀번호를 다시입력하고 탈퇴를 해야할거같은데 그럴수 있는 방법이 없는거같음 이거는 일단 보류
+    override fun requestDeleteAccount() {
+        val ad = AlertDialog.Builder(mContext)
+        var email:String = ""
+        var password:String = ""
+        ad.setTitle("회원탈퇴")       // 제목 설정
+        ad.setMessage("비밀번호를 입력 해주세요")   // 내용 설정
+
+        // EditText 삽입하기
+        val et = EditText(mContext)
+        ad.setView(et)
+
+        ad.setPositiveButton("확인") { dialog, which ->
+
+        }
+
+        ad.setNegativeButton("취소") { dialog, which ->
+            dialog.dismiss()
+        }
+
+        ad.show()
 
 
+    }
+
+    override fun deleteAccount() {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<ResponseBody> = apiService.DeleteAccount()
+        register_request.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.e("회원탈퇴", "성공")
+                    Toast.makeText(mContext, "성공적으로 회원탈퇴 되었습니다.", Toast.LENGTH_LONG).show()
+                } else {
+                    Log.e("asdasdasd", "뭔가 실패함")
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+        })
+    }
 }

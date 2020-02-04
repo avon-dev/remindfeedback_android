@@ -19,9 +19,26 @@ interface ServiceAPI {
     @POST("auth/login")
     fun LogIn(@Body login: LogIn): Call<ResponseBody>
 
+    //로그아웃
+    @GET("auth/logout")
+    fun LogOut(): Call<ResponseBody>
+
     //내정보 가져오기
     @GET("auth/me/")
     fun GET_User(): Call<ResponseBody>
+
+    //비밀번호 찾기 요청
+    @POST("auth/password/")
+    fun RequestFindPassword(@Body requestFindPassword: RequestFindPassword): Call<ResponseBody>
+
+    //비밀번호 변경
+    @PATCH("auth/password/")
+    fun ChangingPassword(@Body changingPassword: ChangingPassword): Call<ResponseBody>
+
+    //회원정보 삭제
+    @DELETE("auth/unregister")
+    fun DeleteAccount(): Call<ResponseBody>
+
 
     //유저 정보 가져오기
     @GET("users/{id}")
