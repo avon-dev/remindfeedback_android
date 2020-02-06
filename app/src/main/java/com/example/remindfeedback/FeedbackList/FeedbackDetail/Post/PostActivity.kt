@@ -110,7 +110,10 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
 
         //액션바 설정
         var ab: ActionBar = this.supportActionBar!!
-        ab.setTitle("")
+//        ab.setTitle("")
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
+        supportActionBar?.setCustomView(R.layout.actionbar_title)
 //        ab.setDisplayHomeAsUpEnabled(true)
 
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
