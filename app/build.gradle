@@ -41,6 +41,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     implementation 'com.google.android.material:material:1.1.0-alpha06'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 
     //이미지 동그랗게 해주는 부분
     implementation 'de.hdodenhof:circleimageview:2.2.0'
@@ -80,9 +81,14 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer-core:2.11.1"
     implementation "com.google.android.exoplayer:exoplayer-ui:2.11.1"
     implementation "com.google.android.exoplayer:exoplayer-hls:2.11.1"
-    implementation 'androidx.cardview:cardview:1.0.0'
+
 
     //피카소
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+
+    //머테리얼
+    implementation 'com.github.rey5137:material:1.2.5'
+
 
 }

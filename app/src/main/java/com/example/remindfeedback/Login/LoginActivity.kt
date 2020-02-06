@@ -8,6 +8,11 @@ import com.example.remindfeedback.Login.FindPassword.FindPasswordActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.view.View
+
 
 class LoginActivity : AppCompatActivity(), ContractLogin.View {
 
@@ -20,6 +25,7 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
             view = this@LoginActivity
             mContext = this@LoginActivity
         }
+
 
         // 스플레시 띄우는 부분
         presenterLogin.showSplash(this, this)

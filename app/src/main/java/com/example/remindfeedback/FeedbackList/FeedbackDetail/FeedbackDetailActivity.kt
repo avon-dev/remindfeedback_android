@@ -2,11 +2,12 @@ package com.example.remindfeedback.FeedbackList.FeedbackDetail
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,10 @@ import com.example.remindfeedback.ServerModel.CreateBoardPicture
 import com.example.remindfeedback.ServerModel.CreateBoardText
 import com.example.remindfeedback.ServerModel.CreateboardRecord
 import com.example.remindfeedback.ServerModel.CreateboardVideo
+import com.rey.material.app.BottomSheetDialog
+import com.rey.material.drawable.ThemeDrawable
+import com.rey.material.util.ViewUtil
+import com.rey.material.widget.Button
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
 
 class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View {
@@ -30,6 +35,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
     lateinit var mAdapter: AdapterFeedbackDetail
     var photoBoolean:Boolean = true
     var textBoolean:Boolean = true
+    var mBottomSheetDialog:BottomSheetDialog? = null
 
     var arrayList = arrayListOf<ModelFeedbackDetail>(
     )
@@ -37,6 +43,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feedback_detail)
+
 
         //액션바 설정
         var ab: ActionBar = this.supportActionBar!!
@@ -98,6 +105,45 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
                 presenterFeedbackDetail.loadItems(arrayList, mAdapter, feedback_id, photoBoolean, textBoolean)
             }
         }
+    }
+
+    //아래에서 올라오는 뷰 만드는부분(바텀시트)
+    private fun showBottomSheet() {
+        mBottomSheetDialog = BottomSheetDialog(this, R.style.Material_App_BottomSheetDialog)
+        val v = LayoutInflater.from(this).inflate(R.layout.view_bottomsheet, null)
+        ViewUtil.setBackground(v, ThemeDrawable(R.drawable.bg_window_light))
+        val bottom_Sheet_Title = v.findViewById<View>(R.id.bottom_Sheet_Title) as TextView
+        bottom_Sheet_Title.setText("완료요청 하시겠습니까?")
+        val bt_match = v.findViewById<View>(R.id.sheet_bt_match) as Button
+        bt_match.setText("확인")
+        bt_match.setOnClickListener {
+            when(feedback_complete) {
+                -1, 0 -> {
+                    if (feedback_adviser.equals("")) {
+                        presenterFeedbackDetail.completeAccept(feedback_id)//조언자가 없는 피드백이라 그냥 수락하게 함
+                    } else {
+                        presenterFeedbackDetail.completeRequest(feedback_id)
+                    }
+                }
+                1 -> {
+                    Toast.makeText(this, "이미 완료 요청된 피드백 입니다.", Toast.LENGTH_LONG).show()
+                }
+                2 -> {
+                    Toast.makeText(this, "이미 완료된 피드백 입니다.", Toast.LENGTH_LONG).show()
+                }
+            }
+            mBottomSheetDialog!!.dismissImmediately()
+        }
+        val bt_wrap = v.findViewById<View>(R.id.sheet_bt_wrap) as Button
+        bt_wrap.setText("취소")
+        bt_wrap.setOnClickListener { mBottomSheetDialog!!.dismissImmediately() }
+        v.setBackgroundColor(Color.parseColor("#ffffff"))
+        //v.setBackgroundResource(R.drawable.all_line)
+        bt_match.setBackgroundColor(Color.parseColor("#ddeeff"))
+        bt_wrap.setBackgroundColor(Color.parseColor("#ddeeff"))
+
+        mBottomSheetDialog!!.contentView(v)
+            .show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -277,6 +323,8 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
     }
     //완료요청
     fun complete_Request_Button(): Boolean {
+        showBottomSheet()
+        /*
         when(feedback_complete){
             -1, 0 -> {
                 if(feedback_adviser.equals("")){
@@ -286,6 +334,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
             1 -> { Toast.makeText(this, "이미 완료 요청된 피드백 입니다.", Toast.LENGTH_LONG).show() }
             2 -> { Toast.makeText(this, "이미 완료된 피드백 입니다.", Toast.LENGTH_LONG).show()}
         }
+        */
         return true
     }
     //완료수락
@@ -317,6 +366,14 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
 
     override fun refresh() {
         mAdapter.notifyDataSetChanged()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mBottomSheetDialog != null) {
+            mBottomSheetDialog!!.dismissImmediately()
+            mBottomSheetDialog = null
+        }
     }
 
 
