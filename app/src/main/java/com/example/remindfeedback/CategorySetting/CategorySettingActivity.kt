@@ -64,7 +64,8 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
                         presenterCategorySetting.addItems(
                             data.getStringExtra("color"),
                             data.getStringExtra("title"),
-                            mAdapter
+                            mAdapter,
+                            arrayList
                         )
                     }
                     Activity.RESULT_CANCELED -> Toast.makeText(
