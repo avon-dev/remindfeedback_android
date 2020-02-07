@@ -90,5 +90,10 @@ dependencies {
     //머테리얼
     implementation 'com.github.rey5137:material:1.2.5'
 
+    //lottie
+    implementation 'com.airbnb.android:lottie:2.7.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
+
 
 }

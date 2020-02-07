@@ -1,5 +1,6 @@
 package com.example.remindfeedback.Login
 
+import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -12,6 +13,7 @@ import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.view.View
+import com.airbnb.lottie.LottieAnimationView
 
 
 class LoginActivity : AppCompatActivity(), ContractLogin.View {
@@ -25,10 +27,6 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
             view = this@LoginActivity
             mContext = this@LoginActivity
         }
-
-
-        // 스플레시 띄우는 부분
-        presenterLogin.showSplash(this, this)
 
         //로그인버튼
         login_Button.setOnClickListener {
