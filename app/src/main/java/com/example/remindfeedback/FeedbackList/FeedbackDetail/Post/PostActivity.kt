@@ -36,6 +36,9 @@ import android.R.attr.start
 import android.app.ProgressDialog
 import android.os.AsyncTask
 import android.os.Handler
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.example.remindfeedback.etcProcess.InfiniteScrollListener
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -46,6 +49,7 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.util.Util
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 import java.text.SimpleDateFormat
 
@@ -68,6 +72,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     private var ALBUM_RES = arrayListOf<String>()
     //게시물 아이디
     var board_id: Int = -1
+    lateinit var lm: LinearLayoutManager
 
 
     /* 영상 녹음관련 코드는 모두 주석
@@ -95,6 +100,8 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         //ModelPost("dummy", "3월김수미", "설명이 좀 더 친절하면 알아듣기 좋을 거 같아요.", "2019년 10월 30일 오전 7시 41분", 1)
     )
     lateinit var mAdapter: AdapterPost
+    var commentLastId = 0
+    lateinit var post_Comment_Recyclerview:RecyclerView
 
     //녹음 관련이라 주석
     //private val r = Runnable { updateSeekProgress() }
@@ -106,18 +113,13 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             view = this@PostActivity
             mContext = this@PostActivity
         }
-        mAdapter = AdapterPost(this, arrayList, presenterPost)
+        post_Comment_Recyclerview = findViewById(R.id.post_Comment_Recyclerview)
+        setRecyclerView(post_Comment_Recyclerview)
 
         //액션바 설정
         var ab: ActionBar = this.supportActionBar!!
         ab.setTitle("")
-//        ab.setDisplayHomeAsUpEnabled(true)
-
-        //리사이클러뷰 관련, 어댑터, 레이아웃매니저
-        post_Comment_Recyclerview.adapter = mAdapter
-        val lm = LinearLayoutManager(this)
-        post_Comment_Recyclerview.layoutManager = lm
-        post_Comment_Recyclerview.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
+        //ab.setDisplayHomeAsUpEnabled(true)
 
 
         var intent: Intent = intent
@@ -126,21 +128,55 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             intent.getIntExtra("feedback_id", -1),
             intent.getIntExtra("board_id", -1)
         )
-        presenterPost.getComment(arrayList, mAdapter, board_id)
+        presenterPost.getComment(arrayList, mAdapter, board_id, commentLastId)
 
         //댓글다는 부분
         comment_Commit_Button.setOnClickListener {
             if (!comment_EditText.text.toString().equals("")) {
-                presenterPost.addComment(
-                    mAdapter,
-                    CreateComment(board_id, comment_EditText.text.toString()),
-                    arrayList
-                )
+                presenterPost.addComment(mAdapter, CreateComment(board_id, comment_EditText.text.toString()), arrayList)
                 comment_EditText.setText("")
             }
-
         }
+    }
 
+/*
+    override fun onPause() {
+        super.onPause()
+        presenterPost = PresenterPost().apply {
+            view = this@PostActivity
+            mContext = this@PostActivity
+        }
+        setRecyclerView()
+    }
+*/
+    override fun onRestart() {
+        super.onRestart()
+        arrayList.clear()
+        commentLastId = 0
+       presenterPost.getComment(arrayList, mAdapter, board_id, commentLastId)
+        setRecyclerView(post_Comment_Recyclerview)
+    }
+
+
+    fun setRecyclerView(recyclerView: RecyclerView){
+
+        Log.e("setRecyclerView", "함수 들어옴 실행!")
+
+        //리사이클러뷰 관련, 어댑터, 레이아웃매니저
+        lm = LinearLayoutManager(this)
+        lm.reverseLayout = true
+        lm.stackFromEnd = true
+        recyclerView.layoutManager = lm
+        mAdapter = AdapterPost(this, arrayList, presenterPost)
+        recyclerView.adapter = mAdapter
+        recyclerView.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
+        recyclerView.clearOnScrollListeners()
+        recyclerView.addOnScrollListener(InfiniteScrollListener({
+            Log.e("InfiniteScrollListener", "스크롤실행!")
+            presenterPost.getComment(arrayList, mAdapter, board_id, commentLastId)
+        }
+            , lm)
+        )//갱신
 
     }
 
@@ -176,15 +212,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     }
 
     //포스팅의 컨텐츠 타입과 파일들이 넘어옴
-    override fun setView(
-        contentsType: Int,
-        fileUrl_1: String?,
-        fileUrl_2: String?,
-        fileUrl_3: String?,
-        title: String,
-        date: String,
-        content: String
-    ) {
+    override fun setView(contentsType: Int, fileUrl_1: String?, fileUrl_2: String?, fileUrl_3: String?, title: String, date: String, content: String) {
         if (contentsType == 0) {//타입이 글일때
             post_Title_Tv.text = "[글]"
             post_Picture.visibility = View.GONE
@@ -239,6 +267,12 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
 
         post_Date_Tv.text = "작성일 : " + dateNewFormat
         post_Tv.text = content
+    }
+
+    //프레젠터에서 아이템 로드하고 댓글의 라스트 id를 바꿔주는부분
+    override fun setCommentId(comment_id:Int){
+        Log.e("setCommentId", comment_id.toString())
+        commentLastId = comment_id
     }
 
 

@@ -18,8 +18,10 @@ class InfiniteScrollListener(
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
-
+        Log.e("onScrolled", "뭔가 하는중")
         if (dy > 0) {
+            Log.e("onScrolled", dy.toString())
+
             visibleItemCount = recyclerView.childCount
             totalItemCount = layoutManager.itemCount
             firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
@@ -38,6 +40,9 @@ class InfiniteScrollListener(
                 func() // 매개변수로 넘겨받은 람다식 함수
                 loading = true
             }
+        }else{
+            Log.e("onScrolled else", dy.toString())
+
         }
     }
 

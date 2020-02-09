@@ -27,6 +27,8 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
             view = this@LoginActivity
             mContext = this@LoginActivity
         }
+        //권한 허용해주는부분
+        presenterLogin.getPermission()
 
         //로그인버튼
         login_Button.setOnClickListener {

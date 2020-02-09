@@ -9,18 +9,11 @@ interface ContractPost {
 
     interface View {
         fun refresh()
-        fun setView(
-            contentsType: Int,
-            fileUrl_1: String?,
-            fileUrl_2: String?,
-            fileUrl_3: String?,
-            title: String,
-            date: String,
-            content: String
-        )
+        fun setView(contentsType: Int, fileUrl_1: String?, fileUrl_2: String?, fileUrl_3: String?, title: String, date: String, content: String)
 
         fun viewPagerSetting()
 
+        fun setCommentId(comment_id:Int)
     }
 
     interface Presenter {
@@ -28,13 +21,9 @@ interface ContractPost {
         var view: View
         var mContext: Context
 
-        fun getComment(list: ArrayList<ModelComment>, adapterPost: AdapterPost, board_id: Int)
+        fun getComment(list: ArrayList<ModelComment>, adapterPost: AdapterPost, board_id: Int, last_id:Int)
 
-        fun addComment(
-            adapterPost: AdapterPost,
-            createComment: CreateComment,
-            arrayList: ArrayList<ModelComment>
-        )
+        fun addComment(adapterPost: AdapterPost, createComment: CreateComment, arrayList: ArrayList<ModelComment>)
 
         fun removeItems(comment_id: Int, context: Context)
 

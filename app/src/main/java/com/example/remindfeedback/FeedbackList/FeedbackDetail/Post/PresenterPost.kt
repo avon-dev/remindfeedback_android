@@ -24,14 +24,12 @@ class PresenterPost : ContractPost.Presenter {
     lateinit override var view: ContractPost.View
     lateinit override var mContext: Context
 
-    override fun getComment(
-        list: ArrayList<ModelComment>,
-        adapterPost: AdapterPost,
-        board_id: Int
-    ) {
+    override fun getComment(list: ArrayList<ModelComment>, adapterPost: AdapterPost, board_id: Int, last_id:Int) {
+
+        var commentLastId:Int = 0
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<GetAllComments> = apiService.GetAllComment(board_id)
+        val register_request: Call<GetAllComments> = apiService.GetAllComment(board_id,last_id)
         register_request.enqueue(object : Callback<GetAllComments> {
             override fun onResponse(
                 call: Call<GetAllComments>,
@@ -59,9 +57,14 @@ class PresenterPost : ContractPost.Presenter {
                                 myList.comment_content,
                                 dateNewFormat
                             )
+                            commentLastId = myList.id
                             adapterPost.addItem(postData)
                             view.refresh()
                         }
+                        //라스트 아이디를 새로고침 해줌
+                        view.setCommentId(commentLastId)
+                        Log.e("commentLastId", commentLastId.toString())
+                        view.refresh()
                     } else {
                     }
 
@@ -91,7 +94,7 @@ class PresenterPost : ContractPost.Presenter {
             override fun onResponse(call: Call<CreateComment>, response: Response<CreateComment>) {
                 if (response.isSuccessful) {
                     list.clear()
-                    getComment(list, adapterPost, createComment.board_id)
+                    getComment(list, adapterPost, createComment.board_id, 0)
                     view.refresh()
                 } else {
                 }
@@ -100,7 +103,7 @@ class PresenterPost : ContractPost.Presenter {
             override fun onFailure(call: Call<CreateComment>, t: Throwable) {
                 //여기기서 실패가 뜨는데 이마 call모델이 달라서 그러는거같음, 근데 실패해도 별 상관없어서 새로고침 코드 여기에도 넣어둠
                 list.clear()
-                getComment(list, adapterPost, createComment.board_id)
+                getComment(list, adapterPost, createComment.board_id, 0)
                 view.refresh()
             }
         })

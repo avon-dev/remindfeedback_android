@@ -1,5 +1,6 @@
 package com.example.remindfeedback.Login
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,11 +12,14 @@ import com.example.remindfeedback.R
 import com.example.remindfeedback.ServerModel.GetMe
 import com.example.remindfeedback.ServerModel.LogIn
 import com.example.remindfeedback.ServerModel.RequestFindPassword
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.ArrayList
 
 class PresenterLogin() : ContractLogin.Presenter {
 
@@ -85,24 +89,23 @@ class PresenterLogin() : ContractLogin.Presenter {
     }
 
 
-
-    override fun showSplash(context: Context, activity: LoginActivity) {
-        /*
-        SplashView.showSplashView(
-            activity,
-            3,
-            R.drawable.logo_1,
-            object : SplashView.OnSplashViewActionListener {
-                override fun onSplashImageClick(actionUrl: String) {
-                    Log.d("SplashView", "img clicked. actionUrl: $actionUrl")
-                    Toast.makeText(context, "img clicked.", Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onSplashViewDismiss(initiativeDismiss: Boolean) {
-                    Log.d("SplashView", "dismissed, initiativeDismiss: $initiativeDismiss")
-                }
-            })
-        */
+    //권한 허용해주는 부분
+    override fun getPermission() {
+        val permissionListener = object : PermissionListener {
+            override fun onPermissionGranted() {
+                // 권한 요청 성공
+            }
+            override fun onPermissionDenied(deniedPermissions: ArrayList<String>) {
+                // 권한 요청 실패
+            }
+        }
+        TedPermission.with(mContext)
+            .setPermissionListener(permissionListener)
+            //.setRationaleMessage("사진 및 파일을 저장하기 위하여 접근 권한이 필요합니다.")
+            //.setDeniedMessage("[설정] > [권한] 에서 권한을 허용할 수 있습니다.")
+            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
+            .check()
     }
+
 
 }

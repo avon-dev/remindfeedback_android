@@ -186,8 +186,8 @@ interface ServiceAPI {
     fun DeleteComment(@Path("comment_id") comment_id: Int): Call<ResponseBody>
 
     //각 게시글의 댓글 가져오기
-    @GET("comments/all/{board_id}")
-    fun GetAllComment(@Path("board_id") board_id: Int): Call<GetAllComments>
+    @GET("comments/all/scroll/{board_id}/{lastid}")
+    fun GetAllComment(@Path("board_id") board_id: Int,@Path("lastid") lastid: Int): Call<GetAllComments>
 
     //내 친구 정보 가져오기
     @GET("friends")

@@ -30,11 +30,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class AdapterMainFeedback(
-    recyclerView: RecyclerView,
     val context: Context,
     val arrayList: ArrayList<ModelFeedback?>,
     var presenterMain: PresenterMain,
-    private val activity: Activity,
     val feedbackMyYour: Int
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -52,7 +50,7 @@ class AdapterMainFeedback(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(activity).inflate(R.layout.item_new_main, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_new_main, parent, false)
         return Holder(view)
     }
 
