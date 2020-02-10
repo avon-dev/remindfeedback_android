@@ -181,9 +181,13 @@ interface ServiceAPI {
     @POST("comments")
     fun CreateComment(@Body createComment: CreateComment): Call<CreateComment>
 
+    //댓글 수정
+    @PUT("comments/{comment_id}")
+    fun UpdateComment(@Body updateComment: UpdateComment, @Path("comment_id") comment_id: Int): Call<GetUpdatedComment>
+
     //댓글 삭제
     @DELETE("comments/{comment_id}")
-    fun DeleteComment(@Path("comment_id") comment_id: Int): Call<ResponseBody>
+    fun DeleteComment(@Path("comment_id") comment_id: Int): Call<GetDeletedComment>
 
     //각 게시글의 댓글 가져오기
     @GET("comments/all/scroll/{board_id}/{lastid}")

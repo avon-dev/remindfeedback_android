@@ -14,6 +14,7 @@ import com.example.remindfeedback.FeedbackList.FeedbackDetail.AdapterFeedbackDet
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.ModelFeedbackDetail
 import com.example.remindfeedback.R
 import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_my_page.*
 import java.net.URL
 import java.text.SimpleDateFormat
@@ -22,9 +23,11 @@ import java.util.ArrayList
 class AdapterPost(
     val context: Context,
     val arrayList: ArrayList<ModelComment>,
-    val presenterPost: PresenterPost
+    val presenterPost: PresenterPost,
+    val boardId:Int
 ) : RecyclerView.Adapter<AdapterPost.Holder>() {
 
+    var adapterPost:AdapterPost  = this
     fun addItem(item: ModelComment) {//아이템 추가
         if (arrayList != null) {//널체크 해줘야함
             arrayList.add(0, item)
@@ -72,13 +75,7 @@ class AdapterPost(
 
             if (!comment_list.profileImage.equals("")) {
                 //이미지 설정해주는 부분
-                var test_task: URLtoBitmapTask = URLtoBitmapTask()
-                test_task = URLtoBitmapTask().apply {
-                    url =
-                        URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + comment_list.profileImage)
-                }
-                var bitmap: Bitmap = test_task.execute().get()
-                post_Comment_Profile_Image.setImageBitmap(bitmap)
+                Picasso.get().load("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + comment_list.profileImage).into(post_Comment_Profile_Image)
             } else {
                 post_Comment_Profile_Image.setImageResource(R.drawable.ic_default_profile)
             }
@@ -97,12 +94,15 @@ class AdapterPost(
                 val delete_Tv: TextView = mView.findViewById(R.id.delete_Tv)
 
                 update_Tv.setOnClickListener {
+                    //presenterPost.updateItems(comment_list.comment_id,adapterPosition,adapterPost, comment_list.script)
+                    //다이알로그에 사용할 params
+                    val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                    presenterPost.showDialog(comment_list.comment_id,adapterPost, comment_list.script,"댓글 수정",params,arrayList, boardId)
                     dialogInterface!!.dismiss()
                 }
                 delete_Tv.setOnClickListener {
                     //보드 삭제
-                    removeAt(adapterPosition)
-                    presenterPost.removeItems(comment_list.comment_id, context)
+                    presenterPost.removeItems(comment_list.comment_id,arrayList,adapterPost, boardId)
                     dialogInterface!!.dismiss()
                 }
                 dialog.setView(mView)

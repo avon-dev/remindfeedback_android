@@ -33,12 +33,12 @@ import androidx.core.content.FileProvider
 import com.example.remindfeedback.FeedbackList.MainActivity
 import java.io.File
 import android.R.attr.start
-import android.app.ProgressDialog
 import android.os.AsyncTask
 import android.os.Handler
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.example.remindfeedback.etcProcess.InfiniteScrollListener
+import com.example.remindfeedback.etcProcess.MyProgress
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -109,6 +109,9 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
 
+        var intent: Intent = intent
+        board_id = intent.getIntExtra("board_id", -1)
+
         presenterPost = PresenterPost().apply {
             view = this@PostActivity
             mContext = this@PostActivity
@@ -122,14 +125,12 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         //ab.setDisplayHomeAsUpEnabled(true)
 
 
-        var intent: Intent = intent
-        board_id = intent.getIntExtra("board_id", -1)
+
         presenterPost.typeInit(
             intent.getIntExtra("feedback_id", -1),
             intent.getIntExtra("board_id", -1)
         )
-        presenterPost.getComment(arrayList, mAdapter, board_id, commentLastId)
-
+        loadItem()
         //댓글다는 부분
         comment_Commit_Button.setOnClickListener {
             if (!comment_EditText.text.toString().equals("")) {
@@ -153,7 +154,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         super.onRestart()
         arrayList.clear()
         commentLastId = 0
-       presenterPost.getComment(arrayList, mAdapter, board_id, commentLastId)
+        loadItem()
         setRecyclerView(post_Comment_Recyclerview)
     }
 
@@ -167,17 +168,23 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         lm.reverseLayout = true
         lm.stackFromEnd = true
         recyclerView.layoutManager = lm
-        mAdapter = AdapterPost(this, arrayList, presenterPost)
+        mAdapter = AdapterPost(this, arrayList, presenterPost, board_id)
         recyclerView.adapter = mAdapter
         recyclerView.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
+        /*
         recyclerView.clearOnScrollListeners()
         recyclerView.addOnScrollListener(InfiniteScrollListener({
             Log.e("InfiniteScrollListener", "스크롤실행!")
-            presenterPost.getComment(arrayList, mAdapter, board_id, commentLastId)
+            loadItem()
         }
             , lm)
         )//갱신
+        */
+        loadItem()
+    }
 
+    override fun loadItem(){
+       presenterPost.getComment(arrayList, mAdapter, board_id, commentLastId)
     }
 
     //레코드 관련 코드라서 주석
