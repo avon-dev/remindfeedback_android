@@ -104,7 +104,7 @@ class PresenterMain : ContractMain.Presenter {
                 }
                 Log.e("tag", "response=" + response.raw())
                 myProgress.dismiss()
-            }
+        }
 
             override fun onFailure(call: Call<GetAllFeedback>, t: Throwable) {
                 myProgress.dismiss()

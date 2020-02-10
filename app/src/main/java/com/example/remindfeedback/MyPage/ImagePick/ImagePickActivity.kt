@@ -45,8 +45,6 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_pick)
 
-        tedPermission()
-
         //액션바 설정
         var ab: ActionBar = this!!.supportActionBar!!
         ab.setTitle("프로필 사진 수정")
@@ -132,14 +130,6 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
         //이 유알아이가 최종적으로 내 프로필이 되는것임
         Log.e("saving",lastUri)
         Crop.of(photoUri, savingUri).asSquare().start(this)
-    }
-    //권한 요청
-    override fun tedPermission() {
-        presenterImagePick = PresenterImagePick().apply {
-            view = this@ImagePickActivity
-            mContext = this@ImagePickActivity
-        }
-        presenterImagePick.tedPermission(this)
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)

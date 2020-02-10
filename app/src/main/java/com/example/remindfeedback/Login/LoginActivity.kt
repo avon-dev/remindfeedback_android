@@ -1,5 +1,6 @@
 package com.example.remindfeedback.Login
 
+import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -8,6 +9,12 @@ import com.example.remindfeedback.Login.FindPassword.FindPasswordActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.view.View
+import com.airbnb.lottie.LottieAnimationView
+
 
 class LoginActivity : AppCompatActivity(), ContractLogin.View {
 
@@ -20,9 +27,8 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
             view = this@LoginActivity
             mContext = this@LoginActivity
         }
-
-        // 스플레시 띄우는 부분
-        presenterLogin.showSplash(this, this)
+        //권한 허용해주는부분
+        presenterLogin.getPermission()
 
         //로그인버튼
         login_Button.setOnClickListener {

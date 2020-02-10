@@ -42,24 +42,6 @@ class PresenterImagePick:ContractImagePick.Presenter {
     }
 
 
-    //권한 허용해주는 부분
-    override fun tedPermission(context: Context) {
-        val permissionListener = object : PermissionListener {
-            override fun onPermissionGranted() {
-                // 권한 요청 성공
-            }
-            override fun onPermissionDenied(deniedPermissions: ArrayList<String>) {
-                // 권한 요청 실패
-            }
-        }
-        TedPermission.with(context)
-            .setPermissionListener(permissionListener)
-            .setRationaleMessage("사진 및 파일을 저장하기 위하여 접근 권한이 필요합니다.")
-            .setDeniedMessage("[설정] > [권한] 에서 권한을 허용할 수 있습니다.")
-            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
-            .check()
-    }
-
     //이미지 회전하는 부분
     override fun rotateImage(source: Bitmap, angle: Float): Bitmap {
         val matrix = Matrix()

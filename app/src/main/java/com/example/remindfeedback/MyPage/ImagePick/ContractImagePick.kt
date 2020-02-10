@@ -9,7 +9,6 @@ interface ContractImagePick {
     interface View{
         fun imageBrowse()
         fun cameraBrowse()
-        fun tedPermission()
 
     }
 
@@ -17,7 +16,6 @@ interface ContractImagePick {
         var view: View
         var mContext: Context
         fun createImageFile(): File
-        fun tedPermission(context: Context)
         fun rotateImage(source: Bitmap, angle: Float): Bitmap
     }
 

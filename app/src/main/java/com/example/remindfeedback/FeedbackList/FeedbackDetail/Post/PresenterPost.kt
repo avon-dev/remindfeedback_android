@@ -1,12 +1,24 @@
 package com.example.remindfeedback.FeedbackList.FeedbackDetail.Post
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.graphics.Color
 import android.graphics.ColorSpace
+import android.text.InputFilter
 import android.util.Log
 import android.view.Display
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.TextView
+import android.widget.Toast
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.ModelFeedbackDetail
 import com.example.remindfeedback.Network.RetrofitFactory
+import com.example.remindfeedback.R
 import com.example.remindfeedback.ServerModel.*
+import com.example.remindfeedback.etcProcess.MyProgress
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -23,15 +35,13 @@ class PresenterPost : ContractPost.Presenter {
 
     lateinit override var view: ContractPost.View
     lateinit override var mContext: Context
+    override fun getComment(list: ArrayList<ModelComment>, adapterPost: AdapterPost, board_id: Int, last_id:Int) {
 
-    override fun getComment(
-        list: ArrayList<ModelComment>,
-        adapterPost: AdapterPost,
-        board_id: Int
-    ) {
+        var staticId = 0
+        var commentLastId:Int = 0
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<GetAllComments> = apiService.GetAllComment(board_id)
+        val register_request: Call<GetAllComments> = apiService.GetAllComment(board_id,last_id)
         register_request.enqueue(object : Callback<GetAllComments> {
             override fun onResponse(
                 call: Call<GetAllComments>,
@@ -59,9 +69,21 @@ class PresenterPost : ContractPost.Presenter {
                                 myList.comment_content,
                                 dateNewFormat
                             )
+                            commentLastId = myList.id
                             adapterPost.addItem(postData)
                             view.refresh()
                         }
+
+                        //라스트 아이디를 새로고침 해줌
+                        view.setCommentId(commentLastId)
+                        if(staticId == commentLastId){//일단 강제로 처음에 코멘트 전부 불러오게 해놨음
+                        }else{
+                            view.loadItem()
+                        }
+                        staticId = commentLastId
+
+                        Log.e("commentLastId", commentLastId.toString())
+                        view.refresh()
                     } else {
                     }
 
@@ -91,7 +113,7 @@ class PresenterPost : ContractPost.Presenter {
             override fun onResponse(call: Call<CreateComment>, response: Response<CreateComment>) {
                 if (response.isSuccessful) {
                     list.clear()
-                    getComment(list, adapterPost, createComment.board_id)
+                    getComment(list, adapterPost, createComment.board_id, 0)
                     view.refresh()
                 } else {
                 }
@@ -100,35 +122,109 @@ class PresenterPost : ContractPost.Presenter {
             override fun onFailure(call: Call<CreateComment>, t: Throwable) {
                 //여기기서 실패가 뜨는데 이마 call모델이 달라서 그러는거같음, 근데 실패해도 별 상관없어서 새로고침 코드 여기에도 넣어둠
                 list.clear()
-                getComment(list, adapterPost, createComment.board_id)
+                getComment(list, adapterPost, createComment.board_id, 0)
                 view.refresh()
             }
         })
         view.refresh()
     }
 
-    override fun removeItems(comment_id: Int, context: Context) {
-        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+    override fun removeItems(comment_id: Int,list: ArrayList<ModelComment>,adapterPost: AdapterPost, board_id:Int) {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<ResponseBody> = apiService.DeleteComment(comment_id)
-        register_request.enqueue(object : Callback<ResponseBody> {
+        val register_request: Call<GetDeletedComment> = apiService.DeleteComment(comment_id)
+        register_request.enqueue(object : Callback<GetDeletedComment> {
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            override fun onResponse(call: Call<GetDeletedComment>, response: Response<GetDeletedComment>) {
                 if (response.isSuccessful) {
-                    Log.e("성공!", "딜리트 성공")
+                    var gComment:GetDeletedComment = response.body()!!
+                    var success:Boolean = gComment.success
+                    if(success == true){
+                        Toast.makeText(mContext, "성공적으로 삭제했습니다.", Toast.LENGTH_LONG).show()
+                        list.clear()
+                        getComment(list, adapterPost, board_id,0)
+                    }else{
+                        Toast.makeText(mContext, gComment.message, Toast.LENGTH_LONG).show()
+                    }
                     view.refresh()
                 } else {
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            override fun onFailure(call: Call<GetDeletedComment>, t: Throwable) {
                 Log.e("실패", t.message)
+                Toast.makeText(mContext, "댓글을 삭제할수 없습니다.", Toast.LENGTH_LONG).show()
             }
         })
     }
 
-    override fun updateItems(position: Int) {
+    override fun updateItems(comment_id: Int, adapterPost: AdapterPost, curruntScript:String,list: ArrayList<ModelComment>, board_id:Int) {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<GetUpdatedComment> = apiService.UpdateComment(UpdateComment(curruntScript),comment_id )
+        register_request.enqueue(object : Callback<GetUpdatedComment> {
+
+            override fun onResponse(call: Call<GetUpdatedComment>, response: Response<GetUpdatedComment>) {
+                if (response.isSuccessful) {
+                    var gComment:GetUpdatedComment = response.body()!!
+                    var success:Boolean = gComment.success
+                    if(success == true){
+                        Toast.makeText(mContext, "성공적으로 수정했습니다.", Toast.LENGTH_LONG).show()
+                        list.clear()
+                        getComment(list, adapterPost, board_id,0)
+                    }else{
+                        Toast.makeText(mContext, gComment.message, Toast.LENGTH_LONG).show()
+                    }
+                    view.refresh()
+                } else {
+                    Toast.makeText(mContext, "알수없는 에러가 발생했습니다.", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<GetUpdatedComment>, t: Throwable) {
+                Log.e("실패", t.message)
+                Toast.makeText(mContext, "댓글을 수정할수 없습니다.", Toast.LENGTH_LONG).show()
+            }
+        })
     }
+
+    override fun showDialog(comment_id: Int, adapterPost: AdapterPost, curruntScript:String,showText: String, params: FrameLayout.LayoutParams,list: ArrayList<ModelComment>, board_id:Int) {
+        val container = FrameLayout(mContext)
+        val et = EditText(mContext)
+        params.leftMargin = mContext.resources.getDimensionPixelSize(R.dimen.dialog_margin)
+        params.rightMargin = mContext.resources.getDimensionPixelSize(R.dimen.dialog_margin)
+        et.setLayoutParams(params)
+        et.setSingleLine(true)
+
+        val FilterArray = arrayOfNulls<InputFilter>(1)
+        FilterArray[0] = InputFilter.LengthFilter(15)
+        et.setFilters(FilterArray)
+        et.setText(curruntScript)
+        container.addView(et)
+        val alt_bld = androidx.appcompat.app.AlertDialog.Builder(mContext, R.style.MyAlertDialogStyle)
+        alt_bld.setTitle(showText)
+            .setMessage("댓글을 입력하세요")
+            .setIcon(R.drawable.ic_add_black)
+            .setCancelable(true)
+            .setView(container)
+            .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+                val value = et.getText().toString()
+                if(!value.equals("")){
+                   updateItems(comment_id,adapterPost,value,list,board_id)
+                }else{
+                    Toast.makeText(mContext, "댓글을 입력해주세요", Toast.LENGTH_SHORT).show()
+                }
+            })
+        val alert = alt_bld.create()
+        alert.show()
+
+        // 메세지 텍스트 변경
+        var textView = alert.findViewById<TextView>(android.R.id.message)
+        textView?.setTextColor(Color.BLACK)
+    }
+
+
+
 
     override fun typeInit(feedback_id: Int, board_id: Int) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")

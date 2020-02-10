@@ -48,14 +48,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val TAG = "MainActivity"
     internal lateinit var presenterMain: PresenterMain
+    var arrayList = arrayListOf<ModelFeedback?>()
     lateinit var mAdapter: AdapterMainFeedback
     var feedback_count: Int = 0
     var feedbackMyYour = 0//피드백이 내가 요청한건지 요청 받은건지 0이면 내가 요청한것, 1이면 요청 받은것
     var feedbackIngEd = 0//피드백이 진행중인지 진행완료인지 0이면 진행중인것, 1이면 진행 완료인것
     var feedbackIsFiltering = 0//필터링하고있는건지 아닌지 0이면 필터링아니고 일반, 1이면 필터링 중인것
     var selectedCategoryId = -2
-    //리사이클러뷰에서 쓸 리스트와 어댑터 선언
-    var arrayList = arrayListOf<ModelFeedback?>()
+    //뒤로가기시 경고문 띄울때
     private var lastTimeBackPressed:Long=-1500
 
     lateinit var nav_Nickname_Tv:TextView
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         setNavView()
 
-        setRecyclerView(Main_Recyclerview)
+        setRecyclerView()
         //presenter 정의하고 아이템을 불러옴
 
         presenterMain.loadItems(arrayList, mAdapter, feedback_count)
@@ -190,7 +190,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 feedback_count = 0
                 feedbackMyYour = 0
                 presenterMain.loadItems(arrayList, mAdapter, feedback_count)
-                setRecyclerView(Main_Recyclerview)
+                setRecyclerView()
             }
             1 -> {//진행완료인거
                 setSelectCategory()
@@ -198,7 +198,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 feedback_count = 0
                 feedbackMyYour = 2//원래 내꺼면 0 아니면 1인데 내꺼중에 진행완료인거를 2로 둠
                 presenterMain.loadCompleteItems(arrayList, mAdapter, feedback_count)
-                setRecyclerView(Main_Recyclerview)
+                setRecyclerView()
             }
 
         }
@@ -209,25 +209,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         feedback_count = feedback_lastid
     }
 
-    // setRecyclerView : ComicFragment에서 평가할 도서 목록에 대한 RecyclerView를 초기화 및 정의하는 함수
-    fun setRecyclerView(recyclerView: RecyclerView) {
+    fun setRecyclerView() {
 
         //리사이클러뷰 관련, 어댑터, 레이아웃매니저
         lm = LinearLayoutManager(this)
         Main_Recyclerview.layoutManager = lm
-        mAdapter = AdapterMainFeedback(
-            Main_Recyclerview,
-            this,
-            arrayList,
-            presenterMain,
-            this,
-            feedbackMyYour
-        )
+        mAdapter = AdapterMainFeedback(this, arrayList, presenterMain,  feedbackMyYour)
         Main_Recyclerview.adapter = mAdapter
         Main_Recyclerview.setHasFixedSize(true) //아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
         Main_Recyclerview.clearOnScrollListeners()
         //무한 스크롤을 위해 리스너 추가함
         //요청받은건지 요청 한건지 구별함
+
         Main_Recyclerview.addOnScrollListener(InfiniteScrollListener({
             if (feedbackMyYour == 0) {//필터 아닐때
                 if(feedbackIsFiltering == 0){
@@ -319,7 +312,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }else{//그밖의 기타 필터링
                         presenterMain.categoryFilter(selectedCategoryId, arrayList, mAdapter, feedback_count,feedbackIngEd)
                     }
-                    setRecyclerView(Main_Recyclerview)
+                    setRecyclerView()
                 }
 
 
@@ -437,7 +430,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        setRecyclerView(Main_Recyclerview)
+        setRecyclerView()
     }
     fun setSelectCategory(){
         main_Category_Color.visibility = View.GONE
@@ -487,7 +480,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
            presenterMain.loadItems(arrayList, mAdapter, feedback_count)
            ing_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
            ed_Btn.setBackgroundColor(Color.rgb(255, 255, 255))
-           setRecyclerView(Main_Recyclerview)
+           setRecyclerView()
            //ing_Linear.visibility = View.VISIBLE
            ing_Case.visibility = View.VISIBLE
            fab_main.visibility = View.VISIBLE
@@ -505,7 +498,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
            feedbackMyYour = 1//요청받은거임
            presenterMain.loadYourItems(arrayList, mAdapter, feedback_count)
 
-           setRecyclerView(Main_Recyclerview)
+           setRecyclerView()
 
            //ing_Linear.visibility = View.GONE
            ing_Case.visibility = View.GONE
