@@ -16,7 +16,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <TextView
+            <!--<TextView
                     android:id="@+id/textView9"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
                         android:text="전체 공개"
                         android:textColor="#585858"
                         android:textSize="18sp" />
-            </LinearLayout>
+            </LinearLayout>-->
 
             <TextView
                     android:id="@+id/textView13"
@@ -164,7 +164,7 @@
                     android:textColor="#585858"
                     android:textSize="20sp" />
 
-            <TextView
+            <!--<TextView
                     android:id="@+id/textView14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -232,7 +232,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@drawable/ic_lock_black" />
-            </LinearLayout>
+            </LinearLayout>-->
 
 
         </LinearLayout>

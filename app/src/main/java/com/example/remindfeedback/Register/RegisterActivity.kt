@@ -35,33 +35,32 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
             if (email_Input.text.toString().equals("") || nickname_Input.text.toString().equals("") || password_Input.text.toString().equals("") || re_Password_Input.text.toString().equals("")) {
                 Toast.makeText(this@RegisterActivity, "빈칸을 채워주세요.", Toast.LENGTH_SHORT).show()
             } else {
+
                 // 이메일 형식 체크
-                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email_Input.text.toString()).matches()) {
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email_Input.text).matches()) {
                     Toast.makeText(this, "이메일 형식이 아닙니다.", Toast.LENGTH_SHORT).show()
-                }
-                // 비밀번호 형식 체크
-                if (!Pattern.matches("^[A-Za-z0-9_@./#&+-]*.{6,20}\$", password_Input.text.toString())) {
-                    Toast.makeText(this, "비밀번호 형식을 지켜주세요.\n(영문 대소문자,숫자,특수문자 포함 6~20자)", Toast.LENGTH_SHORT).show()
-                }
-
-                if( !password_Input.text.toString().equals(re_Password_Input.text.toString()) ) {
-                    Toast.makeText(this@RegisterActivity, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
-                }
-
-            }
-
-
-            if (!password_Input.text.toString().equals(re_Password_Input.text.toString())) {
-            } else {
-                if (email_Input.text.toString().equals("") || nickname_Input.text.toString().equals("") || password_Input.text.toString().equals("") || re_Password_Input.text.toString().equals("")) {
-                    Toast.makeText(this@RegisterActivity, "빈칸을 채워주세요.", Toast.LENGTH_SHORT).show()
                 } else {
 
+                    // 비밀번호 & 비밀번호 확인 일치하는지 체크
+                    if( !password_Input.text.toString().equals(re_Password_Input.text.toString()) ) {
+                        Toast.makeText(this@RegisterActivity, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+                    } else {
 
+                        // 비밀번호 형식 체크
+                        if (!Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$", password_Input.text.toString())) {
+                            Toast.makeText(this, "비밀번호 형식을 지켜주세요.\n(영문,숫자,특수문자 포함 최소 8글자)", Toast.LENGTH_SHORT).show()
+                        } else {
 
+                            // 이용약관 동의 확인
+                            if ( !chk_1.isChecked || !chk_2.isChecked || !chk_3.isChecked ) {
+                                Toast.makeText(this, "이용약관에 모두 동의하여 주세요.", Toast.LENGTH_SHORT).show()
+                            } else {
+                                presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString())
+                                //finish()
+                            }
+                        }
+                    }
 
-                    presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString())
-                    finish()
                 }
             }
 

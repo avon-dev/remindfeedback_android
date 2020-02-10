@@ -193,6 +193,8 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
 
         if (choosedData == null) {
             Toast.makeText(this@CreateFeedbackActivity, "날짜를 선택해주세요.", Toast.LENGTH_SHORT).show()
+        } else if(create_Feedback_Title.text.toString() == ""){
+            Toast.makeText(this@CreateFeedbackActivity, "피드백 제목을 입력해주세요.", Toast.LENGTH_SHORT).show()
         } else {
             val intent = Intent()
             if (modifyID != -1) {
@@ -205,6 +207,7 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
             if (!adviser_uid.equals("")) {
                 intent.putExtra("user_uid", adviser_uid)
             }
+
             intent.putExtra("title", create_Feedback_Title.text.toString())
             intent.putExtra("date", stringDate)
             intent.putExtra("color", intentColor)

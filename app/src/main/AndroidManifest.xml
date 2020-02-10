@@ -47,8 +47,8 @@
                 android:parentActivityName=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity" />
         <activity
                 android:name=".FeedbackList.FeedbackDetail.Post.PostActivity"
-                android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"
                 android:screenOrientation="portrait" />
+<!--                android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"-->
         <activity
                 android:name=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"
                 android:parentActivityName=".FeedbackList.MainActivity"
