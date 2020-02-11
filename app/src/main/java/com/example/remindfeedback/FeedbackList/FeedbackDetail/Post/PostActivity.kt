@@ -135,7 +135,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             intent.getIntExtra("feedback_id", -1),
             intent.getIntExtra("board_id", -1)
         )
-        loadItem()
         //댓글다는 부분
         comment_Commit_Button.setOnClickListener {
             if (!comment_EditText.text.toString().equals("")) {
