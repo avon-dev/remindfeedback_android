@@ -211,7 +211,7 @@ interface ServiceAPI {
 
     //친구차단 하기
     @PATCH("friends/block/{friend_id}")
-    fun BlockFriend(@Path("feedback_id") feedback_id: Int,@Body rejectFriend: RejectFriend): Call<SearchFriend>
+    fun BlockFriend(@Path("friend_id") friend_id: Int,@Body rejectFriend: RejectFriend): Call<SearchFriend>
 
     //친구차단 해제하기
     @PATCH("friends/unblock/{friend_id}")
