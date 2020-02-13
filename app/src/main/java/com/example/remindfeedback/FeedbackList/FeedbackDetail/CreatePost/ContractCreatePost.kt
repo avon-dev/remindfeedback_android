@@ -19,6 +19,7 @@ interface ContractCreatePost {
     interface Presenter {
         var view: View
         var mContext: Context
+        fun getPermission()
         fun picktureDialogViwe()
         fun createImageFile(): File
         fun rotateImage(source: Bitmap, angle: Float): Bitmap
