@@ -139,10 +139,11 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
         })
     }
 
-    override fun rejectRequest(list: ArrayList<ModelFriendsList>,user_uid: String,friend_id:Int, adapterFriendsList: AdapterFriendsList) {
+    override fun rejectRequest(list: ArrayList<ModelFriendsList>,user_uid: String,friend_id:Int, friend_uid: String, adapterFriendsList: AdapterFriendsList) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        var rejectFreidn = RejectFriend(user_uid,friend_id)
+        var rejectFreidn = RejectFriend(user_uid, friend_uid)
+        Log.e("친구거절", "user_uid : " + user_uid + ", friend_uid : " + friend_uid + ", friend_id : " + friend_id)
         val register_request: Call<SearchFriend> = apiService.RejectFriend(friend_id,rejectFreidn)
         register_request.enqueue(object : Callback<SearchFriend> {
             override fun onResponse(call: Call<SearchFriend>, response: Response<SearchFriend>) {
@@ -161,10 +162,10 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
     }
 
 
-    override fun blockRequest(list: ArrayList<ModelFriendsList>,user_uid: String,friend_id:Int, adapterFriendsList: AdapterFriendsList) {
+    override fun blockRequest(list: ArrayList<ModelFriendsList>,user_uid: String,friend_id:Int, friend_uid: String, adapterFriendsList: AdapterFriendsList) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        var rejectFriend = RejectFriend(user_uid, friend_id)
+        var rejectFriend = RejectFriend(user_uid, friend_uid)
         val register_request: Call<SearchFriend> = apiService.BlockFriend(friend_id,rejectFriend)
         register_request.enqueue(object : Callback<SearchFriend> {
             override fun onResponse(call: Call<SearchFriend>, response: Response<SearchFriend>) {
@@ -182,10 +183,10 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
         })
     }
 
-    override fun unBlockRequest(list: ArrayList<ModelFriendsList>,user_uid: String,friend_id:Int, adapterFriendsList: AdapterFriendsList) {
+    override fun unBlockRequest(list: ArrayList<ModelFriendsList>,user_uid: String,friend_id:Int, friend_uid: String, adapterFriendsList: AdapterFriendsList) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        var rejectFriend = RejectFriend(user_uid, friend_id)
+        var rejectFriend = RejectFriend(user_uid, friend_uid)
         val register_request: Call<SearchFriend> = apiService.UnBlockFriend(friend_id,rejectFriend)
         register_request.enqueue(object : Callback<SearchFriend> {
             override fun onResponse(call: Call<SearchFriend>, response: Response<SearchFriend>) {
