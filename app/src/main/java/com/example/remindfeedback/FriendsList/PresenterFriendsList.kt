@@ -1,28 +1,21 @@
 package com.example.remindfeedback.FriendsList
 
 import android.content.Context
-import android.content.res.AssetManager
 import android.util.Log
 import android.widget.Toast
-import com.example.remindfeedback.CategorySetting.ModelCategorySetting
-import com.example.remindfeedback.FeedbackList.ContractMain
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
 import okhttp3.OkHttpClient
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
-import java.io.InputStream
-import java.util.ArrayList
+import java.util.*
 
-class PresenterFriendsList: ContractFriendsList.Presenter {
-
+class PresenterFriendsList : ContractFriendsList.Presenter {
 
 
     lateinit override var view: ContractFriendsList.View
-    lateinit override var context:Context
+    lateinit override var context: Context
 
     override fun loadItems(list: ArrayList<ModelFriendsList>, adapterFriendsList: AdapterFriendsList) {
         list.clear()
@@ -39,7 +32,15 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                         for (i in 0 until fList.size) {
                             var myList: getFriendsInfo = getFriendsInfo()
                             myList = fList[i]
-                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid,myList.id ,myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type, 0)
+                            var addData: ModelFriendsList = ModelFriendsList(
+                                myList.user_uid,
+                                myList.id,
+                                myList.nickname!!,
+                                myList.introduction!!,
+                                myList.portrait!!,
+                                myList.type,
+                                0
+                            )
                             adapterFriendsList.addItem(addData)
                             view.refresh()
                         }
@@ -72,7 +73,15 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                         for (i in 0 until fList.size) {
                             var myList: getFriendsInfo = getFriendsInfo()
                             myList = fList[i]
-                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid,myList.id, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type, 1)
+                            var addData: ModelFriendsList = ModelFriendsList(
+                                myList.user_uid,
+                                myList.id,
+                                myList.nickname!!,
+                                myList.introduction!!,
+                                myList.portrait!!,
+                                myList.type,
+                                1
+                            )
                             adapterFriendsList.addItem(addData)
                             view.refresh()
                         }
@@ -82,6 +91,7 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                 }
 
             }
+
             override fun onFailure(call: Call<GetFriends>, t: Throwable) {
             }
         })
@@ -102,7 +112,15 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                         for (i in 0 until fList.size) {
                             var myList: getFriendsInfo = getFriendsInfo()
                             myList = fList[i]
-                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid,myList.id, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type,2)
+                            var addData: ModelFriendsList = ModelFriendsList(
+                                myList.user_uid,
+                                myList.id,
+                                myList.nickname!!,
+                                myList.introduction!!,
+                                myList.portrait!!,
+                                myList.type,
+                                2
+                            )
                             adapterFriendsList.addItem(addData)
                             view.refresh()
                         }
@@ -112,13 +130,14 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                 }
 
             }
+
             override fun onFailure(call: Call<GetFriends>, t: Throwable) {
             }
         })
     }
 
 
-    override fun acceptRequest(list: ArrayList<ModelFriendsList>,user_uid: String, adapterFriendsList: AdapterFriendsList) {
+    override fun acceptRequest(list: ArrayList<ModelFriendsList>, user_uid: String, adapterFriendsList: AdapterFriendsList) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         var createFriend = CreateFriend(user_uid)
@@ -134,16 +153,17 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                     val StatusCode = response.code()
                 }
             }
+
             override fun onFailure(call: Call<SearchFriend>, t: Throwable) {
             }
         })
     }
 
-    override fun rejectRequest(list: ArrayList<ModelFriendsList>,user_uid: String,friend_id:Int, adapterFriendsList: AdapterFriendsList) {
+    override fun rejectRequest(list: ArrayList<ModelFriendsList>, user_uid: String, friend_id: Int, friend_uid: String, adapterFriendsList: AdapterFriendsList) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        var rejectFreidn = RejectFriend(user_uid,friend_id)
-        val register_request: Call<SearchFriend> = apiService.RejectFriend(friend_id,rejectFreidn)
+        var rejectFreidn = RejectFriend(user_uid, friend_uid)
+        val register_request: Call<SearchFriend> = apiService.RejectFriend(friend_id, rejectFreidn)
         register_request.enqueue(object : Callback<SearchFriend> {
             override fun onResponse(call: Call<SearchFriend>, response: Response<SearchFriend>) {
                 if (response.isSuccessful) {
@@ -155,17 +175,18 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                     val StatusCode = response.code()
                 }
             }
+
             override fun onFailure(call: Call<SearchFriend>, t: Throwable) {
             }
         })
     }
 
 
-    override fun blockRequest(list: ArrayList<ModelFriendsList>,user_uid: String,friend_id:Int, adapterFriendsList: AdapterFriendsList) {
+    override fun blockRequest(list: ArrayList<ModelFriendsList>, user_uid: String, friend_id: Int, friend_uid: String, adapterFriendsList: AdapterFriendsList) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        var rejectFriend = RejectFriend(user_uid, friend_id)
-        val register_request: Call<SearchFriend> = apiService.BlockFriend(friend_id,rejectFriend)
+        var rejectFriend = RejectFriend(user_uid, friend_uid)
+        val register_request: Call<SearchFriend> = apiService.BlockFriend(friend_id, rejectFriend)
         register_request.enqueue(object : Callback<SearchFriend> {
             override fun onResponse(call: Call<SearchFriend>, response: Response<SearchFriend>) {
                 if (response.isSuccessful) {
@@ -177,16 +198,17 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                     val StatusCode = response.code()
                 }
             }
+
             override fun onFailure(call: Call<SearchFriend>, t: Throwable) {
             }
         })
     }
 
-    override fun unBlockRequest(list: ArrayList<ModelFriendsList>,user_uid: String,friend_id:Int, adapterFriendsList: AdapterFriendsList) {
+    override fun unBlockRequest(list: ArrayList<ModelFriendsList>, user_uid: String, friend_id: Int, friend_uid: String, adapterFriendsList: AdapterFriendsList) {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        var rejectFriend = RejectFriend(user_uid, friend_id)
-        val register_request: Call<SearchFriend> = apiService.UnBlockFriend(friend_id,rejectFriend)
+        var rejectFriend = RejectFriend(user_uid, friend_uid)
+        val register_request: Call<SearchFriend> = apiService.UnBlockFriend(friend_id, rejectFriend)
         register_request.enqueue(object : Callback<SearchFriend> {
             override fun onResponse(call: Call<SearchFriend>, response: Response<SearchFriend>) {
                 if (response.isSuccessful) {
@@ -198,6 +220,7 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                     val StatusCode = response.code()
                 }
             }
+
             override fun onFailure(call: Call<SearchFriend>, t: Throwable) {
             }
         })
@@ -218,7 +241,15 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
                         for (i in 0 until fList.size) {
                             var myList: getFriendsInfo = getFriendsInfo()
                             myList = fList[i]
-                            var addData: ModelFriendsList = ModelFriendsList(myList.user_uid,myList.id, myList.nickname!!, myList.introduction!!, myList.portrait!!, myList.type, 3)
+                            var addData: ModelFriendsList = ModelFriendsList(
+                                myList.user_uid,
+                                myList.id,
+                                myList.nickname!!,
+                                myList.introduction!!,
+                                myList.portrait!!,
+                                myList.type,
+                                3
+                            )
                             adapterFriendsList.addItem(addData)
                             view.refresh()
                         }
@@ -235,7 +266,7 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
         })
     }
 
-    override fun addItems(email:String, adapterFriendsList: AdapterFriendsList) {
+    override fun addItems(email: String, adapterFriendsList: AdapterFriendsList) {
 
     }
 
@@ -244,7 +275,6 @@ class PresenterFriendsList: ContractFriendsList.Presenter {
 
     override fun updateItems(position: Int) {
     }
-
 
 
 }

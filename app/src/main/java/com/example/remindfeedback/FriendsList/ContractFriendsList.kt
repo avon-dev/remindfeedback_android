@@ -34,11 +34,11 @@ interface ContractFriendsList {
         //친구요청 수락
         fun acceptRequest(list: ArrayList<ModelFriendsList>,user_uid:String, adapterFriendsList: AdapterFriendsList)
         //친구요청 거절
-        fun rejectRequest(list: ArrayList<ModelFriendsList>,user_uid:String,friend_id:Int, adapterFriendsList: AdapterFriendsList)
+        fun rejectRequest(list: ArrayList<ModelFriendsList>,user_uid:String,friend_id:Int, friend_uid: String, adapterFriendsList: AdapterFriendsList)
         //친구 차단
-        fun blockRequest(list: ArrayList<ModelFriendsList>,user_uid:String,friend_id:Int, adapterFriendsList: AdapterFriendsList)
+        fun blockRequest(list: ArrayList<ModelFriendsList>,user_uid:String,friend_id:Int, friend_uid: String, adapterFriendsList: AdapterFriendsList)
         //친구 차단 해제
-        fun unBlockRequest(list: ArrayList<ModelFriendsList>,user_uid:String,friend_id:Int, adapterFriendsList: AdapterFriendsList)
+        fun unBlockRequest(list: ArrayList<ModelFriendsList>,user_uid:String,friend_id:Int, friend_uid: String, adapterFriendsList: AdapterFriendsList)
 
     }
 
