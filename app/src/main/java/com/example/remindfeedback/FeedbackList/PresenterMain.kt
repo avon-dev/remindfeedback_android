@@ -142,7 +142,7 @@ class PresenterMain : ContractMain.Presenter {
                                 var mfl: yourFeedback = yourFeedback()
                                 mfl = mFeedback[i]
 
-                                if(mfl.complete != 2){
+                                if(mfl.complete == 1){
                                     var adviserUser: adviserUser = adviserUser()
                                     if (mfl.user == null) { //조언자가 없을경우 공백으로표시
                                         adviserUser.nickname = ""

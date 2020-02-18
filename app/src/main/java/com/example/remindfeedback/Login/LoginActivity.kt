@@ -22,7 +22,8 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
     internal lateinit var presenterLogin: PresenterLogin
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        //setContentView(R.layout.activity_login)
+        setContentView(R.layout.test_login_1)
         presenterLogin = PresenterLogin().apply {
             view = this@LoginActivity
             mContext = this@LoginActivity

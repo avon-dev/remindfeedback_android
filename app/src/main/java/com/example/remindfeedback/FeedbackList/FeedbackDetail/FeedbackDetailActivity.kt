@@ -108,6 +108,51 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
     }
 
     //아래에서 올라오는 뷰 만드는부분(바텀시트)
+    private fun showAdviserBottomSheet() {
+        mBottomSheetDialog = BottomSheetDialog(this, R.style.Material_App_BottomSheetDialog)
+        val v = LayoutInflater.from(this).inflate(R.layout.view_adviser_bottomsheet, null)
+        ViewUtil.setBackground(v, ThemeDrawable(R.drawable.bg_window_light))
+        val bottom_Sheet_Title = v.findViewById<View>(R.id.bottom_Sheet_Title) as TextView
+        bottom_Sheet_Title.setText("완료요청을 수락 하시겠습니까?")
+        val bt_accept = v.findViewById<View>(R.id.sheet_bt_Accept) as Button
+        val bt_reject = v.findViewById<View>(R.id.sheet_bt_Reject) as Button
+        val bt_wrap = v.findViewById<View>(R.id.sheet_bt_wrap) as Button
+
+        bt_accept.setText("수락하기")
+        bt_accept.setOnClickListener {
+            when(feedback_complete){
+                1 -> { presenterFeedbackDetail.completeAccept(feedback_id) }
+                -1, 0 -> { Toast.makeText(this, "완료요청 되지않은 피드백입니다.", Toast.LENGTH_LONG).show() }
+                2 -> { Toast.makeText(this, "이미 완료된 피드백입니다.", Toast.LENGTH_LONG).show() }
+            }
+            mBottomSheetDialog!!.dismissImmediately()
+        }
+
+        bt_reject.setText("거절하기")
+        bt_reject.setOnClickListener {
+            when(feedback_complete){
+                1 -> { presenterFeedbackDetail.completeReject(feedback_id) }
+                0 -> { Toast.makeText(this, "이미 거절한 피드백입니다.", Toast.LENGTH_LONG).show() }
+                -1 -> { Toast.makeText(this, "완료 요청되지 않은 피드백입니다.", Toast.LENGTH_LONG).show() }
+                2 -> { Toast.makeText(this, "이미 완료된 피드백입니다.", Toast.LENGTH_LONG).show() }
+
+            }
+
+            mBottomSheetDialog!!.dismissImmediately()
+        }
+
+        bt_wrap.setText("취소")
+        bt_wrap.setOnClickListener { mBottomSheetDialog!!.dismissImmediately() }
+        v.setBackgroundColor(Color.parseColor("#ffffff"))
+        bt_accept.setBackgroundColor(Color.parseColor("#ddeeff"))
+        bt_reject.setBackgroundColor(Color.parseColor("#ddeeff"))
+        bt_wrap.setBackgroundColor(Color.parseColor("#ddeeff"))
+
+        mBottomSheetDialog!!.contentView(v)
+            .show()
+    }
+
+    //아래에서 올라오는 뷰 만드는부분(바텀시트)
     private fun showBottomSheet() {
         mBottomSheetDialog = BottomSheetDialog(this, R.style.Material_App_BottomSheetDialog)
         val v = LayoutInflater.from(this).inflate(R.layout.view_bottomsheet, null)
@@ -138,7 +183,6 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
         bt_wrap.setText("취소")
         bt_wrap.setOnClickListener { mBottomSheetDialog!!.dismissImmediately() }
         v.setBackgroundColor(Color.parseColor("#ffffff"))
-        //v.setBackgroundResource(R.drawable.all_line)
         bt_match.setBackgroundColor(Color.parseColor("#ddeeff"))
         bt_wrap.setBackgroundColor(Color.parseColor("#ddeeff"))
 
@@ -303,11 +347,8 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
             R.id.complete_Request_Button -> {
                 return complete_Request_Button()
             }
-            R.id.complete_Accept_Button -> {
-                return complete_Accept_Button()
-            }
-            R.id.complete_Reject_Button -> {
-                return  complete_Reject_Button()
+            R.id.about_Complete_Button -> {
+                return  about_Complete_Button()
             }
             else -> {
                 return super.onOptionsItemSelected(item)
@@ -324,40 +365,15 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
     //완료요청
     fun complete_Request_Button(): Boolean {
         showBottomSheet()
-        /*
-        when(feedback_complete){
-            -1, 0 -> {
-                if(feedback_adviser.equals("")){
-                    presenterFeedbackDetail.completeAccept(feedback_id)//조언자가 없는 피드백이라 그냥 수락하게 함
-                }else{ presenterFeedbackDetail.completeRequest(feedback_id) }
-            }
-            1 -> { Toast.makeText(this, "이미 완료 요청된 피드백 입니다.", Toast.LENGTH_LONG).show() }
-            2 -> { Toast.makeText(this, "이미 완료된 피드백 입니다.", Toast.LENGTH_LONG).show()}
-        }
-        */
         return true
     }
-    //완료수락
-    fun complete_Accept_Button(): Boolean {
-        when(feedback_complete){
-            1 -> { presenterFeedbackDetail.completeAccept(feedback_id) }
-            -1, 0 -> { Toast.makeText(this, "완료요청 되지않은 피드백입니다.", Toast.LENGTH_LONG).show() }
-            2 -> { Toast.makeText(this, "이미 완료된 피드백입니다.", Toast.LENGTH_LONG).show() }
-        }
-        return true
-    }
-    //완료거절
-    fun complete_Reject_Button():Boolean{
-        when(feedback_complete){
-            1 -> { presenterFeedbackDetail.completeReject(feedback_id) }
-            0 -> { Toast.makeText(this, "이미 거절한 피드백입니다.", Toast.LENGTH_LONG).show() }
-            -1 -> { Toast.makeText(this, "완료 요청되지 않은 피드백입니다.", Toast.LENGTH_LONG).show() }
-            2 -> { Toast.makeText(this, "이미 완료된 피드백입니다.", Toast.LENGTH_LONG).show() }
-
-        }
+    //완료에대한 바텀시트
+    fun about_Complete_Button(): Boolean {
+        showAdviserBottomSheet()
 
         return true
     }
+
 
     //프레젠터에서 컴플리트값을 바꿔줌
     override fun setFeedbackComplete(mFeedbackComplete:Int){

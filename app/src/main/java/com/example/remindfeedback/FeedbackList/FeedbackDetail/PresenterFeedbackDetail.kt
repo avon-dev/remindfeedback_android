@@ -500,91 +500,86 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
 
     //완료 요청 하는부분
     override fun completeRequest(feedback_id: Int) {
-        var basicDialog: BasicDialog = BasicDialog("피드백 완료 요청 하시겠습니까?", mContext, {
-            val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
-            val apiService = RetrofitFactory.serviceAPI(client)
-            val register_request: Call<ResponseBody> = apiService.CompleteRequest(feedback_id)
-            register_request.enqueue(object : Callback<ResponseBody> {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<ResponseBody> = apiService.CompleteRequest(feedback_id)
+        register_request.enqueue(object : Callback<ResponseBody> {
 
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-                    if (response.isSuccessful) {
-                        view.setFeedbackComplete(1)
-                        view.refresh()
-                    } else {
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.e("실패", t.message)
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful) {
+                    Toast.makeText(mContext, "피드백완료 요청되었습니다.", Toast.LENGTH_LONG).show()
+                    view.setFeedbackComplete(1)
                     view.refresh()
+                } else {
                 }
+            }
 
-            })
-        }, {})
-        basicDialog.makeDialog()
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("실패", t.message)
+                view.refresh()
+            }
+
+        })
     }
 
     //요철 수락 하는부분
     override fun completeAccept(feedback_id: Int) {
         Log.e("completeAccept", "" + feedback_id)
 
-        var basicDialog: BasicDialog = BasicDialog("정말로 수락 하시겠습니까?", mContext, {
-            val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
-            val apiService = RetrofitFactory.serviceAPI(client)
-            val register_request: Call<ResponseBody> = apiService.CompleteAccept(feedback_id)
-            register_request.enqueue(object : Callback<ResponseBody> {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<ResponseBody> = apiService.CompleteAccept(feedback_id)
+        register_request.enqueue(object : Callback<ResponseBody> {
 
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(mContext, "피드백이 완료 되었습니다.", Toast.LENGTH_LONG).show()
-                        view.setFeedbackComplete(2)
-                        view.refresh()
-                        (mContext as Activity).finish()
-                    } else {
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.e("실패", t.message)
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful) {
+                    Toast.makeText(mContext, "피드백이 완료 되었습니다.", Toast.LENGTH_LONG).show()
+                    view.setFeedbackComplete(2)
                     view.refresh()
+                    (mContext as Activity).finish()
+                } else {
                 }
+            }
 
-            })
-        }, {})
-        basicDialog.makeDialog()
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("실패", t.message)
+                view.refresh()
+            }
+
+        })
+
     }
 
     override fun completeReject(feedback_id: Int) {
-        var basicDialog: BasicDialog = BasicDialog("정말로 거절 하시겠습니까?", mContext, {
-            val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
-            val apiService = RetrofitFactory.serviceAPI(client)
-            val register_request: Call<ResponseBody> = apiService.CompleteReject(feedback_id)
-            register_request.enqueue(object : Callback<ResponseBody> {
 
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-                    if (response.isSuccessful) {
-                        view.setFeedbackComplete(0)
-                        view.refresh()
-                    } else {
-                    }
-                }
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<ResponseBody> = apiService.CompleteReject(feedback_id)
+        register_request.enqueue(object : Callback<ResponseBody> {
 
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.e("실패", t.message)
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful) {
+                    Toast.makeText(mContext, "피드백완료 요청이 거절되었습니다.", Toast.LENGTH_LONG).show()
+                    view.setFeedbackComplete(0)
                     view.refresh()
+                } else {
                 }
+            }
 
-            })
-        }, {})
-        basicDialog.makeDialog()
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("실패", t.message)
+                view.refresh()
+            }
+
+        })
     }
 }

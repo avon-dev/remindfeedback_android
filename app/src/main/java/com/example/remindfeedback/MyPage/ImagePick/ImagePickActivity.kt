@@ -73,16 +73,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     fun setData(){
         val intent:Intent = getIntent()
         if(!intent.getStringExtra("imageData").equals("")){
-            /*
-            var test_task: URLtoBitmapTask = URLtoBitmapTask()
-            test_task = URLtoBitmapTask().apply {
-                val imageData:String = intent.getStringExtra("imageData")
-                url = URL(imageData)
-                Log.e("url", url.toString())
-                val bitmap: Bitmap = test_task.execute().get()
-                modify_Profile_ImageView.setImageBitmap(bitmap)
-            }
-            */
+          
             Picasso.get().load(intent.getStringExtra("imageData")).into(modify_Profile_ImageView);
 
 
@@ -137,12 +128,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode != Activity.RESULT_OK) {
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show()
-            if (tempFile != null) {
-                if (tempFile!!.exists()) {
-                    if (tempFile!!.delete()) {
-                    }
-                }
-            }
+
             return
         }
         when (requestCode) {
@@ -162,19 +148,6 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
                     ExifInterface.ORIENTATION_UNDEFINED
                 )
                 var rotatedBitmap: Bitmap? = presenterImagePick.rotateImage(bitmap, 90.toFloat());
-                /*
-                if(orientation == ExifInterface.ORIENTATION_ROTATE_90){
-                    rotatedBitmap = rotateImage(bitmap, 90.toFloat());
-                }else if(orientation ==ExifInterface.ORIENTATION_ROTATE_180 ){
-                    rotatedBitmap = rotateImage(bitmap, 180.toFloat());
-                }else if(orientation == ExifInterface.ORIENTATION_ROTATE_270){
-                    rotatedBitmap = rotateImage(bitmap, 270.toFloat());
-                }else if(orientation == ExifInterface.ORIENTATION_NORMAL){
-                    rotatedBitmap = bitmap;
-                }else{
-                    rotatedBitmap = rotateImage(bitmap, 90.toFloat());
-                }
-                */
                 modify_Profile_ImageView.setImageBitmap(rotatedBitmap)
                 var newfile:File = File(tempFile.absolutePath)
                 newfile.createNewFile()

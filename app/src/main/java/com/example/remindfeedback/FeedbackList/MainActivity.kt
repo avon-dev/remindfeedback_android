@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var selectedCategoryId = -2
     //뒤로가기시 경고문 띄울때
     private var lastTimeBackPressed:Long=-1500
+    lateinit var ab: ActionBar
 
     lateinit var nav_Nickname_Tv:TextView
     lateinit var nav_Portrait_Iv:ImageView
@@ -89,6 +90,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setRecyclerView()
         //presenter 정의하고 아이템을 불러옴
+
+        //액션바 설정
+        ab = this!!.supportActionBar!!
+        ab.setTitle("Remind Feedback")
+
+
 
         presenterMain.loadItems(arrayList, mAdapter, feedback_count)
         presenterMain.getSpinnerArray(spinnerArray)
@@ -401,6 +408,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onRestart() {
         super.onRestart()
+        setNavView()
         arrayList.clear()
         feedback_count = 0
         when (feedbackMyYour) {

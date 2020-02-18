@@ -22,7 +22,6 @@
                 android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <activity android:name=".basic_Test"></activity>
         <activity
                 android:name=".Login.FindPassword.FindPasswordActivity"
                 android:theme="@style/AppTheme.NoActionBar" />
