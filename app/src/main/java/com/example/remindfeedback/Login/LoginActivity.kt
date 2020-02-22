@@ -12,11 +12,18 @@ import kotlinx.android.synthetic.main.activity_login.*
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.os.Build
+import android.util.Log
 import android.view.View
 import com.airbnb.lottie.LottieAnimationView
+import com.example.remindfeedback.Fab
+
 
 
 class LoginActivity : AppCompatActivity(), ContractLogin.View {
+
+
+
 
     private val TAG = "LoginActivity"
     internal lateinit var presenterLogin: PresenterLogin
@@ -24,6 +31,9 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_login)
         setContentView(R.layout.test_login_1)
+
+
+
         presenterLogin = PresenterLogin().apply {
             view = this@LoginActivity
             mContext = this@LoginActivity
@@ -57,5 +67,12 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
             //finish()
         }
 
+
+
+
+
     }
+
+
+
 }

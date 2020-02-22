@@ -35,13 +35,13 @@ class PresenterPost : ContractPost.Presenter {
 
     lateinit override var view: ContractPost.View
     lateinit override var mContext: Context
-    override fun getComment(list: ArrayList<ModelComment>, adapterPost: AdapterPost, board_id: Int, last_id:Int) {
+    override fun getComment(list: ArrayList<ModelComment>, adapterPost: AdapterPost, board_id: Int, last_id:Int, sort:Int) {
 
         var staticId = 0
         var commentLastId:Int = 0
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
-        val register_request: Call<GetAllComments> = apiService.GetAllComment(board_id,last_id)
+        val register_request: Call<GetAllComments> = apiService.GetAllComment(board_id,last_id, sort)
         register_request.enqueue(object : Callback<GetAllComments> {
             override fun onResponse(
                 call: Call<GetAllComments>,
@@ -104,6 +104,7 @@ class PresenterPost : ContractPost.Presenter {
         adapterPost: AdapterPost,
         createComment: CreateComment,
         list: ArrayList<ModelComment>
+        , sort:Int
     ) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
@@ -113,7 +114,7 @@ class PresenterPost : ContractPost.Presenter {
             override fun onResponse(call: Call<CreateComment>, response: Response<CreateComment>) {
                 if (response.isSuccessful) {
                     list.clear()
-                    getComment(list, adapterPost, createComment.board_id, 0)
+                    getComment(list, adapterPost, createComment.board_id, 0,sort)
                     view.refresh()
                 } else {
                 }
@@ -122,14 +123,14 @@ class PresenterPost : ContractPost.Presenter {
             override fun onFailure(call: Call<CreateComment>, t: Throwable) {
                 //여기기서 실패가 뜨는데 이마 call모델이 달라서 그러는거같음, 근데 실패해도 별 상관없어서 새로고침 코드 여기에도 넣어둠
                 list.clear()
-                getComment(list, adapterPost, createComment.board_id, 0)
+                getComment(list, adapterPost, createComment.board_id, 0,sort)
                 view.refresh()
             }
         })
         view.refresh()
     }
 
-    override fun removeItems(comment_id: Int,list: ArrayList<ModelComment>,adapterPost: AdapterPost, board_id:Int) {
+    override fun removeItems(comment_id: Int,list: ArrayList<ModelComment>,adapterPost: AdapterPost, board_id:Int, sort:Int) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val register_request: Call<GetDeletedComment> = apiService.DeleteComment(comment_id)
@@ -142,7 +143,7 @@ class PresenterPost : ContractPost.Presenter {
                     if(success == true){
                         Toast.makeText(mContext, "성공적으로 삭제했습니다.", Toast.LENGTH_LONG).show()
                         list.clear()
-                        getComment(list, adapterPost, board_id,0)
+                        getComment(list, adapterPost, board_id,0,sort)
                     }else{
                         Toast.makeText(mContext, gComment.message, Toast.LENGTH_LONG).show()
                     }
@@ -158,7 +159,7 @@ class PresenterPost : ContractPost.Presenter {
         })
     }
 
-    override fun updateItems(comment_id: Int, adapterPost: AdapterPost, curruntScript:String,list: ArrayList<ModelComment>, board_id:Int) {
+    override fun updateItems(comment_id: Int, adapterPost: AdapterPost, curruntScript:String,list: ArrayList<ModelComment>, board_id:Int, sort:Int) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val register_request: Call<GetUpdatedComment> = apiService.UpdateComment(UpdateComment(curruntScript),comment_id )
@@ -171,7 +172,7 @@ class PresenterPost : ContractPost.Presenter {
                     if(success == true){
                         Toast.makeText(mContext, "성공적으로 수정했습니다.", Toast.LENGTH_LONG).show()
                         list.clear()
-                        getComment(list, adapterPost, board_id,0)
+                        getComment(list, adapterPost, board_id,0, sort)
                     }else{
                         Toast.makeText(mContext, gComment.message, Toast.LENGTH_LONG).show()
                     }
@@ -188,7 +189,7 @@ class PresenterPost : ContractPost.Presenter {
         })
     }
 
-    override fun showDialog(comment_id: Int, adapterPost: AdapterPost, curruntScript:String,showText: String, params: FrameLayout.LayoutParams,list: ArrayList<ModelComment>, board_id:Int) {
+    override fun showDialog(comment_id: Int, adapterPost: AdapterPost, curruntScript:String,showText: String, params: FrameLayout.LayoutParams,list: ArrayList<ModelComment>, board_id:Int, sort:Int) {
         val container = FrameLayout(mContext)
         val et = EditText(mContext)
         params.leftMargin = mContext.resources.getDimensionPixelSize(R.dimen.dialog_margin)
@@ -210,7 +211,7 @@ class PresenterPost : ContractPost.Presenter {
             .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
                 val value = et.getText().toString()
                 if(!value.equals("")){
-                   updateItems(comment_id,adapterPost,value,list,board_id)
+                   updateItems(comment_id,adapterPost,value,list,board_id,sort)
                 }else{
                     Toast.makeText(mContext, "댓글을 입력해주세요", Toast.LENGTH_SHORT).show()
                 }

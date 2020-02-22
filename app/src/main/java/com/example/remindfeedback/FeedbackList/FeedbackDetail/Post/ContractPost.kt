@@ -25,16 +25,16 @@ interface ContractPost {
         var view: View
         var mContext: Context
 
-        fun getComment(list: ArrayList<ModelComment>, adapterPost: AdapterPost, board_id: Int, last_id:Int)
+        fun getComment(list: ArrayList<ModelComment>, adapterPost: AdapterPost, board_id: Int, last_id:Int, sort:Int)
 
-        fun addComment(adapterPost: AdapterPost, createComment: CreateComment, arrayList: ArrayList<ModelComment>)
+        fun addComment(adapterPost: AdapterPost, createComment: CreateComment, arrayList: ArrayList<ModelComment>, sort:Int)
 
-        fun removeItems(comment_id: Int, list: ArrayList<ModelComment>, adapterPost: AdapterPost, board_id:Int)
+        fun removeItems(comment_id: Int, list: ArrayList<ModelComment>, adapterPost: AdapterPost, board_id:Int, sort:Int)
 
-        fun updateItems(comment_id: Int, adapterPost: AdapterPost, curruntScript:String,list: ArrayList<ModelComment>, board_id:Int)
+        fun updateItems(comment_id: Int, adapterPost: AdapterPost, curruntScript:String,list: ArrayList<ModelComment>, board_id:Int, sort:Int)
 
         fun typeInit(feedback_id: Int, board_id: Int)
 
-        fun showDialog(comment_id: Int, adapterPost: AdapterPost, curruntScript:String,showText: String, params: FrameLayout.LayoutParams,list: ArrayList<ModelComment>, board_id:Int)
+        fun showDialog(comment_id: Int, adapterPost: AdapterPost, curruntScript:String,showText: String, params: FrameLayout.LayoutParams,list: ArrayList<ModelComment>, board_id:Int, sort:Int)
     }
 }

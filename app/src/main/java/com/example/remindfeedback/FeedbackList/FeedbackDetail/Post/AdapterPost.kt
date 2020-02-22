@@ -24,7 +24,8 @@ class AdapterPost(
     val context: Context,
     val arrayList: ArrayList<ModelComment>,
     val presenterPost: PresenterPost,
-    val boardId:Int
+    val boardId:Int,
+    val sort:Int
 ) : RecyclerView.Adapter<AdapterPost.Holder>() {
 
     var adapterPost:AdapterPost  = this
@@ -97,12 +98,12 @@ class AdapterPost(
                     //presenterPost.updateItems(comment_list.comment_id,adapterPosition,adapterPost, comment_list.script)
                     //다이알로그에 사용할 params
                     val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                    presenterPost.showDialog(comment_list.comment_id,adapterPost, comment_list.script,"댓글 수정",params,arrayList, boardId)
+                    presenterPost.showDialog(comment_list.comment_id,adapterPost, comment_list.script,"댓글 수정",params,arrayList, boardId,sort)
                     dialogInterface!!.dismiss()
                 }
                 delete_Tv.setOnClickListener {
                     //보드 삭제
-                    presenterPost.removeItems(comment_list.comment_id,arrayList,adapterPost, boardId)
+                    presenterPost.removeItems(comment_list.comment_id,arrayList,adapterPost, boardId,sort)
                     dialogInterface!!.dismiss()
                 }
                 dialog.setView(mView)

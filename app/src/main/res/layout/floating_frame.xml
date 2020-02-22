@@ -31,7 +31,7 @@
 
             android:backgroundTint="#1389ff"
 
-            android:src="@drawable/ic_add_black"
+            android:src="@drawable/ic_add_white"
 
             android:visibility="invisible"
 
@@ -59,7 +59,7 @@
 
             android:backgroundTint="#1389ff"
 
-            android:src="@drawable/ic_add_black"
+            android:src="@drawable/ic_add_white"
 
             android:visibility="invisible"
 
@@ -87,7 +87,7 @@
 
             android:backgroundTint="#1389ff"
 
-            android:src="@drawable/ic_add_black"
+            android:src="@drawable/ic_add_white"
 
             app:borderWidth="0dp"
 

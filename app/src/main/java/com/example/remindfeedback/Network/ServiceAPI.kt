@@ -190,8 +190,8 @@ interface ServiceAPI {
     fun DeleteComment(@Path("comment_id") comment_id: Int): Call<GetDeletedComment>
 
     //각 게시글의 댓글 가져오기
-    @GET("comments/all/scroll/{board_id}/{lastid}")
-    fun GetAllComment(@Path("board_id") board_id: Int,@Path("lastid") lastid: Int): Call<GetAllComments>
+    @GET("comments/all/scroll/{board_id}/{lastid}/{sort}")
+    fun GetAllComment(@Path("board_id") board_id: Int,@Path("lastid") lastid: Int,@Path("sort") sort: Int): Call<GetAllComments>
 
     //내 친구 정보 가져오기
     @GET("friends")

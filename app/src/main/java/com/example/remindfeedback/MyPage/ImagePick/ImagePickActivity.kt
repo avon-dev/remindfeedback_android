@@ -73,7 +73,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     fun setData(){
         val intent:Intent = getIntent()
         if(!intent.getStringExtra("imageData").equals("")){
-          
+
             Picasso.get().load(intent.getStringExtra("imageData")).into(modify_Profile_ImageView);
 
 

@@ -33,6 +33,7 @@ import androidx.core.content.FileProvider
 import com.example.remindfeedback.FeedbackList.MainActivity
 import java.io.File
 import android.R.attr.start
+import android.content.SharedPreferences
 import android.os.AsyncTask
 import android.os.Handler
 import androidx.recyclerview.widget.RecyclerView
@@ -73,7 +74,9 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     //게시물 아이디
     var board_id: Int = -1
     lateinit var lm: LinearLayoutManager
+    internal lateinit var preferences: SharedPreferences
 
+    var sort:Int = -1;
 
     /* 영상 녹음관련 코드는 모두 주석
     //exoplayer변수
@@ -109,6 +112,9 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
 
+        preferences = getSharedPreferences("USERSIGN", 0)
+        sort = preferences.getInt("sort", 1);
+
         var intent: Intent = intent
         board_id = intent.getIntExtra("board_id", -1)
 
@@ -138,10 +144,11 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         //댓글다는 부분
         comment_Commit_Button.setOnClickListener {
             if (!comment_EditText.text.toString().equals("")) {
-                presenterPost.addComment(mAdapter, CreateComment(board_id, comment_EditText.text.toString()), arrayList)
+                presenterPost.addComment(mAdapter, CreateComment(board_id, comment_EditText.text.toString()), arrayList,sort)
                 comment_EditText.setText("")
             }
         }
+
     }
 
 /*
@@ -158,7 +165,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         super.onRestart()
         arrayList.clear()
         commentLastId = 0
-        loadItem()
+
         setRecyclerView(post_Comment_Recyclerview)
     }
 
@@ -172,7 +179,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         lm.reverseLayout = true
         lm.stackFromEnd = true
         recyclerView.layoutManager = lm
-        mAdapter = AdapterPost(this, arrayList, presenterPost, board_id)
+        mAdapter = AdapterPost(this, arrayList, presenterPost, board_id,sort)
         recyclerView.adapter = mAdapter
         recyclerView.setHasFixedSize(true)//아이템이 추가삭제될때 크기측면에서 오류 안나게 해줌
         /*
@@ -188,7 +195,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     }
 
     override fun loadItem(){
-       presenterPost.getComment(arrayList, mAdapter, board_id, commentLastId)
+       presenterPost.getComment(arrayList, mAdapter, board_id, commentLastId,sort)
     }
 
     //레코드 관련 코드라서 주석

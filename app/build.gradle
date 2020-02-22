@@ -95,5 +95,10 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
 
+    //타겟뷰
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0'
+
+    //플로팅버튼 이쁜거
+    implementation 'com.gordonwong:material-sheet-fab:1.2.1'
 
 }

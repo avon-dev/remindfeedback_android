@@ -3,6 +3,7 @@ package com.example.remindfeedback.FeedbackList.FeedbackDetail
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.remindfeedback.Fab
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.ServerModel.CreateBoardPicture
@@ -22,8 +24,9 @@ import com.rey.material.drawable.ThemeDrawable
 import com.rey.material.util.ViewUtil
 import com.rey.material.widget.Button
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
-
-class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View {
+import com.gordonwong.materialsheetfab.MaterialSheetFab
+import com.gordonwong.materialsheetfab.MaterialSheetFabEventListener
+class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View , View.OnClickListener{
 
 
     private val TAG = "FeedbackDetailActivity"
@@ -36,6 +39,9 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
     var photoBoolean:Boolean = true
     var textBoolean:Boolean = true
     var mBottomSheetDialog:BottomSheetDialog? = null
+
+    private var materialSheetFab: MaterialSheetFab<*>? = null
+    private var statusBarColor: Int = 0
 
     var arrayList = arrayListOf<ModelFeedbackDetail>(
     )
@@ -54,7 +60,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
         supportActionBar?.setCustomView(R.layout.actionbar_title)
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
-
+        setupFab()
         presenterFeedbackDetail = PresenterFeedbackDetail().apply {
             view = this@FeedbackDetailActivity
             mContext = this@FeedbackDetailActivity
@@ -391,6 +397,55 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
             mBottomSheetDialog = null
         }
     }
+    private fun setupFab() {
 
+        val fab = findViewById<View>(R.id.fab) as? Fab
+        val sheetView = findViewById<View>(R.id.fab_sheet)
+        val overlay = findViewById<View>(R.id.overlay)
+        val sheetColor = resources.getColor(R.color.background_card)
+        val fabColor = resources.getColor(R.color.theme_accent)
+
+
+        // Create material sheet FAB
+        materialSheetFab = MaterialSheetFab(fab, sheetView, overlay, sheetColor, fabColor)
+        // Set material sheet event listener
+        materialSheetFab!!.setEventListener(object : MaterialSheetFabEventListener() {
+            override fun onShowSheet() {
+                // Save current status bar color
+                statusBarColor = getStatusBarColor()
+                // Set darker status bar color to match the dim overlay
+                setStatusBarColor(resources.getColor(R.color.whiteblue))
+            }
+
+            override fun onHideSheet() {
+                // Restore status bar color
+                setStatusBarColor(statusBarColor)
+            }
+        })
+
+        // Set material sheet item click listeners
+        findViewById<View>(R.id.fab_sheet_item_recording).setOnClickListener(this)
+        findViewById<View>(R.id.fab_sheet_item_reminder).setOnClickListener(this)
+        //findViewById<View>(R.id.fab_sheet_item_photo).setOnClickListener(this)
+        //findViewById<View>(R.id.fab_sheet_item_note).setOnClickListener(this)
+    }
+    override fun onClick(v: View?) {
+        Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show()
+        Log.e("클릭", "클릭")
+        materialSheetFab!!.hideSheet()
+    }
+
+
+    private fun getStatusBarColor(): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor
+        } else 0
+    }
+
+    private fun setStatusBarColor(color: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = color
+        }
+    }
 
 }
