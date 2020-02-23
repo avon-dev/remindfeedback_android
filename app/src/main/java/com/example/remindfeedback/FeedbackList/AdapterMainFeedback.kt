@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.FeedbackDetailActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import com.squareup.picasso.Picasso
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -98,6 +99,9 @@ class AdapterMainFeedback(
             if (!feedback_list!!.feederProfileImage.equals("")) {
                 main_Feedback_Profile_Image.visibility = View.VISIBLE//조언자가 있을때
                 main_Feedback_Alarm.visibility = View.INVISIBLE//일단 안보이게
+
+                Picasso.get().load("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + feedback_list.feederProfileImage).into(main_Feedback_Profile_Image)
+                /*
                 var test_task: URLtoBitmapTask = URLtoBitmapTask()
                 test_task = URLtoBitmapTask().apply {
                     url =
@@ -105,6 +109,7 @@ class AdapterMainFeedback(
                 }
                 var bitmap: Bitmap = test_task.execute().get()
                 main_Feedback_Profile_Image.setImageBitmap(bitmap)
+                */
             } else {
                 if(feedback_list.adviser.equals("")){
                     main_Feedback_Profile_Image.visibility = View.VISIBLE//조언자가 없을때
