@@ -29,4 +29,11 @@
     <color name= "red">#ff0000</color>
     <color name= "yellow">#ffeb3b</color>
     <color name= "green">#81c187</color>
+
+    <!--플로팅버튼-->
+    <color name="text_black_87">#de000000</color>
+    <color name="text_white_87">#deFFFFFF</color>
+    <color name="background_card">#fff</color>
+    <color name="theme_accent">#FFEB3B</color>
+
 </resources>

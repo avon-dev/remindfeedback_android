@@ -78,6 +78,7 @@ class AdapterMainFeedback(
         val main_Feedback_Alarm = itemView.findViewById<ImageView>(R.id.main_Feedback_Alarm)
         val main_Feedback_Name = itemView.findViewById<TextView>(R.id.main_Feedback_Name)
         val main_Feedback_Dday = itemView.findViewById<TextView>(R.id.main_Feedback_Dday)
+        val main_Feedback_Current = itemView.findViewById<TextView>(R.id.main_Feedback_Current)
 
 
         fun bind(feedback_list: ModelFeedback?, context: Context) {
@@ -121,19 +122,26 @@ class AdapterMainFeedback(
             //임시로 색깔 넣어줌 시각적으로 보기위해
             when (feedback_list.complete) {
                 -1 -> {
-                    itemView.setBackgroundColor(Color.WHITE)
+                    //itemView.setBackgroundColor(Color.WHITE)
+                    main_Feedback_Current.setTextColor(Color.WHITE)
+                    main_Feedback_Current.setText("")
                 }//어떤 상태도 아님
                 0 -> {
-                    itemView.setBackgroundColor(Color.RED)
+                    //itemView.setBackgroundColor(Color.RED)
+                    main_Feedback_Current.setTextColor(Color.RED)
+                    main_Feedback_Current.setText("")
                 }//피드백 완료 거절 상태
                 1 -> {
-                    itemView.setBackgroundColor(Color.parseColor("#E1EFEA"))
+                    //itemView.setBackgroundColor(Color.parseColor("#E1EFEA"))
+                    main_Feedback_Current.setTextColor(Color.BLACK)
+                    main_Feedback_Current.setText("완료요청")
                 }//피드백 완료 요청 상태
                 2 -> {
-                    itemView.setBackgroundColor(Color.parseColor("#ACFF96"))
+                    //itemView.setBackgroundColor(Color.parseColor("#ACFF96"))
+                    main_Feedback_Current.setTextColor(Color.parseColor("#77dd77"))
+                    main_Feedback_Current.setText("진행완료")
                 }//피드백 완료 수락 상태
             }
-
 
             //새로운 알람이 와있으면 visible 아니면 invisible
             if (feedback_list != null) {

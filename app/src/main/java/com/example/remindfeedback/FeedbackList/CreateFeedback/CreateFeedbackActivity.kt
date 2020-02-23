@@ -2,6 +2,7 @@ package com.example.remindfeedback.FeedbackList.CreateFeedback
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.example.remindfeedback.FeedbackList.CreateFeedback.ChoiceAdviser.Choi
 import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.PickCategoryActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
+import com.example.remindfeedback.etcProcess.TutorialFrame
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
@@ -36,6 +38,9 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
     var intentColor: String = "#000000"
     var adviser_uid = ""
 
+    var tutorialCount:Int = 0
+    internal lateinit var preferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_feedback)
@@ -45,6 +50,7 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         ab.setTitle("새로운 피드백")
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
+        preferences = getSharedPreferences("USERSIGN", 0)
 
         setData()
         presenterCreateFeedback = PresenterCreateFeedback().apply {
@@ -107,6 +113,35 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         //여기까지 달력코드
 
 
+        firstRunCheck()
+
+    }
+
+    //첫번째인지 체크
+    fun firstRunCheck(){
+        var isFirst:Boolean = preferences.getBoolean("firstCreateFeedbackActivity", true);
+        if(isFirst){
+            startTutorial()
+        }
+    }
+    //튜토리얼 진행
+    fun startTutorial(){
+        when(tutorialCount){
+            0 -> {val tframe = TutorialFrame("등록한 주제들을 선택할 수 있습니다.", "안녕하세요!", findViewById<View>(R.id.create_Feedback_Color_Tv), this, { startTutorial()})
+                tutorialCount++
+                tframe.mTutorial()}
+            1 -> {val tframe = TutorialFrame("달력을 펼쳐 피드백의 목표일을 설정해 주세요.", "안녕하세요!", findViewById<View>(R.id.drop_Calendar_Button), this, { startTutorial()})
+                tutorialCount++
+                tframe.mTutorial()}
+            2 -> {val tframe = TutorialFrame("친구들을 조언자로 추가해보세요. 조언자 없이 피드백을 등록할수도 있습니다.", "안녕하세요!", findViewById<View>(R.id.add_Adviser), this, { startTutorial()})
+                tutorialCount++
+                tframe.mTutorial()}
+            3 -> {
+                preferences.edit().putBoolean("firstCreateFeedbackActivity", false).apply()
+
+            }
+
+        }
     }
 
 
@@ -129,11 +164,6 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
                         intentColor = data.getStringExtra("color")
                         modify_Category_ID = data.getIntExtra("id", -1)
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(
-                        this@CreateFeedbackActivity,
-                        "취소됨.",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
             101 -> {//조언자 선택
@@ -141,11 +171,7 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
                     Activity.RESULT_OK -> if (data != null) {
                         adviser_uid = data.getStringExtra("user_uid")
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(
-                        this@CreateFeedbackActivity,
-                        "취소됨.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
                 }
             }
 

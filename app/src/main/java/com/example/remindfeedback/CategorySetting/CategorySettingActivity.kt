@@ -68,11 +68,6 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
                             arrayList
                         )
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(
-                        this@CategorySettingActivity,
-                        "취소됨.",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
             101 -> {//업데이트화면에서 돌아왔을때
@@ -87,11 +82,6 @@ class CategorySettingActivity : AppCompatActivity(), ContractCategorySetting.Vie
                             mAdapter
                         )
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(
-                        this@CategorySettingActivity,
-                        "주제 수정 취소됨",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
         }

@@ -31,6 +31,10 @@ interface ServiceAPI {
     @POST("auth/password/")
     fun RequestFindPassword(@Body requestFindPassword: RequestFindPassword): Call<ResponseBody>
 
+    //이메일 확인
+    @POST("auth/checkemail/")
+    fun CheckEmail(@Body changingPassword: ChangingPassword): Call<ResponseBody>
+
     //비밀번호 변경
     @PATCH("auth/password/")
     fun ChangingPassword(@Body changingPassword: ChangingPassword): Call<ResponseBody>
@@ -190,8 +194,8 @@ interface ServiceAPI {
     fun DeleteComment(@Path("comment_id") comment_id: Int): Call<GetDeletedComment>
 
     //각 게시글의 댓글 가져오기
-    @GET("comments/all/scroll/{board_id}/{lastid}")
-    fun GetAllComment(@Path("board_id") board_id: Int,@Path("lastid") lastid: Int): Call<GetAllComments>
+    @GET("comments/all/scroll/{board_id}/{lastid}/{sort}")
+    fun GetAllComment(@Path("board_id") board_id: Int,@Path("lastid") lastid: Int,@Path("sort") sort: Int): Call<GetAllComments>
 
     //내 친구 정보 가져오기
     @GET("friends")

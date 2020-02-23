@@ -2,12 +2,17 @@
        xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <item android:id="@+id/complete_Accept_Button"
+    <!--item android:id="@+id/complete_Accept_Button"
             android:title="요청 수락"
-            app:showAsAction="always" />
-    <item android:id="@+id/complete_Reject_Button"
+            app:showAsAction="always" /-->
+    <!--item android:id="@+id/complete_Reject_Button"
             android:title="요청 거절"
-            app:showAsAction="always" />
+            app:showAsAction="always" /-->
+    <item
+            android:id="@+id/about_Complete_Button"
+            android:icon="@drawable/ic_remind_white"
+            android:title="Search"
+            app:showAsAction="ifRoom"/>
 
 
 </menu>

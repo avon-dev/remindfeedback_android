@@ -163,6 +163,26 @@
                     android:text="차단한 친구"
                     android:textColor="#585858"
                     android:textSize="20sp" />
+            <TextView
+                    android:id="@+id/textView4d3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line"
+                    android:padding="16dp"
+                    android:text="댓글관리"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textSize="20sp" />
+
+            <TextView
+                    android:id="@+id/comment_Type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/under_line_gray"
+                    android:padding="16dp"
+                    android:text="오름차순"
+                    android:textColor="#585858"
+                    android:textSize="20sp" />
+
 
             <!--<TextView
                     android:id="@+id/textView14"

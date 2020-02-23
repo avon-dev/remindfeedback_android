@@ -2,7 +2,9 @@ package com.example.remindfeedback.FeedbackList.FeedbackDetail
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,19 +13,25 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.remindfeedback.Fab
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity
+import com.example.remindfeedback.FeedbackList.PresenterMain
 import com.example.remindfeedback.R
 import com.example.remindfeedback.ServerModel.CreateBoardPicture
 import com.example.remindfeedback.ServerModel.CreateBoardText
 import com.example.remindfeedback.ServerModel.CreateboardRecord
 import com.example.remindfeedback.ServerModel.CreateboardVideo
+import com.example.remindfeedback.etcProcess.TutorialFrame
 import com.rey.material.app.BottomSheetDialog
 import com.rey.material.drawable.ThemeDrawable
 import com.rey.material.util.ViewUtil
 import com.rey.material.widget.Button
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
+import com.gordonwong.materialsheetfab.MaterialSheetFab
+import com.gordonwong.materialsheetfab.MaterialSheetFabEventListener
+import kotlinx.android.synthetic.main.new_floating.*
 
-class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View {
+class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View , View.OnClickListener{
 
 
     private val TAG = "FeedbackDetailActivity"
@@ -36,6 +44,14 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
     var photoBoolean:Boolean = true
     var textBoolean:Boolean = true
     var mBottomSheetDialog:BottomSheetDialog? = null
+
+
+    //fab라이브러리
+    private var materialSheetFab: MaterialSheetFab<*>? = null
+    private var statusBarColor: Int = 0
+
+    var tutorialCount:Int = 0
+    internal lateinit var preferences: SharedPreferences
 
     var arrayList = arrayListOf<ModelFeedbackDetail>(
     )
@@ -54,6 +70,9 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
         supportActionBar?.setCustomView(R.layout.actionbar_title)
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
+        preferences = getSharedPreferences("USERSIGN", 0)
+
+        //새로운 fab설정하는 부분
 
         presenterFeedbackDetail = PresenterFeedbackDetail().apply {
             view = this@FeedbackDetailActivity
@@ -68,7 +87,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
         Log.e("넘어온 feedbackMyYour", feedbackMyYour.toString())
         feedback_Detail_Title_Tv.text = "[" + intent.getStringExtra("title") + "]에 대한 피드백"
         feedback_Detail_Date_Tv.text = "목표일 : " + intent.getStringExtra("date")
-
+        setupFab()
 
         mAdapter = AdapterFeedbackDetail(this, arrayList, presenterFeedbackDetail, feedbackMyYour)
 
@@ -105,46 +124,12 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
                 presenterFeedbackDetail.loadItems(arrayList, mAdapter, feedback_id, photoBoolean, textBoolean)
             }
         }
+
+        firstRunCheck()
     }
 
-    //아래에서 올라오는 뷰 만드는부분(바텀시트)
-    private fun showBottomSheet() {
-        mBottomSheetDialog = BottomSheetDialog(this, R.style.Material_App_BottomSheetDialog)
-        val v = LayoutInflater.from(this).inflate(R.layout.view_bottomsheet, null)
-        ViewUtil.setBackground(v, ThemeDrawable(R.drawable.bg_window_light))
-        val bottom_Sheet_Title = v.findViewById<View>(R.id.bottom_Sheet_Title) as TextView
-        bottom_Sheet_Title.setText("완료요청 하시겠습니까?")
-        val bt_match = v.findViewById<View>(R.id.sheet_bt_match) as Button
-        bt_match.setText("확인")
-        bt_match.setOnClickListener {
-            when(feedback_complete) {
-                -1, 0 -> {
-                    if (feedback_adviser.equals("")) {
-                        presenterFeedbackDetail.completeAccept(feedback_id)//조언자가 없는 피드백이라 그냥 수락하게 함
-                    } else {
-                        presenterFeedbackDetail.completeRequest(feedback_id)
-                    }
-                }
-                1 -> {
-                    Toast.makeText(this, "이미 완료 요청된 피드백 입니다.", Toast.LENGTH_LONG).show()
-                }
-                2 -> {
-                    Toast.makeText(this, "이미 완료된 피드백 입니다.", Toast.LENGTH_LONG).show()
-                }
-            }
-            mBottomSheetDialog!!.dismissImmediately()
-        }
-        val bt_wrap = v.findViewById<View>(R.id.sheet_bt_wrap) as Button
-        bt_wrap.setText("취소")
-        bt_wrap.setOnClickListener { mBottomSheetDialog!!.dismissImmediately() }
-        v.setBackgroundColor(Color.parseColor("#ffffff"))
-        //v.setBackgroundResource(R.drawable.all_line)
-        bt_match.setBackgroundColor(Color.parseColor("#ddeeff"))
-        bt_wrap.setBackgroundColor(Color.parseColor("#ddeeff"))
 
-        mBottomSheetDialog!!.contentView(v)
-            .show()
-    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -204,11 +189,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
                         }
 
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(
-                        this@FeedbackDetailActivity,
-                        "취소됨.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
                 }
             }
             112 -> {    // 보드 수정 후 돌아왔을 때
@@ -243,11 +224,6 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
                             )
                         }
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(
-                        this,
-                        "취소됨.",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
         }
@@ -267,97 +243,60 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
         intent.putExtra("title", board_title)
         intent.putExtra("content", board_content)
         intent.putExtra("board_category", board_category)
-        Log.e("보드 타입 (board_category)", board_category.toString())
-        Log.e("보드 수정할 데이터1 (feedback_Id)", feedback_id.toString())
-        Log.e("보드 수정할 데이터2 (board_id)", board_id.toString())
-        Log.e("보드 수정할 데이터3 (board_title)", board_title)
-        Log.e("보드 수정할 데이터4 (board_content)", board_content)
         startActivityForResult(intent, 112)
     }
 
-    //타이틀바에 어떤 menu를 적용할지 정하는부분
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        when (feedbackMyYour) {
-            0 -> {//내꺼
-                menuInflater.inflate(R.menu.feedback_detail_menu, menu)
-            }
-            1 -> {//다른사람꺼
-                Log.e("feedback_complete", feedback_complete.toString())
-                when(feedback_complete){
-                    1 -> {
-                        menuInflater.inflate(R.menu.feedback_detail_adviser_menu, menu)
-                    }
+
+
+
+
+    //완료요청
+    fun complete_Request_Button() {
+        when(feedback_complete) {
+            -1, 0 -> {
+                if (feedback_adviser.equals("")) {
+                    presenterFeedbackDetail.completeAccept(feedback_id)//조언자가 없는 피드백이라 그냥 수락하게 함
+                } else {
+                    presenterFeedbackDetail.completeRequest(feedback_id)
                 }
             }
+            1 -> {
+                Toast.makeText(this, "이미 완료 요청된 피드백 입니다.", Toast.LENGTH_LONG).show()
+            }
+            2 -> {
+                Toast.makeText(this, "이미 완료된 피드백 입니다.", Toast.LENGTH_LONG).show()
+            }
         }
-        return true
+
+
     }
 
-    //타이틀바 메뉴를 클릭했을시
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle presses on the action bar items
-        when (item.itemId) {
-            R.id.create_Post_Button -> {
-                return create_Post_Button()
-            }
-            R.id.complete_Request_Button -> {
-                return complete_Request_Button()
-            }
-            R.id.complete_Accept_Button -> {
-                return complete_Accept_Button()
-            }
-            R.id.complete_Reject_Button -> {
-                return  complete_Reject_Button()
-            }
-            else -> {
-                return super.onOptionsItemSelected(item)
-            }
-        }
-    }
-
-    fun create_Post_Button(): Boolean {
-        val intent = Intent(this, CreatePostActivity::class.java)
-        intent.putExtra("feedback_id", feedback_id)
-        startActivityForResult(intent, 111)
-        return true
-    }
-    //완료요청
-    fun complete_Request_Button(): Boolean {
-        showBottomSheet()
-        /*
-        when(feedback_complete){
-            -1, 0 -> {
-                if(feedback_adviser.equals("")){
-                    presenterFeedbackDetail.completeAccept(feedback_id)//조언자가 없는 피드백이라 그냥 수락하게 함
-                }else{ presenterFeedbackDetail.completeRequest(feedback_id) }
-            }
-            1 -> { Toast.makeText(this, "이미 완료 요청된 피드백 입니다.", Toast.LENGTH_LONG).show() }
-            2 -> { Toast.makeText(this, "이미 완료된 피드백 입니다.", Toast.LENGTH_LONG).show()}
-        }
-        */
-        return true
-    }
-    //완료수락
-    fun complete_Accept_Button(): Boolean {
+    //완료요청을 수락
+    fun complete_Accept_Button(){
         when(feedback_complete){
             1 -> { presenterFeedbackDetail.completeAccept(feedback_id) }
             -1, 0 -> { Toast.makeText(this, "완료요청 되지않은 피드백입니다.", Toast.LENGTH_LONG).show() }
             2 -> { Toast.makeText(this, "이미 완료된 피드백입니다.", Toast.LENGTH_LONG).show() }
         }
-        return true
     }
-    //완료거절
-    fun complete_Reject_Button():Boolean{
+
+    //완료요청을 거절
+    fun complete_Reject_Button(){
         when(feedback_complete){
             1 -> { presenterFeedbackDetail.completeReject(feedback_id) }
             0 -> { Toast.makeText(this, "이미 거절한 피드백입니다.", Toast.LENGTH_LONG).show() }
             -1 -> { Toast.makeText(this, "완료 요청되지 않은 피드백입니다.", Toast.LENGTH_LONG).show() }
             2 -> { Toast.makeText(this, "이미 완료된 피드백입니다.", Toast.LENGTH_LONG).show() }
-
         }
-
-        return true
     }
+    //완료요청하기
+    fun complete_Create_Button() {
+        val intent = Intent(this, CreatePostActivity::class.java)
+        intent.putExtra("feedback_id", feedback_id)
+        startActivityForResult(intent, 111)
+
+    }
+
 
     //프레젠터에서 컴플리트값을 바꿔줌
     override fun setFeedbackComplete(mFeedbackComplete:Int){
@@ -367,14 +306,112 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
     override fun refresh() {
         mAdapter.notifyDataSetChanged()
     }
-
-    override fun onPause() {
-        super.onPause()
-        if (mBottomSheetDialog != null) {
-            mBottomSheetDialog!!.dismissImmediately()
-            mBottomSheetDialog = null
+    //첫번째인지 체크
+    fun firstRunCheck(){
+        var isFirst:Boolean = preferences.getBoolean("firstFeedbackDetailActivity", true);
+        if(isFirst){
+            startTutorial()
         }
     }
+    //튜토리얼 진행
+    fun startTutorial(){
+        when(tutorialCount){
+            0 -> {var tframe = TutorialFrame("피드백에 관한 작업을 수행합니다.", "안녕하세요!", findViewById<View>(R.id.fab), this, { startTutorial()})
+                tutorialCount++
+                tframe.mTutorial()}
+            1 -> {var tframe = TutorialFrame("보고자 하는 컨텐츠만 필터링 할 수 있습니다.", "안녕하세요!", findViewById<View>(R.id.photo_Iv), this, { startTutorial()})
+                tutorialCount++
+                tframe.mTutorial()}
+            2 -> {
+                //preferences.edit().putBoolean("firstFeedbackDetailActivity", false).apply()
+            }
 
+        }
+
+    }
+
+    private fun setupFab() {
+
+        val fab = findViewById<View>(R.id.fab) as? Fab
+        val sheetView = findViewById<View>(R.id.fab_sheet)
+        val overlay = findViewById<View>(R.id.overlay)
+        val sheetColor = resources.getColor(R.color.background_card)
+        val fabColor = resources.getColor(R.color.theme_accent)
+
+
+        // Create material sheet FAB
+        materialSheetFab = MaterialSheetFab(fab, sheetView, overlay, sheetColor, fabColor)
+        // Set material sheet event listener
+        materialSheetFab!!.setEventListener(object : MaterialSheetFabEventListener() {
+            override fun onShowSheet() {
+                // Save current status bar color
+                statusBarColor = getStatusBarColor()
+                // Set darker status bar color to match the dim overlay
+                setStatusBarColor(resources.getColor(R.color.whiteblue))
+            }
+
+            override fun onHideSheet() {
+                // Restore status bar color
+                setStatusBarColor(statusBarColor)
+            }
+        })
+
+        Log.e("feedbackMyYour", feedbackMyYour.toString())
+        Log.e("feedback_complete", feedback_complete.toString())
+        //내껀지 상대방껀지 판단해주는 부분
+        when (feedbackMyYour) {
+            0 -> {//내꺼
+                fab_Sheet_Item_Reject.visibility = View.GONE
+                fab_Sheet_Item_Accept.visibility = View.GONE
+            }
+            1 -> {//다른사람꺼
+                when(feedback_complete){
+                    1 -> {
+                        fab_Sheet_Item_Create.visibility = View.GONE
+                        fab_Sheet_Item_Request.visibility = View.GONE
+                    }
+                    else -> {
+                        fab!!.visibility = View.GONE
+                    }
+                }
+            }
+        }
+
+        findViewById<View>(R.id.fab_Sheet_Item_Request).setOnClickListener(this)
+        findViewById<View>(R.id.fab_Sheet_Item_Reject).setOnClickListener(this)
+        findViewById<View>(R.id.fab_Sheet_Item_Accept).setOnClickListener(this)
+        findViewById<View>(R.id.fab_Sheet_Item_Create).setOnClickListener(this)
+    }
+    override fun onClick(v: View?) {
+        when(v!!.getId()){
+            R.id.fab_Sheet_Item_Request -> {
+                complete_Request_Button()
+            }
+            R.id.fab_Sheet_Item_Reject -> {
+                complete_Reject_Button()
+            }
+            R.id.fab_Sheet_Item_Accept -> {
+                complete_Accept_Button()
+            }
+            R.id.fab_Sheet_Item_Create -> {
+                complete_Create_Button()
+            }
+        }
+
+        materialSheetFab!!.hideSheet()
+    }
+
+
+    private fun getStatusBarColor(): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor
+        } else 0
+    }
+
+    private fun setStatusBarColor(color: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = color
+        }
+    }
 
 }

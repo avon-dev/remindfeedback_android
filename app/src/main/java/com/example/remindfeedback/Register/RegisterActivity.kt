@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import com.example.remindfeedback.R
 import kotlinx.android.synthetic.main.activity_register.*
 import java.util.regex.Pattern
+import android.util.Log
+import com.example.remindfeedback.R
+
 
 class RegisterActivity : AppCompatActivity(), ContractRegister.View {
-
+    private var mEncryptText: ByteArray? = null
+    private var mKey: ByteArray? = null
 
     private val TAG = "RegisterActivity"
     internal lateinit var presenterRegister: PresenterRegister
@@ -18,8 +21,9 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
         //액션바 설정
-        var ab: ActionBar = this!!.supportActionBar!!
+        var ab: ActionBar = this.supportActionBar!!
         ab.setTitle("회원가입")
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)

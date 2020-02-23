@@ -2,18 +2,21 @@ package com.example.remindfeedback.CreateCategory
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import com.example.remindfeedback.CategorySetting.CreateCategory.ColorList.ColorListActivity
 import com.example.remindfeedback.CategorySetting.CreateCategory.ContractCreateCategory
 import com.example.remindfeedback.CategorySetting.CreateCategory.PresenterCreateCategory
 import com.example.remindfeedback.R
+import com.example.remindfeedback.etcProcess.TutorialFrame
 import kotlinx.android.synthetic.main.activity_create_category.*
 
 class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View {
@@ -23,6 +26,10 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
     var chooseColor: String? = ""
     var modifyID = -1
     lateinit var ab: ActionBar
+
+    var tutorialCount:Int = 0
+    internal lateinit var preferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_category)
@@ -32,6 +39,7 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
         ab.setTitle("새로운 주제")
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
+        preferences = getSharedPreferences("USERSIGN", 0)
 
         setData()
 
@@ -44,6 +52,7 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
             val intent = Intent(this, ColorListActivity::class.java)
             startActivityForResult(intent, 100)
         }
+        firstRunCheck()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -122,6 +131,27 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
 
         return true
     }
+
+    //첫번째인지 체크
+    fun firstRunCheck(){
+        var isFirst:Boolean = preferences.getBoolean("firstCreateCategoryActivity", true);
+        if(isFirst){
+            startTutorial()
+        }
+    }
+    //튜토리얼 진행
+    fun startTutorial(){
+        when(tutorialCount){
+            0 -> {val tframe = TutorialFrame("10가지의 색상이 주어집니다. 자신만의 주제를 자유롭게 설정해주세요.", "주제생성 화면", findViewById<View>(R.id.selected_Color), this, { startTutorial()})
+                tutorialCount++
+                tframe.mTutorial()}
+            1 -> {
+                //여기에 쉐어드로 ㅇㅇ
+            }
+
+        }
+    }
+
 
 
 }

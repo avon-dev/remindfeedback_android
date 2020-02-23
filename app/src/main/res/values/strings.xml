@@ -10,4 +10,11 @@
     <string name="title_activity_asd">asdActivity</string>
 
 
+    <!--플로팅버튼-->
+    <string name="recording">Recording</string>
+    <string name="photo">Photo</string>
+    <string name="reminder">Reminder</string>
+    <string name="createnote">Create note</string>
+
+
 </resources>
