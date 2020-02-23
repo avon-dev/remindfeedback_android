@@ -173,7 +173,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun tutorialSet(display: Display){
         toolbar = findViewById<View>(R.id.toolbar) as Toolbar
-        toolbar.inflateMenu(R.menu.menu_main)
+        //toolbar.inflateMenu(R.menu.menu_main)
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_right_black)
         setNavView()
         //액션바 설정
@@ -593,19 +593,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.options_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            //필요없을거같이서 일단 지움
-            //R.id.alarm_Alarm -> true
-            //R.id.search_Button -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 
     //네비게이션바에서 아이템 클릭시
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

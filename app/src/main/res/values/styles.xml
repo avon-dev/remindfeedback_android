@@ -86,7 +86,7 @@
         <item name="android:layout_marginLeft">@dimen/fab_spacing</item>
         <item name="android:layout_marginRight">@dimen/fab_spacing</item>
         <item name="android:elevation" >@dimen/fab_elevation</item>
-        <item name="android:src">@drawable/ic_bell_black</item>
+        <item name="android:src">@drawable/ic_add_white</item>
         <item name="fabSize">normal</item>
         <item name="borderWidth">0dp</item>
     </style>

@@ -45,19 +45,32 @@
 
                     <!-- Recording -->
                     <TextView
-                            android:id="@+id/fab_sheet_item_recording"
+                            android:id="@+id/fab_Sheet_Item_Create"
+                            style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                            android:drawableStart="@drawable/ic_add_black"
+                            android:drawableLeft="@drawable/ic_add_black"
+                            android:text="포스트 추가" />
+                    <TextView
+                            android:id="@+id/fab_Sheet_Item_Request"
                             style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
                             android:drawableStart="@drawable/ic_bell_black"
                             android:drawableLeft="@drawable/ic_bell_black"
-                            android:text="@string/recording" />
+                            android:text="완료요청" />
+
+                    <TextView
+                            android:id="@+id/fab_Sheet_Item_Reject"
+                            style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                            android:drawableStart="@drawable/ic_bell_black"
+                            android:drawableLeft="@drawable/ic_bell_black"
+                            android:text="완료요청 거절" />
 
                     <!-- Reminder -->
                     <TextView
-                            android:id="@+id/fab_sheet_item_reminder"
+                            android:id="@+id/fab_Sheet_Item_Accept"
                             style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
                             android:drawableStart="@drawable/ic_bell_black"
                             android:drawableLeft="@drawable/ic_bell_black"
-                            android:text="@string/reminder" />
+                            android:text="완료요청 수락" />
 
                 </LinearLayout>
 
