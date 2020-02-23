@@ -27,6 +27,7 @@ class PresenterRegister : ContractRegister.Presenter {
                 if (response.isSuccessful) {
                 } else {
                     val StatusCode = response.code()
+                    (mContext as Activity).finish()
                     Log.e("post", "Status Code : $StatusCode")
                 }
                 Log.e("tag", "response=" + response.raw())

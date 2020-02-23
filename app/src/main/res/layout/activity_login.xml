@@ -99,7 +99,7 @@
                 android:gravity="end"
                 android:layout_weight="1"
                 android:padding="8dp"
-                android:text="비밀번호 찾기" />
+                android:text="Email / PW 찾기" />
 
         <TextView
                 android:id="@+id/textView36"

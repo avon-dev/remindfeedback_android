@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Rect
@@ -42,10 +43,7 @@ import com.example.remindfeedback.FriendsList.FriendsListActivity
 import com.example.remindfeedback.MyPage.MyPageActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Setting.SettingActivity
-import com.example.remindfeedback.etcProcess.BasicDialog
-import com.example.remindfeedback.etcProcess.InfiniteScrollListener
-import com.example.remindfeedback.etcProcess.MyProgress
-import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import com.example.remindfeedback.etcProcess.*
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.getkeepsafe.taptargetview.TapTargetView
@@ -92,6 +90,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var droid:Drawable
     lateinit var droidTarget:Rect
     lateinit var sassyDesc:SpannableString
+
+
+    internal lateinit var preferences: SharedPreferences
     var tutorialCount:Int = 0
 
     @SuppressLint("ResourceType")
@@ -106,6 +107,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             view = this@MainActivity
             context = this@MainActivity
         }
+        preferences = getSharedPreferences("USERSIGN", 0)
 
 
         setRecyclerView()
@@ -162,12 +164,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivityForResult(intent, 113)
         }
 
+        //첫번째인지 판단하는것
+        firstRunCheck()
 
-
-
-
-
-        //mTutorial("첫번째 피드백을 등록해보세요!", "안녕하세요!", findViewById<View>(R.id.fab_main))
 
     }
 
@@ -316,11 +315,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             mAdapter
                         )
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(
-                        this@MainActivity,
-                        "취소됨.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
                 }
             }
             112 -> {    // 피드백 수정 후 돌아왔을 때
@@ -338,11 +333,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             mAdapter
                         )
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(
-                        this@MainActivity,
-                        "취소됨.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
                 }
             }
             113 -> {
@@ -497,52 +488,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         main_Category_Title.text = "전체보기"
     }
 
-    fun mTutorial(contents:String, title:String, view:View){
-        // You don't always need a sequence, and for that there's a single time tap target
-        val spannedDesc = SpannableString(contents)
-        /*
-        spannedDesc.setSpan(
-            UnderlineSpan(),
-            spannedDesc.length - "TapTargetView".length,
-            spannedDesc.length,
-            0
-        )
-
-         */
-        TapTargetView.showFor(this,
-            TapTarget.forView(view, title, spannedDesc)
-                .cancelable(false)
-                .drawShadow(true)
-                .titleTextDimen(R.dimen.fab_margin)
-                .tintTarget(false),
-            object : TapTargetView.Listener() {
-                override fun onTargetClick(view: TapTargetView) {
-                    super.onTargetClick(view)
-                    when(tutorialCount){
-                        0 -> {mTutorial("진행중인 피드백을 볼 수 있습니다!", "안녕하세요!", findViewById<View>(R.id.ing_Btn))
-                            tutorialCount++}
-                        1 -> {mTutorial("진행이 완료된 피드백을 볼 수 있습니다!", "안녕하세요!", findViewById<View>(R.id.ed_Btn))
-                            tutorialCount++}
-                        2 -> {drawerTutorial()}
-
-                    }
-                }
-
-                override fun onOuterCircleClick(view: TapTargetView?) {
-                    super.onOuterCircleClick(view)
-                    Toast.makeText(
-                        view!!.context,
-                        "You clicked the outer circle!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onTargetDismissed(view: TapTargetView?, userInitiated: Boolean) {
-                    Log.d("TapTargetViewSample", "You dismissed me :(")
-                }
-            })
-
-    }
 
     fun drawerTutorial(){
         // We have a sequence of targets, so lets build it!
@@ -559,7 +504,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 // This listener will tell us when interesting(tm) events happen in regards
                 // to the sequence
                 override fun onSequenceFinish() {
-                   Toast.makeText(this@MainActivity, "튜토리얼을 완료했습니다.", Toast.LENGTH_LONG).show()
+                    Log.e(TAG, "튜토리얼을 완료했습니다.")
+                    preferences.edit().putBoolean("firstMainActivity", false).apply()
                 }
 
                 override fun onSequenceStep(lastTarget: TapTarget, targetClicked: Boolean) {
@@ -591,7 +537,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         sequence.start()
     }
+    //첫번째인지 체크
+    fun firstRunCheck(){
+        var isFirst:Boolean = preferences.getBoolean("firstMainActivity", true);
+        if(isFirst){
+            startTutorial()
+        }
+    }
+    //튜토리얼 진행
+    fun startTutorial(){
+        when(tutorialCount){
+            0 -> {var tframe = TutorialFrame("첫번째 피드백을 등록해보세요!", "안녕하세요!", findViewById<View>(R.id.fab_main), this, { startTutorial()})
+                tutorialCount++
+                tframe.mTutorial()}
+            1 -> {var tframe = TutorialFrame("진행중인 피드백을 볼 수 있습니다!", "안녕하세요!", findViewById<View>(R.id.ing_Btn), this, { startTutorial()})
+                tutorialCount++
+                tframe.mTutorial()}
+            2 -> {var tframe = TutorialFrame("진행이 완료된 피드백을 볼 수 있습니다!", "안녕하세요!", findViewById<View>(R.id.ed_Btn), this, { startTutorial()})
+                tutorialCount++
+                tframe.mTutorial()}
+            3 -> {drawerTutorial()}
+        }
 
+    }
 
 
     //네비게이션바에서 아이템 클릭시

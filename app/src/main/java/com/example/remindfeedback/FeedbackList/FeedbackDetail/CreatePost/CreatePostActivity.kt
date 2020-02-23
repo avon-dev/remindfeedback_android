@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ClipData
 import androidx.appcompat.app.ActionBar
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.media.ExifInterface
 import android.net.Uri
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.Record.RecordActivity
 import com.example.remindfeedback.R
+import com.example.remindfeedback.etcProcess.TutorialFrame
 import com.soundcloud.android.crop.Crop
 import kotlinx.android.synthetic.main.activity_create_post.*
 import java.io.File
@@ -51,6 +53,9 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     lateinit var ab: ActionBar
     var title: String? = null
 
+    var tutorialCount:Int = 0
+    internal lateinit var preferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
@@ -69,6 +74,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             view = this@CreatePostActivity
             mContext = this@CreatePostActivity
         }
+        preferences = getSharedPreferences("USERSIGN", 0)
 
         //초기 뷰셋팅
         add_File_View.visibility = View.GONE
@@ -190,6 +196,8 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
             }
         }
+
+        firstRunCheck()
     }
 
     override fun setData() {
@@ -350,7 +358,6 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     @SuppressLint("MissingSuperCall")
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode != Activity.RESULT_OK) {
-            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show()
             if (tempFile != null) {
                 if (tempFile!!.exists()) {
                     if (tempFile!!.delete()) {
@@ -438,6 +445,27 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         cursor.moveToFirst()
         return cursor.getString(column_index)
     }
+
+    //첫번째인지 체크
+    fun firstRunCheck(){
+        var isFirst:Boolean = preferences.getBoolean("firstCreateFeedbackActivity", true);
+        if(isFirst){
+            startTutorial()
+        }
+    }
+    //튜토리얼 진행
+    fun startTutorial(){
+        when(tutorialCount){
+            0 -> {val tframe = TutorialFrame("포스트의 유형 사진과 글이 있습니다. 사진은 3장까지 선택할 수 있습니다.", "포스트 생성 화면", findViewById<View>(R.id.contents_Image), this, { startTutorial()})
+                tutorialCount++
+                tframe.mTutorial()}
+            1 -> {
+                preferences.edit().putBoolean("firstCreateFeedbackActivity", false).apply()
+            }
+
+        }
+    }
+
 
 
 

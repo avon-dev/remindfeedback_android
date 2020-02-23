@@ -2,28 +2,28 @@ package com.example.remindfeedback.Login
 
 import android.animation.Animator
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.remindfeedback.Login.FindPassword.FindPasswordActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.os.Build
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import com.airbnb.lottie.LottieAnimationView
-import com.example.remindfeedback.Fab
-
+import android.widget.Button
+import android.widget.TextView
+import com.example.remindfeedback.Login.FindPassword.FindPasswordActivity
+import com.rey.material.app.BottomSheetDialog
+import com.rey.material.drawable.ThemeDrawable
+import com.rey.material.util.ViewUtil
 
 
 class LoginActivity : AppCompatActivity(), ContractLogin.View {
 
 
 
+    var mBottomSheetDialog: BottomSheetDialog? = null
 
     private val TAG = "LoginActivity"
     internal lateinit var presenterLogin: PresenterLogin
@@ -56,8 +56,7 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
             }
         }
         forgot_Password.setOnClickListener{
-            val intent = Intent(this, FindPasswordActivity::class.java)
-            startActivity(intent)
+            showBottomSheet()
         }
 
         //회원가입 버튼
@@ -72,6 +71,45 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
 
 
     }
+
+
+    private fun showBottomSheet() {
+        mBottomSheetDialog = BottomSheetDialog(this, R.style.Material_App_BottomSheetDialog)
+        val v = LayoutInflater.from(this).inflate(R.layout.view_find_password_bottomsheet, null)
+        ViewUtil.setBackground(v, ThemeDrawable(R.drawable.bg_window_light))
+        val sheet_Find_Password = v.findViewById<View>(R.id.sheet_Find_Password) as Button
+        val sheet_Find_Email = v.findViewById<View>(R.id.sheet_Find_Email) as Button
+        val sheet_Find_Cancel = v.findViewById<View>(R.id.sheet_Find_Cancel) as Button
+
+        sheet_Find_Password.setOnClickListener {
+            val intent = Intent(this, FindPasswordActivity::class.java)
+            startActivity(intent)
+            mBottomSheetDialog!!.dismissImmediately()
+        }
+        sheet_Find_Email.setOnClickListener {
+            mBottomSheetDialog!!.dismissImmediately()
+        }
+
+        sheet_Find_Cancel.setOnClickListener { mBottomSheetDialog!!.dismissImmediately() }
+        v.setBackgroundColor(Color.parseColor("#ffffff"))
+        //v.setBackgroundResource(R.drawable.all_line)
+        sheet_Find_Password.setBackgroundColor(Color.parseColor("#ddeeff"))
+        sheet_Find_Email.setBackgroundColor(Color.parseColor("#ddeeff"))
+        sheet_Find_Cancel.setBackgroundColor(Color.parseColor("#ddeeff"))
+
+        mBottomSheetDialog!!.contentView(v)
+            .show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mBottomSheetDialog != null) {
+            mBottomSheetDialog!!.dismissImmediately()
+            mBottomSheetDialog = null
+        }
+    }
+
+
 
 
 
