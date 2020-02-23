@@ -505,7 +505,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 // to the sequence
                 override fun onSequenceFinish() {
                     Log.e(TAG, "튜토리얼을 완료했습니다.")
-                    preferences.edit().putBoolean("firstMainActivity", false).apply()
+                    //preferences.edit().putBoolean("firstMainActivity", false).apply()
                 }
 
                 override fun onSequenceStep(lastTarget: TapTarget, targetClicked: Boolean) {
