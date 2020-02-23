@@ -113,14 +113,11 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
         rf_Use_Info.setOnClickListener{
             val intent = Intent(this, DocumentActivity::class.java)
             intent.putExtra("script", getString(R.string.rfUsingInfo))
-            Log.e("R.string.rfUsingInfo", getString(R.string.rfUsingInfo))
             startActivity(intent)
         }
         privacy_Info.setOnClickListener{
             val intent = Intent(this, DocumentActivity::class.java)
             intent.putExtra("script",getString(R.string.privacyInfo))
-            Log.e("R.string.privacyInfo", getString(R.string.privacyInfo))
-
             startActivity(intent)
         }
 

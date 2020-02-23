@@ -5,7 +5,10 @@ import android.widget.Toast
 import com.example.remindfeedback.Login.ContractLogin
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.ChangingPassword
+import com.example.remindfeedback.ServerModel.CheckingEmail
+import com.example.remindfeedback.ServerModel.GetMe
 import com.example.remindfeedback.ServerModel.RequestFindPassword
+import com.example.remindfeedback.etcProcess.BasicDialog
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -54,6 +57,28 @@ class PresenterFindPassword: ContractFindPassword.Presenter {
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+        })
+    }
+    override fun checkEmail(email:String){
+        val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+
+        val register_request: Call<GetMe> = apiService.CheckEmail(
+            CheckingEmail(email)
+        )
+        register_request.enqueue(object : Callback<GetMe> {
+
+            override fun onResponse(call: Call<GetMe>, response: Response<GetMe>) {
+                if (response.isSuccessful) {
+                    var getMe:GetMe = response.body()!!
+                    var mDialog:BasicDialog = BasicDialog(getMe.message!!, context, {}, {})
+                    mDialog.makeDialog()
+                } else {
+                    Toast.makeText(context, "에러가 발생했습니다. 다시 시도해 주세요.", Toast.LENGTH_LONG).show()
+                }
+            }
+            override fun onFailure(call: Call<GetMe>, t: Throwable) {
             }
         })
     }

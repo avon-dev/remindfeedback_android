@@ -126,11 +126,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("MissingSuperCall")
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode != Activity.RESULT_OK) {
-            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show()
 
-            return
-        }
         when (requestCode) {
             PICK_FROM_ALBUM -> {
 

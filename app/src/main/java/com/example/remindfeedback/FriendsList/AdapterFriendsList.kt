@@ -20,7 +20,6 @@ import com.example.remindfeedback.FeedbackList.AdapterMainFeedback
 import com.example.remindfeedback.FeedbackList.ModelFeedback
 import com.example.remindfeedback.FriendsList.FriendsPage.FriendsPageActivity
 import com.example.remindfeedback.R
-import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_my_page.*
 import java.net.URL

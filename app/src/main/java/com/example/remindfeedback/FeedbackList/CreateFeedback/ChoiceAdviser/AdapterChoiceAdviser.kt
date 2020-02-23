@@ -17,7 +17,7 @@ import com.example.remindfeedback.FriendsList.FriendsPage.FriendsPageActivity
 import com.example.remindfeedback.FriendsList.ModelFriendsList
 import com.example.remindfeedback.FriendsList.PresenterFriendsList
 import com.example.remindfeedback.R
-import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import com.squareup.picasso.Picasso
 import java.net.URL
 import java.util.ArrayList
 
@@ -78,13 +78,7 @@ class AdapterChoiceAdviser(
             if (friends_list.friendsProfileImage.equals("")) {
                 friends_List_Profile_Image.setImageResource(R.drawable.ic_default_profile)
             } else {
-                var test_task: URLtoBitmapTask = URLtoBitmapTask()
-                test_task = URLtoBitmapTask().apply {
-                    url =
-                        URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + friends_list.friendsProfileImage)
-                }
-                var bitmap: Bitmap = test_task.execute().get()
-                friends_List_Profile_Image.setImageBitmap(bitmap)
+                Picasso.get().load("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/" + friends_list.friendsProfileImage).into(friends_List_Profile_Image)
             }
 
 
