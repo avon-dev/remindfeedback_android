@@ -100,6 +100,11 @@ class PresenterMain : ContractMain.Presenter {
                         }
                     } else {
                     }
+                    if(list.size == 0){
+                        view.showNothingText(true)
+                    }else{
+                        view.showNothingText(false)
+                    }
                 } else {
                 }
                 Log.e("tag", "response=" + response.raw())
@@ -167,6 +172,11 @@ class PresenterMain : ContractMain.Presenter {
                             view.refresh()
                         }
                     } else {
+                    }
+                    if(list.size == 0){
+                        view.showNothingText(true)
+                    }else{
+                        view.showNothingText(false)
                     }
                 } else {
                 }
@@ -252,6 +262,11 @@ class PresenterMain : ContractMain.Presenter {
                             view.refresh()
                         }
                     } else {
+                    }
+                    if(list.size == 0){
+                        view.showNothingText(true)
+                    }else{
+                        view.showNothingText(false)
                     }
                 } else {
                 }
@@ -505,6 +520,12 @@ class PresenterMain : ContractMain.Presenter {
                             view.refresh()
                         }
                     } else {
+                    }
+
+                    if(adapterMainFeedback.arrayList.size == 0){
+                        view.showNothingText(true)
+                    }else{
+                        view.showNothingText(false)
                     }
                 } else {
                 }
