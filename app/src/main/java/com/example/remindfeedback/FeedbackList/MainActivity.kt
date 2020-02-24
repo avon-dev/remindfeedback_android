@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(),
     lateinit var nav_Portrait_Iv:ImageView
     lateinit var nav_Email_Tv:TextView
     //스피너에 사용할 배열
-    var spinnerArray = arrayListOf<ModelPickCategory>(ModelPickCategory(-2, "", "전체보기"))
+    var spinnerArray = arrayListOf<ModelPickCategory>(ModelPickCategory(-2, "", "[주제] 전체보기"))
 
     lateinit var toolbar:Toolbar
 
@@ -462,7 +462,7 @@ class MainActivity : AppCompatActivity(),
     }
     fun setSelectCategory(){
         main_Category_Color.visibility = View.GONE
-        main_Category_Title.text = "전체보기"
+        main_Category_Title.text = "[주제] 전체보기"
     }
 
     //첫번째인지 체크

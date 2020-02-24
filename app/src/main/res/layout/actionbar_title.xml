@@ -6,9 +6,9 @@
 
     <TextView
             android:id="@+id/title_rf"
+            android:textColor="@color/white"
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text=" " />
+            android:text="Feedbacks" />
 </LinearLayout>
