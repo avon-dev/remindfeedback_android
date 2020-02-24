@@ -482,7 +482,7 @@ class MainActivity : AppCompatActivity(),
                 tutorialCount++
                 tframe.mTutorial()}
             2->{
-                //preferences.edit().putBoolean("firstMainActivity", false).apply()
+                preferences.edit().putBoolean("firstMainActivity", false).apply()
             }
         }
 

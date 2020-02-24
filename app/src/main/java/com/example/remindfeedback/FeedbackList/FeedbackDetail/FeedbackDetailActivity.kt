@@ -323,7 +323,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
                 tutorialCount++
                 tframe.mTutorial()}
             2 -> {
-                //preferences.edit().putBoolean("firstFeedbackDetailActivity", false).apply()
+                preferences.edit().putBoolean("firstFeedbackDetailActivity", false).apply()
             }
 
         }

@@ -137,7 +137,7 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
                 tutorialCount++
                 tframe.mTutorial()}
             3 -> {
-                //preferences.edit().putBoolean("firstCreateFeedbackActivity", false).apply()
+                preferences.edit().putBoolean("firstCreateFeedbackActivity", false).apply()
 
             }
 
