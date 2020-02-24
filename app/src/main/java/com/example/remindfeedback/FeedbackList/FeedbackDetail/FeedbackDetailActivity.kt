@@ -57,7 +57,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
 
         //액션바 설정
         var ab: ActionBar = this.supportActionBar!!
-        ab.setTitle(" ")
+        ab.setTitle("")
         // 액션바 타이틀 가운데 정렬
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
