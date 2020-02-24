@@ -1,0 +1,273 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/drawerlayout"
+        android:background="@drawable/all_line"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+    <!--content-->
+    <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/whiteblue"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/nav_Portrait_Iv"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:contentDescription="imgtxt"
+                    android:paddingTop="8dp"
+                    android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                    android:id="@+id/nav_Nickname_Tv"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="@string/app_name"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="#000000" />
+
+            <TextView
+                    android:id="@+id/nav_Email_Tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sample@test.com"
+                    android:textColor="#222222" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp">
+
+
+            <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Feedback" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        app:srcCompat="@drawable/ic_right_black" />
+
+                <TextView
+                        android:id="@+id/request_Feedback"
+                        android:textColor="#5b5b5b"
+                        android:textSize="19dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="요청한 피드백" />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        app:srcCompat="@drawable/ic_left_black" />
+
+                <TextView
+                        android:textSize="19dp"
+                        android:textColor="#5b5b5b"
+                        android:id="@+id/receive_Feedback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="요청 받은 피드백" />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="50dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        app:srcCompat="@drawable/ic_list_black" />
+
+                <TextView
+                        android:textColor="#5b5b5b"
+                        android:textSize="19dp"
+                        android:id="@+id/category_Setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="주제설정" />
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="General" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        app:srcCompat="@drawable/ic_people_black" />
+
+                <TextView
+                        android:textColor="#5b5b5b"
+                        android:textSize="19dp"
+                        android:id="@+id/friends_List"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="친구목록" />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        app:srcCompat="@drawable/ic_account_black" />
+
+                <TextView
+                        android:textColor="#5b5b5b"
+                        android:textSize="19dp"
+                        android:id="@+id/mypage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="마이페이지" />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        app:srcCompat="@drawable/ic_settings_black" />
+
+                <TextView
+                        android:textColor="#5b5b5b"
+                        android:textSize="19dp"
+                        android:id="@+id/setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="환경설정" />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        app:srcCompat="@drawable/ic_logout_black" />
+
+                <TextView
+                        android:textColor="#5b5b5b"
+                        android:textSize="19dp"
+                        android:id="@+id/logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="로그아웃" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--menu-->
+    <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
+            android:id="@+id/menulayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:id="@+id/asd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/textVddiew"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+            <TextView
+                    android:id="@+id/textVfaaiew7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+            <TextView
+                    android:id="@+id/textVaasiew16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+        </LinearLayout>
+
+    </com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>
+
+</LinearLayout>

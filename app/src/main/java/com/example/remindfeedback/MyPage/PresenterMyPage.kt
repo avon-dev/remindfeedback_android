@@ -13,13 +13,13 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat.finishAffinity
+import androidx.core.view.marginLeft
+import androidx.core.view.marginRight
 import androidx.core.view.marginTop
 import com.example.remindfeedback.FriendsList.ContractFriendsList
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.R
-import com.example.remindfeedback.ServerModel.GetMyPage
-import com.example.remindfeedback.ServerModel.LogIn
-import com.example.remindfeedback.ServerModel.myPage_Data
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,6 +27,7 @@ import retrofit2.Response
 import java.io.File
 import com.example.remindfeedback.FeedbackList.MainActivity
 import com.example.remindfeedback.Login.LoginActivity
+import com.example.remindfeedback.ServerModel.*
 
 
 class PresenterMyPage : ContractMyPage.Presenter{
@@ -167,6 +168,7 @@ class PresenterMyPage : ContractMyPage.Presenter{
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Log.e("로그아웃", "성공")
+                    view.appReset()
                 } else {
                     Log.e("asdasdasd", "뭔가 실패함")
                 }
@@ -178,28 +180,57 @@ class PresenterMyPage : ContractMyPage.Presenter{
 
     //비밀번호를 다시입력하고 탈퇴를 해야할거같은데 그럴수 있는 방법이 없는거같음 이거는 일단 보류
     override fun requestDeleteAccount() {
-        val ad = AlertDialog.Builder(mContext)
-        var email:String = ""
-        var password:String = ""
-        ad.setTitle("회원탈퇴")       // 제목 설정
-        ad.setMessage("비밀번호를 입력 해주세요")   // 내용 설정
-
-        // EditText 삽입하기
+        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        params.leftMargin = mContext.resources.getDimensionPixelSize(R.dimen.dialog_margin)
+        params.rightMargin = mContext.resources.getDimensionPixelSize(R.dimen.dialog_margin)
+        val container = FrameLayout(mContext)
         val et = EditText(mContext)
-        ad.setView(et)
+        et.setLayoutParams(params)
+        et.setSingleLine(true)
 
-        ad.setPositiveButton("확인") { dialog, which ->
+        val FilterArray = arrayOfNulls<InputFilter>(1)
+        FilterArray[0] = InputFilter.LengthFilter(15)
+        et.setFilters(FilterArray)
 
-        }
+        container.addView(et)
+        val alt_bld = AlertDialog.Builder(mContext, R.style.MyAlertDialogStyle)
+        alt_bld.setTitle("회원탈퇴")
+            .setMessage("비밀번호를 입력 해주세요")
+            .setCancelable(true)
+            .setView(container)
+            .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+                val value = et.getText().toString()
+                checkPassword(et.text.toString())
 
-        ad.setNegativeButton("취소") { dialog, which ->
-            dialog.dismiss()
-        }
+            })
+        val alert = alt_bld.create()
+        alert.show()
 
-        ad.show()
 
 
     }
+    override fun checkPassword(password:String){
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+        val register_request: Call<GetSuccessData> = apiService.CheckPassword(CheckingPassword(password))
+        register_request.enqueue(object : Callback<GetSuccessData> {
+            override fun onResponse(call: Call<GetSuccessData>, response: Response<GetSuccessData>) {
+                if (response.isSuccessful) {
+                    var mData:GetSuccessData = response.body()!!
+                    Toast.makeText(mContext, mData.message, Toast.LENGTH_LONG).show()
+                    if(mData.success){
+                        deleteAccount()
+                    }
+                } else {
+                    Log.e("asdasdasd", "뭔가 실패함")
+                }
+            }
+            override fun onFailure(call: Call<GetSuccessData>, t: Throwable) {
+            }
+        })
+    }
+
+
 
     override fun deleteAccount() {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
@@ -209,6 +240,7 @@ class PresenterMyPage : ContractMyPage.Presenter{
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Log.e("회원탈퇴", "성공")
+                    view.appReset()
                     Toast.makeText(mContext, "성공적으로 회원탈퇴 되었습니다.", Toast.LENGTH_LONG).show()
                 } else {
                     Log.e("asdasdasd", "뭔가 실패함")

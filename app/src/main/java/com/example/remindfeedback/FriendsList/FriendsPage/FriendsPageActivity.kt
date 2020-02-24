@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import com.example.remindfeedback.R
-import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_friends_page.*
 import java.net.URL
 
@@ -46,12 +46,7 @@ class FriendsPageActivity : AppCompatActivity(), ContractFriendsPage.View {
         friendpage_ImageView
 
         if(!friendsProfileimage.equals("")){
-            var test_task: URLtoBitmapTask = URLtoBitmapTask()
-            test_task = URLtoBitmapTask().apply {
-                url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+friendsProfileimage)
-            }
-            var bitmap: Bitmap = test_task.execute().get()
-            friendpage_ImageView.setImageBitmap(bitmap)
+            Picasso.get().load("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+friendsProfileimage).into(friendpage_ImageView)
         }else{
             friendpage_ImageView.setImageResource(R.drawable.ic_default_profile)
         }

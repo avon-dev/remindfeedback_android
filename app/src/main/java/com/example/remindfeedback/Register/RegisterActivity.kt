@@ -1,5 +1,6 @@
 package com.example.remindfeedback.Register
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import java.util.regex.Pattern
 import android.util.Log
+import com.example.remindfeedback.DocumentActivity
 import com.example.remindfeedback.R
 
 
@@ -56,7 +58,7 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
                         } else {
 
                             // 이용약관 동의 확인
-                            if ( !chk_1.isChecked || !chk_2.isChecked || !chk_3.isChecked ) {
+                            if ( !chk_1.isChecked || !chk_2.isChecked) {
                                 Toast.makeText(this, "이용약관에 모두 동의하여 주세요.", Toast.LENGTH_SHORT).show()
                             } else {
                                 presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString())
@@ -70,5 +72,81 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
 
         }
 
+        chk_all.setOnClickListener{
+            if(chk_all.isChecked){
+                chk_1.isChecked = true
+                chk_2.isChecked = true
+            }else if(!chk_all.isChecked){
+                chk_1.isChecked = false
+                chk_2.isChecked = false
+            }
+
+        }
+
+        chk_1.setOnClickListener{
+            if(chk_1.isChecked){
+                chk_1.isChecked = true
+            }else{
+                chk_1.isChecked = false
+            }
+            if(chk_1.isChecked &&chk_2.isChecked){
+                chk_all.isChecked = true
+            }else{
+                chk_all.isChecked = false
+            }
+        }
+        chk_2.setOnClickListener{
+            if(chk_2.isChecked){
+                chk_2.isChecked = true
+            }else{
+                chk_2.isChecked = false
+            }
+            if(chk_1.isChecked &&chk_2.isChecked ){
+                chk_all.isChecked = true
+            }else{
+                chk_all.isChecked = false
+            }
+        }
+
+
+
+        rf_Use_Info.setOnClickListener{
+            val intent = Intent(this, DocumentActivity::class.java)
+            intent.putExtra("script", getString(R.string.rfUsingInfo))
+            intent.putExtra("type", "rfUsingInfo")
+            startActivityForResult(intent, 111)
+        }
+        privacy_Info.setOnClickListener{
+            val intent = Intent(this, DocumentActivity::class.java)
+            intent.putExtra("script",getString(R.string.privacyInfo))
+            intent.putExtra("type", "privacyInfo")
+            startActivityForResult(intent, 111)
+        }
+
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            111 -> {
+                if(data!!.getStringExtra("type").equals("rfUsingInfo")){
+                    if(!chk_1.isChecked){
+                        chk_1.isChecked = true
+                    }
+                    if(chk_1.isChecked &&chk_2.isChecked){
+                        chk_all.isChecked = true
+                    }
+                }else if(data!!.getStringExtra("type").equals("privacyInfo")){
+                    if(!chk_2.isChecked){
+                        chk_2.isChecked = true
+                    }
+                    if(chk_1.isChecked &&chk_2.isChecked ){
+                        chk_all.isChecked = true
+                    }
+                }
+            }
+
+        }
     }
 }

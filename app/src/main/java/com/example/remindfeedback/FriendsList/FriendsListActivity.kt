@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -73,13 +72,10 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
                 //선택된 탭 번호 반환
                 val position = tab.position
                 if (position == 0) {
-                    Toast.makeText(this@FriendsListActivity, "친구목록", Toast.LENGTH_SHORT).show()
                     presenterFriendsList.loadItems(arrayList,mAdapter)
                 } else if (position == 1) {
-                    Toast.makeText(this@FriendsListActivity, "받은친구요청", Toast.LENGTH_SHORT).show()
                     presenterFriendsList.receivedFriendRequests(arrayList,mAdapter)
                 } else if (position == 2) {
-                    Toast.makeText(this@FriendsListActivity, "보낸친구요청", Toast.LENGTH_SHORT).show()
                     presenterFriendsList.requestedFriendsRequests(arrayList,mAdapter)
                 }
             }
@@ -100,7 +96,6 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
                     Activity.RESULT_OK -> if (data != null) {
                         presenterFriendsList.addItems(data.getStringExtra("email"), mAdapter)
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(this@FriendsListActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
             }
         }

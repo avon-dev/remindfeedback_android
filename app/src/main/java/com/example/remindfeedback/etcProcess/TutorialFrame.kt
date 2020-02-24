@@ -40,7 +40,7 @@ class TutorialFrame(var contents:String, var title:String, var view:View,var mAc
                     super.onOuterCircleClick(view)
                     Toast.makeText(
                         view!!.context,
-                        "You clicked the outer circle!",
+                        "흰색 원을 터치해주세요.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

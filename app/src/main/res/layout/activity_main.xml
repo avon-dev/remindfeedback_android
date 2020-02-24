@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mxn.soul.flowingdrawer_core.FlowingDrawer
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/drawer_layout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/drawerlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:openDrawer="start">
-
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        app:edPosition="1"
+        app:edMenuSize="260dp"
+        app:edMenuBackground="@color/whitegrey">
+    <!--content-->
     <LinearLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -33,13 +37,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-            <!--Spinner
-                    android:id="@+id/category_Spinner"
-                    android:layout_width="match_parent"
-                    android:theme="@style/SpinnerTheme"
-                    android:layout_height="45dp"
-                    android:overlapAnchor="false"
-                    android:background="@drawable/spinner_type1" /-->
+
             <LinearLayout
                     android:id="@+id/category_Spinner"
                     android:background="@drawable/spinner_type2"
@@ -152,20 +150,34 @@
         </LinearLayout>
     </LinearLayout>
 
-    <include
-            android:id="@+id/test"
-            layout="@layout/floating_frame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
-    <com.google.android.material.navigation.NavigationView
+
+    <!--com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header"
-            app:menu="@menu/activity_main_drawer_menu" />
+            app:menu="@menu/activity_main_drawer_menu" /-->
+    <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
+            android:background="#ffffff"
+            android:id="@+id/menulayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <include
+                android:id="@+id/test"
+                android:background="@drawable/all_line"
+                layout="@layout/nav_body"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
 
-</androidx.drawerlayout.widget.DrawerLayout>
+
+    </com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>
+
+
+
+
+</com.mxn.soul.flowingdrawer_core.FlowingDrawer>

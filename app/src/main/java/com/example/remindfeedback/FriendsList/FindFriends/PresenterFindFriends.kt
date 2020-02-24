@@ -13,7 +13,7 @@ import com.example.remindfeedback.FeedbackList.ModelFeedback
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.R
 import com.example.remindfeedback.ServerModel.*
-import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_my_page.*
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -53,12 +53,7 @@ class PresenterFindFriends:ContractFindFriends.Presenter {
                             dialog_Find_Friend_Nickname_Tv.text = fData.nickname
                             dialog_Find_Friend_Introduction_Tv.text = fData.introduction
                             if(!fData.portrait.equals("")){
-                                var test_task: URLtoBitmapTask = URLtoBitmapTask()
-                                test_task = URLtoBitmapTask().apply {
-                                    url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fData.portrait)
-                                }
-                                var bitmap: Bitmap = test_task.execute().get()
-                                dialog_Find_Friend_ImageView.setImageBitmap(bitmap)
+                                Picasso.get().load("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+fData.portrait).into(dialog_Find_Friend_ImageView)
                             }else{
                                 dialog_Find_Friend_ImageView.setImageResource(R.drawable.ic_default_profile)
                             }

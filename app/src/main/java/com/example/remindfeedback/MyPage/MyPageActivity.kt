@@ -27,8 +27,11 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import android.R.attr.bitmap
 import android.graphics.Bitmap
+import androidx.core.app.ActivityCompat
+import com.example.remindfeedback.FeedbackList.MainActivity
+import com.example.remindfeedback.Login.LoginActivity
 import com.example.remindfeedback.etcProcess.BasicDialog
-import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import com.squareup.picasso.Picasso
 
 
 class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
@@ -81,8 +84,8 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
             basicDialog.makeDialog()
         }
         delete_Account_Button.setOnClickListener{
-            var basicDialog: BasicDialog = BasicDialog("회원탈퇴 하시겠습니까?", this, { presenterMyPage.deleteAccount()
-                finish()}, {})
+            var basicDialog: BasicDialog = BasicDialog("회원탈퇴 하시겠습니까?", this, { presenterMyPage.requestDeleteAccount()
+               }, {})
             basicDialog.makeDialog()
         }
     }
@@ -95,13 +98,9 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
         mypage_Introduction_Tv.text = introduction
         if(!portrait.equals("")){
             //이미지 설정해주는 부분
-            var test_task: URLtoBitmapTask = URLtoBitmapTask()
-            test_task = URLtoBitmapTask().apply {
-                url = URL("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+portrait)
-                imageData = "https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+portrait
-            }
-            var bitmap:Bitmap = test_task.execute().get()
-            profile_ImageView.setImageBitmap(bitmap)
+            Picasso.get().load("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+portrait).into(profile_ImageView)
+            imageData = "https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+portrait
+
         }
     }
 
@@ -114,11 +113,17 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
                         //presenterMain.addItems(data.getStringExtra("date"),data.getStringExtra("title"),mAdapter)
                         presenterMyPage.patchPortrait(data.getStringExtra("fileUri"))
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(this@MyPageActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
             }
 
         }
+    }
+
+    override fun appReset() {
+        ActivityCompat.finishAffinity(this)
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        System.exit(0)
     }
 
 }

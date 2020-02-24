@@ -25,14 +25,21 @@ class FindPasswordActivity : AppCompatActivity(), ContractFindPassword.View {
         find_Password_Token_Layout.visibility = View.GONE
 
         find_Password_Email_Button.setOnClickListener{
-            if(!find_Password_Email_Tv.text.toString().equals("")){
-                presenterFindPassword.findPassword(find_Password_Email_Tv.text.toString())
-                find_Password_Token_Layout.visibility = View.VISIBLE
-                find_Password_Email_Layout.visibility = View.GONE
-                find_Password_Main_Tv.text = "입력된 이메일로 보내진 토큰을 확인하고 새 비밀번호와 함께 입력해주세요."
-            }else{
-                Toast.makeText(this, "이메일을 입력해주세요", Toast.LENGTH_LONG).show()
+            var intent = intent
+            if(intent.getStringExtra("state").equals("password")){
+                if(!find_Password_Email_Tv.text.toString().equals("")){
+                    presenterFindPassword.findPassword(find_Password_Email_Tv.text.toString())
+                    find_Password_Token_Layout.visibility = View.VISIBLE
+                    find_Password_Email_Layout.visibility = View.GONE
+                    find_Password_Main_Tv.text = "입력된 이메일로 보내진 토큰을 확인하고 새 비밀번호와 함께 입력해주세요."
+                }else{
+                    Toast.makeText(this, "이메일을 입력해주세요", Toast.LENGTH_LONG).show()
+                }
+            }else if(intent.getStringExtra("state").equals("email")){
+                presenterFindPassword.checkEmail(find_Password_Email_Tv.text.toString())
             }
+
+
         }
 
         find_Password_Token_Button.setOnClickListener{

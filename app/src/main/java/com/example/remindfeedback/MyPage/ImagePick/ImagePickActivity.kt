@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import com.example.remindfeedback.R
 import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import com.soundcloud.android.crop.Crop
@@ -87,6 +88,22 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     //앨범 꺼내는부분
     override fun imageBrowse() {
         val intent = Intent(Intent.ACTION_PICK)
+
+        tempFile = presenterImagePick.createImageFile()
+        try {
+
+        } catch (e: IOException) {
+            Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+            finish()
+            e.printStackTrace()
+        }
+        if (tempFile != null) {
+            //val photoUri = Uri.fromFile(tempFile)
+            val photoUri = FileProvider.getUriForFile(this, "com.example.remindfeedback.fileprovider", tempFile)
+            Log.e("photoUri", photoUri.toString())
+
+        }
+
         intent.type = MediaStore.Images.Media.CONTENT_TYPE
         startActivityForResult(intent, PICK_FROM_ALBUM)
     }
@@ -126,14 +143,9 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("MissingSuperCall")
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode != Activity.RESULT_OK) {
-            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show()
 
-            return
-        }
         when (requestCode) {
             PICK_FROM_ALBUM -> {
-
                 val photoUri = data!!.data
                 if (photoUri != null) {
                     cropImage(photoUri)
@@ -142,11 +154,13 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
             PICK_FROM_CAMERA -> {
                 val bitmap = MediaStore.Images.Media
                     .getBitmap(contentResolver, Uri.fromFile(tempFile))
+
                 val ei = ExifInterface(tempFile.absolutePath)
                 val orientation = ei.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,
                     ExifInterface.ORIENTATION_UNDEFINED
                 )
+
                 var rotatedBitmap: Bitmap? = presenterImagePick.rotateImage(bitmap, 90.toFloat());
                 modify_Profile_ImageView.setImageBitmap(rotatedBitmap)
                 var newfile:File = File(tempFile.absolutePath)
@@ -174,7 +188,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
         val options = BitmapFactory.Options()
         val originalBm = BitmapFactory.decodeFile(tempFile!!.getAbsolutePath(), options)
         val resizedbitmap = Bitmap.createScaledBitmap(originalBm, 650, 650, true) // 이미지 사이즈 조정
-       // modify_Profile_ImageView.setImageBitmap(resizedbitmap) // 이미지뷰에 조정한 이미지 넣기
+        modify_Profile_ImageView.setImageBitmap(resizedbitmap) // 이미지뷰에 조정한 이미지 넣기
  }
 
     //타이틀바에 어떤 menu를 적용할지 정하는부분

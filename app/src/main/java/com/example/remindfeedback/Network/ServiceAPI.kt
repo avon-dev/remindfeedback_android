@@ -31,9 +31,13 @@ interface ServiceAPI {
     @POST("auth/password/")
     fun RequestFindPassword(@Body requestFindPassword: RequestFindPassword): Call<ResponseBody>
 
+    //비밀번호 확인
+    @POST("auth/checkpassword/")
+    fun CheckPassword(@Body checkingPassword: CheckingPassword): Call<GetSuccessData>
+
     //이메일 확인
     @POST("auth/checkemail/")
-    fun CheckEmail(@Body changingPassword: ChangingPassword): Call<ResponseBody>
+    fun CheckEmail(@Body checkingEmail: CheckingEmail): Call<GetSuccessData>
 
     //비밀번호 변경
     @PATCH("auth/password/")

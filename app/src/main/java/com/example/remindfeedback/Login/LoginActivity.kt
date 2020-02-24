@@ -83,10 +83,14 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
 
         sheet_Find_Password.setOnClickListener {
             val intent = Intent(this, FindPasswordActivity::class.java)
+            intent.putExtra("state", "password")
             startActivity(intent)
             mBottomSheetDialog!!.dismissImmediately()
         }
         sheet_Find_Email.setOnClickListener {
+            val intent = Intent(this, FindPasswordActivity::class.java)
+            intent.putExtra("state", "email")
+            startActivity(intent)
             mBottomSheetDialog!!.dismissImmediately()
         }
 

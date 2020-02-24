@@ -146,7 +146,8 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
                 tutorialCount++
                 tframe.mTutorial()}
             1 -> {
-                //여기에 쉐어드로 ㅇㅇ
+                preferences.edit().putBoolean("firstCreateCategoryActivity", false).apply()
+
             }
 
         }

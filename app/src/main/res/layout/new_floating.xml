@@ -12,7 +12,7 @@
 
 
         <!-- Your FAB implementation -->
-        <com.example.remindfeedback.Fab
+        <com.example.remindfeedback.etcProcess.Fab
                 android:id="@+id/fab"
                 style="@style/Widget.MaterialSheetFab.Fab"
                 android:layout_alignParentEnd="true"

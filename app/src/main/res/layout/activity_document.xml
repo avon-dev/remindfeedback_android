@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".DocumentActivity">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/all_line"
+                android:orientation="vertical" >
+            <TextView
+                    android:id="@+id/document_Script"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+            <com.rey.material.widget.Button
+                    android:id="@+id/script_OK_Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="25dp"
+                    android:gravity="center"
+                    android:text="확인"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    style= "@style/LightRaiseColorButtonRippleStyle"/>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

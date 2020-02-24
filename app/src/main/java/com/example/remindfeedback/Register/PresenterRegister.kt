@@ -25,6 +25,7 @@ class PresenterRegister : ContractRegister.Presenter {
 
             override fun onResponse(call: Call<SignUp>, response: Response<SignUp>) {
                 if (response.isSuccessful) {
+
                 } else {
                     val StatusCode = response.code()
                     (mContext as Activity).finish()

@@ -1,100 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/under_line"
+        android:layout_height="80dp"
+        xmlns:swipe="http://schemas.android.com/tools"
         android:orientation="vertical">
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
 
-        <TextView
-                android:id="@+id/main_Feedback_Tag_Color"
-                android:layout_width="10dp"
-                android:layout_height="match_parent"
-                android:background="@color/blue" />
+    <com.daimajia.swipe.SwipeLayout
+            android:id="@+id/swipe"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            app:clickToClose="true"
+            swipe:leftEdgeSwipeOffset="0dp"
+            swipe:rightEdgeSwipeOffset="0dp">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="#FF5534"
+                android:gravity="center"
+                android:tag="Bottom3"
+                android:weightSum="10">
+
+            <ImageView
+                    android:id="@+id/trash"
+                    android:layout_width="27dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/trash" />
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:text="Delete Item?"
+                    android:textColor="#fff"
+                    android:textSize="17sp" />
+
+            <Button
+                    android:id="@+id/delete"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="4"
+                    android:background="#ffffff"
+                    android:text="Yes,Delete"
+                    android:textColor="#FF5534" />
+        </LinearLayout>
+
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="8"
-                android:padding="8dp"
-                android:gravity="center_vertical"
                 android:orientation="vertical">
+
+
             <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/under_line"
                     android:orientation="horizontal">
-                <TextView
-                        android:id="@+id/main_Feedback_Script"
+
+                <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="명품 교육을 지향하는 학원의 가치를 알고 찾아와주신 여러분께 진심으로 감사..."
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body1" android:textSize="16sp"/>
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="vertical">
+
+                    <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/main_Feedback_Profile_Image"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:padding="5dp"
+                                android:src="@mipmap/ic_launcher" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/main_Feedback_Alarm"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_marginLeft="40dp"
+                                android:layout_marginTop="10dp"
+                                android:src="@drawable/red"
+                                android:textSize="20dp" />
+                    </FrameLayout>
+
+                    <TextView
+                            android:id="@+id/main_Feedback_Name"
+                            android:layout_width="match_parent"
+                            android:textColor="#929292"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:text="이름" />
+
+                </LinearLayout>
+
                 <TextView
-                        android:id="@+id/textView28"
-                        android:layout_width="15dp"
-                        android:layout_height="wrap_content"/>
-                <TextView
-                        android:id="@+id/main_Feedback_Dday"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/grey"
-                        android:padding="3dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:background="@drawable/bg_radius"
-                        android:text="D-7" android:textSize="19dp"/>
+                        android:id="@+id/main_Feedback_Tag_Color"
+                        android:layout_width="7dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/black" />
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="vertical">
+
+
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                        <TextView
+                                android:id="@+id/main_Feedback_Dday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_radius"
+                                android:gravity="center_vertical"
+                                android:paddingLeft="3dp"
+                                android:paddingRight="3dp"
+                                android:layout_marginEnd="10dp"
+                                android:text="D-24"
+                                android:textColor="#929292" />
+
+                        <TextView
+                                android:id="@+id/main_Feedback_Current"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="진행중"
+                                android:textColor="@color/green" />
+                    </LinearLayout>
+
+
+                    <TextView
+                            android:id="@+id/main_Feedback_Script"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#5b5b5b"
+                            android:gravity="center_vertical"
+                            android:text="wpdpdpdpppppppppppp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                    <TextView
+                            android:id="@+id/main_Feedback_Date"
+                            android:textColor="#929292"
+                            android:gravity="center_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="2020년 02월 20일" />
+
+                </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                    android:id="@+id/main_Feedback_Date"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:textSize="14sp"
-                    android:layout_height="wrap_content"
-                    android:text="2019.10.26 월" />
+
         </LinearLayout>
 
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:orientation="vertical">
+    </com.daimajia.swipe.SwipeLayout>
 
-            <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/main_Feedback_Profile_Image"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:padding="5dp"
-                        android:src="@mipmap/ic_launcher" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/main_Feedback_Alarm"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginTop="10dp"
-                        android:src="@drawable/red"
-                        android:textSize="20dp"/>
-            </FrameLayout>
-
-            <TextView
-                    android:id="@+id/main_Feedback_Name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:text="상대이름" />
-        </LinearLayout>
-    </LinearLayout>
-</LinearLayout >
+</LinearLayout>

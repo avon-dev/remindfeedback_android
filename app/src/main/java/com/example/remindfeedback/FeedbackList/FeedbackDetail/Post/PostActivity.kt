@@ -18,7 +18,6 @@ import com.example.remindfeedback.FeedbackList.FeedbackDetail.PresenterFeedbackD
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
 import com.example.remindfeedback.ServerModel.CreateComment
-import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_my_page.*

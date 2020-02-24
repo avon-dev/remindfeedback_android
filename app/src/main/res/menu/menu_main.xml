@@ -2,10 +2,9 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Search"
-        android:id="@+id/search"
-        android:icon="@drawable/ic_remind_white"
+    <item android:title="피드백"
+        android:id="@+id/create_Feedback_Button"
+        android:icon="@drawable/ic_add_white"
         app:showAsAction="always" />
 
-    <item android:title="Overflow item" />
 </menu>

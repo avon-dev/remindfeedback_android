@@ -13,5 +13,6 @@ interface ContractFindPassword {
         var context: Context
         fun findPassword(email:String)
         fun changingPassword(token:String, password:String)
+        fun checkEmail(email:String)
     }
 }

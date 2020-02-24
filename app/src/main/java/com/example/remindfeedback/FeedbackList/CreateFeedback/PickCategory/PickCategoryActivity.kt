@@ -30,7 +30,7 @@ class PickCategoryActivity : AppCompatActivity(), ContractPickCategory.View {
         }
         var intent: Intent = intent
         if(intent.hasExtra("isMain")){
-            arrayList.add(ModelPickCategory(-2, "", "전체보기"))
+            arrayList.add(ModelPickCategory(-2, "", "[주제] 전체보기"))
         }
 
 

@@ -8,7 +8,7 @@ import java.util.ArrayList
 interface ContractMyPage {
     interface View{
         fun setInfo(email:String, nickname:String, portrait:String?, introduction:String?)
-
+        fun appReset()
     }
 
     interface Presenter {
@@ -21,6 +21,7 @@ interface ContractMyPage {
         fun logout()
         fun requestDeleteAccount()
         fun deleteAccount()
+        fun checkPassword(password:String)
     }
 
 }

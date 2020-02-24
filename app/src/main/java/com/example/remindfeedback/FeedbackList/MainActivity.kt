@@ -2,43 +2,29 @@ package com.example.remindfeedback.FeedbackList
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Rect
-import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.Handler
 import android.text.SpannableString
-import android.text.style.StyleSpan
-import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.Display
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
-import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.Alarm.AlarmActivity
 import com.example.remindfeedback.CategorySetting.CategorySettingActivity
 import com.example.remindfeedback.FeedbackList.CreateFeedback.CreateFeedbackActivity
 import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.ModelPickCategory
 import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.PickCategoryActivity
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.FeedbackDetailActivity
 import com.example.remindfeedback.FriendsList.FriendsListActivity
 import com.example.remindfeedback.MyPage.MyPageActivity
 import com.example.remindfeedback.R
@@ -46,17 +32,15 @@ import com.example.remindfeedback.Setting.SettingActivity
 import com.example.remindfeedback.etcProcess.*
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
-import com.getkeepsafe.taptargetview.TapTargetView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
+import com.mxn.soul.flowingdrawer_core.ElasticDrawer
+import com.mxn.soul.flowingdrawer_core.ElasticDrawer.STATE_OPEN
+import com.mxn.soul.flowingdrawer_core.FlowingDrawer
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_create_feedback.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.nav_header.*
-import java.net.URL
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    ContractMain.View, View.OnClickListener {
+class MainActivity : AppCompatActivity(),
+    ContractMain.View {
 
     private val TAG = "MainActivity"
     internal lateinit var presenterMain: PresenterMain
@@ -71,17 +55,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var lastTimeBackPressed:Long=-1500
     lateinit var ab: ActionBar
 
+    lateinit var friends_List: TextView
+    lateinit var request_Feedback: TextView
+    lateinit var receive_Feedback: TextView
+    lateinit var category_Setting: TextView
+    lateinit var mypage: TextView
+    lateinit var setting: TextView
+    lateinit var logout: TextView
+
     lateinit var nav_Nickname_Tv:TextView
     lateinit var nav_Portrait_Iv:ImageView
     lateinit var nav_Email_Tv:TextView
     //스피너에 사용할 배열
-    var spinnerArray = arrayListOf<ModelPickCategory>(ModelPickCategory(-2, "", "전체보기"))
+    var spinnerArray = arrayListOf<ModelPickCategory>(ModelPickCategory(-2, "", "[주제] 전체보기"))
 
     lateinit var toolbar:Toolbar
 
-    lateinit var fab_main: FloatingActionButton
-    lateinit var fab_sub1: FloatingActionButton
-    lateinit var fab_sub2: FloatingActionButton
+
     lateinit var lm: LinearLayoutManager
     private var fab_open: Animation? = null
     var fab_close: Animation? = null
@@ -91,6 +81,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var droidTarget:Rect
     lateinit var sassyDesc:SpannableString
 
+    lateinit var mDrawer:FlowingDrawer
 
     internal lateinit var preferences: SharedPreferences
     var tutorialCount:Int = 0
@@ -99,7 +90,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var display:Display = windowManager.defaultDisplay
 
         setSelectCategory()
         ing_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
@@ -113,23 +103,53 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setRecyclerView()
         //presenter 정의하고 아이템을 불러옴
 
-        //튜토리얼을 위한 세팅
-        tutorialSet(display)
 
 
         presenterMain.loadItems(arrayList, mAdapter, feedback_count)
         presenterMain.getSpinnerArray(spinnerArray)
 
-        //여기부터 fab코드
-        fab_open = AnimationUtils.loadAnimation(this, R.animator.fab_open)
-        fab_close = AnimationUtils.loadAnimation(this, R.animator.fab_close)
-        fab_main = findViewById(R.id.fab_main)
-//        fab_sub1 = findViewById(R.id.fab_sub1)
-//        fab_sub2 = findViewById(R.id.fab_sub2)
-        fab_main.setOnClickListener(this);
-//        fab_sub1.setOnClickListener(this);
-//        fab_sub2.setOnClickListener(this);
 
+
+        mDrawer = findViewById<View>(R.id.drawerlayout) as FlowingDrawer
+        mDrawer.setTouchMode(ElasticDrawer.TOUCH_MODE_BEZEL)
+        mDrawer.setOnDrawerStateChangeListener(object : ElasticDrawer.OnDrawerStateChangeListener {
+            override fun onDrawerStateChange(oldState: Int, newState: Int) {
+                if (newState == ElasticDrawer.STATE_CLOSED) {
+                    Log.i("MainActivity", "Drawer STATE_CLOSED")
+                }
+            }
+
+            override fun onDrawerSlide(openRatio: Float, offsetPixels: Int) {
+                Log.i("MainActivity", "openRatio=$openRatio ,offsetPixels=$offsetPixels")
+            }
+        })
+        setupToolbar()
+        friends_List= findViewById<TextView>(R.id.friends_List) as TextView
+        request_Feedback= findViewById<TextView>(R.id.request_Feedback) as TextView
+        receive_Feedback= findViewById<TextView>(R.id.receive_Feedback) as TextView
+        category_Setting= findViewById<TextView>(R.id.category_Setting) as TextView
+        mypage= findViewById<TextView>(R.id.mypage) as TextView
+        setting= findViewById<TextView>(R.id.setting) as TextView
+        logout= findViewById<TextView>(R.id.logout) as TextView
+
+        nav_Nickname_Tv= findViewById<TextView>(R.id.nav_Nickname_Tv) as TextView
+        nav_Portrait_Iv= findViewById<ImageView>(R.id.nav_Portrait_Iv) as ImageView
+        nav_Email_Tv= findViewById<TextView>(R.id.nav_Email_Tv) as TextView
+        setNavView()
+        friends_List.setOnClickListener{friends_List()
+            mDrawer.closeMenu()}
+        request_Feedback.setOnClickListener{request_Feedback()
+            mDrawer.closeMenu()}
+        receive_Feedback.setOnClickListener{receive_Feedback()
+            mDrawer.closeMenu()}
+        category_Setting.setOnClickListener{category_Setting()
+            mDrawer.closeMenu()}
+        mypage.setOnClickListener{mypage()
+            mDrawer.closeMenu()}
+        setting.setOnClickListener{setting()
+            mDrawer.closeMenu()}
+        logout.setOnClickListener{logout()
+            mDrawer.closeMenu()}
 
 
         ing_Btn.setOnClickListener {
@@ -169,54 +189,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     }
+    protected fun setupToolbar() {
+        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationIcon(R.drawable.ic_menu)
+        toolbar.setTitle(" ")
+        toolbar.setNavigationOnClickListener { mDrawer!!.toggleMenu() }
 
-    fun tutorialSet(display: Display){
-        toolbar = findViewById<View>(R.id.toolbar) as Toolbar
-        //toolbar.inflateMenu(R.menu.menu_main)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_right_black)
-        setNavView()
-        //액션바 설정
-        ab = this!!.supportActionBar!!
-        ab.setTitle("Remind Feedback")
 
-        // 드로어블을로드하고 여기에 탭 대상을 표시 할 위치를 만듭니다
-        // 이 시점에서 너비와 높이를 얻으려면 디스플레이가 필요합니다
-        //display = windowManager.defaultDisplay
-        // Load our little droid guy
-        droid = ContextCompat.getDrawable(this, R.drawable.ic_right_black)!!
-        // Tell our droid buddy where we want him to appear
-        droidTarget = Rect(0, 0, droid!!.intrinsicWidth * 2, droid.intrinsicHeight * 2)
-        // Using deprecated methods makes you look way cool
-        droidTarget.offset(display.width / 2, display.height / 2)
-
-        sassyDesc = SpannableString("편의를 도와주는 네비게이션입니다.")
-        sassyDesc.setSpan(
-            StyleSpan(Typeface.ITALIC),
-            sassyDesc.length - "sometimes".length,
-            sassyDesc.length,
-            0
-        )
+        // 액션바 타이틀 가운데 정렬
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
+        supportActionBar?.setCustomView(R.layout.actionbar_title)
     }
+
+
 
     //네비게이션 셋팅
     fun setNavView(){
-        //드로어 네비게이션 관련 코드
-        setSupportActionBar(toolbar)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
-        navView.setNavigationItemSelectedListener(this)
-        val nav_header_view = navView.getHeaderView(0)
-
-        nav_Nickname_Tv = nav_header_view.findViewById<View>(R.id.nav_Nickname_Tv) as TextView
-        nav_Portrait_Iv = nav_header_view.findViewById<View>(R.id.nav_Portrait_Iv) as ImageView
-        nav_Email_Tv = nav_header_view.findViewById<View>(R.id.nav_Email_Tv) as TextView
-
         presenterMain.getMe()
 
     }
@@ -382,51 +372,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         startActivityForResult(intent, 112)
     }
 
-    //fab을 위해서 onclick 상속받음
-    override fun onClick(v: View?) {
-        when (v!!.getId()) {
-            R.id.fab_main ->
-                toggleFab()
-            /*
-            R.id.fab_sub1 -> {
-                toggleFab()
-                Toast.makeText(this, "1번!!", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, CreateFeedbackActivity::class.java)
-                startActivityForResult(intent, 111)
-
-            }
-            R.id.fab_sub2 -> {
-                toggleFab()
-                Toast.makeText(this, "2번!!", Toast.LENGTH_SHORT).show()
-            }
-            */
-
-        }
-    }
-
     //fab정의
     private fun toggleFab() {
-        //원래 fab_sub2에 있던 부분인데 그냥 메인누르면 실행되게 함
         val intent = Intent(this, CreateFeedbackActivity::class.java)
         startActivityForResult(intent, 111)
 
-        /*
-        if (isFabOpen) {
-            fab_main.setImageResource(R.drawable.ic_add_black)
-            fab_sub1.startAnimation(fab_close)
-            fab_sub2.startAnimation(fab_close)
-            fab_sub1.setClickable(false)
-            fab_sub2.setClickable(false)
-            isFabOpen = false
-        } else {
-            fab_main.setImageResource(R.drawable.ic_add_black)
-            fab_sub1.startAnimation(fab_open)
-            fab_sub2.startAnimation(fab_open)
-            fab_sub1.setClickable(true)
-            fab_sub2.setClickable(true)
-            isFabOpen = true
-        }
-        */
     }
     //리사이클러뷰를 리프레시하는 용도
     override fun refresh() {
@@ -436,9 +386,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     //여기 아래로 네비게이션 옵션
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
+        if (mDrawer!!.isMenuVisible) {
+            mDrawer!!.closeMenu()
+        }else {
             // (현재 버튼 누른 시간-이전에 버튼 누른 시간) <=1.5초일 때 동작
             if(System.currentTimeMillis()-lastTimeBackPressed<=1500)
                 finish()
@@ -447,7 +397,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    //타이틀바에 어떤 menu를 적용할지 정하는부분
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        if(feedbackMyYour == 0 && feedbackIngEd == 0){
+            menuInflater.inflate(R.menu.menu_main, menu)
+        }else{
 
+        }
+        return true
+    }
+
+    //타이틀바 메뉴를 클릭했을시
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle presses on the action bar items
+        when (item.itemId) {
+            R.id.create_Feedback_Button -> {
+                return create_Feedback_Button()
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
+    fun create_Feedback_Button():Boolean{
+        val intent = Intent(this, CreateFeedbackActivity::class.java)
+        startActivityForResult(intent, 111)
+        return true
+    }
 
     override fun onRestart() {
         super.onRestart()
@@ -485,58 +462,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
     fun setSelectCategory(){
         main_Category_Color.visibility = View.GONE
-        main_Category_Title.text = "전체보기"
+        main_Category_Title.text = "[주제] 전체보기"
     }
 
-
-    fun drawerTutorial(){
-        // We have a sequence of targets, so lets build it!
-        val sequence = TapTargetSequence(this)
-            .targets(
-                // 이 탭 대상은 뒤로 버튼을 대상으로합니다. 포함 도구 모음을 전달하면됩니다.
-                TapTarget.forToolbarNavigationIcon(
-                    toolbar,
-                    "안녕하세요!",
-                    sassyDesc
-                ).id(1)
-            )
-            .listener(object : TapTargetSequence.Listener {
-                // This listener will tell us when interesting(tm) events happen in regards
-                // to the sequence
-                override fun onSequenceFinish() {
-                    Log.e(TAG, "튜토리얼을 완료했습니다.")
-                    //preferences.edit().putBoolean("firstMainActivity", false).apply()
-                }
-
-                override fun onSequenceStep(lastTarget: TapTarget, targetClicked: Boolean) {
-                    Log.d("TapTargetView", "Clicked on " + lastTarget.id())
-                }
-
-                override fun onSequenceCanceled(lastTarget: TapTarget) {
-                    /*
-                    val dialog = AlertDialog.Builder(this@MainActivity)
-                        .setTitle("Uh oh")
-                        .setMessage("You canceled the sequence")
-                        .setPositiveButton("Oops", null).show()
-                    TapTargetView.showFor(dialog,
-                        TapTarget.forView(
-                            dialog.getButton(DialogInterface.BUTTON_POSITIVE),
-                            "Uh oh!",
-                            "You canceled the sequence at step " + lastTarget.id()
-                        )
-                            .cancelable(false)
-                            .tintTarget(false), object : TapTargetView.Listener() {
-                            override fun onTargetClick(view: TapTargetView) {
-                                super.onTargetClick(view)
-                                dialog.dismiss()
-                            }
-                        })
-                    */
-                }
-            })
-
-        sequence.start()
-    }
     //첫번째인지 체크
     fun firstRunCheck(){
         var isFirst:Boolean = preferences.getBoolean("firstMainActivity", true);
@@ -547,38 +475,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     //튜토리얼 진행
     fun startTutorial(){
         when(tutorialCount){
-            0 -> {var tframe = TutorialFrame("첫번째 피드백을 등록해보세요!", "안녕하세요!", findViewById<View>(R.id.fab_main), this, { startTutorial()})
+            0 -> {var tframe = TutorialFrame("진행중인 피드백을 볼 수 있습니다!", "안녕하세요!", findViewById<View>(R.id.ing_Btn), this, { startTutorial()})
                 tutorialCount++
                 tframe.mTutorial()}
-            1 -> {var tframe = TutorialFrame("진행중인 피드백을 볼 수 있습니다!", "안녕하세요!", findViewById<View>(R.id.ing_Btn), this, { startTutorial()})
+            1 -> {var tframe = TutorialFrame("진행이 완료된 피드백을 볼 수 있습니다!", "안녕하세요!", findViewById<View>(R.id.ed_Btn), this, { startTutorial()})
                 tutorialCount++
                 tframe.mTutorial()}
-            2 -> {var tframe = TutorialFrame("진행이 완료된 피드백을 볼 수 있습니다!", "안녕하세요!", findViewById<View>(R.id.ed_Btn), this, { startTutorial()})
-                tutorialCount++
-                tframe.mTutorial()}
-            3 -> {drawerTutorial()}
+            2->{
+                preferences.edit().putBoolean("firstMainActivity", false).apply()
+            }
         }
 
     }
-
-
-    //네비게이션바에서 아이템 클릭시
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.request_Feedback -> request_Feedback()
-            R.id.receive_Feedback -> receive_Feedback()
-            R.id.friends_List -> friends_List()
-            R.id.category_Setting -> category_Setting()
-            R.id.mypage -> mypage()
-            R.id.setting -> setting()
-            R.id.logout -> logout()
-            //R.id.feedback_Request_Alarm -> feedback_Request_Alarm() //알림은 알파버전에서 제외함
-
-        }
-        drawer_layout.closeDrawer(GravityCompat.START)
-        return true
-    }
-
 
     fun request_Feedback() {
        if(feedbackMyYour == 0 && feedbackIngEd == 0){
@@ -592,9 +500,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
            ing_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
            ed_Btn.setBackgroundColor(Color.rgb(255, 255, 255))
            setRecyclerView()
-           //ing_Linear.visibility = View.VISIBLE
            ing_Case.visibility = View.VISIBLE
-           fab_main.visibility = View.VISIBLE
            category_Spinner.visibility = View.VISIBLE
        }
     }
@@ -608,18 +514,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
            feedbackIngEd = 0
            feedbackMyYour = 1//요청받은거임
            presenterMain.loadYourItems(arrayList, mAdapter, feedback_count)
-
            setRecyclerView()
-
-           //ing_Linear.visibility = View.GONE
            ing_Case.visibility = View.GONE
-           fab_main.visibility = View.GONE
            category_Spinner.visibility = View.GONE
-//           fab_sub1.startAnimation(fab_close)
-//           fab_sub2.startAnimation(fab_close)
-//           fab_sub1.setClickable(false)
-//           fab_sub2.setClickable(false)
-//           isFabOpen = false
+
        }
     }
 

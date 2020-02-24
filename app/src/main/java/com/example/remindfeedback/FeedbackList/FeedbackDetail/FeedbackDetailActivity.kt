@@ -3,19 +3,16 @@ package com.example.remindfeedback.FeedbackList.FeedbackDetail
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.remindfeedback.Fab
+import com.example.remindfeedback.etcProcess.Fab
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity
-import com.example.remindfeedback.FeedbackList.PresenterMain
 import com.example.remindfeedback.R
 import com.example.remindfeedback.ServerModel.CreateBoardPicture
 import com.example.remindfeedback.ServerModel.CreateBoardText
@@ -23,9 +20,6 @@ import com.example.remindfeedback.ServerModel.CreateboardRecord
 import com.example.remindfeedback.ServerModel.CreateboardVideo
 import com.example.remindfeedback.etcProcess.TutorialFrame
 import com.rey.material.app.BottomSheetDialog
-import com.rey.material.drawable.ThemeDrawable
-import com.rey.material.util.ViewUtil
-import com.rey.material.widget.Button
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
 import com.gordonwong.materialsheetfab.MaterialSheetFab
 import com.gordonwong.materialsheetfab.MaterialSheetFabEventListener
@@ -323,7 +317,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
                 tutorialCount++
                 tframe.mTutorial()}
             2 -> {
-                //preferences.edit().putBoolean("firstFeedbackDetailActivity", false).apply()
+                preferences.edit().putBoolean("firstFeedbackDetailActivity", false).apply()
             }
 
         }
@@ -347,7 +341,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
                 // Save current status bar color
                 statusBarColor = getStatusBarColor()
                 // Set darker status bar color to match the dim overlay
-                setStatusBarColor(resources.getColor(R.color.whiteblue))
+                setStatusBarColor(resources.getColor(R.color.colorPrimary))
             }
 
             override fun onHideSheet() {

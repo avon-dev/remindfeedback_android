@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.AdapterFeedbackDetail
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.ModelFeedbackDetail
 import com.example.remindfeedback.R
-import com.example.remindfeedback.etcProcess.URLtoBitmapTask
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_my_page.*
 import java.net.URL
