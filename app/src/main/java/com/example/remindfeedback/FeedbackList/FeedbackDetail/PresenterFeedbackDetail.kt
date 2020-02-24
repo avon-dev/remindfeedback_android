@@ -68,6 +68,7 @@ class PresenterFeedbackDetail : ContractFeedbackDetail.Presenter {
                     } else {
                     }
 
+
                 } else {
                     Log.e("asdasdasd", "뭔가 실패함")
                 }
