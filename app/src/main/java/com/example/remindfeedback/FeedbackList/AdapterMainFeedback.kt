@@ -19,9 +19,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.daimajia.swipe.SimpleSwipeListener
+import com.daimajia.swipe.SwipeLayout
 import com.example.remindfeedback.FeedbackList.FeedbackDetail.FeedbackDetailActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import com.nineoldandroids.view.ViewHelper
 import com.squareup.picasso.Picasso
 import java.net.URL
 import java.text.SimpleDateFormat
@@ -52,6 +55,7 @@ class AdapterMainFeedback(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_new_main, parent, false)
+        //val view = LayoutInflater.from(context).inflate(R.layout.item_main_feedback, parent, false)
         return Holder(view)
     }
 
@@ -62,6 +66,7 @@ class AdapterMainFeedback(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is Holder) {
             holder.bind(arrayList[position], context)
+
         } else if (holder is LoadingViewHolder) {
             holder.progressBar.isIndeterminate = true
         }
@@ -80,10 +85,15 @@ class AdapterMainFeedback(
         val main_Feedback_Name = itemView.findViewById<TextView>(R.id.main_Feedback_Name)
         val main_Feedback_Dday = itemView.findViewById<TextView>(R.id.main_Feedback_Dday)
         val main_Feedback_Current = itemView.findViewById<TextView>(R.id.main_Feedback_Current)
+        //val sample1 = itemView.findViewById<View>(R.id.swipe) as SwipeLayout
+        //val trash = itemView.findViewById<ImageView>(R.id.trash) as ImageView
 
 
-        fun bind(feedback_list: ModelFeedback?, context: Context) {
+        fun bind( feedback_list: ModelFeedback?, context: Context) {
             //상대이름, 피드백제목, 피드백 작성일 등 정의해줌
+
+
+
             if (feedback_list != null) {
                 main_Feedback_Name.text = feedback_list.adviser
             }
@@ -235,8 +245,19 @@ class AdapterMainFeedback(
                 main_Feedback_Dday.visibility = View.GONE
             }
 
+/*
+            trash.setOnClickListener{
+                Log.e("asdasd", "trash 눌림1")
+            }
 
+            sample1.showMode = SwipeLayout.ShowMode.LayDown
+            sample1.addSwipeListener(object : SimpleSwipeListener() {
+                override fun onOpen(layout: SwipeLayout?) {
+                    Log.e("addSwipeListener", "addSwipeListener")
 
+                }
+            })
+*/
         }
     }
 

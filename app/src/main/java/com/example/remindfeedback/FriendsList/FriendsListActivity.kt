@@ -73,13 +73,10 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
                 //선택된 탭 번호 반환
                 val position = tab.position
                 if (position == 0) {
-                    Toast.makeText(this@FriendsListActivity, "친구목록", Toast.LENGTH_SHORT).show()
                     presenterFriendsList.loadItems(arrayList,mAdapter)
                 } else if (position == 1) {
-                    Toast.makeText(this@FriendsListActivity, "받은친구요청", Toast.LENGTH_SHORT).show()
                     presenterFriendsList.receivedFriendRequests(arrayList,mAdapter)
                 } else if (position == 2) {
-                    Toast.makeText(this@FriendsListActivity, "보낸친구요청", Toast.LENGTH_SHORT).show()
                     presenterFriendsList.requestedFriendsRequests(arrayList,mAdapter)
                 }
             }

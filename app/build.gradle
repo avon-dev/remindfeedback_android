@@ -101,4 +101,12 @@ dependencies {
     //플로팅버튼 이쁜거
     implementation 'com.gordonwong:material-sheet-fab:1.2.1'
 
+    //스와이프 아이템 라이브러리
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+    implementation 'com.nineoldandroids:library:2.4.0'
+
+    //팔로잉 드로어
+    implementation 'com.mxn.soul:flowingdrawer-core:2.1.0'
+    implementation 'com.nineoldandroids:library:2.4.0'
+
 }
