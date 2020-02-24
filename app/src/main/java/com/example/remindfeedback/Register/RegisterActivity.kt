@@ -113,13 +113,40 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
         rf_Use_Info.setOnClickListener{
             val intent = Intent(this, DocumentActivity::class.java)
             intent.putExtra("script", getString(R.string.rfUsingInfo))
-            startActivity(intent)
+            intent.putExtra("type", "rfUsingInfo")
+            startActivityForResult(intent, 111)
         }
         privacy_Info.setOnClickListener{
             val intent = Intent(this, DocumentActivity::class.java)
             intent.putExtra("script",getString(R.string.privacyInfo))
-            startActivity(intent)
+            intent.putExtra("type", "privacyInfo")
+            startActivityForResult(intent, 111)
         }
 
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            111 -> {
+                if(data!!.getStringExtra("type").equals("rfUsingInfo")){
+                    if(!chk_1.isChecked){
+                        chk_1.isChecked = true
+                    }
+                    if(chk_1.isChecked &&chk_2.isChecked){
+                        chk_all.isChecked = true
+                    }
+                }else if(data!!.getStringExtra("type").equals("privacyInfo")){
+                    if(!chk_2.isChecked){
+                        chk_2.isChecked = true
+                    }
+                    if(chk_1.isChecked &&chk_2.isChecked ){
+                        chk_all.isChecked = true
+                    }
+                }
+            }
+
+        }
     }
 }

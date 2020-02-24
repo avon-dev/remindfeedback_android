@@ -58,7 +58,6 @@ class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFri
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(arrayList[position], context)
-
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -102,7 +101,6 @@ class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFri
                 intent.putExtra("script", friends_list.friendsScript)
                 intent.putExtra("friend_uid", friends_list.friend_uid)
                 intent.putExtra("type", friends_list.type)
-                Toast.makeText(context, friends_list.friendsName+"의 친구페이지", Toast.LENGTH_SHORT).show()
                 context.startActivity(intent)
             }
 

@@ -37,7 +37,7 @@ interface ServiceAPI {
 
     //이메일 확인
     @POST("auth/checkemail/")
-    fun CheckEmail(@Body checkingEmail: CheckingEmail): Call<GetMe>
+    fun CheckEmail(@Body checkingEmail: CheckingEmail): Call<GetSuccessData>
 
     //비밀번호 변경
     @PATCH("auth/password/")

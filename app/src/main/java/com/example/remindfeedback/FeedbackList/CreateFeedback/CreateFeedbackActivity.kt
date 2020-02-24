@@ -138,7 +138,6 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
                 tframe.mTutorial()}
             3 -> {
                 preferences.edit().putBoolean("firstCreateFeedbackActivity", false).apply()
-
             }
 
         }

@@ -1,5 +1,6 @@
 package com.example.remindfeedback
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,10 @@ class DocumentActivity : AppCompatActivity() {
         document_Script.setText(intent.getStringExtra("script"))
 
         script_OK_Button.setOnClickListener{
+            if(intent.hasExtra("type")){
+                intent.putExtra("type", intent.getStringExtra("type"))
+            }
+            setResult(Activity.RESULT_OK, intent)
             finish()
         }
     }

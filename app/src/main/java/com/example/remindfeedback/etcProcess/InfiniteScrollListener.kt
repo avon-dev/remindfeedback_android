@@ -38,7 +38,6 @@ class InfiniteScrollListener(
                 loading = true
             }
         }else{
-            Log.e("onScrolled else", dy.toString())
 
         }
     }

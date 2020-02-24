@@ -1,4 +1,4 @@
-package com.example.remindfeedback
+package com.example.remindfeedback.etcProcess
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,6 +7,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
 import android.view.animation.ScaleAnimation
+import com.example.remindfeedback.R
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.gordonwong.materialsheetfab.AnimatedFab
@@ -19,7 +20,9 @@ import com.gordonwong.materialsheetfab.AnimatedFab
 class Fab : FloatingActionButton, AnimatedFab {
 
     private val interpolator: Interpolator
-        get() = AnimationUtils.loadInterpolator(context, R.interpolator.msf_interpolator)
+        get() = AnimationUtils.loadInterpolator(context,
+            R.interpolator.msf_interpolator
+        )
 
     constructor(context: Context) : super(context) {}
 
