@@ -203,6 +203,17 @@ class MainActivity : AppCompatActivity(),
         supportActionBar?.setCustomView(R.layout.actionbar_title)
     }
 
+    override fun showNothingText(type: Boolean){
+
+
+        if(type){//리스트가 비었을때
+            nothing_Text.visibility = View.VISIBLE
+            Main_Recyclerview.visibility - View.GONE
+        }else{//리스트가 비었을때
+            nothing_Text.visibility = View.GONE
+            Main_Recyclerview.visibility - View.VISIBLE
+        }
+    }
 
 
     //네비게이션 셋팅
@@ -428,6 +439,8 @@ class MainActivity : AppCompatActivity(),
 
     override fun onRestart() {
         super.onRestart()
+
+
         setNavView()
         arrayList.clear()
         feedback_count = 0

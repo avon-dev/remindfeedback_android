@@ -13,6 +13,7 @@ interface ContractMain {
         fun setFeedbackCount(feedback_lastid: Int)
         fun IngEdInit(feedbackIngEd: Int)
         fun setNavData(nickname:String, email:String, portrait:String)
+        fun showNothingText(type: Boolean)
     }
 
     interface Presenter {
