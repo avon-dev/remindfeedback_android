@@ -28,8 +28,7 @@ class ChoiceAdviserActivity : AppCompatActivity() , ContractChoiceAdviser.View{
         //액션바 설정
         var ab: ActionBar = this!!.supportActionBar!!
         ab.setTitle("조언자 선택")
-        //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
-        ab.setDisplayHomeAsUpEnabled(true)
+
 
         //presenter 정의하고 아이템을 불러옴
         presenterChoiceAdviser = PresenterChoiceAdviser().apply {

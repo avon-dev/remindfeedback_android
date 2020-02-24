@@ -97,7 +97,6 @@ class FriendsListActivity : AppCompatActivity(), ContractFriendsList.View {
                     Activity.RESULT_OK -> if (data != null) {
                         presenterFriendsList.addItems(data.getStringExtra("email"), mAdapter)
                     }
-                    Activity.RESULT_CANCELED -> Toast.makeText(this@FriendsListActivity, "취소됨.", Toast.LENGTH_SHORT).show()
                 }
             }
         }

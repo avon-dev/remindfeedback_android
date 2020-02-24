@@ -81,6 +81,7 @@
 
                 <TextView
                         android:id="@+id/request_Feedback"
+                        android:textColor="#5b5b5b"
                         android:textSize="19dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -103,6 +104,7 @@
 
                 <TextView
                         android:textSize="19dp"
+                        android:textColor="#5b5b5b"
                         android:id="@+id/receive_Feedback"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -124,6 +126,7 @@
                         app:srcCompat="@drawable/ic_list_black" />
 
                 <TextView
+                        android:textColor="#5b5b5b"
                         android:textSize="19dp"
                         android:id="@+id/category_Setting"
                         android:layout_width="match_parent"
@@ -153,6 +156,7 @@
                         app:srcCompat="@drawable/ic_people_black" />
 
                 <TextView
+                        android:textColor="#5b5b5b"
                         android:textSize="19dp"
                         android:id="@+id/friends_List"
                         android:layout_width="match_parent"
@@ -175,6 +179,7 @@
                         app:srcCompat="@drawable/ic_account_black" />
 
                 <TextView
+                        android:textColor="#5b5b5b"
                         android:textSize="19dp"
                         android:id="@+id/mypage"
                         android:layout_width="match_parent"
@@ -197,6 +202,7 @@
                         app:srcCompat="@drawable/ic_settings_black" />
 
                 <TextView
+                        android:textColor="#5b5b5b"
                         android:textSize="19dp"
                         android:id="@+id/setting"
                         android:layout_width="match_parent"
@@ -218,6 +224,7 @@
                         app:srcCompat="@drawable/ic_logout_black" />
 
                 <TextView
+                        android:textColor="#5b5b5b"
                         android:textSize="19dp"
                         android:id="@+id/logout"
                         android:layout_width="match_parent"

@@ -227,7 +227,11 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
                 intent.putExtra("modify_id", modifyID)
                 intent.putExtra("category_id", modify_Category_ID)
             } else {
-                intent.putExtra("category_id", create_Feedback_Id_Tv.text.toString())
+                if(modify_Category_ID == -1){
+                    intent.putExtra("category_id", "0")
+                }else{
+                    intent.putExtra("category_id", create_Feedback_Id_Tv.text.toString())
+                }
             }
             Log.e("createfeedbackactivity", adviser_uid)
             if (!adviser_uid.equals("")) {
