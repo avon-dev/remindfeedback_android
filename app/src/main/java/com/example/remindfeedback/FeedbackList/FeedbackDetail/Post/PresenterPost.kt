@@ -204,7 +204,6 @@ class PresenterPost : ContractPost.Presenter {
         container.addView(et)
         val alt_bld = androidx.appcompat.app.AlertDialog.Builder(mContext, R.style.MyAlertDialogStyle)
         alt_bld.setTitle(showText)
-            .setMessage("댓글을 입력하세요")
             .setIcon(R.drawable.ic_add_black)
             .setCancelable(true)
             .setView(container)

@@ -151,10 +151,12 @@ class MainActivity : AppCompatActivity(),
         logout.setOnClickListener{logout()
             mDrawer.closeMenu()}
 
-
+        // '진행중'을 눌렀을 떄
         ing_Btn.setOnClickListener {
             ing_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
+            ing_Btn.setTextColor(Color.WHITE)
             ed_Btn.setBackgroundColor(Color.rgb(255, 255, 255))
+            ed_Btn.setTextColor(Color.DKGRAY)
             when (feedbackIngEd) {
                 0 -> {
                 }//이미 0이면 그대로
@@ -164,10 +166,12 @@ class MainActivity : AppCompatActivity(),
                 }
             }
         }
+        // '진행완료'를 눌렀을 때
         ed_Btn.setOnClickListener {
             ing_Btn.setBackgroundColor(Color.rgb(255, 255, 255))
+            ing_Btn.setTextColor(Color.DKGRAY)
             ed_Btn.setBackgroundColor(Color.rgb(19, 137, 255))
-
+            ed_Btn.setTextColor(Color.WHITE)
             when (feedbackIngEd) {
                 0 -> {
                     feedbackIngEd = 1

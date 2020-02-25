@@ -59,7 +59,8 @@ class AdapterCategorySetting(
             category_Color.setBackgroundColor(Color.parseColor(categorySetting.color))
             category_Title.text = categorySetting.title
 
-
+            if ( categorySetting.id == 0 ) {
+            }
             category_More.setOnClickListener {
                 var dialogInterface: DialogInterface? = null
                 val dialog = AlertDialog.Builder(context)

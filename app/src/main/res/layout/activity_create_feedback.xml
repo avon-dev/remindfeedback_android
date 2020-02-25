@@ -4,14 +4,17 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-       >
+        android:orientation="vertical">
 
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                      android:orientation="vertical">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
             <TextView
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
@@ -26,17 +29,18 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:background="@drawable/under_line"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="5dp">
 
                 <TextView
                         android:id="@+id/create_Feedback_Color_Tv"
-                        android:background="@color/black"
                         android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_margin="10dp"
-                        android:layout_height="40dp"/>
+                        android:background="@color/black" />
+
                 <TextView
                         android:id="@+id/create_Feedback_Title_Tv"
                         android:layout_width="wrap_content"
@@ -47,17 +51,21 @@
                         android:paddingLeft="13dp"
                         android:text="Default"
                         android:textColor="#000"
-                        android:textColorHint="#1f000000" android:textSize="19dp"/>
+                        android:textColorHint="#1f000000"
+                        android:textSize="19dp" />
+
                 <TextView
                         android:id="@+id/create_Feedback_Id_Tv"
                         android:layout_width="1dp"
-                        android:layout_height="1dp"/>
+                        android:layout_height="1dp" />
             </LinearLayout>
+
             <Button
                     android:id="@+id/pick_Category_Button"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/big_input_bg"
-                    android:layout_height="wrap_content" android:text="주제 변경"/>
+                    android:text="주제 변경" />
 
             <TextView
                     android:id="@+id/textView4"
@@ -91,6 +99,7 @@
                     android:text="피드백 만료 날짜"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     android:textSize="20sp" />
+
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -106,7 +115,7 @@
                         android:gravity="center_vertical"
                         android:padding="16dp"
                         android:text="날짜 선택"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
 
                 <TextView
                         android:id="@+id/type_Change_Button"
@@ -121,8 +130,8 @@
                         android:layout_marginRight="10dp"
                         android:src="@drawable/ic_down_black" />
             </LinearLayout>
-            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/calendarView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -172,13 +181,11 @@
                     android:id="@+id/textView11"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="20dp"
-                    android:paddingRight="20dp"
+                    android:padding="20dp"
                     android:text="주의) 조언자를 지정하지 않으면 조언자가 없는 '없음' 상태로 피드백이 생성됩니다."
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <LinearLayout
+            <!--<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_margin="10dp"
                     android:layout_height="wrap_content"
@@ -199,7 +206,7 @@
                         android:text="자세히 알아보기"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/blue" />
-            </LinearLayout>
+            </LinearLayout>-->
         </LinearLayout>
     </ScrollView>
 

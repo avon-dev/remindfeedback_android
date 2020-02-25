@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mxn.soul.flowingdrawer_core.FlowingDrawer
+<com.mxn.soul.flowingdrawer_core.FlowingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/drawerlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:clipToPadding="false"
-        app:edPosition="1"
+        app:edMenuBackground="@color/whitegrey"
         app:edMenuSize="260dp"
-        app:edMenuBackground="@color/whitegrey">
+        app:edPosition="1">
     <!--content-->
     <LinearLayout
             android:id="@+id/content"
@@ -41,20 +40,20 @@
 
             <LinearLayout
                     android:id="@+id/category_Spinner"
-                    android:background="@drawable/spinner_type2"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginEnd = "10dp"
-                    android:layout_marginTop = "5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/spinner_type2"
                     android:orientation="horizontal">
 
                 <TextView
                         android:id="@+id/main_Category_Color"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginStart = "10dp"
                         android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_marginStart="10dp"
                         android:background="@color/blue"
                         android:text="" />
 
@@ -62,10 +61,10 @@
                         android:id="@+id/main_Category_Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize = "20sp"
-                        android:layout_marginStart = "20dp"
                         android:layout_gravity="center_horizontal|center_vertical"
-                        android:text="TextView" />
+                        android:layout_marginStart="20dp"
+                        android:text="TextView"
+                        android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -73,37 +72,45 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/under_line"
-                    android:orientation="horizontal"
                     android:gravity="right"
+                    android:orientation="horizontal"
                     android:padding="10dp">
 
 
                 <LinearLayout
                         android:id="@+id/ing_Case"
                         android:layout_width="wrap_content"
-                        android:padding="5dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/all_line"
+                        android:gravity="right"
                         android:orientation="horizontal"
-                        android:gravity="right">
+                        android:padding="5dp">
+
                     <TextView
-                            android:gravity="center_horizontal|center_vertical"
-                            android:layout_gravity="left"
+                            android:id="@+id/ing_Btn"
                             android:layout_width="60dp"
-                            android:layout_height="30dp" android:id="@+id/ing_Btn" android:text="진행중"/>
+                            android:layout_height="30dp"
+                            android:layout_gravity="left"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:text="진행중" />
+
                     <TextView
-                            android:gravity="center_horizontal|center_vertical"
-                            android:layout_gravity="left"
+                            android:id="@+id/ed_Btn"
                             android:layout_width="60dp"
-                            android:layout_height="30dp" android:id="@+id/ed_Btn" android:text="진행완료"/>
+                            android:layout_height="30dp"
+                            android:layout_gravity="left"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:text="진행완료" />
                 </LinearLayout>
 
 
                 <TextView
-                        android:gravity="center_horizontal|center_vertical"
-                        android:layout_gravity="left"
+                        android:id="@+id/textView39"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/textView39" android:layout_weight="1"/>
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal|center_vertical" />
                 <!--TextView
                         android:id="@+id/recent"
                         android:layout_width="wrap_content"
@@ -149,16 +156,15 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="피드백이 없습니다."
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
+
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/Main_Recyclerview"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    />
+                    android:layout_height="match_parent" />
 
         </LinearLayout>
     </LinearLayout>
-
 
 
     <!--com.google.android.material.navigation.NavigationView
@@ -170,23 +176,20 @@
             app:headerLayout="@layout/nav_header"
             app:menu="@menu/activity_main_drawer_menu" /-->
     <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
-            android:background="#ffffff"
             android:id="@+id/menulayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#ffffff">
 
         <include
                 android:id="@+id/test"
-                android:background="@drawable/all_line"
                 layout="@layout/nav_body"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
+                android:layout_height="match_parent"
+                android:background="@drawable/all_line" />
 
 
     </com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>
-
-
 
 
 </com.mxn.soul.flowingdrawer_core.FlowingDrawer>
