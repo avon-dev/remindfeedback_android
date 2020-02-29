@@ -60,6 +60,7 @@ class AdapterCategorySetting(
             category_Title.text = categorySetting.title
 
             if ( categorySetting.id == 0 ) {
+                category_More.visibility = View.INVISIBLE
             }
             category_More.setOnClickListener {
                 var dialogInterface: DialogInterface? = null
