@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -40,10 +41,7 @@ import com.werb.pickphotoview.util.PickUtils
 import kotlinx.android.synthetic.main.activity_create_post.*
 import kotlinx.android.synthetic.main.activity_cropper.*
 import kotlinx.android.synthetic.main.view_find_password_bottomsheet.*
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
 
 
 class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
@@ -216,12 +214,12 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             }
         }
         val photoList = findViewById<View>(R.id.image_Pick_Recyclerview) as RecyclerView
-        val layoutManager = GridLayoutManager(this, 4)
+        val layoutManager = GridLayoutManager(this, 3)
         photoList.layoutManager = layoutManager
         photoList.addItemDecoration(
             SpaceItemDecoration(
                 PickUtils.getInstance(this.applicationContext).dp2px(
-                    PickConfig.ITEM_SPACE.toFloat()), 4)
+                    PickConfig.ITEM_SPACE.toFloat()), 3)
         )
         adapter = AdapterCreatePost(this, null)
         photoList.adapter = adapter
@@ -235,10 +233,20 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         val sheet_Find_Password = v.findViewById<View>(R.id.sheet_Find_Password) as Button
         val sheet_Find_Email = v.findViewById<View>(R.id.sheet_Find_Email) as Button
         val sheet_Find_Cancel = v.findViewById<View>(R.id.sheet_Find_Cancel) as Button
+        val bottom_Sheet_Title = v.findViewById<View>(R.id.bottom_Sheet_Title) as TextView
         sheet_Find_Email.setText("앨범 보기(최대 3장)")
-
+        sheet_Find_Password.setText("카메라 열기(1장)")
         bottom_Sheet_Title.setText("사진을 선택하시겠습니까?")
-        sheet_Find_Password.visibility = View.GONE
+
+        sheet_Find_Password.setOnClickListener{
+            arrayList.clear()
+            reHoldArrayString.clear()
+            lastUri_1 = null
+            lastUri_2 = null
+            lastUri_3 = null
+            cameraBrowse()
+            adapter!!.updateData(reHoldArrayString)
+        }
         //사진여러장
         sheet_Find_Email.setOnClickListener {
             arrayList.clear()
@@ -246,12 +254,14 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             lastUri_1 = null
             lastUri_2 = null
             lastUri_3 = null
+            adapter!!.updateData(reHoldArrayString)
+
             PickPhotoView.Builder(this)
                 .setPickPhotoSize(9)
                 .setHasPhotoSize(7)
                 .setAllPhotoSize(10)
-                .setShowCamera(true)
-                .setSpanCount(4)
+                .setShowCamera(false)
+                .setSpanCount(3)
                 .setLightStatusBar(false)
                 .setStatusBarColor(R.color.white)
                 .setToolbarColor(R.color.white)
@@ -398,24 +408,30 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         }
 
     }
-
-
-
-
     @SuppressLint("RestrictedApi")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == 0) {
-            return
-        }
-        if (data == null) {
-            return
+        Log.e("asasdsadd", "requestCode"+requestCode+"resultCode"+resultCode)
+
+
+
+        if(requestCode == PICK_FROM_CAMERA){
+            Log.e("asd", "Asdasd")
+            val bitmap = MediaStore.Images.Media
+                .getBitmap(contentResolver, Uri.fromFile(tempFile))
+            val ei = ExifInterface(tempFile.absolutePath)
+            val orientation = ei.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED
+            )
+            var rotatedBitmap: Bitmap? = presenterCreatePost.rotateImage(bitmap, 90.toFloat());
+            storeImage(rotatedBitmap!!)
         }
         if (requestCode == PickConfig.PICK_PHOTO_DATA) {
             Log.e("PICK_PHOTO_DATA", "PICK_PHOTO_DATA")
             arrayList.clear()
             reHoldArrayString.clear()
-            val selectPaths = data.getSerializableExtra(PickConfig.INTENT_IMG_LIST_SELECT) as java.util.ArrayList<String>
+            val selectPaths = data!!.getSerializableExtra(PickConfig.INTENT_IMG_LIST_SELECT) as java.util.ArrayList<String>
             var reHoldArray:ArrayList<Uri?> = ArrayList()
 
             for(i in selectPaths){
@@ -434,7 +450,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 Log.e("photoUri", photoUri.toString())
                 CropImage.activity(photoUri)
                     .start(this)
-                Log.e("arrayList", i.toString())
+                Log.e("arrayList22", i.toString())
             }
 
         }
@@ -459,6 +475,8 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 Log.e("resultUri.path", resultUri.path)
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error
+                Log.e("error", error.message)
+
             }
 
         }
