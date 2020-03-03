@@ -7,30 +7,41 @@ import androidx.appcompat.app.ActionBar
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.media.ExifInterface
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.Record.RecordActivity
+import androidx.core.net.toUri
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.R
 import com.example.remindfeedback.etcProcess.TutorialFrame
+import com.google.android.material.internal.ContextUtils
+import com.rey.material.app.BottomSheetDialog
+import com.rey.material.drawable.ThemeDrawable
+import com.rey.material.util.ViewUtil
 import com.soundcloud.android.crop.Crop
+import com.theartofdev.edmodo.cropper.CropImage
+import com.werb.pickphotoview.PickPhotoView
+import com.werb.pickphotoview.adapter.SpaceItemDecoration
+import com.werb.pickphotoview.util.PickConfig
+import com.werb.pickphotoview.util.PickUtils
 import kotlinx.android.synthetic.main.activity_create_post.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
+import kotlinx.android.synthetic.main.activity_cropper.*
+import kotlinx.android.synthetic.main.view_find_password_bottomsheet.*
+import java.io.*
 
 
 class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
@@ -50,11 +61,16 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     var lastUri_2: String? = null
     var lastUri_3: String? = null
     var arrayList = arrayListOf<Uri?>()
+    var reHoldArrayString = arrayListOf<String>()
     lateinit var ab: ActionBar
     var title: String? = null
 
+    private var adapter: AdapterCreatePost? = null
+
+
     var tutorialCount:Int = 0
     internal lateinit var preferences: SharedPreferences
+    var mBottomSheetDialog: BottomSheetDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,10 +97,11 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         contents_Image.setImageResource(R.drawable.ic_text)
         contents_Type_Change_Button.text = "[ 글 ]"
 
-        add_File_View.setOnClickListener() {
+        add_File_Button.setOnClickListener() {
             if (return_type == 1) {//사진일경우
                 //사진이 선택되어있는경우 앨범인지 카메라인지 선택하는 뷰를 띄움
-                presenterCreatePost.picktureDialogViwe()
+                //presenterCreatePost.picktureDialogViwe()
+                showBottomSheet()
             }
             /*//녹음 비디오 관련 주석처리
             else if(return_type == 2){//비디오일경우
@@ -196,9 +213,83 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
             }
         }
-
+        val photoList = findViewById<View>(R.id.image_Pick_Recyclerview) as RecyclerView
+        val layoutManager = GridLayoutManager(this, 3)
+        photoList.layoutManager = layoutManager
+        photoList.addItemDecoration(
+            SpaceItemDecoration(
+                PickUtils.getInstance(this.applicationContext).dp2px(
+                    PickConfig.ITEM_SPACE.toFloat()), 3)
+        )
+        adapter = AdapterCreatePost(this, null)
+        photoList.adapter = adapter
         firstRunCheck()
     }
+
+    private fun showBottomSheet() {
+        mBottomSheetDialog = BottomSheetDialog(this, R.style.Material_App_BottomSheetDialog)
+        val v = LayoutInflater.from(this).inflate(R.layout.view_find_password_bottomsheet, null)
+        ViewUtil.setBackground(v, ThemeDrawable(R.drawable.bg_window_light))
+        val sheet_Find_Password = v.findViewById<View>(R.id.sheet_Find_Password) as Button
+        val sheet_Find_Email = v.findViewById<View>(R.id.sheet_Find_Email) as Button
+        val sheet_Find_Cancel = v.findViewById<View>(R.id.sheet_Find_Cancel) as Button
+        val bottom_Sheet_Title = v.findViewById<View>(R.id.bottom_Sheet_Title) as TextView
+        sheet_Find_Email.setText("앨범 보기(최대 3장)")
+        sheet_Find_Password.setText("카메라 열기(1장)")
+        bottom_Sheet_Title.setText("사진을 선택하시겠습니까?")
+
+        sheet_Find_Password.setOnClickListener{
+            arrayList.clear()
+            reHoldArrayString.clear()
+            lastUri_1 = null
+            lastUri_2 = null
+            lastUri_3 = null
+            cameraBrowse()
+            adapter!!.updateData(reHoldArrayString)
+        }
+        //사진여러장
+        sheet_Find_Email.setOnClickListener {
+            arrayList.clear()
+            reHoldArrayString.clear()
+            lastUri_1 = null
+            lastUri_2 = null
+            lastUri_3 = null
+            adapter!!.updateData(reHoldArrayString)
+
+            PickPhotoView.Builder(this)
+                .setPickPhotoSize(9)
+                .setHasPhotoSize(7)
+                .setAllPhotoSize(10)
+                .setShowCamera(false)
+                .setSpanCount(3)
+                .setLightStatusBar(false)
+                .setStatusBarColor(R.color.white)
+                .setToolbarColor(R.color.white)
+                .setToolbarTextColor(R.color.black)
+                .setSelectIconColor(R.color.colorPrimary)
+                .start()
+            mBottomSheetDialog!!.dismissImmediately()
+        }
+
+        sheet_Find_Cancel.setOnClickListener { mBottomSheetDialog!!.dismissImmediately() }
+        v.setBackgroundColor(Color.parseColor("#ffffff"))
+        //v.setBackgroundResource(R.drawable.all_line)
+        sheet_Find_Password.setBackgroundColor(Color.parseColor("#ddeeff"))
+        sheet_Find_Email.setBackgroundColor(Color.parseColor("#ddeeff"))
+        sheet_Find_Cancel.setBackgroundColor(Color.parseColor("#ddeeff"))
+
+        mBottomSheetDialog!!.contentView(v)
+            .show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mBottomSheetDialog != null) {
+            mBottomSheetDialog!!.dismissImmediately()
+            mBottomSheetDialog = null
+        }
+    }
+
 
     override fun setData() {
         if (intent.hasExtra("title")) {
@@ -317,126 +408,114 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         }
 
     }
+    @SuppressLint("RestrictedApi")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.e("asasdsadd", "requestCode"+requestCode+"resultCode"+resultCode)
 
-    private fun cropImage(photoUri: Uri) {//카메라 갤러리에서 가져온 사진을 크롭화면으로 보냄
-        //크롭 후 저장할 Uri
-        tempFile = presenterCreatePost.createImageFile()
-        val savingUri = Uri.fromFile(tempFile)//사진촬여은 tempFile이 만들어져있어 넣어서 저장하면됨
-        //하지만 갤러리는 크롭후에 이미지를 저장할 파일이 없기에 위 코드를넣어서 추가로 작성해줘야함
-        Log.e("cropimage", tempFile.getAbsolutePath())
-        lastUri_1 = tempFile.getAbsolutePath()
-        //이 유알아이가 최종적으로 내 프로필이 되는것임
-        Log.e("saving", lastUri_1)
-        file_Uri_Holder.text = tempFile.name
-        Crop.of(photoUri, savingUri).asSquare().start(this)
-    }
 
-    private fun nonCropImage(arrayList: ArrayList<Uri?>) {
-        if (lastUri_1 == null) {
 
-            tempFile1 = presenterCreatePost.createImageFile()
-            val savingUri = Uri.fromFile(tempFile1)
-            file_Uri_Holder.text = file_Uri_Holder.text.toString() + "    " + tempFile1.name
-            lastUri_1 = tempFile1.getAbsolutePath()
-            Crop.of(arrayList[0], savingUri).asSquare().start(this)
-        } else if (lastUri_1 !== null && lastUri_2 == null) {
-            tempFile2 = presenterCreatePost.createImageFile()
-            val savingUri = Uri.fromFile(tempFile2)
-            file_Uri_Holder.text = file_Uri_Holder.text.toString() + "    " + tempFile2.name
-            Crop.of(arrayList[1], savingUri).asSquare().start(this)
-            lastUri_2 = tempFile2.getAbsolutePath()
-        } else if (lastUri_1 !== null && lastUri_2 !== null && lastUri_3 == null) {
-            tempFile3 = presenterCreatePost.createImageFile()
-            val savingUri = Uri.fromFile(tempFile3)
-            file_Uri_Holder.text = file_Uri_Holder.text.toString() + "    " + tempFile3.name
-            Crop.of(arrayList[2], savingUri).asSquare().start(this)
-            lastUri_3 = tempFile3.getAbsolutePath()
+        if(requestCode == PICK_FROM_CAMERA){
+            Log.e("asd", "Asdasd")
+            val bitmap = MediaStore.Images.Media
+                .getBitmap(contentResolver, Uri.fromFile(tempFile))
+            val ei = ExifInterface(tempFile.absolutePath)
+            val orientation = ei.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED
+            )
+            var rotatedBitmap: Bitmap? = presenterCreatePost.rotateImage(bitmap, 90.toFloat());
+            storeImage(rotatedBitmap!!)
         }
-    }
+        if (requestCode == PickConfig.PICK_PHOTO_DATA) {
+            Log.e("PICK_PHOTO_DATA", "PICK_PHOTO_DATA")
+            arrayList.clear()
+            reHoldArrayString.clear()
+            val selectPaths = data!!.getSerializableExtra(PickConfig.INTENT_IMG_LIST_SELECT) as java.util.ArrayList<String>
+            var reHoldArray:ArrayList<Uri?> = ArrayList()
 
-    @RequiresApi(Build.VERSION_CODES.Q)
-    @SuppressLint("MissingSuperCall")
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode != Activity.RESULT_OK) {
-            if (tempFile != null) {
-                if (tempFile!!.exists()) {
-                    if (tempFile!!.delete()) {
-                    }
-                }
+            for(i in selectPaths){
+                Log.e("selectPaths", "content://"+i)
+                reHoldArray.add(i.toUri())
+                arrayList.add((i).toUri())
             }
+
+            for(i in arrayList){
+                //nonCropImage(arrayList)
+                val photoUri = FileProvider.getUriForFile(
+                    this,
+                    "com.example.remindfeedback.fileprovider",
+                    File(i.toString())
+                )
+                Log.e("photoUri", photoUri.toString())
+                CropImage.activity(photoUri)
+                    .start(this)
+                Log.e("arrayList22", i.toString())
+            }
+
+        }
+        if(requestCode == Crop.REQUEST_CROP){
+            Log.e("크롭해쑴", "")
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode == Activity.RESULT_OK) {
+                val resultUri: Uri = result.uri
+                var bitmap: Bitmap? = null
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(ContextUtils.getActivity(this)!!.getContentResolver(), resultUri)
+                } catch (e: FileNotFoundException) { // TODO Auto-generated catch block
+                    e.printStackTrace()
+                } catch (e: IOException) { // TODO Auto-generated catch block
+                    e.printStackTrace()
+                }
+                storeImage(bitmap!!)
+
+                Log.e("resultUri", resultUri.toString())
+                Log.e("resultUri.path", resultUri.path)
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                val error = result.error
+                Log.e("error", error.message)
+
+            }
+
+        }
+
+    }
+    private fun storeImage(image: Bitmap) {
+        val pictureFile: File = presenterCreatePost.createImageFile()
+        if (pictureFile == null) {
+            Log.d(
+                "FragmentActivity.TAG",
+                "Error creating media file, check storage permissions: "
+            ) // e.getMessage());
             return
         }
-        when (requestCode) {
-            PICK_FROM_ALBUM -> {
-                if (data == null) {
-                }//데이터가 널일때를 대비
-                else {
-                    if (data.clipData == null) {
-                        Toast.makeText(this, "이미지를 다중선택 할 수 없는 기기입니다.", Toast.LENGTH_SHORT).show()
-                    } else {
-                        var clipData: ClipData = data.clipData!!
-                        Log.e("clipdata", data.clipData!!.itemCount.toString())
-                        if (clipData.itemCount > 3) {
-                            Toast.makeText(this, "이미지는 3장까지 선택할 수 있습니다.", Toast.LENGTH_SHORT).show()
-                        } else if (clipData.itemCount == 1) {
-                            lastUri_1 = clipData.getItemAt(0).uri.toString()
-                            Log.e("lastUri_1", lastUri_1.toString())
-                            cropImage(clipData.getItemAt(0).uri)
-                        } else if (clipData.itemCount > 1 && clipData.itemCount <= 3) {
-                            for (i in 0 until clipData.itemCount) {
-                                Log.e("image uri", clipData.getItemAt(i).uri.toString())
-                                arrayList.add(clipData.getItemAt(i).uri)
-                                nonCropImage(arrayList)
-                            }
-                        }
-                    }
-                }
-                //val photoUri = data!!.data
-                //cropImage(photoUri)
+        try {
+            val fos = FileOutputStream(pictureFile)
+            image.compress(Bitmap.CompressFormat.PNG, 90, fos)
+            Log.e("pictureFile", pictureFile.absolutePath)
+            if(lastUri_1 == null){
+                lastUri_1 = pictureFile.absolutePath
+                reHoldArrayString.add(pictureFile.absolutePath)
+            }else if(lastUri_2 == null){
+                lastUri_2 = pictureFile.absolutePath
+                reHoldArrayString.add(pictureFile.absolutePath)
+            }else if(lastUri_3 == null){
+                lastUri_3 = pictureFile.absolutePath
+                reHoldArrayString.add(pictureFile.absolutePath)
             }
-            PICK_FROM_CAMERA -> {
-                val bitmap = MediaStore.Images.Media
-                    .getBitmap(contentResolver, Uri.fromFile(tempFile))
-                val ei = ExifInterface(tempFile.absolutePath)
-                val orientation = ei.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_UNDEFINED
-                )
-                var rotatedBitmap: Bitmap? = presenterCreatePost.rotateImage(bitmap, 90.toFloat());
-                var newfile: File = File(tempFile.absolutePath)
-                newfile.createNewFile()
-                var out: OutputStream? = null
-                out = FileOutputStream(newfile)
-                if (rotatedBitmap != null) {
-                    rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
-                } else {
-                    Toast.makeText(this, "이미지 처리 오류!", Toast.LENGTH_SHORT).show()
-                }
-                val photoUri = Uri.fromFile(tempFile)
-                cropImage(photoUri)
-            }
-            PICK_FROM_CAMERA_VIDEO -> {
-                //var mVideo = MediaStore.Video.Media.get
-                var uri: Uri = data!!.data!!
-                var uri_path: String = getPath(uri)
-                lastUri_1 = uri_path
+            adapter!!.updateData(reHoldArrayString)
 
-            }
-            PICK_FROM_AUDIO -> {
-                if (data != null) {
-                    Log.e("record_uri", data.getStringExtra("recordUri"))
-                    lastUri_1 = data.getStringExtra("recordUri")
-                } else {
-                    Toast.makeText(this, "음성파일 처리 에러", Toast.LENGTH_SHORT).show()
-                }
-
-            }
-            Crop.REQUEST_CROP -> {
-                //setImage()
-            }
+            fos.flush();
+            fos.close()
+        } catch (e: FileNotFoundException) {
+            Log.e("FragmentActivity.TAG", "File not found: " + e.message)
+        } catch (e: IOException) {
+            Log.e("FragmentActivity.TAG", "Error accessing file: " + e.message)
         }
-
     }
+
 
     override fun getPath(uri: Uri): String {
         val projection = arrayOf(MediaStore.Images.Media.DATA)

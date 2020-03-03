@@ -13,4 +13,8 @@
     <dimen name="fab_sheet_elevation">0dp</dimen>
     <dimen name="fab_spacing">19dp</dimen>
     <dimen name="fab_list_spacing">88dp</dimen>
+
+    <!--ucrop-->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 </resources>

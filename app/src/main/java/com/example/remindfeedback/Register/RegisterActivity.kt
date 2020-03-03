@@ -16,6 +16,7 @@ import com.example.remindfeedback.R
 class RegisterActivity : AppCompatActivity(), ContractRegister.View {
     private var mEncryptText: ByteArray? = null
     private var mKey: ByteArray? = null
+    var isVerified : Boolean = false
 
     private val TAG = "RegisterActivity"
     internal lateinit var presenterRegister: PresenterRegister
@@ -36,14 +37,10 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
             mContext = this@RegisterActivity
         }
 
-        // 이메일 인증
-        email_confirm_Button.setOnClickListener(){
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email_Input.text).matches()) {
-                Toast.makeText(this, "이메일 형식이 아닙니다.", Toast.LENGTH_SHORT).show()
-            } else {
-                email_check_Layout.visibility = View.VISIBLE
-                presenterRegister.emailAuth(email_Input.text.toString())
-            }
+
+        send_Token_Button.setOnClickListener{
+            presenterRegister.verify(email_Input.text.toString())
+
         }
 
         //회원가입버튼을 눌러서 presenter의 회원가입 기능을 실행시킴
@@ -67,14 +64,22 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
                         if (!Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$", password_Input.text.toString())) {
                             Toast.makeText(this, "비밀번호 형식을 지켜주세요.\n(영문,숫자,특수문자 포함 최소 8글자)", Toast.LENGTH_SHORT).show()
                         } else {
+                            //토큰입력했는지?
+                            if(token_Input.text.toString().equals("")){
+                                Toast.makeText(this, "이메일로 전송된 토큰을 입력해주세요.", Toast.LENGTH_SHORT).show()
 
-                            // 이용약관 동의 확인
-                            if ( !chk_1.isChecked || !chk_2.isChecked) {
-                                Toast.makeText(this, "이용약관에 모두 동의하여 주세요.", Toast.LENGTH_SHORT).show()
-                            } else {
-                                presenterRegister.signUp(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString(), email_token_Input.text.toString())
-                                //finish()
+                            }else{
+                                // 이용약관 동의 확인
+                                if ( !chk_1.isChecked || !chk_2.isChecked) {
+                                    Toast.makeText(this, "이용약관에 모두 동의하여 주세요.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString(), token_Input.text.toString())
+                                    //finish()
+                                }
+
                             }
+
+
                         }
                     }
 
@@ -159,5 +164,10 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
             }
 
         }
+    }
+
+    override fun tokenSended(){
+        send_Token_Button.isEnabled = false
+        register_Button.isEnabled = true
     }
 }

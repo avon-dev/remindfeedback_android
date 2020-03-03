@@ -307,20 +307,7 @@ class PresenterMain : ContractMain.Presenter {
                 response: Response<CreateFeedback>
             ) {
                 if (response.isSuccessful) {
-                    val addData: ModelFeedback =
-                        ModelFeedback(
-                            -1,
-                            "조언자",
-                            category_id,
-                            color,
-                            title,
-                            "프로필 이미지",
-                            dateNewFormat,
-                            -1,
-                            false
-                        )
-                    //adapterMainFeedback.addItem(addData)
-                    //loadItems(list, adapterMainFeedback, 0)
+
                     view.refresh()
                 } else {
                     val StatusCode = response.code()

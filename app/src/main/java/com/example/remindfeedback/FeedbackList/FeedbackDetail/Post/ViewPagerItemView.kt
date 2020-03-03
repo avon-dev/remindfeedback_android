@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.remindfeedback.R
 import com.example.remindfeedback.etcProcess.URLtoBitmapTask
+import com.squareup.picasso.Picasso
 
 import org.json.JSONException
 import org.json.JSONObject
@@ -47,12 +48,7 @@ class ViewPagerItemView(context: Context) : FrameLayout(context) {
             val name = jsonObject.getString("name")
 
             //이미지 설정해주는 부분
-            var image_task: URLtoBitmapTask = URLtoBitmapTask()
-            image_task = URLtoBitmapTask().apply {
-                url = URL(resId)
-            }
-            mBitmap = image_task.execute().get()
-            mImageView.setImageBitmap(mBitmap)
+            Picasso.get().load(resId).into(mImageView)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -63,12 +59,7 @@ class ViewPagerItemView(context: Context) : FrameLayout(context) {
         try {
             val resId = mJSONObject!!.getString("id")
             //이미지 설정해주는 부분
-            var image_task: URLtoBitmapTask = URLtoBitmapTask()
-            image_task = URLtoBitmapTask().apply {
-                url = URL(resId)
-            }
-            mBitmap = image_task.execute().get()
-            mImageView.setImageBitmap(mBitmap)
+            Picasso.get().load(resId).into(mImageView)
         } catch (e: JSONException) {
             e.printStackTrace()
         }

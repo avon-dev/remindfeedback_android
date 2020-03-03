@@ -59,5 +59,4 @@ object RetrofitFactory {
     fun serviceAPI(client: OkHttpClient): ServiceAPI =
         retrofit("https://api.remindfeedback.com/", client).create(ServiceAPI::class.java)
 
-
 }
