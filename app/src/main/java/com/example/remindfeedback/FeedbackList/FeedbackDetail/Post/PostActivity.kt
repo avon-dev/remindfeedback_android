@@ -1,5 +1,6 @@
 package com.example.remindfeedback.FeedbackList.FeedbackDetail.Post
 
+import android.R.attr.scaleType
 import android.content.Intent
 import android.graphics.Bitmap
 import android.media.MediaPlayer
@@ -339,6 +340,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         for (i in 0 until ALBUM_NUM) {
 
             val imageView = ImageView(this)
+            imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
             if (i == 0) {
                 imageView.setImageResource(R.drawable.indicator_select)
             } else {
