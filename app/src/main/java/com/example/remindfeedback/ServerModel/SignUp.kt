@@ -25,3 +25,4 @@ class mySignUpData{
     @SerializedName("tutorial")
     var tutorial: Boolean = false
 }
+
