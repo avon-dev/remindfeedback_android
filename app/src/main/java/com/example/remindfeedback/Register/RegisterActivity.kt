@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import java.util.regex.Pattern
 import android.util.Log
+import android.view.View
 import com.example.remindfeedback.DocumentActivity
 import com.example.remindfeedback.R
 
@@ -33,6 +34,16 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
         presenterRegister = PresenterRegister().apply {
             view = this@RegisterActivity
             mContext = this@RegisterActivity
+        }
+
+        // 이메일 인증
+        email_confirm_Button.setOnClickListener(){
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email_Input.text).matches()) {
+                Toast.makeText(this, "이메일 형식이 아닙니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                email_check_Layout.visibility = View.VISIBLE
+                presenterRegister.emailAuth(email_Input.text.toString())
+            }
         }
 
         //회원가입버튼을 눌러서 presenter의 회원가입 기능을 실행시킴
@@ -61,7 +72,7 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
                             if ( !chk_1.isChecked || !chk_2.isChecked) {
                                 Toast.makeText(this, "이용약관에 모두 동의하여 주세요.", Toast.LENGTH_SHORT).show()
                             } else {
-                                presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString())
+                                presenterRegister.signUp(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString(), email_token_Input.text.toString())
                                 //finish()
                             }
                         }
