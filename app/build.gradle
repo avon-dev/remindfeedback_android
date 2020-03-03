@@ -70,8 +70,9 @@ dependencies {
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'
 
 
-    //크롭
+    //옛날크롭
     implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
+    
 
     //카메라 퍼미션
     implementation 'gun0912.ted:tedpermission:2.1.0'
@@ -108,5 +109,9 @@ dependencies {
     //팔로잉 드로어
     implementation 'com.mxn.soul:flowingdrawer-core:2.1.0'
     implementation 'com.nineoldandroids:library:2.4.0'
+
+    //이미지 선택 라이브러리
+    implementation 'com.werb.pickphotoview:pickphotoview:0.4.8'  // Last Version
+
 
 }

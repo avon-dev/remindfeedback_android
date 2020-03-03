@@ -34,7 +34,7 @@
                 android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
                 android:name=".CategorySetting.CreateCategory.ColorList.ColorListActivity"
-                android:screenOrientation="portrait"
+                android:screenOrientation="unspecified"
                 android:theme="@style/Theme.MyDialog" />
         <activity
                 android:name=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity"
@@ -112,6 +112,7 @@
                     android:name="android.support.FILE_PROVIDER_PATHS"
                     android:resource="@xml/file_paths" />
         </provider>
+
     </application>
 
 </manifest>

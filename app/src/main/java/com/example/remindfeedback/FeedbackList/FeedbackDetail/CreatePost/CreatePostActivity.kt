@@ -1,36 +1,41 @@
 package com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
 import androidx.appcompat.app.ActionBar
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.media.ExifInterface
+import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.Record.RecordActivity
+import androidx.core.net.toUri
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.R
 import com.example.remindfeedback.etcProcess.TutorialFrame
+import com.rey.material.app.BottomSheetDialog
+import com.rey.material.drawable.ThemeDrawable
+import com.rey.material.util.ViewUtil
 import com.soundcloud.android.crop.Crop
+import com.werb.pickphotoview.PickPhotoView
+import com.werb.pickphotoview.adapter.SpaceItemDecoration
+import com.werb.pickphotoview.util.PickConfig
+import com.werb.pickphotoview.util.PickUtils
 import kotlinx.android.synthetic.main.activity_create_post.*
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
-import java.io.OutputStream
 
 
 class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
@@ -53,8 +58,12 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     lateinit var ab: ActionBar
     var title: String? = null
 
+    private var adapter: AdapterCreatePost? = null
+
+
     var tutorialCount:Int = 0
     internal lateinit var preferences: SharedPreferences
+    var mBottomSheetDialog: BottomSheetDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,10 +90,11 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         contents_Image.setImageResource(R.drawable.ic_text)
         contents_Type_Change_Button.text = "[ 글 ]"
 
-        add_File_View.setOnClickListener() {
+        add_File_Button.setOnClickListener() {
             if (return_type == 1) {//사진일경우
                 //사진이 선택되어있는경우 앨범인지 카메라인지 선택하는 뷰를 띄움
-                presenterCreatePost.picktureDialogViwe()
+                //presenterCreatePost.picktureDialogViwe()
+                showBottomSheet()
             }
             /*//녹음 비디오 관련 주석처리
             else if(return_type == 2){//비디오일경우
@@ -196,9 +206,81 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
             }
         }
-
+        val photoList = findViewById<View>(R.id.image_Pick_Recyclerview) as RecyclerView
+        val layoutManager = GridLayoutManager(this, 4)
+        photoList.layoutManager = layoutManager
+        photoList.addItemDecoration(
+            SpaceItemDecoration(
+                PickUtils.getInstance(this.applicationContext).dp2px(
+                    PickConfig.ITEM_SPACE.toFloat()), 4)
+        )
+        adapter = AdapterCreatePost(this, null)
+        photoList.adapter = adapter
         firstRunCheck()
     }
+
+    private fun showBottomSheet() {
+        mBottomSheetDialog = BottomSheetDialog(this, R.style.Material_App_BottomSheetDialog)
+        val v = LayoutInflater.from(this).inflate(R.layout.view_find_password_bottomsheet, null)
+        ViewUtil.setBackground(v, ThemeDrawable(R.drawable.bg_window_light))
+        val sheet_Find_Password = v.findViewById<View>(R.id.sheet_Find_Password) as Button
+        val sheet_Find_Email = v.findViewById<View>(R.id.sheet_Find_Email) as Button
+        val sheet_Find_Cancel = v.findViewById<View>(R.id.sheet_Find_Cancel) as Button
+        sheet_Find_Password.setText("사진 한장선택")
+        sheet_Find_Email.setText("사진 여러장선택(최대 3장)")
+
+        //사진하나
+        sheet_Find_Password.setOnClickListener {
+            PickPhotoView.Builder(this)
+                .setPickPhotoSize(1)                  // select image size
+                .setClickSelectable(true)             // click one image immediately close and return image
+                .setShowCamera(true)                  // is show camera
+                .setSpanCount(3)                      // span count
+                .setLightStatusBar(true)              // lightStatusBar used in Android M or higher
+                .setStatusBarColor(R.color.white)     // statusBar color
+                .setToolbarColor(R.color.white)       // toolbar color
+                .setToolbarTextColor(R.color.black)   // toolbar text color
+                .setSelectIconColor(R.color.colorPrimary)     // select icon color
+                .setShowGif(false)                    // is show gif
+                .start()
+            mBottomSheetDialog!!.dismissImmediately()
+        }
+        //사진여러장
+        sheet_Find_Email.setOnClickListener {
+            PickPhotoView.Builder(this)
+                .setPickPhotoSize(9)
+                .setHasPhotoSize(7)
+                .setAllPhotoSize(10)
+                .setShowCamera(true)
+                .setSpanCount(4)
+                .setLightStatusBar(false)
+                .setStatusBarColor(R.color.white)
+                .setToolbarColor(R.color.white)
+                .setToolbarTextColor(R.color.black)
+                .setSelectIconColor(R.color.colorPrimary)
+                .start()
+            mBottomSheetDialog!!.dismissImmediately()
+        }
+
+        sheet_Find_Cancel.setOnClickListener { mBottomSheetDialog!!.dismissImmediately() }
+        v.setBackgroundColor(Color.parseColor("#ffffff"))
+        //v.setBackgroundResource(R.drawable.all_line)
+        sheet_Find_Password.setBackgroundColor(Color.parseColor("#ddeeff"))
+        sheet_Find_Email.setBackgroundColor(Color.parseColor("#ddeeff"))
+        sheet_Find_Cancel.setBackgroundColor(Color.parseColor("#ddeeff"))
+
+        mBottomSheetDialog!!.contentView(v)
+            .show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mBottomSheetDialog != null) {
+            mBottomSheetDialog!!.dismissImmediately()
+            mBottomSheetDialog = null
+        }
+    }
+
 
     override fun setData() {
         if (intent.hasExtra("title")) {
@@ -318,7 +400,10 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
     }
 
-    private fun cropImage(photoUri: Uri) {//카메라 갤러리에서 가져온 사진을 크롭화면으로 보냄
+    private fun cropImage(photoUri: Uri):String {//카메라 갤러리에서 가져온 사진을 크롭화면으로 보냄
+
+
+
         //크롭 후 저장할 Uri
         tempFile = presenterCreatePost.createImageFile()
         val savingUri = Uri.fromFile(tempFile)//사진촬여은 tempFile이 만들어져있어 넣어서 저장하면됨
@@ -329,31 +414,87 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         Log.e("saving", lastUri_1)
         file_Uri_Holder.text = tempFile.name
         Crop.of(photoUri, savingUri).asSquare().start(this)
+        return savingUri.toString() as String
     }
+
 
     private fun nonCropImage(arrayList: ArrayList<Uri?>) {
         if (lastUri_1 == null) {
 
+            Log.e("asdas", "asd")
             tempFile1 = presenterCreatePost.createImageFile()
+            val photoUri = FileProvider.getUriForFile(
+                this,
+                "com.example.remindfeedback.fileprovider",
+                File(arrayList[0].toString())
+            )
+            Log.e("photoUri", photoUri.toString())
+
             val savingUri = Uri.fromFile(tempFile1)
-            file_Uri_Holder.text = file_Uri_Holder.text.toString() + "    " + tempFile1.name
             lastUri_1 = tempFile1.getAbsolutePath()
-            Crop.of(arrayList[0], savingUri).asSquare().start(this)
+            Crop.of(photoUri, savingUri).asSquare().start(this)
         } else if (lastUri_1 !== null && lastUri_2 == null) {
+            Log.e("asdas", "asd")
+
             tempFile2 = presenterCreatePost.createImageFile()
+            val photoUri = FileProvider.getUriForFile(
+                this,
+                "com.example.remindfeedback.fileprovider",
+                File(arrayList[1].toString())
+            )
             val savingUri = Uri.fromFile(tempFile2)
-            file_Uri_Holder.text = file_Uri_Holder.text.toString() + "    " + tempFile2.name
-            Crop.of(arrayList[1], savingUri).asSquare().start(this)
+            Crop.of(photoUri, savingUri).asSquare().start(this)
             lastUri_2 = tempFile2.getAbsolutePath()
         } else if (lastUri_1 !== null && lastUri_2 !== null && lastUri_3 == null) {
+            Log.e("asdas", "asd")
+
             tempFile3 = presenterCreatePost.createImageFile()
+            val photoUri = FileProvider.getUriForFile(
+                this,
+                "com.example.remindfeedback.fileprovider",
+                File(arrayList[2].toString())
+            )
             val savingUri = Uri.fromFile(tempFile3)
-            file_Uri_Holder.text = file_Uri_Holder.text.toString() + "    " + tempFile3.name
-            Crop.of(arrayList[2], savingUri).asSquare().start(this)
+            Crop.of(photoUri, savingUri).asSquare().start(this)
             lastUri_3 = tempFile3.getAbsolutePath()
         }
     }
 
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == 0) {
+            return
+        }
+        if (data == null) {
+            return
+        }
+        if (requestCode == PickConfig.PICK_PHOTO_DATA) {
+            Log.e("PICK_PHOTO_DATA", "PICK_PHOTO_DATA")
+
+            val selectPaths = data.getSerializableExtra(PickConfig.INTENT_IMG_LIST_SELECT) as java.util.ArrayList<String>
+            var reHoldArray:ArrayList<Uri?> = ArrayList()
+            var reHoldArrayString:ArrayList<String> = ArrayList()
+
+            for(i in selectPaths){
+                Log.e("selectPaths", "content://"+i)
+                reHoldArray.add(i.toUri())
+                reHoldArrayString.add(i)
+                arrayList.add((i).toUri())
+            }
+
+            for(i in arrayList){
+                nonCropImage(arrayList)
+            }
+
+            adapter!!.updateData(reHoldArrayString)
+        }
+        if(requestCode == Crop.REQUEST_CROP){
+            Log.e("크롭해쑴", "")
+        }
+    }
+
+/*
     @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("MissingSuperCall")
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -437,7 +578,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         }
 
     }
-
+*/
     override fun getPath(uri: Uri): String {
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = managedQuery(uri, projection, null, null, null)

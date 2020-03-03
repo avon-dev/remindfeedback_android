@@ -2,8 +2,8 @@ package com.example.remindfeedback.MyPage
 
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
-import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.text.InputFilter
 import android.util.Log
@@ -13,21 +13,18 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat.finishAffinity
-import androidx.core.view.marginLeft
-import androidx.core.view.marginRight
-import androidx.core.view.marginTop
-import com.example.remindfeedback.FriendsList.ContractFriendsList
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.R
+import com.example.remindfeedback.ServerModel.CheckingPassword
+import com.example.remindfeedback.ServerModel.GetMyPage
+import com.example.remindfeedback.ServerModel.GetSuccessData
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import com.example.remindfeedback.FeedbackList.MainActivity
-import com.example.remindfeedback.Login.LoginActivity
-import com.example.remindfeedback.ServerModel.*
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 
 class PresenterMyPage : ContractMyPage.Presenter{
@@ -142,23 +139,42 @@ class PresenterMyPage : ContractMyPage.Presenter{
         val requestBody = RequestBody.create(MediaType.parse("multipart/data"), image_File)
         val requestBody2 = RequestBody.create(MediaType.parse("multipart/data"), "true")
 
-        val multiPartBody = MultipartBody.Part
-            .createFormData("portrait", image_File.name, requestBody)
+        //이미지 사이즈
+        val lFileSize: Long = image_File.length()
+        Log.e("lFileSize", lFileSize.toString())
+        if(lFileSize < 200000){//이미지의 크기가 20메가 이하일때는 그냥 진행
+            val multiPartBody = MultipartBody.Part
+                .createFormData("portrait", image_File.name, requestBody)
 
-        val request : Call<GetMyPage> = apiService.PatchPortrait(multiPartBody,requestBody2)
-        request.enqueue(object : Callback<GetMyPage> {
-            override fun onResponse(call: Call<GetMyPage>, response: Response<GetMyPage>) {
-                if (response.isSuccessful) {
-                    //데이터 얻어서 activity로 보내줌
-                    val getMyPage:GetMyPage = response.body()!!
-                    val info  = getMyPage.data
-                    view.setInfo(info!!.email!!,info.nickname, info.portrait!!, info.introduction!! )
-                } else {
+            val request : Call<GetMyPage> = apiService.PatchPortrait(multiPartBody,requestBody2)
+            request.enqueue(object : Callback<GetMyPage> {
+                override fun onResponse(call: Call<GetMyPage>, response: Response<GetMyPage>) {
+                    if (response.isSuccessful) {
+                        //데이터 얻어서 activity로 보내줌
+                        val getMyPage:GetMyPage = response.body()!!
+                        val info  = getMyPage.data
+                        view.setInfo(info!!.email!!,info.nickname, info.portrait!!, info.introduction!! )
+                    } else {
+                    }
                 }
-            }
-            override fun onFailure(call: Call<GetMyPage>, t: Throwable) {
-            }
-        })
+                override fun onFailure(call: Call<GetMyPage>, t: Throwable) {
+                }
+            })
+        }else{//이미지크기가 20메가 넘어가면 안됨
+            val options = BitmapFactory.Options()
+            options.inSampleSize = ((lFileSize/200000)+1).toInt()
+            val src = BitmapFactory.decodeFile(fileUri,options)
+            val resized = Bitmap.createScaledBitmap(src, 500, 500, true)
+            var newFile = File(fileUri)
+            var out:OutputStream? = null
+            newFile.createNewFile()
+            out = FileOutputStream(newFile)
+            resized.compress(Bitmap.CompressFormat.PNG, 100, out)
+            Log.e("lFileSize2",File(fileUri).length().toString())
+            //이미지 크기 맞춰질때까지 리사이즈
+            patchPortrait(fileUri)
+        }
+
     }
     override fun logout() {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")

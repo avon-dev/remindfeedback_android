@@ -1,6 +1,7 @@
 package com.example.remindfeedback.Network
 
 import com.example.remindfeedback.ServerModel.*
+import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -13,7 +14,11 @@ interface ServiceAPI {
 
     //회원가입
     @POST("auth/register")
-    fun SignUp(@Body json_account: SignUp): Call<SignUp>
+    fun SignUp(@Body json_account: SignUp): Call<GetSignUpData>
+
+    //이메일인증
+    @POST("auth/email")
+    fun Verify(@Body sendtoken: sendToken): Call<GetData>
 
     //로그인
     @POST("auth/login")
