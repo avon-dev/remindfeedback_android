@@ -56,6 +56,8 @@
     <string name="channel_name">ucrop_chanel</string>
     <string name="channel_description">ucrop result image</string>
 
+    <!--회원가입시 키값-->
+    <string name="register_key">remindfeedback67</string>
 
     <!--플로팅버튼-->
     <string name="recording">Recording</string>

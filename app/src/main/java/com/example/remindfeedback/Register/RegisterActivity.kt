@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import com.example.remindfeedback.DocumentActivity
 import com.example.remindfeedback.R
+import com.example.remindfeedback.etcProcess.AES256Chiper
 
 
 class RegisterActivity : AppCompatActivity(), ContractRegister.View {
@@ -72,7 +73,8 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
                                 if ( !chk_1.isChecked || !chk_2.isChecked) {
                                     Toast.makeText(this, "이용약관에 모두 동의하여 주세요.", Toast.LENGTH_SHORT).show()
                                 } else {
-                                    presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString(), token_Input.text.toString())
+
+                                    presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(),AES256Chiper.AES_Encode(password_Input.text.toString()), token_Input.text.toString())
                                     //finish()
                                 }
                             }

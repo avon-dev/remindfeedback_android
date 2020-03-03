@@ -257,9 +257,8 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             adapter!!.updateData(reHoldArrayString)
 
             PickPhotoView.Builder(this)
-                .setPickPhotoSize(9)
-                .setHasPhotoSize(7)
-                .setAllPhotoSize(10)
+                .setPickPhotoSize(3)
+                .setClickSelectable(true)
                 .setShowCamera(false)
                 .setSpanCount(3)
                 .setLightStatusBar(false)
@@ -431,27 +430,32 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             Log.e("PICK_PHOTO_DATA", "PICK_PHOTO_DATA")
             arrayList.clear()
             reHoldArrayString.clear()
-            val selectPaths = data!!.getSerializableExtra(PickConfig.INTENT_IMG_LIST_SELECT) as java.util.ArrayList<String>
-            var reHoldArray:ArrayList<Uri?> = ArrayList()
+            try{
+                val selectPaths = data!!.getSerializableExtra(PickConfig.INTENT_IMG_LIST_SELECT) as java.util.ArrayList<String>
+                var reHoldArray:ArrayList<Uri?> = ArrayList()
 
-            for(i in selectPaths){
-                Log.e("selectPaths", "content://"+i)
-                reHoldArray.add(i.toUri())
-                arrayList.add((i).toUri())
+                for(i in selectPaths){
+                    Log.e("selectPaths", "content://"+i)
+                    reHoldArray.add(i.toUri())
+                    arrayList.add((i).toUri())
+                }
+
+                for(i in arrayList){
+                    //nonCropImage(arrayList)
+                    val photoUri = FileProvider.getUriForFile(
+                        this,
+                        "com.example.remindfeedback.fileprovider",
+                        File(i.toString())
+                    )
+                    Log.e("photoUri", photoUri.toString())
+                    CropImage.activity(photoUri)
+                        .start(this)
+                    Log.e("arrayList22", i.toString())
+                }
+            }catch (e:Exception){
+                Toast.makeText(this, "다시 시도해주세요", Toast.LENGTH_LONG).show()
             }
 
-            for(i in arrayList){
-                //nonCropImage(arrayList)
-                val photoUri = FileProvider.getUriForFile(
-                    this,
-                    "com.example.remindfeedback.fileprovider",
-                    File(i.toString())
-                )
-                Log.e("photoUri", photoUri.toString())
-                CropImage.activity(photoUri)
-                    .start(this)
-                Log.e("arrayList22", i.toString())
-            }
 
         }
         if(requestCode == Crop.REQUEST_CROP){
