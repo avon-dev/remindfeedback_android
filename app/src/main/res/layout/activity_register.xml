@@ -19,102 +19,9 @@
 
         <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
 
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:gravity="center_horizontal"
-                android:text="Remind Feedback에 오신 것을 환영합니다.\n회원가입을 통해 서비스를 이용 하실 수 있습니다." />
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-            <EditText
-                    android:id="@+id/email_Input"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/round_border_edittext"
-                    android:ems="10"
-                    android:hint="이메일"
-                    android:inputType="textEmailAddress"
-                    android:padding="8dp"
-                    android:textSize="16sp" />
-
-            <Button
-                    android:id="@+id/email_confirm_Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="인증" />
-
-        </LinearLayout>
-
-        <LinearLayout
-                android:id="@+id/email_check_Layout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-            <EditText
-                    android:id="@+id/email_token_Input"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/round_border_edittext"
-                    android:ems="10"
-                    android:hint="이메일 인증번호"
-                    android:inputType="text"
-                    android:padding="8dp"
-                    android:textSize="16sp" />
-
-
-            <Button
-                    android:id="@+id/email_check_Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="확인" />
-        </LinearLayout>
-
-
-        <EditText
-                android:id="@+id/nickname_Input"
-                style="@style/big_input"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/round_border_edittext"
-                android:ems="10"
-                android:hint="닉네임"
-                android:inputType="textPersonName"
-                android:padding="8dp"
-                android:textSize="16sp" />
-
-        <EditText
-                android:id="@+id/password_Input"
-                style="@style/big_input"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/round_border_edittext"
-                android:ems="10"
-                android:hint="비밀번호"
-                android:inputType="textPassword"
-                android:textSize="16sp" />
-
-        <EditText
-                android:id="@+id/re_Password_Input"
-                style="@style/big_input"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/round_border_edittext"
-                android:ems="10"
-                android:hint="비밀번호 확인"
-                android:inputType="textPassword"
-                android:textSize="16sp" />
+                android:orientation="vertical" >
 
             <TextView
                     android:id="@+id/textView2"
@@ -291,7 +198,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="32dp"
                         android:orientation="horizontal">
-
                     <CheckBox
                             android:id="@+id/chk_3"
                             android:layout_width="wrap_content"
@@ -299,19 +205,16 @@
                             android:layout_marginLeft="16dp"
                             android:text="중요한 정보 수집 이용 동의 (필수)"
                             android:textSize="12sp" />
-
                     <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1" />
-
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:text="자세히보기 >"
                             android:textSize="12sp" />
-
                 </LinearLayout-->
 
             </LinearLayout>
