@@ -15,6 +15,10 @@ interface ServiceAPI {
     @POST("auth/register")
     fun SignUp(@Body json_account: SignUp): Call<SignUp>
 
+    // 이메일 인증
+    @POST("auth/email")
+    fun EmailAuth(@Body emailAuth: RequestFindPassword): Call<ResponseBody>
+
     //로그인
     @POST("auth/login")
     fun LogIn(@Body login: LogIn): Call<ResponseBody>
