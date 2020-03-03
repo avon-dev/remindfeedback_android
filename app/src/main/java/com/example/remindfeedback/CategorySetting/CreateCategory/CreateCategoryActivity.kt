@@ -84,7 +84,7 @@ class CreateCategoryActivity : AppCompatActivity(), ContractCreateCategory.View 
             modifyID = intent.getIntExtra("id", -1)
             Log.e("주제 수정 id", modifyID.toString())
             create_Category_Title.setText(title)
-            another_Color_Select.setTextColor(Color.parseColor(color))
+//            another_Color_Select.setTextColor(Color.parseColor(color))
             selected_Color.setBackgroundColor(Color.parseColor(color))
         } else {
         }

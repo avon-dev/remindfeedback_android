@@ -40,6 +40,7 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
 
         send_Token_Button.setOnClickListener{
             presenterRegister.verify(email_Input.text.toString())
+
         }
 
         //회원가입버튼을 눌러서 presenter의 회원가입 기능을 실행시킴
@@ -75,6 +76,7 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
                                     presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(), password_Input.text.toString(), token_Input.text.toString())
                                     //finish()
                                 }
+
                             }
 
 

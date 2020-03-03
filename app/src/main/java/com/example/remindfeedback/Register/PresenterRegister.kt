@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.GetData
 import com.example.remindfeedback.ServerModel.GetSignUpData
+
 import com.example.remindfeedback.ServerModel.SignUp
 import com.example.remindfeedback.ServerModel.sendToken
 import com.google.gson.JsonObject
@@ -28,6 +29,7 @@ class PresenterRegister : ContractRegister.Presenter {
         val signupclass: SignUp = SignUp(email, nickname, password,token)
         val register_request: Call<GetSignUpData> = apiService.SignUp(signupclass)
         register_request.enqueue(object : Callback<GetSignUpData> {
+
 
             override fun onResponse(call: Call<GetSignUpData>, response: Response<GetSignUpData>) {
                 if (response.isSuccessful) {
@@ -86,4 +88,28 @@ class PresenterRegister : ContractRegister.Presenter {
             }
         })
     }
+
+
+    // 이메일 인증
+    override fun emailAuth(email: String) {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+
+        val register_request: Call<ResponseBody> = apiService.EmailAuth(RequestFindPassword(email))
+        register_request.enqueue(object : Callback<ResponseBody> {
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful){
+                    Log.e("이메일 인증토큰 전송", "성공")
+                } else {
+                    Toast.makeText(mContext, "에러가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                    Log.e("이메일 인증토큰 전송","실패")
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+
+        })
+    }
+
 }
