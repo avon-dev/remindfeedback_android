@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.example.remindfeedback">
+    package="com.example.remindfeedback">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -10,91 +10,97 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_logo2_foreground"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_logo2_round"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme"
-            android:usesCleartextTraffic="true">
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_logo2_foreground"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_logo2_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".CropperActivity">
 
+        </activity>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" /> <!-- optional (needed if default theme has no action bar) -->
         <activity android:name=".DocumentActivity" />
         <activity
-                android:name=".SplashActivity"
-                android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name=".Login.FindPassword.FindPasswordActivity"
-                android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".Login.FindPassword.FindPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name=".MyPage.ImagePick.ImagePickActivity"
-                android:screenOrientation="portrait" />
+            android:name=".MyPage.ImagePick.ImagePickActivity"
+            android:screenOrientation="portrait" />
         <activity
-                android:name="com.soundcloud.android.crop.CropImageActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:name="com.soundcloud.android.crop.CropImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-                android:name=".CategorySetting.CreateCategory.ColorList.ColorListActivity"
-                android:screenOrientation="unspecified"
-                android:theme="@style/Theme.MyDialog" />
+            android:name=".CategorySetting.CreateCategory.ColorList.ColorListActivity"
+            android:screenOrientation="unspecified"
+            android:theme="@style/Theme.MyDialog" />
         <activity
-                android:name=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity"
-                android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity" />
+            android:name=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity"
+            android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity" />
         <activity
-                android:name=".CategorySetting.CategorySettingActivity"
-                android:parentActivityName=".FeedbackList.MainActivity" />
+            android:name=".CategorySetting.CategorySettingActivity"
+            android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
-                android:name=".FeedbackList.FeedbackDetail.CreatePost.Record.RecordActivity"
-                android:parentActivityName=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity" />
+            android:name=".FeedbackList.FeedbackDetail.CreatePost.Record.RecordActivity"
+            android:parentActivityName=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity" />
         <activity
-                android:name=".FeedbackList.FeedbackDetail.Post.PostActivity"
-                android:screenOrientation="portrait" /> <!-- android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity" -->
+            android:name=".FeedbackList.FeedbackDetail.Post.PostActivity"
+            android:screenOrientation="portrait" /> <!-- android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity" -->
         <activity
-                android:name=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"
-                android:screenOrientation="portrait" />
+            android:name=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"
+            android:parentActivityName=".FeedbackList.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".FriendsList.FriendsPage.FriendsPageActivity"
-                android:parentActivityName=".FriendsList.FriendsListActivity" />
+            android:name=".FriendsList.FriendsPage.FriendsPageActivity"
+            android:parentActivityName=".FriendsList.FriendsListActivity" />
         <activity
-                android:name=".Alarm.AlarmActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"
-                android:screenOrientation="portrait" />
+            android:name=".Alarm.AlarmActivity"
+            android:parentActivityName=".FeedbackList.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".Setting.SettingActivity"
-                android:parentActivityName=".FeedbackList.MainActivity" />
+            android:name=".Setting.SettingActivity"
+            android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
-                android:name=".MyPage.MyPageActivity"
-                android:parentActivityName=".FeedbackList.MainActivity" />
+            android:name=".MyPage.MyPageActivity"
+            android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
-                android:name=".FriendsList.FindFriends.FindFriendsActivity"
-                android:parentActivityName=".FriendsList.FriendsListActivity" />
+            android:name=".FriendsList.FindFriends.FindFriendsActivity"
+            android:parentActivityName=".FriendsList.FriendsListActivity" />
         <activity
-                android:name=".CreateCategory.CreateCategoryActivity"
-                android:parentActivityName=".CategorySetting.CategorySettingActivity" />
+            android:name=".CreateCategory.CreateCategoryActivity"
+            android:parentActivityName=".CategorySetting.CategorySettingActivity" />
         <activity
-                android:name=".FeedbackList.CreateFeedback.CreateFeedbackActivity"
-                android:parentActivityName=".FeedbackList.MainActivity" />
+            android:name=".FeedbackList.CreateFeedback.CreateFeedbackActivity"
+            android:parentActivityName=".FeedbackList.MainActivity" />
         <activity
-                android:name=".FriendsList.FriendsListActivity"
-                android:parentActivityName=".FeedbackList.MainActivity"
-                android:screenOrientation="portrait" />
+            android:name=".FriendsList.FriendsListActivity"
+            android:parentActivityName=".FeedbackList.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".Register.RegisterActivity"
-                android:parentActivityName=".Login.LoginActivity" />
+            android:name=".Register.RegisterActivity"
+            android:parentActivityName=".Login.LoginActivity" />
         <activity
-                android:name=".FeedbackList.CreateFeedback.PickCategory.PickCategoryActivity"
-                android:screenOrientation="unspecified"
-                android:theme="@style/Theme.MyDialog" />
+            android:name=".FeedbackList.CreateFeedback.PickCategory.PickCategoryActivity"
+            android:screenOrientation="unspecified"
+            android:theme="@style/Theme.MyDialog" />
         <activity
-                android:name=".FeedbackList.CreateFeedback.ChoiceAdviser.ChoiceAdviserActivity"
-                android:screenOrientation="portrait" />
+            android:name=".FeedbackList.CreateFeedback.ChoiceAdviser.ChoiceAdviserActivity"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".FeedbackList.MainActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".FeedbackList.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name=".Login.LoginActivity"
-                android:theme="@style/AppTheme.NoActionBar">
+            android:name=".Login.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -104,15 +110,14 @@
         </activity>
 
         <provider
-                android:name="androidx.core.content.FileProvider"
-                android:authorities="com.example.remindfeedback.fileprovider"
-                android:exported="false"
-                android:grantUriPermissions="true">
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.remindfeedback.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/file_paths" />
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
         </provider>
-
     </application>
 
 </manifest>

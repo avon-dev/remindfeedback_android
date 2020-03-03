@@ -72,7 +72,7 @@ dependencies {
 
     //옛날크롭
     implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
-    
+
 
     //카메라 퍼미션
     implementation 'gun0912.ted:tedpermission:2.1.0'
@@ -113,5 +113,7 @@ dependencies {
     //이미지 선택 라이브러리
     implementation 'com.werb.pickphotoview:pickphotoview:0.4.8'  // Last Version
 
+
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 
 }
