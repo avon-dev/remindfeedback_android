@@ -1,73 +1,38 @@
 package com.example.remindfeedback.FeedbackList.FeedbackDetail.Post
 
-import android.R.attr.scaleType
 import android.content.Intent
-import android.graphics.Bitmap
-import android.media.MediaPlayer
-import android.net.Uri
-import android.opengl.Visibility
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.example.remindfeedback.Alarm.AdapterAlarm
-import com.example.remindfeedback.Alarm.ModelAlarm
-import com.example.remindfeedback.Alarm.PresenterAlarm
-import com.example.remindfeedback.FeedbackList.FeedbackDetail.PresenterFeedbackDetail
+import androidx.viewpager2.widget.ViewPager2
 import com.example.remindfeedback.R
-import com.example.remindfeedback.Register.RegisterActivity
 import com.example.remindfeedback.ServerModel.CreateComment
-import kotlinx.android.synthetic.main.activity_feedback_detail.*
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_my_page.*
+import kotlinx.android.synthetic.main.activity_post.*
+import me.relex.circleindicator.CircleIndicator3
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.net.URL
-import android.support.v4.media.session.MediaControllerCompat.setMediaController
-import android.view.*
-import android.widget.*
-import androidx.core.content.FileProvider
-import com.example.remindfeedback.FeedbackList.MainActivity
-import java.io.File
-import android.R.attr.start
-import android.content.SharedPreferences
-import android.os.AsyncTask
-import android.os.Handler
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import com.example.remindfeedback.etcProcess.InfiniteScrollListener
-import com.example.remindfeedback.etcProcess.MyProgress
-import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
-import kotlinx.android.synthetic.main.activity_post.*
-import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
-import com.google.android.exoplayer2.util.Util
-import kotlinx.android.synthetic.main.activity_main.*
-import java.io.IOException
 import java.text.SimpleDateFormat
 
 
 //class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener, View.OnClickListener, View.OnTouchListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnInfoListener{
-class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageChangeListener {
+class PostActivity : AppCompatActivity(), ContractPost.View {
 
 
     private val TAG = "PostActivity"
     internal lateinit var presenterPost: PresenterPost
-    lateinit var imageData: String
-    var file_name: String? = ""
 
-    private var mViewPager: ViewPager? = null
-    private var mViewPagerAdapter: ViewPagerAdapter? = null
-    private var mLinearLayout: LinearLayout? = null
-    lateinit var indicators: Array<ImageView?>
+
+    private var mViewPagerAdapter2: SampleRecyclerAdapter? = null
     lateinit var mJSONArray: JSONArray
     private var ALBUM_NUM = 0
     private var ALBUM_RES = arrayListOf<String>()
@@ -75,7 +40,7 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
     var board_id: Int = -1
     lateinit var lm: LinearLayoutManager
     internal lateinit var preferences: SharedPreferences
-
+    var viewpager:ViewPager2? = null
     var sort:Int = -1;
 
     /* 영상 녹음관련 코드는 모두 주석
@@ -148,7 +113,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
                 comment_EditText.setText("")
             }
         }
-
     }
 
 /*
@@ -224,11 +188,9 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
 
     }
 */
-
     override fun refresh() {
         mAdapter.notifyDataSetChanged()
     }
-
     //포스팅의 컨텐츠 타입과 파일들이 넘어옴
     override fun setView(contentsType: Int, fileUrl_1: String?, fileUrl_2: String?, fileUrl_3: String?, title: String, date: String, content: String) {
         if (contentsType == 0) {//타입이 글일때
@@ -287,11 +249,14 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         post_Tv.text = content
     }
 
+
     //프레젠터에서 아이템 로드하고 댓글의 라스트 id를 바꿔주는부분
     override fun setCommentId(comment_id:Int){
         Log.e("setCommentId", comment_id.toString())
         commentLastId = comment_id
     }
+
+
 
 
     //이 아래로 뷰페이저 관련 코드들
@@ -301,7 +266,6 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
             val `object` = JSONObject()
             try {
                 `object`.put("id", ALBUM_RES[i % ALBUM_RES.size])
-                `object`.put("name", "Image dog$i")
                 mJSONArray.put(`object`)
             } catch (e: JSONException) {
                 e.printStackTrace()
@@ -310,63 +274,20 @@ class PostActivity : AppCompatActivity(), ContractPost.View, ViewPager.OnPageCha
         }
 
     }
-
-    override fun onPageScrolled(i: Int, v: Float, i1: Int) {
-
-    }
-
-    override fun onPageSelected(i: Int) {
-        setImageIndicators(i)
-    }
-
-    override fun onPageScrollStateChanged(i: Int) {
-
-    }
-
-
     override fun viewPagerSetting() {
-        setupDataSources()
-        mViewPager = findViewById(R.id.viewpager) as ViewPager
-        mViewPagerAdapter = ViewPagerAdapter(this, mJSONArray)
-        mLinearLayout = findViewById(R.id.viewGroup) as LinearLayout
-        initialSetImageIndicators()
-        mViewPager!!.adapter = mViewPagerAdapter
-        mViewPager!!.setOnPageChangeListener(this)
+        viewpager  = findViewById(R.id.viewpager) as ViewPager2
+        viewpager!!.adapter = mViewPagerAdapter2
+
+        mViewPagerAdapter2 = SampleRecyclerAdapter(ALBUM_NUM,ALBUM_RES)
+        viewpager!!.setAdapter(mViewPagerAdapter2)
+
+        var indicator:CircleIndicator3  = findViewById(R.id.indicator);
+        indicator.setViewPager(viewpager);
+
+        // optional
+        mViewPagerAdapter2!!.registerAdapterDataObserver(indicator.getAdapterDataObserver());
 
     }
-
-    private fun initialSetImageIndicators() {
-        indicators = arrayOfNulls(ALBUM_NUM)
-        for (i in 0 until ALBUM_NUM) {
-
-            val imageView = ImageView(this)
-            imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
-            if (i == 0) {
-                imageView.setImageResource(R.drawable.indicator_select)
-            } else {
-                imageView.setImageResource(R.drawable.indicator_idle)
-            }
-            val lp = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            lp.leftMargin = 5
-            lp.rightMargin = 5
-            indicators[i] = imageView
-            mLinearLayout!!.addView(imageView, lp)
-        }
-    }
-
-    private fun setImageIndicators(pos: Int) {
-        for (i in 0 until ALBUM_NUM) {
-            if (i == pos) {
-                indicators[i]!!.setImageResource(R.drawable.indicator_select)
-            } else {
-                indicators[i]!!.setImageResource(R.drawable.indicator_idle)
-            }
-        }
-    }
-
 
     /*
     //비디오관련 코드

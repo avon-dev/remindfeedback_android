@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.example.remindfeedback.Login.FindPassword.FindPasswordActivity
+import com.example.remindfeedback.etcProcess.Sha256Util
 import com.rey.material.app.BottomSheetDialog
 import com.rey.material.drawable.ThemeDrawable
 import com.rey.material.util.ViewUtil
@@ -44,7 +45,7 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
         //로그인버튼
         login_Button.setOnClickListener {
             if (email_Edittext.text.isNotEmpty() && password_Edittext.text.isNotEmpty()) {
-                presenterLogin.LogIn(email_Edittext.text.toString(), password_Edittext.text.toString())
+                presenterLogin.LogIn(email_Edittext.text.toString(), Sha256Util.testSHA256(password_Edittext.text.toString()))
                 email_Edittext.setText("")
                 password_Edittext.setText("")
 

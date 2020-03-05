@@ -292,7 +292,7 @@ class PresenterMain : ContractMain.Presenter {
         user_uid: String,
         adapterMainFeedback: AdapterMainFeedback
     ) {
-        list.clear()
+
         val date2 = SimpleDateFormat("yyyy-MM-dd").parse(date)
         val sdf = SimpleDateFormat("yyyy년 MM월 dd일") //new format
         val dateNewFormat = sdf.format(date2)
@@ -307,7 +307,6 @@ class PresenterMain : ContractMain.Presenter {
                 response: Response<CreateFeedback>
             ) {
                 if (response.isSuccessful) {
-
                     view.refresh()
                 } else {
                     val StatusCode = response.code()

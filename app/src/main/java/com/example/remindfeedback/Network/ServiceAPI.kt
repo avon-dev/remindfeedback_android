@@ -13,7 +13,8 @@ import retrofit2.http.POST
 interface ServiceAPI {
 
     //회원가입
-    @POST("auth/register")
+    //@POST("auth/register")
+    @POST("auth/tempRegister")
     fun SignUp(@Body json_account: SignUp): Call<GetSignUpData>
 
     //이메일인증
