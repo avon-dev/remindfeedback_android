@@ -55,10 +55,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="500dp">
 
-                        <androidx.viewpager.widget.ViewPager
-                                android:id="@+id/viewpager"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+
 
                         <RelativeLayout
                                 android:layout_width="match_parent"
@@ -71,7 +68,19 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="91dp"
                                 android:gravity="center_horizontal"
-                                android:orientation="horizontal">
+                                android:background="@color/whiteblue"
+                                android:orientation="vertical">
+                                <me.relex.circleindicator.CircleIndicator3
+                                    android:id="@+id/indicator"
+                                    android:background="@color/whiteblue"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="48dp"
+                                    android:layout_gravity="bottom" />
+
+                                <androidx.viewpager2.widget.ViewPager2
+                                    android:id="@+id/viewpager"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
                             </LinearLayout>
                         </RelativeLayout>
 
