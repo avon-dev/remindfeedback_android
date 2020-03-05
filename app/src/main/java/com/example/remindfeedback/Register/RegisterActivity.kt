@@ -8,10 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import java.util.regex.Pattern
 import android.util.Log
-import android.view.View
 import com.example.remindfeedback.DocumentActivity
 import com.example.remindfeedback.R
-import com.example.remindfeedback.etcProcess.AES256Chiper
+import com.example.remindfeedback.etcProcess.Sha256Util
 
 
 class RegisterActivity : AppCompatActivity(), ContractRegister.View {
@@ -26,6 +25,8 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        Log.e("Sha256Util", Sha256Util.testSHA256("1"))
 
         //액션바 설정
         var ab: ActionBar = this.supportActionBar!!
@@ -75,7 +76,7 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
                                     Toast.makeText(this, "이용약관에 모두 동의하여 주세요.", Toast.LENGTH_SHORT).show()
                                 } else {
 
-                                    presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(),AES256Chiper.AES_Encode(password_Input.text.toString()), token_Input.text.toString())
+                                    presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(),Sha256Util.testSHA256(password_Input.text.toString()), token_Input.text.toString())
                                     //finish()
                                 }
 
