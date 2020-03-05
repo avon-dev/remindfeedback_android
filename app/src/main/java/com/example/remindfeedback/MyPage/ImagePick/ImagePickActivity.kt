@@ -29,6 +29,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.lang.Exception
 import java.net.URL
 
 class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
@@ -146,35 +147,41 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
 
         when (requestCode) {
             PICK_FROM_ALBUM -> {
-                val photoUri = data!!.data
-                if (photoUri != null) {
-                    cropImage(photoUri)
-                }
+                try{
+                    val photoUri = data!!.data
+                    if (photoUri != null) {
+                        cropImage(photoUri)
+                    }
+                }catch (e:Exception){Log.e("PICK_FROM_ALBUM", "마이페이지 앨범오류") }
+
             }
             PICK_FROM_CAMERA -> {
-                val bitmap = MediaStore.Images.Media
-                    .getBitmap(contentResolver, Uri.fromFile(tempFile))
+                try{
+                    val bitmap = MediaStore.Images.Media
+                        .getBitmap(contentResolver, Uri.fromFile(tempFile))
 
-                val ei = ExifInterface(tempFile.absolutePath)
-                val orientation = ei.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_UNDEFINED
-                )
+                    val ei = ExifInterface(tempFile.absolutePath)
+                    val orientation = ei.getAttributeInt(
+                        ExifInterface.TAG_ORIENTATION,
+                        ExifInterface.ORIENTATION_UNDEFINED
+                    )
 
-                var rotatedBitmap: Bitmap? = presenterImagePick.rotateImage(bitmap, 90.toFloat());
-                modify_Profile_ImageView.setImageBitmap(rotatedBitmap)
-                var newfile:File = File(tempFile.absolutePath)
-                newfile.createNewFile()
-                var out:OutputStream? = null
-                out = FileOutputStream(newfile)
-                if (rotatedBitmap != null) {
-                    rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
-                }else{
-                    Toast.makeText(this, "이미지 처리 오류!", Toast.LENGTH_SHORT).show()
-                }
-                Log.e("isCamera", isCamera.toString())
-                val photoUri = Uri.fromFile(tempFile)
-                cropImage(photoUri)
+                    var rotatedBitmap: Bitmap? = presenterImagePick.rotateImage(bitmap, 90.toFloat());
+                    modify_Profile_ImageView.setImageBitmap(rotatedBitmap)
+                    var newfile:File = File(tempFile.absolutePath)
+                    newfile.createNewFile()
+                    var out:OutputStream? = null
+                    out = FileOutputStream(newfile)
+                    if (rotatedBitmap != null) {
+                        rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+                    }else{
+                        Toast.makeText(this, "이미지 처리 오류!", Toast.LENGTH_SHORT).show()
+                    }
+                    Log.e("isCamera", isCamera.toString())
+                    val photoUri = Uri.fromFile(tempFile)
+                    cropImage(photoUri)
+                }catch (e:Exception){Log.e("PICK_FROM_CAMERA", "마이페이지 카메라오류")}
+
             }
             Crop.REQUEST_CROP -> {
                 setImage()
@@ -185,10 +192,15 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
 
      fun setImage(){
 
-        val options = BitmapFactory.Options()
-        val originalBm = BitmapFactory.decodeFile(tempFile!!.getAbsolutePath(), options)
-        val resizedbitmap = Bitmap.createScaledBitmap(originalBm, 650, 650, true) // 이미지 사이즈 조정
-        modify_Profile_ImageView.setImageBitmap(resizedbitmap) // 이미지뷰에 조정한 이미지 넣기
+         try{
+             val options = BitmapFactory.Options()
+             val originalBm = BitmapFactory.decodeFile(tempFile!!.getAbsolutePath(), options)
+             val resizedbitmap = Bitmap.createScaledBitmap(originalBm, 650, 650, true) // 이미지 사이즈 조정
+             modify_Profile_ImageView.setImageBitmap(resizedbitmap) // 이미지뷰에 조정한 이미지 넣기
+         }catch (e:Exception){Log.e("REQUEST_CROP", "마이페이지 크롭오류")
+             finish()
+         }
+
  }
 
     //타이틀바에 어떤 menu를 적용할지 정하는부분

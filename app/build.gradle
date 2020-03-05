@@ -114,6 +114,11 @@ dependencies {
     implementation 'com.werb.pickphotoview:pickphotoview:0.4.8'  // Last Version
 
 
+    //이미지 크롭 라이브러리
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+
+    //뷰페이저 인디케이터
+    implementation 'me.relex:circleindicator:2.1.4'
+
 
 }
