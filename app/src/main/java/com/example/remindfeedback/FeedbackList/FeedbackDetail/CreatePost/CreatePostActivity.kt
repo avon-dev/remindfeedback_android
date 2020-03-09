@@ -415,16 +415,21 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
 
         if(requestCode == PICK_FROM_CAMERA){
-            Log.e("asd", "Asdasd")
-            val bitmap = MediaStore.Images.Media
-                .getBitmap(contentResolver, Uri.fromFile(tempFile))
-            val ei = ExifInterface(tempFile.absolutePath)
-            val orientation = ei.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED
-            )
-            var rotatedBitmap: Bitmap? = presenterCreatePost.rotateImage(bitmap, 90.toFloat());
-            storeImage(rotatedBitmap!!)
+            try{
+                Log.e("asd", "Asdasd")
+                val bitmap = MediaStore.Images.Media
+                    .getBitmap(contentResolver, Uri.fromFile(tempFile))
+                val ei = ExifInterface(tempFile.absolutePath)
+                val orientation = ei.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_UNDEFINED
+                )
+                var rotatedBitmap: Bitmap? = presenterCreatePost.rotateImage(bitmap, 90.toFloat());
+                storeImage(rotatedBitmap!!)
+            }catch (e:Exception){
+                Log.e("PICK_FROM_CAMERA", "포스트 생성 카메라부분")
+            }
+
         }
         if (requestCode == PickConfig.PICK_PHOTO_DATA) {
             Log.e("PICK_PHOTO_DATA", "PICK_PHOTO_DATA")

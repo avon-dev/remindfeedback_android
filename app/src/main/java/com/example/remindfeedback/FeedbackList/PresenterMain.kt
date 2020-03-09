@@ -2,6 +2,7 @@ package com.example.remindfeedback.FeedbackList
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.util.Log
 import android.widget.ImageView
@@ -26,6 +27,7 @@ class PresenterMain : ContractMain.Presenter {
 
     lateinit override var view: ContractMain.View
     lateinit override var context: Context
+    internal var preferences: SharedPreferences? = null
 
     override fun loadItems(
         list: ArrayList<ModelFeedback?>,
@@ -113,8 +115,12 @@ class PresenterMain : ContractMain.Presenter {
 
             override fun onFailure(call: Call<GetAllFeedback>, t: Throwable) {
                 myProgress.dismiss()
-                Toast.makeText(context, "데이터를 불러올 수 없습니다. 개발자에게 문의 해주세요", Toast.LENGTH_SHORT).show()
-                Log.e("getfeedbackError", t.message)
+                preferences = context.getSharedPreferences("USERSIGN", 0)
+                if(!preferences!!.getString("autoLoginEmail","").equals("")){
+                    Toast.makeText(context, "데이터를 불러올 수 없습니다. 개발자에게 문의 해주세요", Toast.LENGTH_SHORT).show()
+                    Log.e("getfeedbackError", t.message)
+                }
+                
             }
         })
     }

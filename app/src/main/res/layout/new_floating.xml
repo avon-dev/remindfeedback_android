@@ -45,11 +45,11 @@
 
                     <!-- Recording -->
                     <TextView
-                            android:id="@+id/fab_Sheet_Item_Create"
-                            style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
-                            android:drawableStart="@drawable/ic_add_black"
-                            android:drawableLeft="@drawable/ic_add_black"
-                            android:text="포스트 추가" />
+                        android:id="@+id/fab_Sheet_Item_Create"
+                        style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                        android:drawableStart="@drawable/ic_add_black"
+                        android:drawableLeft="@drawable/ic_add_black"
+                        android:text="게시글 생성" />
                     <TextView
                             android:id="@+id/fab_Sheet_Item_Request"
                             style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"

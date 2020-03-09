@@ -26,6 +26,7 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import android.R.attr.bitmap
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import androidx.core.app.ActivityCompat
 import com.example.remindfeedback.FeedbackList.MainActivity
@@ -38,6 +39,8 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
 
     private val TAG = "MyPageActivity"
     internal lateinit var presenterMyPage: PresenterMyPage
+    internal lateinit var preferences: SharedPreferences
+
     var imageData:String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +51,7 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
         ab.setTitle("마이 페이지")
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
         ab.setDisplayHomeAsUpEnabled(true)
-
-
+        preferences = getSharedPreferences("USERSIGN", 0)
         presenterMyPage = PresenterMyPage().apply {
             view = this@MyPageActivity
             mContext = this@MyPageActivity
@@ -120,10 +122,14 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
     }
 
     override fun appReset() {
-        ActivityCompat.finishAffinity(this)
+        val editor = preferences.edit()
+        editor.putString("autoLoginEmail", "")
+        editor.putString("autoLoginPw", "")
+        editor.commit()
         val intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
-        System.exit(0)
     }
 
 }

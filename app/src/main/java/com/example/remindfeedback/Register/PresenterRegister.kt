@@ -2,14 +2,14 @@ package com.example.remindfeedback.Register
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import com.example.remindfeedback.FeedbackList.MainActivity
+import com.example.remindfeedback.Login.LoginActivity
 import com.example.remindfeedback.Network.RetrofitFactory
-import com.example.remindfeedback.ServerModel.GetData
-import com.example.remindfeedback.ServerModel.GetSignUpData
+import com.example.remindfeedback.ServerModel.*
 
-import com.example.remindfeedback.ServerModel.SignUp
-import com.example.remindfeedback.ServerModel.sendToken
 import com.google.gson.JsonObject
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -35,7 +35,9 @@ class PresenterRegister : ContractRegister.Presenter {
                 if (response.isSuccessful) {
                     var mData = response.body()!!
                     if (mData.success) {
-                        (mContext as Activity).finish() // 회원가입 성공 후 액티비티 종료
+                        //회원가입후 바로 로그인
+                        Toast.makeText(mContext, "회원가입이 완료되었습니다.", Toast.LENGTH_LONG).show()
+                        LogIn(email,password)
                     }
                     Toast.makeText(mContext, mData.message, Toast.LENGTH_LONG).show()
 
@@ -89,5 +91,37 @@ class PresenterRegister : ContractRegister.Presenter {
         })
     }
 
+    override fun LogIn(email: String, password: String) {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "receiveCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+
+        val login: LogIn = com.example.remindfeedback.ServerModel.LogIn(email, password)
+        val register_request: Call<ResponseBody> = apiService.LogIn(login)
+        register_request.enqueue(object : Callback<ResponseBody> {
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    if (response.headers().get("Set-Cookie") == null) {
+                        Toast.makeText(mContext, "아이디 또는 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val intent = Intent(mContext, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        mContext.startActivity(intent)
+                    }
+
+                } else {
+                    val StatusCode = response.code()
+                    Log.e("post", "Status Code : $StatusCode")
+                }
+                Log.e("tag", "response=" + response.raw())
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("getme", "실패")
+            }
+
+        })
+    }
 
 }

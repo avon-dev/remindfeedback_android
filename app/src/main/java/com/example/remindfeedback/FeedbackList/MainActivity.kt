@@ -3,11 +3,13 @@ package com.example.remindfeedback.FeedbackList
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.LoginFilter
 import android.text.SpannableString
 import android.util.Log
 import android.view.Display
@@ -26,6 +28,7 @@ import com.example.remindfeedback.FeedbackList.CreateFeedback.CreateFeedbackActi
 import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.ModelPickCategory
 import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.PickCategoryActivity
 import com.example.remindfeedback.FriendsList.FriendsListActivity
+import com.example.remindfeedback.Login.LoginActivity
 import com.example.remindfeedback.MyPage.MyPageActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Setting.SettingActivity
@@ -566,7 +569,15 @@ class MainActivity : AppCompatActivity(),
 
     fun logout(){
         var basicDialog: BasicDialog = BasicDialog("로그아웃 하시겠습니까?", this, { presenterMain.logout()
-            finish()}, {})
+            finish()
+            val editor = preferences.edit()
+            editor.putString("autoLoginEmail", "")
+            editor.putString("autoLoginPw", "")
+            editor.commit()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+        }, {})
         basicDialog.makeDialog()
     }
 
