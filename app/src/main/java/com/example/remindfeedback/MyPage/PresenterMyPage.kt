@@ -2,10 +2,12 @@ package com.example.remindfeedback.MyPage
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.text.InputFilter
+import android.text.InputType
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.EditText
@@ -13,11 +15,16 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.startActivity
+import com.example.remindfeedback.Login.FindPassword.FindPasswordActivity
+import com.example.remindfeedback.Login.LoginActivity
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.R
 import com.example.remindfeedback.ServerModel.CheckingPassword
 import com.example.remindfeedback.ServerModel.GetMyPage
 import com.example.remindfeedback.ServerModel.GetSuccessData
+import com.example.remindfeedback.ServerModel.RequestFindPassword
+import com.example.remindfeedback.etcProcess.Sha256Util
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,6 +32,7 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.security.KeyStore
 
 
 class PresenterMyPage : ContractMyPage.Presenter{
@@ -195,12 +203,14 @@ class PresenterMyPage : ContractMyPage.Presenter{
     }
 
     //비밀번호를 다시입력하고 탈퇴를 해야할거같은데 그럴수 있는 방법이 없는거같음 이거는 일단 보류
-    override fun requestDeleteAccount() {
+    override fun inputPassword(type:String,mEmail:String) {
         val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         params.leftMargin = mContext.resources.getDimensionPixelSize(R.dimen.dialog_margin)
         params.rightMargin = mContext.resources.getDimensionPixelSize(R.dimen.dialog_margin)
         val container = FrameLayout(mContext)
         val et = EditText(mContext)
+        //et.setInputType(InputType.TYPE_CLASS_TEXT )
+        //et.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD)
         et.setLayoutParams(params)
         et.setSingleLine(true)
 
@@ -210,13 +220,13 @@ class PresenterMyPage : ContractMyPage.Presenter{
 
         container.addView(et)
         val alt_bld = AlertDialog.Builder(mContext, R.style.MyAlertDialogStyle)
-        alt_bld.setTitle("회원탈퇴")
-            .setMessage("비밀번호를 입력 해주세요")
+        alt_bld.setTitle("비밀번호를 입력 해주세요")
+            //.setMessage("비밀번호를 입력 해주세요")
             .setCancelable(true)
             .setView(container)
             .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-                val value = et.getText().toString()
-                checkPassword(et.text.toString())
+                val value = Sha256Util.testSHA256(et.getText().toString())
+                checkPassword(value,type,mEmail)
 
             })
         val alert = alt_bld.create()
@@ -225,7 +235,7 @@ class PresenterMyPage : ContractMyPage.Presenter{
 
 
     }
-    override fun checkPassword(password:String){
+    override fun checkPassword(password:String, type:String,mEmail:String){
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val register_request: Call<GetSuccessData> = apiService.CheckPassword(CheckingPassword(password))
@@ -235,7 +245,12 @@ class PresenterMyPage : ContractMyPage.Presenter{
                     var mData:GetSuccessData = response.body()!!
                     Toast.makeText(mContext, mData.message, Toast.LENGTH_LONG).show()
                     if(mData.success){
-                        deleteAccount()
+                        if(type.equals("delete")){
+                            deleteAccount()
+                        }else if(type.equals("change")){
+                            findPassword(mEmail)
+                        }
+
                     }
                 } else {
                     Log.e("asdasdasd", "뭔가 실패함")
@@ -246,6 +261,29 @@ class PresenterMyPage : ContractMyPage.Presenter{
         })
     }
 
+    override fun findPassword(email: String) {
+        val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
+        val apiService = RetrofitFactory.serviceAPI(client)
+
+        val register_request: Call<ResponseBody> = apiService.RequestFindPassword(
+            RequestFindPassword(email)
+        )
+        register_request.enqueue(object : Callback<ResponseBody> {
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(mContext, "인증토큰 전송이 완료되었습니다.", Toast.LENGTH_LONG).show()
+                    val intent = Intent(mContext, FindPasswordActivity::class.java)
+                    intent.putExtra("isChange", true)
+                    mContext.startActivity(intent)
+                } else {
+                    Toast.makeText(mContext, "에러가 발생했습니다. 다시 시도해 주세요.", Toast.LENGTH_LONG).show()
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+        })
+    }
 
 
     override fun deleteAccount() {

@@ -31,7 +31,7 @@ interface ServiceAPI {
 
     //내정보 가져오기
     @GET("auth/me/")
-    fun GET_User(): Call<GetMe>
+    fun GET_User(): Call<Object>
 
     //비밀번호 찾기 요청
     @POST("auth/password/")
@@ -47,7 +47,7 @@ interface ServiceAPI {
 
     //비밀번호 변경
     @PATCH("auth/password/")
-    fun ChangingPassword(@Body changingPassword: ChangingPassword): Call<ResponseBody>
+    fun ChangingPassword(@Body changingPassword: ChangingPassword): Call<Object>
 
     //회원정보 삭제
     @DELETE("auth/unregister")
@@ -56,7 +56,7 @@ interface ServiceAPI {
 
     //유저 정보 가져오기
     @GET("users/{id}")
-    fun ShowUser(@Path("id") id: String): Call<UserInfo>
+    fun ShowUser(@Path("id") id: String): Call<Object>
 
 
     //피드백 생성
@@ -213,7 +213,7 @@ interface ServiceAPI {
 
     //친구 검색하기
     @POST("friends/search")
-    fun SearchFriends(@Body searchEmailModel: SearchEmailModel): Call<SearchFriend>
+    fun SearchFriends(@Body searchEmailModel: SearchEmailModel): Call<Object>
 
     //친구요청&수락 하기
     @POST("friends")

@@ -67,7 +67,8 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
             //finish()
         }
 
-
+        //자동로그인
+        presenterLogin.isSignin()
 
 
 

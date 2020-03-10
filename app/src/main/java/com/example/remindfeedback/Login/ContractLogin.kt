@@ -12,5 +12,6 @@ interface ContractLogin {
         var mContext:Context
         fun LogIn(email:String, password:String)
         fun getPermission()
+        fun isSignin()//자동로그인
     }
 }

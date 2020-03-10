@@ -12,18 +12,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.remindfeedback.FeedbackList.MainActivity
 import com.example.remindfeedback.Network.RetrofitFactory
-import com.example.remindfeedback.R
-import com.example.remindfeedback.ServerModel.GetMe
 import com.example.remindfeedback.ServerModel.LogIn
-import com.example.remindfeedback.ServerModel.RequestFindPassword
-import com.gun0912.tedpermission.PermissionListener
-import com.gun0912.tedpermission.TedPermission
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
+import java.util.*
+
 
 class PresenterLogin() : ContractLogin.Presenter {
 
@@ -54,10 +53,9 @@ class PresenterLogin() : ContractLogin.Presenter {
                     if (response.headers().get("Set-Cookie") == null) {
                         Toast.makeText(mContext, "아이디 또는 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show()
                     } else {
-                        var arr = response.headers().get("Set-Cookie")!!.split(";")
-                        var arr2 = arr[0].toString().split("=")
-                        Log.e("getme", arr2[1])
-                        getMe(arr2[1])
+                        //var arr = response.headers().get("Set-Cookie")!!.split(";")
+                        //var arr2 = arr[0].toString().split("=")
+                        getMe(email, password)
                     }
 
                 } else {
@@ -74,31 +72,30 @@ class PresenterLogin() : ContractLogin.Presenter {
         })
     }
 
-    fun getMe(mcookie: String) {
+    fun getMe(email: String, password: String) {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
 
-        val register_request: Call<GetMe> = apiService.GET_User()
-        register_request.enqueue(object : Callback<GetMe> {
+        val register_request: Call<Object> = apiService.GET_User()
+        register_request.enqueue(object : Callback<Object> {
 
-            override fun onResponse(call: Call<GetMe>, response: Response<GetMe>) {
+            override fun onResponse(call: Call<Object>, response: Response<Object>) {
                 if (response.isSuccessful) {
-                    Log.e("getuser", "여기 겟유저")
-                    Log.e("response", " ${response.headers()}")
-
                 } else {
                     val StatusCode = response.code()
-                    Log.e("post", "Status Code : $StatusCode")
                 }
-                Log.e("tag", "response=" + response.raw())
             }
-
-            override fun onFailure(call: Call<GetMe>, t: Throwable) {
+            override fun onFailure(call: Call<Object>, t: Throwable) {
             }
         })
-
+        preferences = mContext.getSharedPreferences("USERSIGN", 0)
+        val editor = preferences!!.edit()
+        editor.putString("autoLoginEmail", email)
+        editor.putString("autoLoginPw", password)
+        editor.commit()
         val intent = Intent(mContext, MainActivity::class.java)
         mContext.startActivity(intent)
+        (mContext as Activity).finish()
     }
 
 
@@ -119,6 +116,16 @@ class PresenterLogin() : ContractLogin.Presenter {
             //권한 요청!
             val array = arrayOfNulls<String>(rejectedPermissionList.size)
             ActivityCompat.requestPermissions((mContext as Activity) , rejectedPermissionList.toArray(array), multiplePermissionsCode)
+        }
+    }
+
+    //자동로그인
+    override fun isSignin() {
+        preferences = mContext.getSharedPreferences("USERSIGN", 0)
+        val isLoginEmail: String = preferences!!.getString("autoLoginEmail", "")!!;
+        val isLoginPw: String = preferences!!.getString("autoLoginPw", "")!!;
+        if(!isLoginEmail.equals("")){//로그인 되어있는 상태라면
+            LogIn(isLoginEmail,isLoginPw ) //로그인
         }
     }
 

@@ -19,9 +19,10 @@ interface ContractMyPage {
         fun showDialog(showText:String, context: Context, params: FrameLayout.LayoutParams)
         fun patchPortrait(fileUri:String?)
         fun logout()
-        fun requestDeleteAccount()
+        fun inputPassword(type:String, mEmail:String)
         fun deleteAccount()
-        fun checkPassword(password:String)
+        fun checkPassword(password:String, type:String, mEmail:String)
+        fun findPassword(email: String)
     }
 
 }

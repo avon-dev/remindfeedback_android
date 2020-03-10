@@ -176,7 +176,52 @@
                         android:textColor="@color/blue"
                         android:textSize="20sp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/create_Feedback_Profile_Holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/under_line"
+                android:padding="8dp">
 
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/create_Feedback_Profile_Image"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:padding="4dp"
+                    android:src="@mipmap/ic_launcher" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/create_Feedback_Name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="TextView"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/create_Feedback_script"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="normal"
+                        android:fontFamily="@font/font"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="TextView"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
             <TextView
                     android:id="@+id/textView11"
                     android:layout_width="match_parent"

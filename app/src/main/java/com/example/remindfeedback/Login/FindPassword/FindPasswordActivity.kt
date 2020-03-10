@@ -21,8 +21,14 @@ class FindPasswordActivity : AppCompatActivity(), ContractFindPassword.View {
             view = this@FindPasswordActivity
             context = this@FindPasswordActivity
         }
-
-        find_Password_Token_Layout.visibility = View.GONE
+        var intent = intent
+        if(intent.hasExtra("isChange")){
+            find_Password_Token_Layout.visibility = View.VISIBLE
+            find_Password_Email_Layout.visibility = View.GONE
+            find_Password_Main_Tv.text = "이메일로 보내진 토큰을 확인하고 새 비밀번호와 함께 입력해주세요."
+        }else{
+            find_Password_Token_Layout.visibility = View.GONE
+        }
 
         find_Password_Email_Button.setOnClickListener{
             var intent = intent

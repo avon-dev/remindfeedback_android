@@ -48,9 +48,12 @@ class ChoiceAdviserActivity : AppCompatActivity() , ContractChoiceAdviser.View{
 
     }
 
-    override fun returnData(user_uid:String){
+    override fun returnData(user_uid:String, portrait:String, introduction:String, nickname:String){
         intent.putExtra("user_uid", user_uid)
         Log.e("choice activity", user_uid)
+        intent.putExtra("friend_portrait",portrait)
+        intent.putExtra("friend_introduction",introduction)
+        intent.putExtra("friend_nickname",nickname)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }

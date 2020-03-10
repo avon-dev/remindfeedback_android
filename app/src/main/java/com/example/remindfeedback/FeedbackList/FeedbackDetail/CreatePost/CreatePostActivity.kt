@@ -27,6 +27,7 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.R
+import com.example.remindfeedback.etcProcess.BasicDialog
 import com.example.remindfeedback.etcProcess.TutorialFrame
 import com.google.android.material.internal.ContextUtils
 import com.rey.material.app.BottomSheetDialog
@@ -415,16 +416,21 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
 
 
         if(requestCode == PICK_FROM_CAMERA){
-            Log.e("asd", "Asdasd")
-            val bitmap = MediaStore.Images.Media
-                .getBitmap(contentResolver, Uri.fromFile(tempFile))
-            val ei = ExifInterface(tempFile.absolutePath)
-            val orientation = ei.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED
-            )
-            var rotatedBitmap: Bitmap? = presenterCreatePost.rotateImage(bitmap, 90.toFloat());
-            storeImage(rotatedBitmap!!)
+            try{
+                Log.e("asd", "Asdasd")
+                val bitmap = MediaStore.Images.Media
+                    .getBitmap(contentResolver, Uri.fromFile(tempFile))
+                val ei = ExifInterface(tempFile.absolutePath)
+                val orientation = ei.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_UNDEFINED
+                )
+                var rotatedBitmap: Bitmap? = presenterCreatePost.rotateImage(bitmap, 90.toFloat());
+                storeImage(rotatedBitmap!!)
+            }catch (e:Exception){
+                Log.e("PICK_FROM_CAMERA", "포스트 생성 카메라부분")
+            }
+
         }
         if (requestCode == PickConfig.PICK_PHOTO_DATA) {
             Log.e("PICK_PHOTO_DATA", "PICK_PHOTO_DATA")
@@ -549,7 +555,10 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         }
     }
 
-
+    override fun onBackPressed() {
+        var bDialog=BasicDialog("게시글 생성을 취소하시겠습니까?", this, {finish()},{})
+        bDialog.makeDialog()
+    }
 
 
 }

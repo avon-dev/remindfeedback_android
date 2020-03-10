@@ -65,10 +65,10 @@ class PresenterChoiceAdviser : ContractChoiceAdviser.Presenter {
         })
     }
 
-    override fun returnData(user_uid: String) {
+    override fun returnData(user_uid: String, portrait:String, introduction:String, nickname:String) {
         Log.e("adapter choice", user_uid)
 
-        view.returnData(user_uid)
+        view.returnData(user_uid,portrait, introduction, nickname)
     }
 
 
