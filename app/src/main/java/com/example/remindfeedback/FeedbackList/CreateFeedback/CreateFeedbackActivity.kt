@@ -116,6 +116,7 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         //여기까지 달력코드
 
 
+        //첫실행인지 판단
         firstRunCheck()
 
     }

@@ -8,8 +8,10 @@ import com.example.remindfeedback.Login.ContractLogin
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
 import com.example.remindfeedback.etcProcess.BasicDialog
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,19 +45,24 @@ class PresenterFindPassword: ContractFindPassword.Presenter {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
 
-        val register_request: Call<ResponseBody> = apiService.ChangingPassword(
+        val register_request: Call<Object> = apiService.ChangingPassword(
            ChangingPassword(token, password)
         )
-        register_request.enqueue(object : Callback<ResponseBody> {
+        register_request.enqueue(object : Callback<Object> {
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            override fun onResponse(call: Call<Object>, response: Response<Object>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(context, "패스워드 수정이 완료되었습니다.", Toast.LENGTH_LONG).show()
+                    var jObject: JSONObject = JSONObject(Gson().toJson(response.body()))
+                    if(jObject.getBoolean("success")){
+                        (context as Activity).finish()
+                    }
+                    Toast.makeText(context, jObject.getString("message"), Toast.LENGTH_LONG).show()
+
                 } else {
                     Toast.makeText(context, "에러가 발생했습니다. 다시 시도해 주세요.", Toast.LENGTH_LONG).show()
                 }
             }
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            override fun onFailure(call: Call<Object>, t: Throwable) {
             }
         })
     }

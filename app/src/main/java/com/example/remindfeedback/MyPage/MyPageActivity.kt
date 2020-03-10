@@ -51,6 +51,7 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
     private val multiplePermissionsCode = 100
 
     var imageData:String = ""
+    var myEmail:String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_page)
@@ -113,12 +114,12 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
             basicDialog.makeDialog()
         }
         delete_Account_Button.setOnClickListener{
-            var basicDialog: BasicDialog = BasicDialog("회원탈퇴 하시겠습니까?", this, { presenterMyPage.inputEmail("delete")
+            var basicDialog: BasicDialog = BasicDialog("회원탈퇴 하시겠습니까?", this, { presenterMyPage.inputPassword("delete",myEmail)
                }, {})
             basicDialog.makeDialog()
         }
         patch_My_Password_Button.setOnClickListener{
-            var basicDialog: BasicDialog = BasicDialog("비밀번호를 변경하시겠습니까?", this, { presenterMyPage.inputEmail("change")
+            var basicDialog: BasicDialog = BasicDialog("비밀번호를 변경하시겠습니까?", this, { presenterMyPage.inputPassword("change",myEmail)
             }, {})
             basicDialog.makeDialog()
         }
@@ -128,6 +129,7 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
     override fun setInfo(email: String, nickname: String, portrait: String?, introduction: String?) {
         mypage_Nickname_Tv.text = nickname
         mypage_Email_Tv.text = email
+        myEmail = email//비번변경에 사용될변수
 //        mypage_Email_Tv_2.text = email
         mypage_Introduction_Tv.text = introduction
         if(!portrait.equals("")){

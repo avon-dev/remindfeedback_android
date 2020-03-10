@@ -47,7 +47,7 @@ interface ServiceAPI {
 
     //비밀번호 변경
     @PATCH("auth/password/")
-    fun ChangingPassword(@Body changingPassword: ChangingPassword): Call<ResponseBody>
+    fun ChangingPassword(@Body changingPassword: ChangingPassword): Call<Object>
 
     //회원정보 삭제
     @DELETE("auth/unregister")
