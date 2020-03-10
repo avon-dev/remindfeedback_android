@@ -12,18 +12,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.remindfeedback.FeedbackList.MainActivity
 import com.example.remindfeedback.Network.RetrofitFactory
-import com.example.remindfeedback.R
-import com.example.remindfeedback.ServerModel.GetMe
 import com.example.remindfeedback.ServerModel.LogIn
-import com.example.remindfeedback.ServerModel.RequestFindPassword
-import com.gun0912.tedpermission.PermissionListener
-import com.gun0912.tedpermission.TedPermission
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
+import java.util.*
+
 
 class PresenterLogin() : ContractLogin.Presenter {
 
@@ -77,17 +76,16 @@ class PresenterLogin() : ContractLogin.Presenter {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
 
-        val register_request: Call<GetMe> = apiService.GET_User()
-        register_request.enqueue(object : Callback<GetMe> {
+        val register_request: Call<Object> = apiService.GET_User()
+        register_request.enqueue(object : Callback<Object> {
 
-            override fun onResponse(call: Call<GetMe>, response: Response<GetMe>) {
+            override fun onResponse(call: Call<Object>, response: Response<Object>) {
                 if (response.isSuccessful) {
-
                 } else {
                     val StatusCode = response.code()
                 }
             }
-            override fun onFailure(call: Call<GetMe>, t: Throwable) {
+            override fun onFailure(call: Call<Object>, t: Throwable) {
             }
         })
         preferences = mContext.getSharedPreferences("USERSIGN", 0)

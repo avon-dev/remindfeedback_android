@@ -11,7 +11,7 @@ interface ContractChoiceAdviser {
     interface View {
         fun refresh()
 
-        fun returnData(user_uid: String)
+        fun returnData(user_uid: String,portrait:String, introduction:String, nickname:String)
 
     }
 
@@ -21,7 +21,7 @@ interface ContractChoiceAdviser {
 
         fun loadItems(list: ArrayList<ModelFriendsList>, adapterChoiceAdviser: AdapterChoiceAdviser)
 
-        fun returnData(user_uid: String)
+        fun returnData(user_uid: String, portrait:String, introduction:String, nickname:String)
 
     }
 }

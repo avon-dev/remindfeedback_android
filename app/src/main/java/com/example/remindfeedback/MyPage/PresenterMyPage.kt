@@ -195,7 +195,7 @@ class PresenterMyPage : ContractMyPage.Presenter{
     }
 
     //비밀번호를 다시입력하고 탈퇴를 해야할거같은데 그럴수 있는 방법이 없는거같음 이거는 일단 보류
-    override fun requestDeleteAccount() {
+    override fun inputEmail(type:String) {
         val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         params.leftMargin = mContext.resources.getDimensionPixelSize(R.dimen.dialog_margin)
         params.rightMargin = mContext.resources.getDimensionPixelSize(R.dimen.dialog_margin)
@@ -210,13 +210,13 @@ class PresenterMyPage : ContractMyPage.Presenter{
 
         container.addView(et)
         val alt_bld = AlertDialog.Builder(mContext, R.style.MyAlertDialogStyle)
-        alt_bld.setTitle("회원탈퇴")
-            .setMessage("비밀번호를 입력 해주세요")
+        alt_bld.setTitle("비밀번호를 입력 해주세요")
+            //.setMessage("비밀번호를 입력 해주세요")
             .setCancelable(true)
             .setView(container)
             .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
                 val value = et.getText().toString()
-                checkPassword(et.text.toString())
+                checkPassword(et.text.toString(),type)
 
             })
         val alert = alt_bld.create()
@@ -225,7 +225,7 @@ class PresenterMyPage : ContractMyPage.Presenter{
 
 
     }
-    override fun checkPassword(password:String){
+    override fun checkPassword(password:String, type:String){
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         val register_request: Call<GetSuccessData> = apiService.CheckPassword(CheckingPassword(password))
@@ -235,7 +235,12 @@ class PresenterMyPage : ContractMyPage.Presenter{
                     var mData:GetSuccessData = response.body()!!
                     Toast.makeText(mContext, mData.message, Toast.LENGTH_LONG).show()
                     if(mData.success){
-                        deleteAccount()
+                        if(type.equals("delete")){
+                            deleteAccount()
+                        }else if(type.equals("change")){
+                            changePassword()
+                        }
+
                     }
                 } else {
                     Log.e("asdasdasd", "뭔가 실패함")
@@ -246,6 +251,9 @@ class PresenterMyPage : ContractMyPage.Presenter{
         })
     }
 
+    override fun changePassword(){
+
+    }
 
 
     override fun deleteAccount() {

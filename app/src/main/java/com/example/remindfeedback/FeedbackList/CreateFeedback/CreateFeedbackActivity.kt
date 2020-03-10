@@ -18,11 +18,14 @@ import com.example.remindfeedback.FeedbackList.CreateFeedback.ChoiceAdviser.Choi
 import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.PickCategoryActivity
 import com.example.remindfeedback.R
 import com.example.remindfeedback.Register.RegisterActivity
+import com.example.remindfeedback.etcProcess.BasicDialog
 import com.example.remindfeedback.etcProcess.TutorialFrame
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_create_feedback.*
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -169,6 +172,7 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
                 when (resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         adviser_uid = data.getStringExtra("user_uid")
+                        setAdviser(data.getStringExtra("friend_portrait"),data.getStringExtra("friend_introduction"),data.getStringExtra("friend_nickname"))
                     }
 
                 }
@@ -176,7 +180,17 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
 
         }
     }
-
+    //조언자 선택시 조언자 정보를 셋팅해중
+    override fun setAdviser(portrait:String, introduction:String, nickname:String){
+        create_Feedback_Profile_Holder.visibility = View.VISIBLE
+        if(!portrait.equals("")){
+            Picasso.get().load(portrait).into(create_Feedback_Profile_Image)
+        }else{
+            create_Feedback_Profile_Image.setImageResource(R.drawable.ic_default_profile)
+        }
+        create_Feedback_Name.setText(nickname)
+        create_Feedback_script.setText(introduction)
+    }
 
     // 피드백 수정시 화면에 기존 데이터 보여주기
     override fun setData() {
@@ -244,6 +258,10 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
             finish()
         }
         return true
+    }
+    override fun onBackPressed() {
+        var bDialog= BasicDialog("피드백 생성을 취소하시겠습니까?", this, {finish()},{})
+        bDialog.makeDialog()
     }
 
 }

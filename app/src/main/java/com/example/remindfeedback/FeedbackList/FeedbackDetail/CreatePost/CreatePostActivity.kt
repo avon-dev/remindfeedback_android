@@ -27,6 +27,7 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindfeedback.R
+import com.example.remindfeedback.etcProcess.BasicDialog
 import com.example.remindfeedback.etcProcess.TutorialFrame
 import com.google.android.material.internal.ContextUtils
 import com.rey.material.app.BottomSheetDialog
@@ -554,7 +555,10 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         }
     }
 
-
+    override fun onBackPressed() {
+        var bDialog=BasicDialog("게시글 생성을 취소하시겠습니까?", this, {finish()},{})
+        bDialog.makeDialog()
+    }
 
 
 }

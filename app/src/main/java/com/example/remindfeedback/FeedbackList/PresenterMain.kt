@@ -14,8 +14,10 @@ import com.example.remindfeedback.FeedbackList.CreateFeedback.PickCategory.Model
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
 import com.example.remindfeedback.etcProcess.MyProgress
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -120,7 +122,7 @@ class PresenterMain : ContractMain.Presenter {
                     Toast.makeText(context, "데이터를 불러올 수 없습니다. 개발자에게 문의 해주세요", Toast.LENGTH_SHORT).show()
                     Log.e("getfeedbackError", t.message)
                 }
-                
+
             }
         })
     }
@@ -556,20 +558,16 @@ class PresenterMain : ContractMain.Presenter {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
 
-        val register_request: Call<GetMe> = apiService.GET_User()
-        register_request.enqueue(object : Callback<GetMe> {
+        val register_request: Call<Object> = apiService.GET_User()
+        register_request.enqueue(object : Callback<Object> {
 
-            override fun onResponse(call: Call<GetMe>, response: Response<GetMe>) {
+            override fun onResponse(call: Call<Object>, response: Response<Object>) {
                 if (response.isSuccessful) {
-                    var getMe:GetMe = response.body()!!
-                    var myInfo:getMyInfo = getMe.data!!
 
-                    var nickname = myInfo.nickname
-                    var email = myInfo.email
-                    var portrait = myInfo.portrait
+                    var jObject: JSONObject = JSONObject(Gson().toJson(response.body()))
+                    var mData = jObject.getJSONObject("data")
+                    view.setNavData(mData.getString("nickname"), mData.getString("email"), mData.getString("portrait"))
 
-
-                    view.setNavData(nickname!!, email, portrait!!)
                 } else {
                     val StatusCode = response.code()
                     Log.e("post", "Status Code : $StatusCode")
@@ -577,7 +575,7 @@ class PresenterMain : ContractMain.Presenter {
                 Log.e("tag", "response=" + response.raw())
             }
 
-            override fun onFailure(call: Call<GetMe>, t: Throwable) {
+            override fun onFailure(call: Call<Object>, t: Throwable) {
             }
         })
 

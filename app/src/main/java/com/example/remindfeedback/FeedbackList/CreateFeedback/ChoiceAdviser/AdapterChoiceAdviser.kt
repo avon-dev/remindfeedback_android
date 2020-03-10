@@ -83,7 +83,7 @@ class AdapterChoiceAdviser(
 
 
             itemView.setOnClickListener {
-                presenterChoiceAdviser.returnData(friends_list.friend_uid)
+                presenterChoiceAdviser.returnData(friends_list.friend_uid, friends_list.friendsProfileImage, friends_list.friendsScript, friends_list.friendsName)
             }
 
 

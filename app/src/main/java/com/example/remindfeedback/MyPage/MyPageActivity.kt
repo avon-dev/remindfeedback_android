@@ -27,12 +27,16 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import android.R.attr.bitmap
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.remindfeedback.FeedbackList.MainActivity
 import com.example.remindfeedback.Login.LoginActivity
 import com.example.remindfeedback.etcProcess.BasicDialog
 import com.squareup.picasso.Picasso
+import java.util.ArrayList
+import java.util.jar.Manifest
 
 
 class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
@@ -40,6 +44,11 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
     private val TAG = "MyPageActivity"
     internal lateinit var presenterMyPage: PresenterMyPage
     internal lateinit var preferences: SharedPreferences
+    private val requiredPermissions = arrayOf(
+        android.Manifest.permission.CAMERA,
+        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        android.Manifest.permission.READ_EXTERNAL_STORAGE)
+    private val multiplePermissionsCode = 100
 
     var imageData:String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,10 +84,28 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
         }
         //프로필 이미지 수정 버튼 눌렀을때
         patch_My_Portrait_Button.setOnClickListener {
-            val intent = Intent(this, ImagePickActivity::class.java)
-            intent.putExtra("imageData", imageData)
-            Log.e("aaaaa", imageData)
-            startActivityForResult(intent, 100)
+            var isTrue = true
+            var rejectedPermissionList = ArrayList<String>()
+
+            for(permission in requiredPermissions){
+                if(ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                    isTrue = false//권한없으면 안됨
+                    rejectedPermissionList.add(permission)
+                }
+            }
+            if(isTrue){//권한있으면 이동
+                val intent = Intent(this, ImagePickActivity::class.java)
+                intent.putExtra("imageData", imageData)
+                startActivityForResult(intent, 100)
+            }else{
+                Toast.makeText(this, "프로필 설정 권한이 없습니다.", Toast.LENGTH_LONG).show()
+                if(rejectedPermissionList.isNotEmpty()){
+                    //권한 요청!
+                    val array = arrayOfNulls<String>(rejectedPermissionList.size)
+                    ActivityCompat.requestPermissions((this as Activity) , rejectedPermissionList.toArray(array), multiplePermissionsCode)
+                }
+            }
+
         }
         logout_Button.setOnClickListener{
             var basicDialog: BasicDialog = BasicDialog("로그아웃 하시겠습니까?", this, { presenterMyPage.logout()
@@ -86,8 +113,13 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
             basicDialog.makeDialog()
         }
         delete_Account_Button.setOnClickListener{
-            var basicDialog: BasicDialog = BasicDialog("회원탈퇴 하시겠습니까?", this, { presenterMyPage.requestDeleteAccount()
+            var basicDialog: BasicDialog = BasicDialog("회원탈퇴 하시겠습니까?", this, { presenterMyPage.inputEmail("delete")
                }, {})
+            basicDialog.makeDialog()
+        }
+        patch_My_Password_Button.setOnClickListener{
+            var basicDialog: BasicDialog = BasicDialog("비밀번호를 변경하시겠습니까?", this, { presenterMyPage.inputEmail("change")
+            }, {})
             basicDialog.makeDialog()
         }
     }
