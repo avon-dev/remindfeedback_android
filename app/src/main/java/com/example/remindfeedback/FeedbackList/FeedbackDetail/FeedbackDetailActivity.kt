@@ -62,8 +62,7 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
         supportActionBar?.setCustomView(R.layout.actionbar_title)
-        //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
-        ab.setDisplayHomeAsUpEnabled(true)
+
         preferences = getSharedPreferences("USERSIGN", 0)
 
         //새로운 fab설정하는 부분
@@ -79,6 +78,12 @@ class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View 
         feedback_complete = intent.getIntExtra("complete", -2)
         feedback_adviser = intent.getStringExtra("adviser")
         Log.e("넘어온 feedbackMyYour", feedbackMyYour.toString())
+
+        //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
+        if (feedbackMyYour == 0) {
+            ab.setDisplayHomeAsUpEnabled(true)
+        }
+
         feedback_Detail_Title_Tv.text = "[" + intent.getStringExtra("title") + "]에 대한 피드백"
         feedback_Detail_Date_Tv.text = "목표일 : " + intent.getStringExtra("date")
         setupFab()
