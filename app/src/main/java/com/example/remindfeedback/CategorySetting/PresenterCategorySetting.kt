@@ -2,12 +2,15 @@ package com.example.remindfeedback.CategorySetting
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.CreateCategory
 import com.example.remindfeedback.ServerModel.GetCategory
 import com.example.remindfeedback.ServerModel.myCategory_List
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,11 +58,13 @@ class PresenterCategorySetting : ContractCategorySetting.Presenter {
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
         var createCategory: CreateCategory = CreateCategory(title, color)
-        val register_request: Call<GetCategory> = apiService.CreateCategory(createCategory)
-        register_request.enqueue(object : Callback<GetCategory> {
+        val register_request: Call<Object> = apiService.CreateCategory(createCategory)
+        register_request.enqueue(object : Callback<Object> {
 
-            override fun onResponse(call: Call<GetCategory>, response: Response<GetCategory>) {
+            override fun onResponse(call: Call<Object>, response: Response<Object>) {
                 if (response.isSuccessful) {
+                    var jObject: JSONObject = JSONObject(Gson().toJson(response.body()))
+                    Toast.makeText(context, jObject.getString("message"), Toast.LENGTH_LONG).show()
                     var modelCategorySetting: ModelCategorySetting = ModelCategorySetting(-1, color, title)
                     mAdapter.addItem(modelCategorySetting)
                     list.clear()
@@ -69,7 +74,7 @@ class PresenterCategorySetting : ContractCategorySetting.Presenter {
                 }
             }
 
-            override fun onFailure(call: Call<GetCategory>, t: Throwable) {
+            override fun onFailure(call: Call<Object>, t: Throwable) {
             }
         })
 

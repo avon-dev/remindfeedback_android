@@ -2,9 +2,12 @@ package com.example.remindfeedback.Login.FindPassword
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.util.Log
 import android.widget.Toast
 import com.example.remindfeedback.Login.ContractLogin
+import com.example.remindfeedback.Login.LoginActivity
 import com.example.remindfeedback.Network.RetrofitFactory
 import com.example.remindfeedback.ServerModel.*
 import com.example.remindfeedback.etcProcess.BasicDialog
@@ -42,6 +45,8 @@ class PresenterFindPassword: ContractFindPassword.Presenter {
         })
     }
     override fun changingPassword(token:String, password:String){
+        var preferences: SharedPreferences = context.getSharedPreferences("USERSIGN", 0)
+
         val client: OkHttpClient = RetrofitFactory.getClient(context, "addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
 
@@ -55,6 +60,14 @@ class PresenterFindPassword: ContractFindPassword.Presenter {
                     var jObject: JSONObject = JSONObject(Gson().toJson(response.body()))
                     if(jObject.getBoolean("success")){
                         (context as Activity).finish()
+                        val editor = preferences.edit()
+                        editor.putString("autoLoginEmail", "")
+                        editor.putString("autoLoginPw", "")
+                        editor.commit()
+                        val intent = Intent(context, LoginActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        context.startActivity(intent)
                     }
                     Toast.makeText(context, jObject.getString("message"), Toast.LENGTH_LONG).show()
 

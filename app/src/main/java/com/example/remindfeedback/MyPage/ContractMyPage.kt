@@ -15,6 +15,7 @@ interface ContractMyPage {
 
         var view: View
         var mContext:Context
+        var keyString:String
         fun getInfo()
         fun showDialog(showText:String, context: Context, params: FrameLayout.LayoutParams)
         fun patchPortrait(fileUri:String?)

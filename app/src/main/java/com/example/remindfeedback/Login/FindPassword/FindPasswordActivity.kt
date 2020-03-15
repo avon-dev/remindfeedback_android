@@ -7,8 +7,10 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.remindfeedback.Login.PresenterLogin
 import com.example.remindfeedback.R
+import com.example.remindfeedback.etcProcess.Sha256Util
 
 import kotlinx.android.synthetic.main.activity_find_password.*
+import kotlinx.android.synthetic.main.activity_register.*
 
 class FindPasswordActivity : AppCompatActivity(), ContractFindPassword.View {
 
@@ -56,7 +58,7 @@ class FindPasswordActivity : AppCompatActivity(), ContractFindPassword.View {
             }else if(!find_Password_Password_Tv.text.toString().equals(find_Password_Confirm_Password_Tv.text.toString())){
                 Toast.makeText(this, "비밀번호와 비밀번호 확인이 일치하지 않습니다.", Toast.LENGTH_LONG).show()
             }else{
-                presenterFindPassword.changingPassword(find_Password_Token_Tv.text.toString(), find_Password_Password_Tv.text.toString())
+                presenterFindPassword.changingPassword(find_Password_Token_Tv.text.toString(), Sha256Util.testSHA256(find_Password_Password_Tv.text.toString()+getString(R.string.register_key)))
             }
         }
     }
