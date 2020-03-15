@@ -225,6 +225,8 @@ class AdapterMainFeedback(
                 var stryyyy = yearFormat.format(currentTime)
                 var strMM = monthFormat.format(currentTime)
                 var strdd = dayFormat.format(currentTime)
+                //var nowDate = LocalDate.now()
+                //var strNow = currentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 var strNow = stryyyy+"-"+strMM+"-"+strdd
                 Log.e("strnow",strNow)
                 // 피드백 날짜 - 형식으로 바꾸기

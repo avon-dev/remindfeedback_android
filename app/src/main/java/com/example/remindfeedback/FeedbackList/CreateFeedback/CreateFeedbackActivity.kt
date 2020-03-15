@@ -211,11 +211,15 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
                 mContext = this@CreateFeedbackActivity
             }
             presenterCreateFeedback.getOneCategory(modify_Category_ID)
-            val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
-            val localDate: LocalDate = LocalDate.parse(date, formatter)
-            Log.e("localDate", localDate.toString())
-
-            choosedData = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+            var fbSplit = date.split("년 ", "월 ", "일")
+            var fbDate: String = ""
+            for (i in 0..2 step 1) {
+                fbDate = fbSplit[0] + "-" + fbSplit[1] + "-" + fbSplit[2]
+            }
+            var format:SimpleDateFormat  =SimpleDateFormat("yyyy-MM-dd");
+            var Date  = format.parse(fbDate);
+            Log.e("asd",Date.toString())
+            choosedData = Date
             Log.e("choosedData", choosedData.toString())
             stringDate = SimpleDateFormat("yyyy-MM-dd").format(choosedData)
 
