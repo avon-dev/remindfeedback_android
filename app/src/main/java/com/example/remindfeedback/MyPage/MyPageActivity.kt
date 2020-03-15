@@ -65,6 +65,7 @@ class MyPageActivity : AppCompatActivity() , ContractMyPage.View{
         presenterMyPage = PresenterMyPage().apply {
             view = this@MyPageActivity
             mContext = this@MyPageActivity
+            keyString = getString(R.string.register_key)
         }
         presenterMyPage.getInfo()
 

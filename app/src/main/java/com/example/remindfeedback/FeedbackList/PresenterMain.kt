@@ -565,8 +565,14 @@ class PresenterMain : ContractMain.Presenter {
                 if (response.isSuccessful) {
 
                     var jObject: JSONObject = JSONObject(Gson().toJson(response.body()))
-                    var mData = jObject.getJSONObject("data")
-                    view.setNavData(mData.getString("nickname"), mData.getString("email"), mData.getString("portrait"))
+
+                    if(jObject.getString("data").equals("")){
+
+                    }else{
+                        var mData = jObject.getJSONObject("data")
+                        view.setNavData(mData.getString("nickname"), mData.getString("email"), mData.getString("portrait"))
+                    }
+
 
                 } else {
                     val StatusCode = response.code()

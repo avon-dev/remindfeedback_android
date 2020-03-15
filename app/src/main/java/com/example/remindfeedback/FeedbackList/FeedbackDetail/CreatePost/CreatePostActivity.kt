@@ -86,6 +86,11 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         //뒤로가기 버튼 만들어주는부분 -> 메니페스트에 부모액티비티 지정해줘서 누르면 그쪽으로 가게끔함
 //        ab.setDisplayHomeAsUpEnabled(true)
 
+        //초기 뷰셋팅
+        add_File_View.visibility = View.GONE
+        contents_Image.setImageResource(R.drawable.ic_text)
+        contents_Type_Change_Button.text = "[ 글 ]"
+
         setData()
         presenterCreatePost = PresenterCreatePost().apply {
             view = this@CreatePostActivity
@@ -93,10 +98,6 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
         }
         preferences = getSharedPreferences("USERSIGN", 0)
 
-        //초기 뷰셋팅
-        add_File_View.visibility = View.GONE
-        contents_Image.setImageResource(R.drawable.ic_text)
-        contents_Type_Change_Button.text = "[ 글 ]"
 
         add_File_Button.setOnClickListener() {
             if (return_type == 1) {//사진일경우
@@ -296,8 +297,6 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             ab.setTitle("게시글 수정하기")
             feedback_id = intent.getIntExtra("feedback_id", -1)
             board_id = intent.getIntExtra("board_id", -1)
-            Log.e("setData (feedback_id)", feedback_id.toString())
-            Log.e("setData (board_id)", board_id.toString())
             create_Post_Title_Tv.setText(intent.getStringExtra("title"))
             create_Post_Script_Tv.setText(intent.getStringExtra("content"))
             if (intent.getIntExtra("board_category", -1) == 0) {  // 글
@@ -306,6 +305,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             } else if (intent.getIntExtra("board_category", -1) == 1) { // 사진
                 contents_Image.setImageResource(R.drawable.ic_photo_black)
                 contents_Type_Change_Button.setText("[ 사진 ]")
+                //add_File_View.visibility = View.VISIBLE
             }
         }
 
@@ -556,8 +556,14 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
     }
 
     override fun onBackPressed() {
-        var bDialog=BasicDialog("게시글 생성을 취소하시겠습니까?", this, {finish()},{})
-        bDialog.makeDialog()
+        if (intent.hasExtra("title")) {
+            var bDialog=BasicDialog("게시글 수정을 취소하시겠습니까?", this, {finish()},{})
+            bDialog.makeDialog()
+        }else{
+            var bDialog=BasicDialog("게시글 생성을 취소하시겠습니까?", this, {finish()},{})
+            bDialog.makeDialog()
+        }
+
     }
 
 

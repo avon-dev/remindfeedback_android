@@ -78,9 +78,10 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
                                         Toast.makeText(this, "이용약관에 모두 동의하여 주세요.", Toast.LENGTH_SHORT).show()
                                     } else {
 
-                                        presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(),Sha256Util.testSHA256(password_Input.text.toString()), token_Input.text.toString())
+                                        presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(),Sha256Util.testSHA256(password_Input.text.toString()+getString(R.string.register_key)), token_Input.text.toString())
                                         //finish()
                                     }
+
 
                                 }
 

@@ -40,6 +40,7 @@ class PresenterMyPage : ContractMyPage.Presenter{
 
     lateinit override var view: ContractMyPage.View
     lateinit override var mContext: Context
+    lateinit override var keyString:String
     override fun getInfo() {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext,"addCookie")
         val apiService = RetrofitFactory.serviceAPI(client)
@@ -225,7 +226,7 @@ class PresenterMyPage : ContractMyPage.Presenter{
             .setCancelable(true)
             .setView(container)
             .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-                val value = Sha256Util.testSHA256(et.getText().toString())
+                val value = Sha256Util.testSHA256(et.getText().toString()+keyString)
                 checkPassword(value,type,mEmail)
 
             })

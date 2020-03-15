@@ -23,6 +23,7 @@ import com.rey.material.app.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_feedback_detail.*
 import com.gordonwong.materialsheetfab.MaterialSheetFab
 import com.gordonwong.materialsheetfab.MaterialSheetFabEventListener
+import kotlinx.android.synthetic.main.actionbar_title.*
 import kotlinx.android.synthetic.main.new_floating.*
 
 class FeedbackDetailActivity : AppCompatActivity(), ContractFeedbackDetail.View , View.OnClickListener{

@@ -101,7 +101,8 @@ class AdapterFriendsList(val context: Context, val arrayList: ArrayList<ModelFri
                 intent.putExtra("script", friends_list.friendsScript)
                 intent.putExtra("friend_uid", friends_list.friend_uid)
                 intent.putExtra("type", friends_list.type)
-                context.startActivity(intent)
+                //context.startActivity(intent)
+                //친구페이지 가는거 막아놓음
             }
 
             itemView.setOnLongClickListener {

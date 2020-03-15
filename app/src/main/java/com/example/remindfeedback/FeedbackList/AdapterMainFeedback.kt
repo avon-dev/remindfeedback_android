@@ -213,11 +213,22 @@ class AdapterMainFeedback(
             }
 
             if(feedback_list.complete != 2){//완료가 아닐경우
+
+
                 main_Feedback_Dday.visibility = View.VISIBLE
                 // 디데이
-                var nowDate = LocalDate.now()
-                var strNow = nowDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
+                var currentTime:Date  = Calendar.getInstance().getTime();
+                var dayFormat:SimpleDateFormat = SimpleDateFormat("dd", Locale.getDefault());
+                var monthFormat:SimpleDateFormat  = SimpleDateFormat("MM", Locale.getDefault());
+                var  yearFormat:SimpleDateFormat  = SimpleDateFormat("yyyy", Locale.getDefault());
+                var stryyyy = yearFormat.format(currentTime)
+                var strMM = monthFormat.format(currentTime)
+                var strdd = dayFormat.format(currentTime)
+                //var nowDate = LocalDate.now()
+                //var strNow = currentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                var strNow = stryyyy+"-"+strMM+"-"+strdd
+                Log.e("strnow",strNow)
                 // 피드백 날짜 - 형식으로 바꾸기
                 var fbSplit = feedback_list?.date!!.split("년 ", "월 ", "일")
                 var fbDate: String
@@ -241,6 +252,7 @@ class AdapterMainFeedback(
                         main_Feedback_Dday.setText("D - " + differInt)
                     }
                 }
+
             }else{//완료일경우
                 main_Feedback_Dday.visibility = View.GONE
             }

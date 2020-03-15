@@ -8,6 +8,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import retrofit2.http.POST
+import java.util.*
 
 
 interface ServiceAPI {
@@ -86,7 +87,11 @@ interface ServiceAPI {
 
     //주제 생성
     @POST("categories")
-    fun CreateCategory(@Body createCategory: CreateCategory): Call<GetCategory>
+    fun CreateCategory(@Body createCategory: CreateCategory): Call<Object>
+
+    // 주제 하나 불러오기
+    @GET("categories/{category_id}")
+    fun GetOneCategory(@Path("category_id") category_id: Int): Call<Object>
 
     // 주제 수정
     @PUT("categories/{category_id}")
