@@ -155,17 +155,11 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            100 -> {//이미지 선택
+            100 -> {//주제 선택
                 when (resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         create_Feedback_Title_Tv.text = data.getStringExtra("title")
-                        create_Feedback_Color_Tv.setBackgroundColor(
-                            Color.parseColor(
-                                data.getStringExtra(
-                                    "color"
-                                )
-                            )
-                        )
+                        create_Feedback_Color_Tv.setBackgroundColor(Color.parseColor(data.getStringExtra("color")))
                         create_Feedback_Id_Tv.text = data.getIntExtra("id", -1).toString()
                         intentColor = data.getStringExtra("color")
                         modify_Category_ID = data.getIntExtra("id", -1)
@@ -196,6 +190,11 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
         create_Feedback_script.setText(introduction)
     }
 
+    override fun setColor(categotyTitle: String, categoryColor: String) {
+        create_Feedback_Color_Tv.setBackgroundColor(Color.parseColor(categoryColor))
+        create_Feedback_Title_Tv.text = categotyTitle
+    }
+
     // 피드백 수정시 화면에 기존 데이터 보여주기
     override fun setData() {
         if (intent.hasExtra("title")) {
@@ -207,8 +206,11 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
             val date = intent.getStringExtra("date")
             create_Feedback_Title.setText(title)
             choose_Category_Tv.setText(date)
-
-
+            presenterCreateFeedback = PresenterCreateFeedback().apply {
+                view = this@CreateFeedbackActivity
+                mContext = this@CreateFeedbackActivity
+            }
+            presenterCreateFeedback.getOneCategory(modify_Category_ID)
             val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
             val localDate: LocalDate = LocalDate.parse(date, formatter)
             Log.e("localDate", localDate.toString())

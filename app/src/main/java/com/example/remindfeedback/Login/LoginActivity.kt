@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity(), ContractLogin.View {
         login_Button.setOnClickListener {
             if (email_Edittext.text.isNotEmpty() && password_Edittext.text.isNotEmpty()) {
                 presenterLogin.LogIn(email_Edittext.text.toString(), Sha256Util.testSHA256(password_Edittext.text.toString()))
-                email_Edittext.setText("")
+                //email_Edittext.setText("")
                 password_Edittext.setText("")
 
                 // finish()

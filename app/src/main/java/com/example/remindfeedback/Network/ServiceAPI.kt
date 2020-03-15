@@ -88,6 +88,10 @@ interface ServiceAPI {
     @POST("categories")
     fun CreateCategory(@Body createCategory: CreateCategory): Call<GetCategory>
 
+    // 주제 하나 불러오기
+    @GET("categories/{category_id}")
+    fun GetOneCategory(@Path("category_id") category_id: Int): Call<Object>
+
     // 주제 수정
     @PUT("categories/{category_id}")
     fun ModifyCategory(@Path("category_id") category_id: Int, @Body createCategory: CreateCategory): Call<GetCategory>
