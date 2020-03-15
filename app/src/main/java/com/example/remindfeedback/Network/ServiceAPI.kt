@@ -14,8 +14,8 @@ import java.util.*
 interface ServiceAPI {
 
     //회원가입
-    //@POST("auth/register")
-    @POST("auth/tempRegister")
+    //@POST("auth/tempRegister")
+    @POST("auth/register")
     fun SignUp(@Body json_account: SignUp): Call<GetSignUpData>
 
     //이메일인증
