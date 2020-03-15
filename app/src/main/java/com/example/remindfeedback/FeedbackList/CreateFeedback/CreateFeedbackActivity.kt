@@ -27,6 +27,9 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_create_feedback.*
 import org.json.JSONObject
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -204,6 +207,16 @@ class CreateFeedbackActivity : AppCompatActivity(), ContractCreateFeedback.View 
             val date = intent.getStringExtra("date")
             create_Feedback_Title.setText(title)
             choose_Category_Tv.setText(date)
+
+
+            val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
+            val localDate: LocalDate = LocalDate.parse(date, formatter)
+            Log.e("localDate", localDate.toString())
+
+            choosedData = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+            Log.e("choosedData", choosedData.toString())
+            stringDate = SimpleDateFormat("yyyy-MM-dd").format(choosedData)
+
         } else {
 
         }

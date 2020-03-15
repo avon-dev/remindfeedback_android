@@ -1,21 +1,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/drawerlayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/all_line"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/all_line"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="vertical">
 
-    <!--content-->
-    <LinearLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--content-->
+        <LinearLayout
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/blue"
@@ -24,14 +28,14 @@
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/nav_Portrait_Iv"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:contentDescription="imgtxt"
                     android:src="@mipmap/ic_launcher" />
 
-            <TextView
+                <TextView
                     android:id="@+id/nav_Nickname_Tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -42,16 +46,16 @@
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
-            <TextView
+                <TextView
                     android:id="@+id/nav_Email_Tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="sample@test.com"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -59,14 +63,14 @@
                 android:paddingTop="10dp">
 
 
-            <TextView
+                <TextView
                     android:id="@+id/textView22"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="Feedback" />
 
-            <LinearLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -74,22 +78,22 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                <ImageView
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         app:srcCompat="@drawable/ic_right_black" />
 
-                <TextView
+                    <TextView
                         android:id="@+id/request_Feedback"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="요청한 피드백"
                         android:textColor="#5b5b5b"
                         android:textSize="19dp" />
-            </LinearLayout>
+                </LinearLayout>
 
-            <LinearLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -97,22 +101,22 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                <ImageView
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         app:srcCompat="@drawable/ic_left_black" />
 
-                <TextView
+                    <TextView
                         android:id="@+id/receive_Feedback"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="요청 받은 피드백"
                         android:textColor="#5b5b5b"
                         android:textSize="19dp" />
-            </LinearLayout>
+                </LinearLayout>
 
-            <LinearLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -120,29 +124,29 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                <ImageView
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         app:srcCompat="@drawable/ic_list_black" />
 
-                <TextView
+                    <TextView
                         android:id="@+id/category_Setting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="주제설정"
                         android:textColor="#5b5b5b"
                         android:textSize="19dp" />
-            </LinearLayout>
+                </LinearLayout>
 
-            <TextView
+                <TextView
                     android:id="@+id/textView23"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:text="General" />
 
-            <LinearLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -150,22 +154,22 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                <ImageView
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         app:srcCompat="@drawable/ic_people_black" />
 
-                <TextView
+                    <TextView
                         android:id="@+id/friends_List"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="친구목록"
                         android:textColor="#5b5b5b"
                         android:textSize="19dp" />
-            </LinearLayout>
+                </LinearLayout>
 
-            <LinearLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -173,22 +177,22 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                <ImageView
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         app:srcCompat="@drawable/ic_account_black" />
 
-                <TextView
+                    <TextView
                         android:id="@+id/mypage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="마이페이지"
                         android:textColor="#5b5b5b"
                         android:textSize="19dp" />
-            </LinearLayout>
+                </LinearLayout>
 
-            <LinearLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -196,77 +200,79 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                <ImageView
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         app:srcCompat="@drawable/ic_settings_black" />
 
-                <TextView
+                    <TextView
                         android:id="@+id/setting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="환경설정"
                         android:textColor="#5b5b5b"
                         android:textSize="19dp" />
-            </LinearLayout>
+                </LinearLayout>
 
-            <LinearLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                <ImageView
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         app:srcCompat="@drawable/ic_logout_black" />
 
-                <TextView
+                    <TextView
                         android:id="@+id/logout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="로그아웃"
                         android:textColor="#5b5b5b"
                         android:textSize="19dp" />
+                </LinearLayout>
+
             </LinearLayout>
 
-
         </LinearLayout>
-
-    </LinearLayout>
+        
+    </ScrollView>
 
     <!--menu-->
     <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
-            android:id="@+id/menulayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:id="@+id/menulayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-                android:id="@+id/asd"
+            android:id="@+id/asd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textVddiew"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:text="TextView" />
 
             <TextView
-                    android:id="@+id/textVddiew"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
+                android:id="@+id/textVfaaiew7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
 
             <TextView
-                    android:id="@+id/textVfaaiew7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-
-            <TextView
-                    android:id="@+id/textVaasiew16"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
+                android:id="@+id/textVaasiew16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
         </LinearLayout>
 
     </com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>

@@ -89,6 +89,8 @@ class MainActivity : AppCompatActivity(),
     internal lateinit var preferences: SharedPreferences
     var tutorialCount:Int = 0
 
+    var user_uid:String = ""
+
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -309,7 +311,6 @@ class MainActivity : AppCompatActivity(),
             111 -> {    // 피드백 추가 후 돌아왔을 때
                 when (resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
-                        var user_uid:String = ""
                         if(data.hasExtra("user_uid")){
                             user_uid = data.getStringExtra("user_uid")
                         }
@@ -330,6 +331,9 @@ class MainActivity : AppCompatActivity(),
                 when (resultCode) {
                     Activity.RESULT_OK -> if (data != null) {
                         Log.e("return", data.getIntExtra("modify_id", -1).toString())
+                        if(data.hasExtra("user_uid")){
+                            user_uid = data.getStringExtra("user_uid")
+                        }
                         presenterMain.updateItems(
                             arrayList,
                             data.getIntExtra("modify_id", -1),
@@ -337,7 +341,7 @@ class MainActivity : AppCompatActivity(),
                             data.getStringExtra("date"),
                             data.getStringExtra("title"),
                             data.getStringExtra("color"),
-                            data.getStringExtra("user_uid"),
+                            user_uid,
                             mAdapter
                         )
                     }
