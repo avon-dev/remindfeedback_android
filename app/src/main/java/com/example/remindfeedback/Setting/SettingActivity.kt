@@ -56,5 +56,18 @@ class SettingActivity : AppCompatActivity(), ContractSetting.View {
             editor.commit()
             Toast.makeText(this, "댓글 정렬방식을 변경했습니다.", Toast.LENGTH_LONG).show()
         }
+
+        textView20.setOnClickListener{
+            Toast.makeText(this,"준비중입니다.", Toast.LENGTH_LONG).show()
+        }
+        textView17.setOnClickListener{
+            Toast.makeText(this,"준비중입니다.", Toast.LENGTH_LONG).show()
+        }
+        textView18.setOnClickListener{
+            Toast.makeText(this,"준비중입니다.", Toast.LENGTH_LONG).show()
+        }
+        textView19.setOnClickListener{
+            Toast.makeText(this,"준비중입니다.", Toast.LENGTH_LONG).show()
+        }
     }
 }
