@@ -96,7 +96,7 @@
                     android:background="@drawable/under_line"
                     android:gravity="center_vertical"
                     android:padding="16dp"
-                    android:text="피드백 만료 날짜"
+                    android:text="피드백 목표 날짜"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     android:textSize="20sp" />
 
