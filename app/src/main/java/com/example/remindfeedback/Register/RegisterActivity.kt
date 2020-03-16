@@ -27,7 +27,7 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        Log.e("Sha256Util", Sha256Util.testSHA256("1"))
+        //Log.e("Sha256Util", Sha256Util.testSHA256("123"+getString(R.string.register_key)))
 
         //액션바 설정
         var ab: ActionBar = this.supportActionBar!!
@@ -80,6 +80,7 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
 
                                         presenterRegister.signup(email_Input.text.toString(), nickname_Input.text.toString(),Sha256Util.testSHA256(password_Input.text.toString()+getString(R.string.register_key)), token_Input.text.toString())
                                         //finish()
+
                                     }
 
 

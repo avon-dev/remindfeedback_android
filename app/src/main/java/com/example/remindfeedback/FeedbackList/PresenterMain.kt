@@ -373,8 +373,8 @@ class PresenterMain : ContractMain.Presenter {
                 response: Response<CreateFeedback>
             ) {
                 if (response.isSuccessful) {
-                    list.clear()
-                    loadItems(list, adapterMainFeedback, 0)
+                    //list.clear()
+                    //loadItems(list, adapterMainFeedback, 0)
                     view.refresh()
                 } else {
                 }
