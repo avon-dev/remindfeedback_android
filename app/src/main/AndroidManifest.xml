@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.remindfeedback">
+    package="com.avon.remindfeedback">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -17,88 +17,88 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CropperActivity">
+        <activity android:name="com.avon.remindfeedback.CropperActivity">
 
         </activity>
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" /> <!-- optional (needed if default theme has no action bar) -->
-        <activity android:name=".DocumentActivity" />
+        <activity android:name="com.avon.remindfeedback.DocumentActivity" />
         <activity
-            android:name=".SplashActivity"
+            android:name="com.avon.remindfeedback.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Login.FindPassword.FindPasswordActivity"
+            android:name="com.avon.remindfeedback.Login.FindPassword.FindPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MyPage.ImagePick.ImagePickActivity"
+            android:name="com.avon.remindfeedback.MyPage.ImagePick.ImagePickActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".MyPage.MyPageActivity"/>
+            android:parentActivityName="com.avon.remindfeedback.MyPage.MyPageActivity"/>
         <activity
             android:name="com.soundcloud.android.crop.CropImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".CategorySetting.CreateCategory.ColorList.ColorListActivity"
+            android:name="com.avon.remindfeedback.CategorySetting.CreateCategory.ColorList.ColorListActivity"
             android:screenOrientation="unspecified"
             android:theme="@style/Theme.MyDialog" />
         <activity
-            android:name=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity" />
+            android:name="com.avon.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity" />
         <activity
-            android:name=".CategorySetting.CategorySettingActivity"
-            android:parentActivityName=".FeedbackList.MainActivity" />
+            android:name="com.avon.remindfeedback.CategorySetting.CategorySettingActivity"
+            android:parentActivityName="com.avon.remindfeedback.FeedbackList.MainActivity" />
         <activity
-            android:name=".FeedbackList.FeedbackDetail.CreatePost.Record.RecordActivity"
-            android:parentActivityName=".FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity" />
+            android:name="com.avon.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.Record.RecordActivity"
+            android:parentActivityName="com.avon.remindfeedback.FeedbackList.FeedbackDetail.CreatePost.CreatePostActivity" />
         <activity
-            android:name=".FeedbackList.FeedbackDetail.Post.PostActivity"
+            android:name="com.avon.remindfeedback.FeedbackList.FeedbackDetail.Post.PostActivity"
             android:screenOrientation="portrait" /> <!-- android:parentActivityName=".FeedbackList.FeedbackDetail.FeedbackDetailActivity" -->
         <activity
-            android:name=".FeedbackList.FeedbackDetail.FeedbackDetailActivity"
-            android:parentActivityName=".FeedbackList.MainActivity"
+            android:name="com.avon.remindfeedback.FeedbackList.FeedbackDetail.FeedbackDetailActivity"
+            android:parentActivityName="com.avon.remindfeedback.FeedbackList.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".FriendsList.FriendsPage.FriendsPageActivity"
-            android:parentActivityName=".FriendsList.FriendsListActivity" />
+            android:name="com.avon.remindfeedback.FriendsList.FriendsPage.FriendsPageActivity"
+            android:parentActivityName="com.avon.remindfeedback.FriendsList.FriendsListActivity" />
         <activity
-            android:name=".Alarm.AlarmActivity"
-            android:parentActivityName=".FeedbackList.MainActivity"
+            android:name="com.avon.remindfeedback.Alarm.AlarmActivity"
+            android:parentActivityName="com.avon.remindfeedback.FeedbackList.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Setting.SettingActivity"
-            android:parentActivityName=".FeedbackList.MainActivity" />
+            android:name="com.avon.remindfeedback.Setting.SettingActivity"
+            android:parentActivityName="com.avon.remindfeedback.FeedbackList.MainActivity" />
         <activity
-            android:name=".MyPage.MyPageActivity"
-            android:parentActivityName=".FeedbackList.MainActivity" />
+            android:name="com.avon.remindfeedback.MyPage.MyPageActivity"
+            android:parentActivityName="com.avon.remindfeedback.FeedbackList.MainActivity" />
         <activity
-            android:name=".FriendsList.FindFriends.FindFriendsActivity"
-            android:parentActivityName=".FriendsList.FriendsListActivity" />
+            android:name="com.avon.remindfeedback.FriendsList.FindFriends.FindFriendsActivity"
+            android:parentActivityName="com.avon.remindfeedback.FriendsList.FriendsListActivity" />
         <activity
-            android:name=".CreateCategory.CreateCategoryActivity"
-            android:parentActivityName=".CategorySetting.CategorySettingActivity" />
+            android:name="com.avon.remindfeedback.CreateCategory.CreateCategoryActivity"
+            android:parentActivityName="com.avon.remindfeedback.CategorySetting.CategorySettingActivity" />
         <activity
-            android:name=".FeedbackList.CreateFeedback.CreateFeedbackActivity"
-            android:parentActivityName=".FeedbackList.MainActivity" />
+            android:name="com.avon.remindfeedback.FeedbackList.CreateFeedback.CreateFeedbackActivity"
+            android:parentActivityName="com.avon.remindfeedback.FeedbackList.MainActivity" />
         <activity
-            android:name=".FriendsList.FriendsListActivity"
-            android:parentActivityName=".FeedbackList.MainActivity"
+            android:name="com.avon.remindfeedback.FriendsList.FriendsListActivity"
+            android:parentActivityName="com.avon.remindfeedback.FeedbackList.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Register.RegisterActivity"
-            android:parentActivityName=".Login.LoginActivity" />
+            android:name="com.avon.remindfeedback.Register.RegisterActivity"
+            android:parentActivityName="com.avon.remindfeedback.Login.LoginActivity" />
         <activity
-            android:name=".FeedbackList.CreateFeedback.PickCategory.PickCategoryActivity"
+            android:name="com.avon.remindfeedback.FeedbackList.CreateFeedback.PickCategory.PickCategoryActivity"
             android:screenOrientation="unspecified"
             android:theme="@style/Theme.MyDialog" />
         <activity
-            android:name=".FeedbackList.CreateFeedback.ChoiceAdviser.ChoiceAdviserActivity"
+            android:name="com.avon.remindfeedback.FeedbackList.CreateFeedback.ChoiceAdviser.ChoiceAdviserActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".FeedbackList.MainActivity"
+            android:name="com.avon.remindfeedback.FeedbackList.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Login.LoginActivity"
+            android:name="com.avon.remindfeedback.Login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
@@ -111,7 +111,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.remindfeedback.fileprovider"
+            android:authorities="com.avon.remindfeedback.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
