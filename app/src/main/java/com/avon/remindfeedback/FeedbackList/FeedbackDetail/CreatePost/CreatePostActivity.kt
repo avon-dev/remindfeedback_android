@@ -382,7 +382,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
             //val photoUri = Uri.fromFile(tempFile)
             val photoUri = FileProvider.getUriForFile(
                 this,
-                "com.example.remindfeedback.fileprovider",
+                "com.avon.remindfeedback.fileprovider",
                 tempFile
             )
             cameraintent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
@@ -447,7 +447,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                     //nonCropImage(arrayList)
                     val photoUri = FileProvider.getUriForFile(
                         this,
-                        "com.example.remindfeedback.fileprovider",
+                        "com.avon.remindfeedback.fileprovider",
                         File(i.toString())
                     )
                     Log.e("photoUri", photoUri.toString())

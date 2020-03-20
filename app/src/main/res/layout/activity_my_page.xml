@@ -100,12 +100,12 @@
                             android:textSize="18sp" />
 
                     <ImageView
-                            android:id="@+id/imageView8"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical|center_horizontal"
-                            android:layout_marginLeft="4dp"
-                            app:srcCompat="@drawable/ic_lock_black" />
+                        android:id="@+id/imageView8"
+                        android:layout_width="14dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginLeft="4dp"
+                        app:srcCompat="@drawable/ic_lock_black" />
                 </LinearLayout>
 
                 <TextView
