@@ -8,9 +8,11 @@ import android.widget.Toast
 import com.avon.remindfeedback.FeedbackList.MainActivity
 import com.avon.remindfeedback.Network.RetrofitFactory
 import com.avon.remindfeedback.ServerModel.*
+import com.google.gson.Gson
 
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,19 +27,26 @@ class PresenterRegister : ContractRegister.Presenter {
         val client: OkHttpClient = RetrofitFactory.getClient(mContext, "")
         val apiService = RetrofitFactory.serviceAPI(client)
         val signupclass: SignUp = SignUp(email, nickname, password, token)
-        val register_request: Call<GetSignUpData> = apiService.SignUp(signupclass)
-        register_request.enqueue(object : Callback<GetSignUpData> {
+        val register_request: Call<Object> = apiService.SignUp(signupclass)
+        register_request.enqueue(object : Callback<Object> {
 
 
-            override fun onResponse(call: Call<GetSignUpData>, response: Response<GetSignUpData>) {
+            override fun onResponse(call: Call<Object>, response: Response<Object>) {
                 if (response.isSuccessful) {
-                    var mData = response.body()!!
-                    if (mData.success) {
-                        //회원가입후 바로 로그인
-                        Toast.makeText(mContext, "회원가입이 완료되었습니다.", Toast.LENGTH_LONG).show()
-                        LogIn(email,password)
+
+                    var jObject: JSONObject = JSONObject(Gson().toJson(response.body()))
+
+                    if(jObject.getString("data").equals("NONE")){
+
+                    }else{
+                        if (jObject.getBoolean("success")) {
+                            //회원가입후 바로 로그인
+                            Toast.makeText(mContext, "회원가입이 완료되었습니다.", Toast.LENGTH_LONG).show()
+                            LogIn(email,password)
+                        }
                     }
-                    Toast.makeText(mContext, mData.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(mContext, jObject.getString("message"), Toast.LENGTH_LONG).show()
+
 
                 } else {
                     val StatusCode = response.code()
@@ -48,7 +57,7 @@ class PresenterRegister : ContractRegister.Presenter {
 
             }
 
-            override fun onFailure(call: Call<GetSignUpData>, t: Throwable) {
+            override fun onFailure(call: Call<Object>, t: Throwable) {
                 Log.e("회원가입 실패", t.message)
 
             }
