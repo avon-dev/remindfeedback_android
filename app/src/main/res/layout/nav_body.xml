@@ -33,7 +33,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:contentDescription="imgtxt"
-                    android:src="@drawable/ic_default_profile" />
+                    android:src="@drawable/d_image" />
 
                 <TextView
                     android:id="@+id/nav_Nickname_Tv"

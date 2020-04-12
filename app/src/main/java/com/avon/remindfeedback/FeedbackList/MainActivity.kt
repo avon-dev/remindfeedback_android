@@ -237,8 +237,6 @@ class MainActivity : AppCompatActivity(),
 
        if(!portrait.equals("")){
            Picasso.get().load("https://remindfeedback.s3.ap-northeast-2.amazonaws.com/"+portrait).into(nav_Portrait_Iv)
-       }else{
-           nav_Portrait_Iv.setImageResource(R.drawable.ic_default_profile)
        }
 
     }

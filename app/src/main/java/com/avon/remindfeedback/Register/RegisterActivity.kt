@@ -2,6 +2,7 @@ package com.avon.remindfeedback.Register
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +25,8 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        //Log.e("Sha256Util", Sha256Util.testSHA256("123"+getString(R.string.register_key)))
+        Log.e("Sha256Util1", Sha256Util.testSHA256("1"+getString(R.string.register_key)))
+        Log.e("Sha256Util2", Sha256Util.testSHA256("1"))
 
         //액션바 설정
         var ab: ActionBar = this.supportActionBar!!
