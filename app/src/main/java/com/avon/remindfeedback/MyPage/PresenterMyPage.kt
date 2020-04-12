@@ -25,6 +25,7 @@ import com.avon.remindfeedback.ServerModel.GetSuccessData
 import com.avon.remindfeedback.ServerModel.RequestFindPassword
 import com.avon.remindfeedback.etcProcess.Sha256Util
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_register.*
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,6 +33,7 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.util.regex.Pattern
 
 
 class PresenterMyPage : ContractMyPage.Presenter{

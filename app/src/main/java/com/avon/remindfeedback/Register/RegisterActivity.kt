@@ -64,7 +64,7 @@ class RegisterActivity : AppCompatActivity(), ContractRegister.View {
                         } else {
 
                             // 비밀번호 형식 체크
-                            if (!Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$", password_Input.text.toString())) {
+                            if (!Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&^])[A-Za-z[0-9]$@$!%*#?&^]{8,20}$", password_Input.text.toString())) {
                                 Toast.makeText(this, "비밀번호 형식을 지켜주세요.\n(영문,숫자,특수문자 포함 최소 8글자)", Toast.LENGTH_SHORT).show()
                             } else {
                                 //토큰입력했는지?
