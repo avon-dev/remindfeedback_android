@@ -14,7 +14,7 @@ interface ServiceAPI {
     //회원가입
     //@POST("auth/tempRegister")
     @POST("auth/register")
-    fun SignUp(@Body json_account: SignUp): Call<GetSignUpData>
+    fun SignUp(@Body json_account: SignUp): Call<Object>
 
     //이메일인증
     @POST("auth/email")

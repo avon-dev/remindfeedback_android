@@ -7,12 +7,14 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.text.InputFilter
+import android.text.InputType
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.avon.remindfeedback.Login.FindPassword.FindPasswordActivity
 import com.avon.remindfeedback.Network.RetrofitFactory
@@ -22,6 +24,8 @@ import com.avon.remindfeedback.ServerModel.GetMyPage
 import com.avon.remindfeedback.ServerModel.GetSuccessData
 import com.avon.remindfeedback.ServerModel.RequestFindPassword
 import com.avon.remindfeedback.etcProcess.Sha256Util
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_register.*
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,6 +33,7 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.util.regex.Pattern
 
 
 class PresenterMyPage : ContractMyPage.Presenter{
@@ -199,37 +204,22 @@ class PresenterMyPage : ContractMyPage.Presenter{
         })
     }
 
-    //비밀번호를 다시입력하고 탈퇴를 해야할거같은데 그럴수 있는 방법이 없는거같음 이거는 일단 보류
     override fun inputPassword(type:String,mEmail:String) {
-        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        params.leftMargin = mContext.resources.getDimensionPixelSize(R.dimen.dialog_margin)
-        params.rightMargin = mContext.resources.getDimensionPixelSize(R.dimen.dialog_margin)
-        val container = FrameLayout(mContext)
-        val et = EditText(mContext)
-        //et.setInputType(InputType.TYPE_CLASS_TEXT )
-        //et.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD)
-        et.setLayoutParams(params)
-        et.setSingleLine(true)
-
-        val FilterArray = arrayOfNulls<InputFilter>(1)
-        FilterArray[0] = InputFilter.LengthFilter(15)
-        et.setFilters(FilterArray)
-
-        container.addView(et)
-        val alt_bld = AlertDialog.Builder(mContext, R.style.MyAlertDialogStyle)
-        alt_bld.setTitle("비밀번호를 입력 해주세요")
-            //.setMessage("비밀번호를 입력 해주세요")
-            .setCancelable(true)
-            .setView(container)
-            .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-                val value = Sha256Util.testSHA256(et.getText().toString()+keyString)
-                checkPassword(value,type,mEmail)
-
-            })
-        val alert = alt_bld.create()
-        alert.show()
-
-
+        var dialogInterface: DialogInterface? = null
+        val dialog = android.app.AlertDialog.Builder(mContext)
+        val edialog : LayoutInflater = LayoutInflater.from(mContext)
+        val mView : View = edialog.inflate(R.layout.dialog_input_password,null)
+        dialog.setView(mView)
+        val input_password : EditText = mView.findViewById(R.id.input_password)
+        val input_button : Button = mView.findViewById(R.id.input_button)
+        input_button.setOnClickListener{
+            val value = Sha256Util.testSHA256(input_password.getText().toString()+keyString)
+            checkPassword(value,type,mEmail)
+            dialogInterface!!.dismiss()
+        }
+        dialog.setView(mView)
+        dialog.create()
+        dialogInterface = dialog.show()
 
     }
     override fun checkPassword(password:String, type:String,mEmail:String){

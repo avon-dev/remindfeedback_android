@@ -8,6 +8,7 @@ import com.avon.remindfeedback.R
 import com.avon.remindfeedback.etcProcess.Sha256Util
 
 import kotlinx.android.synthetic.main.activity_find_password.*
+import java.util.regex.Pattern
 
 class FindPasswordActivity : AppCompatActivity(), ContractFindPassword.View {
 
@@ -54,7 +55,8 @@ class FindPasswordActivity : AppCompatActivity(), ContractFindPassword.View {
                 Toast.makeText(this, "비밀번호를 입력해주세요", Toast.LENGTH_LONG).show()
             }else if(!find_Password_Password_Tv.text.toString().equals(find_Password_Confirm_Password_Tv.text.toString())){
                 Toast.makeText(this, "비밀번호와 비밀번호 확인이 일치하지 않습니다.", Toast.LENGTH_LONG).show()
-            }else{
+            }else if(!Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&^])[A-Za-z[0-9]$@$!%*#?&^]{8,20}$", find_Password_Password_Tv.getText().toString())){
+                Toast.makeText(this, "비밀번호 형식을 지켜주세요.\n(영문,숫자,특수문자 포함 최소 8글자)", Toast.LENGTH_SHORT).show()            }else{
                 presenterFindPassword.changingPassword(find_Password_Token_Tv.text.toString(), Sha256Util.testSHA256(find_Password_Password_Tv.text.toString()+getString(R.string.register_key)))
             }
         }
