@@ -102,6 +102,7 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 //presenterCreatePost.picktureDialogViwe()
                 showBottomSheet()
             }
+            Log.e("return_type",return_type.toString())
             /*//녹음 비디오 관련 주석처리
             else if(return_type == 2){//비디오일경우
                 imageBrowse()
@@ -300,9 +301,10 @@ class CreatePostActivity : AppCompatActivity(), ContractCreatePost.View {
                 contents_Image.setImageResource(R.drawable.ic_text)
                 contents_Type_Change_Button.setText("[ 글 ]")
             } else if (intent.getIntExtra("board_category", -1) == 1) { // 사진
+                return_type = 1
                 contents_Image.setImageResource(R.drawable.ic_photo_black)
                 contents_Type_Change_Button.setText("[ 사진 ]")
-                //add_File_View.visibility = View.VISIBLE
+                add_File_View.visibility = View.VISIBLE
             }
         }
 
