@@ -18,14 +18,17 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import com.avon.remindfeedback.R
+import com.google.android.material.internal.ContextUtils
+import com.google.android.material.internal.ContextUtils.getActivity
 import com.soundcloud.android.crop.Crop
 import com.squareup.picasso.Picasso
+import com.theartofdev.edmodo.cropper.CropImage
+import com.werb.pickphotoview.PickPhotoView
+import com.werb.pickphotoview.util.PickConfig
 import kotlinx.android.synthetic.main.activity_image_pick.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
+import java.io.*
 import java.lang.Exception
 
 class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
@@ -63,7 +66,18 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
         //앨범 눌렀을때
         Imagepick_Album_Button.setOnClickListener(){
             isCamera = false
-            imageBrowse()
+            //imageBrowse()
+            PickPhotoView.Builder(this)
+                .setPickPhotoSize(1)
+                .setClickSelectable(true)
+                .setShowCamera(false)
+                .setSpanCount(3)
+                .setLightStatusBar(false)
+                .setStatusBarColor(R.color.white)
+                .setToolbarColor(R.color.white)
+                .setToolbarTextColor(R.color.black)
+                .setSelectIconColor(R.color.colorPrimary)
+                .start()
         }
 
     }
@@ -138,7 +152,7 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    @SuppressLint("MissingSuperCall")
+    @SuppressLint("MissingSuperCall", "RestrictedApi")
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         when (requestCode) {
@@ -182,8 +196,73 @@ class ImagePickActivity : AppCompatActivity(), ContractImagePick.View {
             Crop.REQUEST_CROP -> {
                 setImage()
             }
+            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
+                Log.e("sadsadda", "asdsaasaaa")
+                val result = CropImage.getActivityResult(data)
+                if (resultCode == Activity.RESULT_OK) {
+                    val resultUri: Uri = result.uri
+                    var bitmap: Bitmap? = null
+                    try {
+                       bitmap = MediaStore.Images.Media.getBitmap(getActivity(this)!!.getContentResolver(), resultUri)
+                    } catch (e: FileNotFoundException) { // TODO Auto-generated catch block
+                        e.printStackTrace()
+                    } catch (e: IOException) { // TODO Auto-generated catch block
+                        e.printStackTrace()
+                    }
+                    storeImage(bitmap!!)
+                    Log.e("resultUri", resultUri.toString())
+                    Log.e("resultUri.path", resultUri.path)
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    val error = result.error
+                    Log.e("error", error.message)
+            }
+
+            }
+            PickConfig.PICK_PHOTO_DATA -> {
+                Log.e("PICK_PHOTO_DATA", "PICK_PHOTO_DATA")
+
+                try{
+                    val selectPaths = data!!.getSerializableExtra(PickConfig.INTENT_IMG_LIST_SELECT) as java.util.ArrayList<String>
+                    val photoUri = FileProvider.getUriForFile(
+                        this,
+                        "com.avon.remindfeedback.fileprovider",
+                        File(selectPaths[0].toString())
+                    )
+                    Log.e("photoUri", photoUri.toString())
+                    CropImage.activity(photoUri)
+                        .start(this)
+                    Log.e("arrayList22", selectPaths[0].toString())
+                }catch (e:Exception){
+                    Toast.makeText(this, "다시 시도해주세요", Toast.LENGTH_LONG).show()
+                }
+            }
         }
 
+    }
+
+    private fun storeImage(image: Bitmap) {
+        val pictureFile: File = presenterImagePick.createImageFile()
+        if (pictureFile == null) {
+            Log.d(
+                "FragmentActivity.TAG",
+                "Error creating media file, check storage permissions: "
+            ) // e.getMessage());
+            return
+        }
+        try {
+            val fos = FileOutputStream(pictureFile)
+            image.compress(Bitmap.CompressFormat.PNG, 90, fos)
+            Log.e("pictureFile", pictureFile.absolutePath)
+            lastUri = pictureFile.absolutePath
+            modify_Profile_ImageView.setImageURI(lastUri!!.toUri())
+
+            fos.flush();
+            fos.close()
+        } catch (e: FileNotFoundException) {
+            Log.e("FragmentActivity.TAG", "File not found: " + e.message)
+        } catch (e: IOException) {
+            Log.e("FragmentActivity.TAG", "Error accessing file: " + e.message)
+        }
     }
 
      fun setImage(){
