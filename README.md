@@ -7,6 +7,9 @@ https://www.youtube.com/watch?v=tq7LZzu04h0&t=1s
 ### PlayStore 주소
 https://play.google.com/store/apps/details?id=com.avon.remindfeedback&hl=en_US
 
+### 공식 웹사이트 주소
+https://www.remindfeedback.com/
+
 ##기능
 
 ### 회원가입
